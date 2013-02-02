@@ -7,20 +7,24 @@ test   = Nez.test
 describe 'Nez', -> 
 
 
-    it 'is French for nose', (knows) -> 
+    it 'is French for "nose"', (knows) -> 
 
         knows()
 
 
-    it 'is actually', (because) ->
+    it 'is Flower for "hello"', (again) ->
 
-        ('nez'[2] + 'nez'[1] + 'nez'[0]).should.equal 'zen'
-        because()
+        ('nez'[2] + 'nez'[1] + 'nez'[0]).should.equal(
+
+            'zen' )& again() 
 
 
-    it 'alludes to an hopefully', (improvedClarity) -> 
+    allude = it
 
-        'pince nez'.expectCall toPerchUponNose: for: improvedClarity()
+     
+    allude 'to an hopefully', (improvedClarity) -> 
+
+        'pince nez'.expectCall toPerchUponNose: for: improvedClarity() 
 
 
     it 'creates Object.expectCall()', (done) -> 
@@ -31,13 +35,13 @@ describe 'Nez', ->
 
     it 'returns an expectation validator (test())', (done) ->
 
-        test.should.be.an.instanceof Function
+        require('../src/nez').test.should.be.an.instanceof Function
         done() 
 
 
-    it 'calls back', (done) -> 
+    it 'calls back with..', (Done) -> 
 
-        test done
+        test Done
 
 
     it 'enables setting expectations', (done) -> 
@@ -85,6 +89,7 @@ describe 'Nez', ->
         called.should.equal false
         test done
 
+
     xit 'can optionally still call the original function', (done) -> 
 
 
@@ -104,6 +109,7 @@ describe 'Nez', ->
         TestExample5.existingFn('args') # call original
         called.should.equal true        # original fn was called
         done()
+
 
     it 'resets on the expectation test', (done) -> 
 
@@ -246,6 +252,7 @@ describe 'Nez', ->
                 Nez.failedArray[0].type.should.equal 'Expectation'
 
                 done()
+
 
             it 'called Array did not match expected', (done) -> 
 
