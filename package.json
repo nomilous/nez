@@ -1,0 +1,20 @@
+{
+  "name": "nez",
+  "description": "Declarative Expectation Framework (for Mocha)",
+  "version": "0.0.0",
+  "author": "nomilous <nomilous@gmail.com>",
+  "contributors": [
+    {
+      "name": "nomilous",
+      "email": "nomilous@gmail.com"
+    }
+  ],
+  "bin": {},
+  "dependencies": {},
+  "devDependencies": {
+    "hound": "~1.0.4",
+    "should": "~1.2.1",
+    "coffee-script": "~1.4.0",
+    "mocha": "~1.8.1"
+  }
+}
