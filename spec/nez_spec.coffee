@@ -130,33 +130,60 @@ describe 'Nez', ->
         test done
 
 
-    it 'keeps reference to failed expectations', (done) -> 
-
-        #Nez.debug = true
+    describe 'keeps a failedArray of expectations', -> 
 
         class TestExample8
 
             constructor: (@val) ->
 
-            instanceMethod: (arg) ->
-
+            passingInstanceMethod: (arg) ->
                 #
                 # call unimplemented function
                 # 
-
                 @unImplemented(arg * @val)
 
+            failingInstanceMethod: (arg) -> 
+                #
+                # does not call unimplemented function
+                #
+                # @unImplemented(arg * @val)
 
-        eg = new TestExample8( 5 )
-        eg.expectCall unImplemented: with: 555
-        eg.instanceMethod 111
 
-        #
-        # Expectetions here should have been met
-        #
 
-        Nez.failedArray.length.should.equal 0
-        test done
+        it 'is empty when none fail', (done) -> 
+
+            # Nez.debug = true
+
+            eg = new TestExample8( 5 )
+            eg.expectCall unImplemented: with: 555
+            
+            eg.passingInstanceMethod 111
+
+            Nez.failedArray.length.should.equal 0
+            test done
+
+
+        it 'has the fail exception', (done) -> 
+
+            Nez.debug = true
+
+            eg = new TestExample8( 5 )
+            eg.expectCall unImplemented: with: 555
+            
+            eg.failingInstanceMethod 111
+
+            Nez.failedArray.length.should.equal 1
+            test done
+
+
+
+    describe 'raises AssertionError when', -> 
+
+
+        xit 'expected function calls are not made', (done) -> 
+
+
+        xit 'expected arguments are not received', (done) -> 
 
 
 
