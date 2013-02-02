@@ -6,7 +6,7 @@ A Declarative Expectation Framework<br />
 *For Node / Mocha / Coffee*
 
 
-### Due Hommage
+### Due Homage
 
 [RSpec](http://rspec.info/) - For being awesome enough to `Actually! Get! Me! Testing!`
 

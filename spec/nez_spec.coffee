@@ -118,7 +118,7 @@ describe 'Nez', ->
 
     it 'keeps track of calls to the ex-spectated function', (done) -> 
 
-        Nez.debug = true
+        #Nez.debug = true
 
         class TestExample7
 
@@ -128,4 +128,37 @@ describe 'Nez', ->
         Nez.calledArray[0].functionName.should.equal 'func'
         
         test done
+
+
+    it 'keeps reference to failed expectations', (done) -> 
+
+        #Nez.debug = true
+
+        class TestExample8
+
+            constructor: (@val) ->
+
+            instanceMethod: (arg) ->
+
+                #
+                # call unimplemented function
+                # 
+
+                @unImplemented(arg * @val)
+
+
+        eg = new TestExample8( 5 )
+        eg.expectCall unImplemented: with: 555
+        eg.instanceMethod 111
+
+        #
+        # Expectetions here should have been met
+        #
+
+        Nez.failedArray.length.should.equal 0
+        test done
+
+
+
+
 

@@ -6,9 +6,11 @@ class Nez
 
     @calledArray: []
 
+    @failedArray: []
+
     @test: (callback) =>
 
-        if @debug 
+        if Nez.debug 
 
             console.log '\ntest() runs with:', callback, '\n'
 
@@ -30,6 +32,7 @@ class Nez
         #
 
         @calledArray.length = 0
+        @failedArray.length = 0
 
         callback()
 
@@ -50,7 +53,7 @@ class Expectation
 
         @obj[@functionName] = =>
 
-            if @debug 
+            if Nez.debug
 
                 console.log '\n', @functionName, '() runs\n'
 
@@ -67,9 +70,9 @@ class Expectation
 
 Object.prototype.expectCall = (xpect) -> 
 
-    if @debug 
+    if Nez.debug 
 
-        console.log '\n', 'expectCall() runs with:', xpect, '\n'
+        console.log '\n', 'expectCall() to:', xpect, '\n'
 
     for fName of xpect
 
