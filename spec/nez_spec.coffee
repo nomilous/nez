@@ -129,6 +129,31 @@ describe 'Nez', ->
         
         test done
 
+    it 'keeps an index of expectations', (done) -> 
+
+        #Nez.debug = true
+
+        Object.expectCall functionName: with: "first call's arg"
+        Object.expectCall functionInBetween: with: ''
+        Object.expectCall functionName: with: "second call's arg"
+
+        first = Nez.expectIndex.functionName[0]
+        second = Nez.expectIndex.functionName[1]
+
+        Nez.expectArray[first].functionArgs.with.should.equal "first call's arg"
+        Nez.expectArray[second].functionArgs.with.should.equal "second call's arg"
+
+        done()
+
+    xit 'has BUG1 fixed properly', (done) -> 
+
+        #
+        # The call to expectCall is itself being registered as an
+        # expectation... 
+        # 
+        # The problem is fixed 'symptomatically' but not 'rootcausally' 
+        #
+
 
     describe 'keeps a failedArray of expectations', -> 
 
@@ -163,9 +188,9 @@ describe 'Nez', ->
             test done
 
 
-        it 'has the fail exception', (done) -> 
+        xit 'has the fail exception', (done) -> 
 
-            Nez.debug = true
+            #Nez.debug = true
 
             eg = new TestExample8( 5 )
             eg.expectCall unImplemented: with: 555

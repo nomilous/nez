@@ -4,6 +4,8 @@ class Nez
 
     @expectArray: []
 
+    @expectIndex: {}
+
     @calledArray: []
 
     @failedArray: []
@@ -33,6 +35,8 @@ class Nez
 
         @calledArray.length = 0
         @failedArray.length = 0
+        @expectIndex = {}
+        @debug = false
 
         callback()
 
@@ -46,6 +50,19 @@ class Realization
 class Expectation
 
     constructor: (@functionName, @functionArgs, @functionOrig, @obj) -> 
+
+        if Nez.debug
+
+            console.log '\nnew expectation', @functionName, '\n'
+
+        #
+        # BUG1 I dont understand why expectCall() itself is
+        #      registering through here as an expectation
+        # 
+        #      This is probably not the best way to stop it.
+        # 
+
+        return if @functionName == 'expectCall'
 
         #
         # attach the expectation spy()
@@ -82,7 +99,27 @@ Object.prototype.expectCall = (xpect) ->
 
         x = new Expectation fName, xpect[fName], this[fName], this
 
+        if x.functionName == 'expectCall'
+
+            #
+            # BUG1 I dont understand why expectCall() itself is
+            #      registering through here as an expectation
+            # 
+            #      This is probably not the best way to stop it.
+            # 
+
+            continue
+
+
         Nez.expectArray.push x
+        
+        Nez.expectIndex[fName] = [] unless Nez.expectIndex[fName] instanceof Array
+
+        Nez.expectIndex[fName].push Nez.expectArray.length - 1
+
+        if Nez.debug
+
+            console.log '\nexpectIndex with: ', Nez.expectIndex, '\n'
 
 
 module.exports = Nez
