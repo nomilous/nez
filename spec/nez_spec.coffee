@@ -23,13 +23,13 @@ describe 'Nez', ->
         'pince nez'.expectCall toPerchUponNose: for: improvedClarity()
 
 
-    it 'creates Object.expect()', (done) -> 
+    it 'creates Object.expectCall()', (done) -> 
 
         Object.expectCall.should.be.an.instanceof Function
         done()
 
 
-    it 'returns a function when required', (done) ->
+    it 'returns an expectation validator (test())', (done) ->
 
         test.should.be.an.instanceof Function
         done() 
@@ -270,7 +270,7 @@ describe 'Nez', ->
     describe 'raises AssertionError when', -> 
 
 
-        xit 'expectated function calls we called too few time', (done) -> 
+        xit 'expectated function calls were called too few time', (done) -> 
 
 
         xit 'expectated function calls were called too many times', (done) -> 
