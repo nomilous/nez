@@ -229,13 +229,54 @@ describe 'Nez', ->
             done()
 
 
+        describe 'has the expectations that were incorrectly realized', ->
+
+            
+            it 'called arg did not match expected', (done) -> 
+
+                #Nez.debug = true
+
+                eg = new TestExample8( 5 )
+                eg.expectCall passingInstanceMethod: with: 5
+                eg.passingInstanceMethod 'not five'
+
+                test -> 
+
+                Nez.failedArray.length.should.equal 1
+                Nez.failedArray[0].type.should.equal 'Expectation'
+
+                done()
+
+            it 'called Array did not match expected', (done) -> 
+
+                eg = new TestExample8( 5 )
+                eg.expectCall useThisArray: with: [3,2,1]
+
+                eg.useThisArray [3,2,2]
+
+                test -> 
+
+                Nez.failedArray.length.should.equal 1
+                Nez.failedArray[0].type.should.equal 'Expectation'
+                Nez.failedArray[0].failed.should.equal 'Argument Mismatch'
+                done()
+
+
+            #
+            # There will be more...
+            #
+
+
     describe 'raises AssertionError when', -> 
 
 
-        xit 'expected function calls are not made', (done) -> 
+        xit 'expectated function calls we called too few time', (done) -> 
 
 
-        xit 'expected arguments are not received', (done) -> 
+        xit 'expectated function calls were called too many times', (done) -> 
+
+
+        xit 'expectated arguments were not received', (done) -> 
 
 
 

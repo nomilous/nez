@@ -52,6 +52,8 @@ class Nez
                 # to an expectated function
                 #
 
+                realization.failed = 'Was Called Too Often'
+
                 Nez.failedArray.push realization
 
                 continue
@@ -85,8 +87,35 @@ class Nez
 
             expectation = Nez.expectArray.shift()
 
-            unless expectation.realization
+            if expectation.realization
 
+                if expectation.functionArgs.with
+
+                    expectedArgs = expectation.functionArgs.with
+
+                    #
+                    # .with specified args to match
+                    #
+
+                    if Nez.debug
+
+                        console.log "EXPECTED:", expectedArgs, typeof expectedArgs
+
+                    
+                    if typeof expectedArgs == 'object'
+
+                        expectation.failed = 'PENDING SUPPORT'
+                        Nez.failedArray.push expectation
+
+
+                    else if expectedArgs != expectation.realization.args[0]
+
+                        expectation.failed = 'Argument Mismatch'
+                        Nez.failedArray.push expectation
+
+            else
+
+                expectation.failed = 'Was Not Called'
                 Nez.failedArray.push expectation 
 
 
@@ -118,9 +147,13 @@ class Nez
 
 class Realization
 
-    constructor: (@functionName) -> 
+    constructor: (@functionName, @args) -> 
 
         @type = 'Realization'
+
+        if Nez.debug
+
+            console.log '\nnew realization', @functionName, 'with:', @args, '\n'
 
         
 
@@ -164,7 +197,7 @@ class Expectation
             # the spy() into Nez.calledArray
             # 
 
-            call = new Realization @functionName
+            call = new Realization @functionName, arguments
 
             Nez.calledArray.push call
 
