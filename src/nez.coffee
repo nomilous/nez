@@ -113,7 +113,7 @@ Object.prototype.expectCall = (xpect) ->
 
         Nez.expectArray.push x
         
-        Nez.expectIndex[fName] = [] unless Nez.expectIndex[fName] instanceof Array
+        Nez.expectIndex[fName] ||= []
 
         Nez.expectIndex[fName].push Nez.expectArray.length - 1
 

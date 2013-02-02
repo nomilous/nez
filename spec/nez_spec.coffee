@@ -143,7 +143,7 @@ describe 'Nez', ->
         Nez.expectArray[first].functionArgs.with.should.equal "first call's arg"
         Nez.expectArray[second].functionArgs.with.should.equal "second call's arg"
 
-        done()
+        test done
 
     xit 'has BUG1 fixed properly', (done) -> 
 

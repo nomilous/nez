@@ -73,3 +73,11 @@ ChangeLog
 ---------
 
 0.0.1 currently under development
+
+
+Bugs
+----
+
+* BUG1 - dodged but not fixed: `grep -r -a7 -b7 'BUG1 ' *`
+
+
