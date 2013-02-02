@@ -18,6 +18,11 @@ describe 'Nez', ->
         because()
 
 
+    it 'alludes to an hopefully', (improvedClarity) -> 
+
+        'pince nez'.expectCall toPerchUponNose: for: improvedClarity()
+
+
     it 'creates Object.expect()', (done) -> 
 
         Object.expectCall.should.be.an.instanceof Function
