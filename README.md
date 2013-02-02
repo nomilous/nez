@@ -1,9 +1,16 @@
 nez
 ===
 
-Declarative Expectation Framework<br />
+### Huh?
+
+A Declarative Expectation Framework<br />
 
 For Node / Mocha / Coffee
+
+
+### Due Hommage
+
+[RSpec](http://rspec.info/) - For being awesome enough to `Actually! Get! Me! Testing!`
 
 
 ### Install
@@ -63,12 +70,6 @@ describe 'Periscope', ->
 
 
 ```
-
-
-### Due Hommage
-
-[RSpec](http://rspec.info/) - For being awesome enough to `Actually! Get! Me! Testing!`
-
 
 ChangeLog
 ---------
