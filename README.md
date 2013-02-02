@@ -1,11 +1,9 @@
 nez
 ===
 
-### Huh?
-
 A Declarative Expectation Framework<br />
 
-For Node / Mocha / Coffee
+*For Node / Mocha / Coffee*
 
 
 ### Due Hommage
