@@ -72,7 +72,7 @@ describe 'Nez', ->
       done()
 
 
-    it 'replaces functions that already exists', (done) -> 
+    it 'replaces functions that already exist', (done) -> 
 
         called = false
         class TestExample4
@@ -84,6 +84,8 @@ describe 'Nez', ->
 
         called.should.equal false
         test done
+
+    xit 'can optionally still call the original function', (done) -> 
 
 
     it 'restores the original function', (done) -> 
@@ -129,6 +131,7 @@ describe 'Nez', ->
         
         test done
 
+
     it 'keeps an index of expectations', (done) -> 
 
         #Nez.debug = true
@@ -144,6 +147,7 @@ describe 'Nez', ->
         Nez.expectArray[second].functionArgs.with.should.equal "second call's arg"
 
         test done
+
 
     xit 'has BUG1 fixed properly', (done) -> 
 
@@ -165,41 +169,64 @@ describe 'Nez', ->
                 #
                 # call unimplemented function
                 # 
-                @unImplemented(arg * @val)
+                @unImplemented1(arg * @val)
+                @unImplemented2('')
 
             failingInstanceMethod: (arg) -> 
                 #
                 # does not call unimplemented function
                 #
-                # @unImplemented(arg * @val)
+                # @unImplemented1(arg * @val)
 
 
 
         it 'is empty when none fail', (done) -> 
 
-            # Nez.debug = true
-
-            eg = new TestExample8( 5 )
-            eg.expectCall unImplemented: with: 555
-            
-            eg.passingInstanceMethod 111
-
-            Nez.failedArray.length.should.equal 0
-            test done
-
-
-        xit 'has the fail exception', (done) -> 
-
             #Nez.debug = true
 
             eg = new TestExample8( 5 )
-            eg.expectCall unImplemented: with: 555
+            eg.expectCall unImplemented1: with: 555
+            eg.expectCall unImplemented2: with: ''
+            
+            eg.passingInstanceMethod 111
+            test -> 
+
+            Nez.failedArray.length.should.equal 0
+            done()
+
+
+        it 'has the expectations that were not realized', (done) -> 
+
+            # Nez.debug = true
+
+            eg = new TestExample8( 5 )
+            eg.expectCall unImplemented1: with: 555
+            eg.expectCall unImplemented2: with: ''
             
             eg.failingInstanceMethod 111
+            test -> 
+
+            Nez.failedArray.length.should.equal 2
+            Nez.failedArray[0].type.should.equal 'Expectation'
+            Nez.failedArray[1].type.should.equal 'Expectation'
+            done()
+
+
+        it 'has the realizations that were not expected', (done) -> 
+
+            # Nez.debug = true
+
+            eg = new TestExample8( 5 )
+            eg.expectCall passingInstanceMethod: with: 5
+
+            eg.passingInstanceMethod 5
+            eg.passingInstanceMethod 5
+
+            test -> 
 
             Nez.failedArray.length.should.equal 1
-            test done
-
+            Nez.failedArray[0].type.should.equal 'Realization'
+            done()
 
 
     describe 'raises AssertionError when', -> 
