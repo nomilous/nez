@@ -4,9 +4,9 @@ describe 'Specification', ->
 
     it 'is a __Repeatably__ Confirmable Expectation Realization Validation', 
 
-        (yellow, lorry) -> 
+        (Yellow, Lorry) -> 
 
-            "red Lorry #{ yellow() } lolly }"
+            "Red Lorry #{ Yellow() } Lolly }"
 
 
     it """ 
