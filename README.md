@@ -8,11 +8,17 @@ A Declarative Expectation Framework<br />
 
 ### Backstory
 
-I was dating [Ruby](http://www.ruby-lang.org/en/) for quite some time. Were getting rather serious. I even got close to *proposing* to her. Then I met [Node](http://nodejs.org/) -- Wild! -- We had an *affair*.
+I was dating [Ruby](http://www.ruby-lang.org/en/) for quite some 
+time. Were getting rather serious. I even got close to *proposing* 
+to her. Then I met [Node](http://nodejs.org/). Wild! 
 
-I've subsequently broken up with Ruby. We'll still see a lot of each other. For the sake of the children. (*Bastards...* [winks@stu](https://github.com/stuartc))
+We had an *affair*.
 
-But there is something I really really miss about Ruby -- she had *theee* most beautiful [RSpec](http://rspec.info/). (due hommage)
+I've subsequently broken up with Ruby. We'll still see a lot of 
+each other. For the sake of the children. (Bastards... [winks@stu](https://github.com/stuartc))
+
+But there is something I really really miss about Ruby -- 
+she had *theee* most beautiful [RSpec](http://rspec.info/). (due homage)
 
 Node, in contrast, is kinda flat from the back.
 
