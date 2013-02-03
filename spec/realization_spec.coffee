@@ -117,18 +117,20 @@ describe 'Realization', ->
             @realization = new Realization( @instance )
 
 
-        it 'remembers the realization', (done) -> 
+        it 'remembers the realization, stores the args in a 1 based Hrray', (done) -> 
 
             arg1AsString   = 'functionArg1'
             arg2AsArray    = ['second','arg']
             arg3AsFunction = -> 'yummy coffee'
 
-            @realization.realize 1:arg1AsString, 2:arg2AsArray, 3:arg3AsFunction
+            @realization.realize 0:arg1AsString, 1:arg2AsArray, 2:arg3AsFunction
 
-            @realization.functionArgs.should.eql 
+            @realization.realized.args.should.eql 
 
                 1: arg1AsString
                 2: arg2AsArray
                 3: arg3AsFunction
 
             done()
+
+            

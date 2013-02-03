@@ -19,6 +19,7 @@ module.exports = Realization = class Realization extends Notification
     # 
     # `object` - as the thing upon which an Expectation has been placed
     #
+
     constructor: (@object) -> 
 
 
@@ -33,25 +34,45 @@ module.exports = Realization = class Realization extends Notification
     # `opts' - To define what to do when the expected 
     #          call ocurrs
     #
+
     createFunction: (@name, opts = {}) ->
 
-        @realized = {}
+        newFunction = (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad) =>
 
-        @originalFunction = @object[@name]
+            #
+            # This is a Mock() or a Spy()
+            # 
+            # Both cases save the arguments when called.
+            # 
 
-        @object[@name] = (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad) =>
+            @realize( arguments )
 
-            @realized.args = @slide( arguments, 1 )
+            #
+            # It becomes a Mock() if opts.returns is defined... 
+            #
 
             return opts.returns if opts.returns
 
-            if @originalFunction
+            #
+            # It becomes a spy if no opts.returns was defined
+            # and the @originalFunction exists
+            #
 
-                return @originalFunction.call(
+            return @originalFunction.call(
 
-                    @object, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad
-                    
-                )
+                @object, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad
+
+            ) if @originalFunction
+
+
+            return # for clarity
+
+
+
+
+        @originalFunction = @object[@name]
+
+        @object[@name] = newFunction
 
 
     # 
@@ -71,8 +92,15 @@ module.exports = Realization = class Realization extends Notification
 
     #
     # *realize(args)* 
+    # 
+    # Store the args received
     #
-    realize: (@functionArgs) -> 
+
+    realize: (args) -> 
+
+        @realized ||= {}
+
+        @realized.args = @slide( args, 1 )
 
 
     #
@@ -81,6 +109,7 @@ module.exports = Realization = class Realization extends Notification
     # Given:   {0:'ZERO',1:'ONE'}, 3003
     # Returns  {3003:'ZERO',3004:'ONE'}
     #
+    
     slide: (args, amount) -> 
 
         slid = {}
