@@ -10,22 +10,16 @@ A Declarative Expectation Framework<br />
 
 ```
 I was dating Ruby for quite some time. Were getting rather serious. 
-I even got close to proposing to her. Then I met Node. 
-
-Wild! 
-
-We had an *affair*.
+I even got close to proposing to her. Then I met Node. Wild! We
+had an affair.
 
 I've subsequently broken up with Ruby. We'll still see a lot of 
 each other. For the sake of the children. (Bastards... winks@stu)
 
-But there is something I really really miss about Ruby -- 
+But there is something I really really miss about Ruby - 
+she has theee most beautiful Rspec. (due homage)
 
-  she has *theee* most beautiful Rspec. (due homage)
-
-Node, in contrast, is kinda flat from the back.
-
-I decided to do something about it...
+Node - In contrast - Is kinda flat from the back.
 
 ```
 
