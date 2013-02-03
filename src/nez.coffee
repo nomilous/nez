@@ -160,9 +160,55 @@ class Nez
 
 class Realization
 
-    constructor: (@functionName, @functionArgs) -> 
+    constructor: (@functionName, args) -> 
 
         @type = 'Realization'
+
+        #
+        # BIGDECISION1: 
+        # 
+        # Args arriving here are of the form 0:{}, 1:{}, 2:{} 
+        # as provided by javascript special 'arguments' object.
+        # 
+        # I've decided to slide them up by 1 to enable more 
+        # direct comparison with the expectation definition's 
+        # args in the with: hash as provided by the developer.
+        # 
+        # The other option would have been to expect the .with
+        # definition to be zero based. But that will too freq-
+        # uently lead to the following undesirables:
+        # 
+        #   1. A fundamentally vital necessity to have read the
+        #      pertinent fragment of documentation.
+        #          
+        #   2. An excessive amount of counting on fingers.
+        # 
+        # 
+        #
+
+        @functionArgs = {}
+
+        for key of args
+
+            #
+            # This may be expected behaviour for javascript?coffee,
+            # 
+            # BUG2 - the hash of arguments {'0':{}, '1':{}}
+            #        is producing a third key,
+            #
+            # 
+            # console.log 'KEY::::', key
+            # 
+            #    KEY:::: 0
+            #    KEY:::: 1
+            #    KEY:::: expectCall
+            # 
+            # 
+            continue if key == 'expectCall'
+
+            newKey = (parseInt(key) + 1).toString()
+            @functionArgs[newKey] = args[key]
+
 
         if Nez.debug
 
@@ -194,32 +240,34 @@ class Expectation
         if args == undefined
 
             #
-            # other things than .with() 
+            # other things than .with: {}
             # 
             # later...
             #  
 
             return
-            
+
 
         switch typeof args
 
-            when 'number', 'string' then @functionArgs = 0 : args
+            when 'number', 'string' then @functionArgs = 1 : args
 
-            when 'function' then @functionArgs = 0 : args
+            when 'function' then @functionArgs = 1 : args
 
             when 'object'
 
                 if args instanceof Array
 
-                    @functionArgs = 0 : args
+                    @functionArgs = 1 : args
 
                 else 
 
                     #
-                    # verify args of the form:
+                    # verify args are of the form:
                     # 
-                    # 0:'thing', 1:{thing:''}, 2:['also']
+                    # 1:'thing', 2:{thing:''}, 3:['also']
+                    # 
+                    # where 1 is the first expected arg
                     #
 
                     # console.log 'huh? args are:', args
@@ -229,25 +277,11 @@ class Expectation
                         if typeof key != 'number'
 
                             #
-                            # BUG2 - for key of {'0':{}, '1':{}}
-                            #        is producing a third key,
-                            # 
-                            # console.log 'KEY::::', key
-                            # 
-                            #    KEY:::: 0
-                            #    KEY:::: 1
-                            #    KEY:::: expectCall
-                            # 
-                            # ummm?
-                            # continue if key == 'expectCall'
-                            # BUG 'seems' to have gone? 
-
-                            #
                             # found non number key, assume a 
                             # single argument expectation
                             # 
 
-                            @functionArgs = 0 : args
+                            @functionArgs = 1 : args
 
                             break
 

@@ -51,7 +51,7 @@ describe 'Nez', ->
         TextExample1.expectCall methodName: with: 'arg'
 
         Nez.expectArray[0].functionName.should.equal 'methodName'
-        Nez.expectArray[0].functionArgs[0].should.equal 'arg'
+        Nez.expectArray[0].functionArgs[1].should.equal 'arg'
         test done
 
 
@@ -149,8 +149,8 @@ describe 'Nez', ->
         first = Nez.expectIndex.functionName[0]
         second = Nez.expectIndex.functionName[1]
 
-        Nez.expectArray[first].functionArgs[0].should.equal "first call's arg"
-        Nez.expectArray[second].functionArgs[0].should.equal "second call's arg"
+        Nez.expectArray[first].functionArgs[1].should.equal "first call's arg"
+        Nez.expectArray[second].functionArgs[1].should.equal "second call's arg"
 
         test done
 
@@ -286,7 +286,7 @@ describe 'Nez', ->
                 #Nez.debug = true
 
                 eg = new TestExample8( 5 )
-                eg.expectCall complicatedActivity: with: 0: [3,2,1], 1: 'zero'
+                eg.expectCall complicatedActivity: with: 1: [3,2,1], 2: 'zero'
 
                 eg.complicatedActivity [4,3,2], 'zero'
 
@@ -306,7 +306,7 @@ describe 'Nez', ->
 
                     eg = new TestExample8( 5 )
                     eg.expectCall veryComplicatedActivity: with: 3:[3,2,1]
-                    eg.veryComplicatedActivity {}, {}, 'third arg is @ [2]', {}, [3,2,1]
+                    eg.veryComplicatedActivity {}, {}, {}, [3,2,1]
                     test -> 
 
                     Nez.failedArray.length.should.equal 1
@@ -318,7 +318,7 @@ describe 'Nez', ->
 
                     eg = new TestExample8( 5 )
                     eg.expectCall veryComplicatedActivity: with: 4:[3,2,1]
-                    eg.veryComplicatedActivity {}, {}, 'third arg is @ [2]', {}, [3,2,1]
+                    eg.veryComplicatedActivity {}, {}, {}, [3,2,1]
                     test -> 
 
                     Nez.failedArray.length.should.equal 0
