@@ -10,7 +10,9 @@
     }
   ],
   "bin": {},
-  "dependencies": {},
+  "dependencies": {
+    "should": "~1.2.1"
+  },
   "devDependencies": {
     "hound": "~1.0.4",
     "should": "~1.2.1",

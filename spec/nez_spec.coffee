@@ -51,7 +51,7 @@ describe 'Nez', ->
         TextExample1.expectCall methodName: with: 'arg'
 
         Nez.expectArray[0].functionName.should.equal 'methodName'
-        Nez.expectArray[0].functionArgs.with.should.equal 'arg'
+        Nez.expectArray[0].functionArgs[0].should.equal 'arg'
         test done
 
 
@@ -149,8 +149,8 @@ describe 'Nez', ->
         first = Nez.expectIndex.functionName[0]
         second = Nez.expectIndex.functionName[1]
 
-        Nez.expectArray[first].functionArgs.with.should.equal "first call's arg"
-        Nez.expectArray[second].functionArgs.with.should.equal "second call's arg"
+        Nez.expectArray[first].functionArgs[0].should.equal "first call's arg"
+        Nez.expectArray[second].functionArgs[0].should.equal "second call's arg"
 
         test done
 
@@ -163,6 +163,18 @@ describe 'Nez', ->
         # 
         # The problem is fixed 'symptomatically' but not 'rootcausally' 
         #
+
+
+    it 'has BUG2 fixed properly', (done) -> 
+
+        #Nez.debug = true
+
+        eg = new Object()
+        eg.expectCall complicatedActivity: with: 0: [4,3,2], 1: 'zero'
+        eg.complicatedActivity [4,3,2], 'zero'
+
+        test done
+
 
 
     describe 'keeps a failedArray of expectations', -> 
@@ -188,7 +200,7 @@ describe 'Nez', ->
 
         it 'is empty when none fail', (done) -> 
 
-            #Nez.debug = true
+            Nez.debug = true
 
             eg = new TestExample8( 5 )
             eg.expectCall unImplemented1: with: 555
@@ -218,7 +230,7 @@ describe 'Nez', ->
             done()
 
 
-        it 'has the realizations that were not expected', (done) -> 
+        xit 'has the realizations that were not expected', (done) -> 
 
             # Nez.debug = true
 
@@ -238,9 +250,9 @@ describe 'Nez', ->
         describe 'has the expectations that were incorrectly realized', ->
 
             
-            it 'called arg did not match expected', (done) -> 
+            it 'called "type" arg did not match expected', (done) -> 
 
-                #Nez.debug = true
+                # Nez.debug = true
 
                 eg = new TestExample8( 5 )
                 eg.expectCall passingInstanceMethod: with: 5
@@ -254,7 +266,7 @@ describe 'Nez', ->
                 done()
 
 
-            it 'called Array did not match expected', (done) -> 
+            it 'called "object" arg did not match expected', (done) -> 
 
                 eg = new TestExample8( 5 )
                 eg.expectCall useThisArray: with: [3,2,1]
@@ -267,6 +279,35 @@ describe 'Nez', ->
                 Nez.failedArray[0].type.should.equal 'Expectation'
                 Nez.failedArray[0].failed.should.equal 'Argument Mismatch'
                 done()
+
+
+            it 'called multiple args did not match expected', (done) -> 
+
+                #Nez.debug = true
+
+                eg = new TestExample8( 5 )
+                eg.expectCall complicatedActivity: with: 0: [3,2,1], 1: 'zero'
+
+                eg.complicatedActivity [4,3,2], 'zero'
+
+                test ->
+
+                Nez.failedArray.length.should.equal 1
+                Nez.failedArray[0].failed.should.equal 'Argument Mismatch'
+
+                done()
+
+
+            it 'allows matching only specific args', (done) -> 
+
+                eg = new TestExample8( 5 )
+                eg.expectCall veryComplicatedActivity: with: 4:[3,2,1]
+                eg.veryComplicatedActivity {}, {}, 'third arg is @ [2]', {}, [3,2,1]
+                test -> 
+
+                Nez.failedArray.length.should.equal 0
+                done()
+
 
 
             #

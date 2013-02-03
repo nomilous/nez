@@ -1,3 +1,5 @@
+require 'should'
+
 class Nez
 
     @debug: false
@@ -89,9 +91,9 @@ class Nez
 
             if expectation.realization
 
-                if expectation.functionArgs.with
+                if expectation.functionArgs
 
-                    expectedArgs = expectation.functionArgs.with
+                    expectedArgs = expectation.functionArgs
 
                     #
                     # .with specified args to match
@@ -101,16 +103,27 @@ class Nez
 
                         console.log "EXPECTED:", expectedArgs, typeof expectedArgs
 
-                    
-                    if typeof expectedArgs == 'object'
+                    try
 
-                        expectation.failed = 'PENDING SUPPORT'
-                        Nez.failedArray.push expectation
+                        #
+                        # TODO: loop through each arg
+                        # TODO: support only specified ie `with: 5:{'sixth':'only'}`
+                        # 
 
+                        expectedArgs.should.eql expectation.realization.args
 
-                    else if expectedArgs != expectation.realization.args[0]
+                        # if typeof expectedArgs == 'object'
+
+                        #     expectedArgs.should.eql expectation.realization.args
+
+                        # else
+
+                        #     expectedArgs.should.equal expectation.realization.args
+
+                    catch error
 
                         expectation.failed = 'Argument Mismatch'
+                        expectation.exception = error
                         Nez.failedArray.push expectation
 
             else
@@ -151,6 +164,22 @@ class Realization
 
         @type = 'Realization'
 
+        # #
+        # # Marshal args into an array
+        # #
+
+        # @args = []
+
+        # for arg in args
+
+        #     @args.push arg
+
+        # #
+        # # If there is only one arg
+        # #
+
+        # @args = @args[0] if @args.length == 1
+
         if Nez.debug
 
             console.log '\nnew realization', @functionName, 'with:', @args, '\n'
@@ -159,7 +188,7 @@ class Realization
 
 class Expectation
 
-    constructor: (@functionName, @functionArgs, @functionOrig, @obj) -> 
+    constructor: (@functionName, @expectationParams, @functionOrig, @obj) -> 
 
         @type = 'Expectation'
 
@@ -175,6 +204,65 @@ class Expectation
         # 
 
         return if @functionName == 'expectCall'
+
+        args = @expectationParams.with
+
+        switch typeof args
+
+            when 'number', 'string' then @functionArgs = 0 : args
+
+            when 'function' then @functionArgs = 0 : args
+
+            when 'object'
+
+                if args instanceof Array
+
+                    @functionArgs = 0 : args
+
+                else 
+
+                    #
+                    # verify args of the form:
+                    # 
+                    # 0:'thing', 1:{thing:''}, 2:['also']
+                    #
+
+                    # console.log 'huh? args are:', args
+
+                    for key of args
+
+                        if typeof key != 'number'
+
+                            #
+                            # BUG2 - for key of {'0':{}, '1':{}}
+                            #        is producing a third key,
+                            # 
+                            # console.log 'KEY::::', key
+                            # 
+                            #    KEY:::: 0
+                            #    KEY:::: 1
+                            #    KEY:::: expectCall
+                            # 
+                            # ummm?
+                            # continue if key == 'expectCall'
+                            # BUG 'seems' to have gone? 
+
+                            #
+                            # found non number key, assume a 
+                            # single argument expectation
+                            # 
+
+                            @functionArgs = 0 : args
+
+                            break
+
+                    @functionArgs = args
+
+                    # console.log "ARG:", args[key]
+
+
+            else console.log "MISSING TYPE:", typeof args
+
 
         #
         # store the call details of a possible expectation match  
