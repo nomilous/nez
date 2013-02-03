@@ -47,7 +47,7 @@ module.exports = Realization = class Realization extends Notification
             # Both cases save the arguments when called.
             # 
 
-            @realize( arguments )
+            @realizeFunction( arguments )
 
             #
             # It becomes a Mock() if opts.returns is defined... 
@@ -92,20 +92,48 @@ module.exports = Realization = class Realization extends Notification
     createProperty: (@name, opts = {}) ->
 
         @type = 'property'
-        
-     
 
-    #
-    # *realize(args)* 
-    # 
-    # Store the args received
-    #
+        @originalProperty = @object[@name]
 
-    realize: (args) -> 
+        Object.defineProperty @object, @name,
 
-        @realized ||= {}
+            set: (value) => 
 
-        @realized.args = @slide( args, 1 )
+                #
+                # store value of property being set
+                # (for later expectation validation)
+                #
+
+                @realizeProperty 0: value
+                @originalProperty = value
+
+            get: => 
+
+                if opts.returns
+
+                    #
+                    # return the mock specified value 
+                    # of the property
+                    #
+
+                    @realizeProperty 0: opts.returns
+                    return opts.returns
+
+                else
+
+                    @realizeProperty 0: @originalProperty
+                    return @originalProperty
+
+    
+
+    realizeFunction: (args) -> 
+
+        @realized = function: args: @slide( args, 1 )
+
+
+    realizeProperty: (args) -> 
+
+        @realized = property: args: @slide( args, 1 )
 
 
     #

@@ -49,7 +49,7 @@ describe 'Realization', ->
 
                 @thing.newFunction 'a', 42, ['b','c'], {d: 'EFG'}, fn
 
-                r.realized.args.should.eql 
+                r.realized.function.args.should.eql 
 
                     1: 'a'
                     2: 42
@@ -80,7 +80,7 @@ describe 'Realization', ->
 
                 @thing.existingFunction('alpha','omega').should.equal 'this'
 
-                r.realized.args.should.eql 
+                r.realized.function.args.should.eql 
 
                     1: 'alpha', 
                     2: 'omega'
@@ -100,14 +100,12 @@ describe 'Realization', ->
 
                 @thing.existingFunction('alpha','omega').should.equal '-> alpha,omega <-'
 
-                r.realized.args.should.eql 
+                r.realized.function.args.should.eql 
 
                     1: 'alpha', 
                     2: 'omega'
 
                 done()
-
-
 
 
         describe 'as Property', -> 
@@ -121,8 +119,23 @@ describe 'Realization', ->
                 done()
 
 
-            xit 'can be a Mock/Double'
-            xit 'can be a Spy'
+            it 'can be a Mock/Double', (done) -> 
+
+                r = new Realization @thing
+                r.createProperty 'name', returns: 'nomilous'
+
+                @thing.name.should.equal 'nomilous'
+                done()
+
+
+            it 'can be a Spy', (done) -> 
+
+                r = new Realization @thing
+                r.createProperty 'name', with: 'nomilous'
+
+                @thing.name = 'nonimous'
+                r.realized.property.args.should.eql 1:'nonimous'
+                done()
 
 
     describe 'can be realized', -> 
@@ -140,9 +153,9 @@ describe 'Realization', ->
             arg2AsArray    = ['second','arg']
             arg3AsFunction = -> 'yummy coffee'
 
-            @realization.realize 0:arg1AsString, 1:arg2AsArray, 2:arg3AsFunction
+            @realization.realizeFunction 0:arg1AsString, 1:arg2AsArray, 2:arg3AsFunction
 
-            @realization.realized.args.should.eql 
+            @realization.realized.function.args.should.eql 
 
                 1: arg1AsString
                 2: arg2AsArray
