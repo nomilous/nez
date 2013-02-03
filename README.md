@@ -5,10 +5,19 @@ A Declarative Expectation Framework<br />
 
 *For Node / Mocha / Coffee*
 
+<br /><br /><br /><br /><br />
 
-### Due Homage
+### Backstory
 
-[RSpec](http://rspec.info/) - For being awesome enough to `Actually! Get! Me! Testing!`
+I was dating [Ruby](http://www.ruby-lang.org/en/) for quite some time. Were getting rather serious. I even got close to *proposing* to her. Then I met [Node](http://nodejs.org/) -- Wild! -- We had an *affair*.<br /><br />
+
+I've subsequently broken up with Ruby. We'll still see a lot of each other. For the sake of the children. (*Bastards...* [winks@stu](https://github.com/stuartc))
+
+But there is something I really really miss about Ruby -- she had *theee* most beautiful [RSpec](http://rspec.info/). (due hommage)
+
+Node, in contrast, is kinda flat from the back.
+
+I decided to do something about it...
 
 
 ### Install
