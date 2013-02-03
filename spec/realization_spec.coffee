@@ -23,13 +23,69 @@ describe 'Realization', ->
         beforeEach -> 
 
             class Thing
-            @instance = new Thing()
-            
+                existingFunction: (arg1, arg2) -> 
+                    "-> #{arg1},#{arg2} <-"
 
-        describe 'as function', ->
+            @thing = new Thing()
+
+
+        describe 'as function that', ->
+
+
+            it 'is a function', (done) ->
+
+                r = new Realization @thing
+                r.createFunction 'newFunction'
+
+                @thing.newFunction.should.be.an.instanceof Function
+                done()
+
         
-            it 'can be a Mock/Double'
-            it 'can be a Spy'
+            it 'can be a Mock/Double', (done) -> 
+
+                #
+                # overrides the original function and 
+                # returns as specified 
+                #
+
+                r = new Realization @thing
+                r.createFunction 'existingFunction', returns: 'this'
+
+                @thing.existingFunction('alpha','omega').should.equal 'this'
+
+                #
+                # it keeps record of the called args
+                # 
+
+                r.realized.args.should.eql 
+
+                    1: 'alpha', 
+                    2: 'omega'
+
+                done()
+
+
+            it 'can be a Spy', (done) -> 
+
+                #
+                # calls the original function
+                # 
+
+                r = new Realization @thing
+                r.createFunction 'existingFunction'
+
+                @thing.existingFunction('alpha','omega')
+
+                    .should.equal '-> alpha,omega <-'
+
+                r.realized.args.should.eql 
+
+                    1: 'alpha', 
+                    2: 'omega'
+
+                done()
+
+
 
 
         describe 'as Property', -> 

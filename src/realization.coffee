@@ -35,6 +35,18 @@ module.exports = Realization = class Realization extends Notification
     #
     createFunction: (@name, opts = {}) ->
 
+        @realized = {}
+
+        @originalFunction = @object[@name]
+
+        @object[@name] = (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad) =>
+
+            @realized.args = @slide( arguments, 1 )
+
+            return opts.returns if opts.returns
+
+            return @originalFunction.call @object, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad
+
 
     # 
     # *createProperty( name, opts )*
@@ -55,4 +67,22 @@ module.exports = Realization = class Realization extends Notification
     # *realize(args)* 
     #
     realize: (@functionArgs) -> 
+
+
+    #
+    # *slide(args, amount)*
+    # 
+    # Given:   {0:'ZERO',1:'ONE'}, 3003
+    # Returns  {3003:'ZERO',3004:'ONE'}
+    #
+    slide: (args, amount) -> 
+
+        slid = {}
+
+        for key of args
+
+            newKey = (parseInt(key) + amount).toString()
+            slid[newKey] = args[key]
+
+        return slid
 
