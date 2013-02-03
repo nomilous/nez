@@ -2,14 +2,30 @@ Specification = require '../src/specification'
 
 describe 'Specification', -> 
 
-    it """ is this: 
+    it 'is a __Repeatably__ Confirmable Expectation Realization Validation', 
+
+        (yellow, lorry) -> 
+
+            "red Lorry #{ yellow() } lolly }"
 
 
+    it """ 
 
-        Expectation + Realization + Validation = Confirmation
+        encapsulates this
+        -----------------
 
 
+        Expectation + Realization + Validation ?= Confirmation
 
 
-    """, (milestone) -> milestone()
+        where
+        -----
+
+        Expectation  = required functionality
+        Realization  = implemented functionality
+        Validation   = evaluation of Realization against Expectation / running of tests
+        Confirmation = passing of tests
+
+
+    """, ->
 
