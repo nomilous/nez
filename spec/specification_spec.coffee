@@ -2,7 +2,7 @@ Specification = require '../src/specification'
 
 describe 'Specification', -> 
 
-    it 'is a __Repeatably__ Confirmable Expectation Realization Validation Yello', 
+    it 'is a __Repeatably__ Confirmable Expectation Realization Validation Cello', 
 
         (Lorry, Red) -> 
 
