@@ -1,4 +1,6 @@
-module.exports = Realization = class Realization
+Notifiction = require './notification'
+
+module.exports = Realization = class Realization extends Notifiction
 
     #
     # Realization
@@ -14,3 +16,4 @@ module.exports = Realization = class Realization
     constructor: (@object) -> 
 
     realize: (@functionName, @functionArgs) -> 
+
