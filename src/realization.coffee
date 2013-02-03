@@ -37,6 +37,8 @@ module.exports = Realization = class Realization extends Notification
 
     createFunction: (@name, opts = {}) ->
 
+        @type = 'function'
+
         newFunction = (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad) =>
 
             #
@@ -88,6 +90,9 @@ module.exports = Realization = class Realization extends Notification
     #
     #  
     createProperty: (@name, opts = {}) ->
+
+        @type = 'property'
+        
      
 
     #
@@ -109,7 +114,7 @@ module.exports = Realization = class Realization extends Notification
     # Given:   {0:'ZERO',1:'ONE'}, 3003
     # Returns  {3003:'ZERO',3004:'ONE'}
     #
-    
+
     slide: (args, amount) -> 
 
         slid = {}

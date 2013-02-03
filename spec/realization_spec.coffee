@@ -59,6 +59,14 @@ describe 'Realization', ->
 
                 done()
 
+            it 'sets type', (done) -> 
+
+                r = new Realization @thing
+                r.createFunction 'newFunction'
+
+                r.type.should.equal 'function'
+                done()
+
         
             it 'can be a Mock/Double', (done) -> 
 
@@ -104,6 +112,15 @@ describe 'Realization', ->
 
         describe 'as Property', -> 
 
+            it 'sets type', (done) -> 
+
+                r = new Realization @thing
+                r.createProperty 'name'
+
+                r.type.should.equal 'property'
+                done()
+
+
             xit 'can be a Mock/Double'
             xit 'can be a Spy'
 
@@ -133,4 +150,4 @@ describe 'Realization', ->
 
             done()
 
-            
+
