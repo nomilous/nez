@@ -18,23 +18,47 @@ describe 'Realization', ->
         done()
 
 
-    it 'can be realized, and remember it', (done) -> 
+    describe 'create an interface to Realization ', -> 
 
-        class Thing
-        instance = new Thing()
-        realization = new Realization( instance )
+        beforeEach -> 
 
-        arg1AsString   = 'functionArg1'
-        arg2AsArray    = ['second','arg']
-        arg3AsFunction = -> 'yummy coffee'
+            class Thing
+            @instance = new Thing()
+            
 
-        realization.realize 'functionName', 1:arg1AsString, 2:arg2AsArray, 3:arg3AsFunction
+        describe 'as function', ->
+        
+            it 'can be a Mock/Double'
+            it 'can be a Spy'
 
-        realization.functionName.should.equal 'functionName'
-        realization.functionArgs.should.eql 
 
-            1: arg1AsString
-            2: arg2AsArray
-            3: arg3AsFunction
+        describe 'as Property', -> 
 
-        done()
+            xit 'can be a Mock/Double'
+            xit 'can be a Spy'
+
+
+    describe 'can be realized', -> 
+
+        before -> 
+
+            class Thing
+            @instance = new Thing()
+            @realization = new Realization( @instance )
+
+
+        it 'remembers the realization', (done) -> 
+
+            arg1AsString   = 'functionArg1'
+            arg2AsArray    = ['second','arg']
+            arg3AsFunction = -> 'yummy coffee'
+
+            @realization.realize 1:arg1AsString, 2:arg2AsArray, 3:arg3AsFunction
+
+            @realization.functionArgs.should.eql 
+
+                1: arg1AsString
+                2: arg2AsArray
+                3: arg3AsFunction
+
+            done()

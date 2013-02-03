@@ -13,7 +13,46 @@ module.exports = Realization = class Realization extends Notification
     # * For later... (Expectation Validation)
     # 
 
+
+    #
+    # *constructor( object )* 
+    # 
+    # `object` - as the thing upon which an Expectation has been placed
+    #
     constructor: (@object) -> 
 
-    realize: (@functionName, @functionArgs) -> 
+
+    #
+    # *createFunction( name, opts )*
+    # 
+    # Configures the `object` such that a function becomes Realizable
+    # 
+    # `name` - The name of a function whose calling 
+    #          has an associated Expectation
+    # 
+    # `opts' - To define what to do when the expected 
+    #          call ocurrs
+    #
+    createFunction: (@name, opts = {}) ->
+
+
+    # 
+    # *createProperty( name, opts )*
+    #
+    # Configures the `object` such that a property becomes Realizable
+    #
+    # `name` - The name of a property whose calling
+    #          has an associated Expectation
+    # 
+    # `opts' - To define what to do when the expected 
+    #          call ocurrs
+    #
+    #  
+    createProperty: (@name, opts = {}) ->
+     
+
+    #
+    # *realize(args)* 
+    #
+    realize: (@functionArgs) -> 
 
