@@ -131,7 +131,7 @@ describe 'Realization', ->
             it 'can be a Spy', (done) -> 
 
                 r = new Realization @thing
-                r.createProperty 'name', with: 'nomilous'
+                r.createProperty 'name'
 
                 @thing.name = 'nonimous'
                 r.realized.property.args.should.eql 1:'nonimous'
@@ -154,12 +154,14 @@ describe 'Realization', ->
             arg3AsFunction = -> 'yummy coffee'
 
             @realization.realizeFunction 0:arg1AsString, 1:arg2AsArray, 2:arg3AsFunction
-
             @realization.realized.function.args.should.eql 
-
                 1: arg1AsString
                 2: arg2AsArray
                 3: arg3AsFunction
+
+            @realization.realizeProperty 0:'set value'
+            @realization.realized.property.args.should.eql 
+                1: 'set value'
 
             done()
 
