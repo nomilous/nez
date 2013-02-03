@@ -40,28 +40,65 @@ describe 'Periscope', ->
 
 
         #
-        # create expectation:
-        # 
-        # - that the riseToSurface() function will be called
-        # - and that the expected argument(s) will be 'distance'
-        # - ,
-        # - and pretend it worked... (by specifying what to return)
+        # 1. Create expectations
         #
 
         periscope.expectCall riseToSurface: with: 'distance', returning: true
+        periscope.expectCall openLens: returning: true
 
 
         #
-        # perform testable action
+        # 2. Perform action
         #
 
         periscope.activate()
 
 
         #
-        # validate - were the expectations met?
+        #   Clarification
+        #   =============
         # 
-        # THIS BIT STILL UNDER DEVELOPMENT
+        # 
+        #   - riseToSurface() and openLens() may or may not already have 
+        #     been implemented... 
+        #   
+        #     But now, having declared the expectations, the functions do 
+        #     exist and will return true when called.
+        # 
+        # 
+        #   - the intention is threefold
+        # 
+        # 
+        #       Creation of Specification
+        #       -------------------------
+        #   
+        #         It specifies that the call to activate() should 
+        #         lead internally to a call to riseToSurface() with 
+        #         the argument 'distance'
+        #   
+        #   
+        #       Validation of Behaviour
+        #       -----------------------
+        #   
+        #         It validates that when activate() receives true 
+        #         from the call to riseToSurface() that it then goes 
+        #         on to call openLens() 
+        #   
+        # 
+        #       Clarity at Design time
+        #       ----------------------
+        # 
+        #         A veryvery powerful thing... 
+        # 
+        #         (that might start happening)
+        # 
+        # 
+ 
+
+        #
+        # 3. Validate expectations
+        # 
+        #    THIS BIT STILL UNDER DEVELOPMENT
         #
 
         test done
