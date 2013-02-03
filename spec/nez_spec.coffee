@@ -24,7 +24,7 @@ describe 'Nez', ->
      
     allude 'to an hopefully', (improvedClarity) -> 
 
-        'pince nez'.expectCall toPerchUponNose: for: improvedClarity() 
+        'pince nez'.expectCall toPerchUponNose: for: improvedClarity()
 
 
     it 'creates Object.expectCall()', (done) -> 
@@ -200,7 +200,7 @@ describe 'Nez', ->
 
         it 'is empty when none fail', (done) -> 
 
-            Nez.debug = true
+            # Nez.debug = true
 
             eg = new TestExample8( 5 )
             eg.expectCall unImplemented1: with: 555
@@ -230,7 +230,7 @@ describe 'Nez', ->
             done()
 
 
-        xit 'has the realizations that were not expected', (done) -> 
+        it 'has the realizations that were not expected', (done) -> 
 
             # Nez.debug = true
 
@@ -298,16 +298,31 @@ describe 'Nez', ->
                 done()
 
 
-            it 'allows matching only specific args', (done) -> 
+            describe 'allows matching only specific args', (done) -> 
 
-                eg = new TestExample8( 5 )
-                eg.expectCall veryComplicatedActivity: with: 4:[3,2,1]
-                eg.veryComplicatedActivity {}, {}, 'third arg is @ [2]', {}, [3,2,1]
-                test -> 
+                it 'with failure', (done) ->  
 
-                Nez.failedArray.length.should.equal 0
-                done()
+                    # Nez.debug = true
 
+                    eg = new TestExample8( 5 )
+                    eg.expectCall veryComplicatedActivity: with: 3:[3,2,1]
+                    eg.veryComplicatedActivity {}, {}, 'third arg is @ [2]', {}, [3,2,1]
+                    test -> 
+
+                    Nez.failedArray.length.should.equal 1
+                    done()
+
+                it 'with successure', (done) ->
+
+                    # Nez.debug = true
+
+                    eg = new TestExample8( 5 )
+                    eg.expectCall veryComplicatedActivity: with: 4:[3,2,1]
+                    eg.veryComplicatedActivity {}, {}, 'third arg is @ [2]', {}, [3,2,1]
+                    test -> 
+
+                    Nez.failedArray.length.should.equal 0
+                    done()
 
 
             #
@@ -318,7 +333,7 @@ describe 'Nez', ->
     describe 'raises AssertionError when', -> 
 
 
-        xit 'expectated function calls were called too few time', (done) -> 
+        xit 'expectated function calls were called too few times', (done) -> 
 
 
         xit 'expectated function calls were called too many times', (done) -> 

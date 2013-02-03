@@ -94,6 +94,7 @@ class Nez
                 if expectation.functionArgs
 
                     expectedArgs = expectation.functionArgs
+                    receivedArgs = expectation.realization.functionArgs
 
                     #
                     # .with specified args to match
@@ -103,28 +104,27 @@ class Nez
 
                         console.log "EXPECTED:", expectedArgs, typeof expectedArgs
 
-                    try
 
-                        #
-                        # TODO: loop through each arg
-                        # TODO: support only specified ie `with: 5:{'sixth':'only'}`
-                        # 
+                    for key of expectedArgs
 
-                        expectedArgs.should.eql expectation.realization.args
+                        expectedArg = expectedArgs[key]
+                        receivedArg = receivedArgs[key]
 
-                        # if typeof expectedArgs == 'object'
+                        try
+                            
+                            if typeof expectedArg == 'object'
 
-                        #     expectedArgs.should.eql expectation.realization.args
+                                expectedArg.should.eql receivedArg
 
-                        # else
+                            else 
 
-                        #     expectedArgs.should.equal expectation.realization.args
+                                expectedArg.should.equal receivedArg
 
-                    catch error
+                        catch error
 
-                        expectation.failed = 'Argument Mismatch'
-                        expectation.exception = error
-                        Nez.failedArray.push expectation
+                            expectation.failed = 'Argument Mismatch'
+                            expectation.exception = error
+                            Nez.failedArray.push expectation
 
             else
 
@@ -160,25 +160,9 @@ class Nez
 
 class Realization
 
-    constructor: (@functionName, @args) -> 
+    constructor: (@functionName, @functionArgs) -> 
 
         @type = 'Realization'
-
-        # #
-        # # Marshal args into an array
-        # #
-
-        # @args = []
-
-        # for arg in args
-
-        #     @args.push arg
-
-        # #
-        # # If there is only one arg
-        # #
-
-        # @args = @args[0] if @args.length == 1
 
         if Nez.debug
 
@@ -206,6 +190,17 @@ class Expectation
         return if @functionName == 'expectCall'
 
         args = @expectationParams.with
+
+        if args == undefined
+
+            #
+            # other things than .with() 
+            # 
+            # later...
+            #  
+
+            return
+            
 
         switch typeof args
 
@@ -261,7 +256,9 @@ class Expectation
                     # console.log "ARG:", args[key]
 
 
-            else console.log "MISSING TYPE:", typeof args
+            else 
+                Nez.debug = true
+                console.log "MISSING TYPE:", typeof args
 
 
         #
