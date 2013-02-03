@@ -45,7 +45,13 @@ module.exports = Realization = class Realization extends Notification
 
             return opts.returns if opts.returns
 
-            return @originalFunction.call @object, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad
+            if @originalFunction
+
+                return @originalFunction.call(
+
+                    @object, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad
+                    
+                )
 
 
     # 

@@ -32,12 +32,31 @@ describe 'Realization', ->
         describe 'as function that', ->
 
 
-            it 'is a function', (done) ->
+            it 'is actually created', (done) ->
 
                 r = new Realization @thing
                 r.createFunction 'newFunction'
 
-                @thing.newFunction.should.be.an.instanceof Function
+                @thing.newFunction.should.be.an.instanceof Function 
+
+                #
+                # it keeps record of the called args
+                # 
+
+                fn = -> 
+                    "function as argument"
+
+
+                @thing.newFunction 'a', 42, ['b','c'], {d: 'EFG'}, fn
+
+                r.realized.args.should.eql 
+
+                    1: 'a'
+                    2: 42
+                    3: ['b','c']
+                    4: {d: 'EFG'}
+                    5: fn
+
                 done()
 
         
@@ -53,10 +72,6 @@ describe 'Realization', ->
 
                 @thing.existingFunction('alpha','omega').should.equal 'this'
 
-                #
-                # it keeps record of the called args
-                # 
-
                 r.realized.args.should.eql 
 
                     1: 'alpha', 
@@ -68,15 +83,14 @@ describe 'Realization', ->
             it 'can be a Spy', (done) -> 
 
                 #
-                # calls the original function
+                # calls the original function and 
+                # returns whatever it returns
                 # 
 
                 r = new Realization @thing
                 r.createFunction 'existingFunction'
 
-                @thing.existingFunction('alpha','omega')
-
-                    .should.equal '-> alpha,omega <-'
+                @thing.existingFunction('alpha','omega').should.equal '-> alpha,omega <-'
 
                 r.realized.args.should.eql 
 
