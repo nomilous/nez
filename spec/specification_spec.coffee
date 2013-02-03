@@ -2,11 +2,11 @@ Specification = require '../src/specification'
 
 describe 'Specification', -> 
 
-    it 'is a __Repeatably__ Confirmable Expectation Realization Validation', 
+    it 'is a __Repeatably__ Confirmable Expectation Realization Validation Yello', 
 
-        (Yellow, Lorry) -> 
+        (Lorry, Red) -> 
 
-            "Red Lorry #{ Yellow() } Lolly }"
+            "Lorry, Yello #{ Lorry() }, Red Lolly"
 
 
     it """ 
