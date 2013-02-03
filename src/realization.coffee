@@ -1,6 +1,6 @@
-Notifiction = require './notification'
+Notification = require './notification'
 
-module.exports = Realization = class Realization extends Notifiction
+module.exports = Realization = class Realization extends Notification
 
     #
     # Realization
