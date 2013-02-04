@@ -102,8 +102,16 @@ describe 'Stack', ->
 
             design = Stack.create 'design'
             stack  = Stack.get 'design'
-            wasCalled = false
+
+            #
+            #   my best line of code...
+            #
+
             design 'A thing', -> done()
+
+            #
+            #   ,ever!
+            #
 
 
 
