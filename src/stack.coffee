@@ -23,7 +23,11 @@ class Stack
 
     end: ->
 
-        console.log 'end() popped:', @stack.pop()
+        node = @stack.pop()
+
+        console.log 'end() popped:', node
+
+        node.callback( @pusher ) if node.callback
 
 
 

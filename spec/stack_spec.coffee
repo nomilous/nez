@@ -119,6 +119,21 @@ describe 'Stack', ->
             done()
 
 
+        it "passes stack.pusher() to the popped node's callback", (done) -> 
+
+            design = Stack.create 'design'
+            stack  = Stack.get 'design'
+
+            #
+            # design is a reference to stack.pusher()
+            #
+
+            design 'A thing', (that) -> 
+
+                that.should.equal design
+                done()
+
+            stack.end()
 
 
 
