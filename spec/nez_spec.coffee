@@ -24,27 +24,52 @@ describe 'Nez', ->
      
     allude 'to an hopefully', (improvedClarity) -> 
 
-        'pince nez'.expectCall toPerchUponNose: for: improvedClarity()
+        'pince nez'.xpect.set carefully: onto: 'nose', for: improvedClarity()
 
 
-    it 'creates Object.expectCall()', (done) -> 
 
-        Object.expectCall.should.be.an.instanceof Function
-        done()
+    describe 'create an interface that', ->
 
 
-    it 'returns an expectation validator (test())', (done) ->
+        it 'enables function call expectations', (done) -> 
+
+            Object.xpect.fn.should.be.an.instanceof Function
+            done()
+
+
+        it 'enables property setting expectations', (done) -> 
+
+            Object.xpect.set.should.be.an.instanceof Function
+            done()
+
+
+        it 'enables property getting expectations', (done) -> 
+
+            Object.xpect.get.should.be.an.instanceof Function
+            done()
+
+
+
+
+
+
+
+
+    ################### refactor
+
+
+    xit 'returns an expectation validator (test())', (done) ->
 
         require('../src/nez').test.should.be.an.instanceof Function
         done() 
 
 
-    it 'calls back with..', (Done) -> 
+    xit 'calls back with..', (Done) -> 
 
         test Done
 
 
-    it 'enables setting expectations', (done) -> 
+    xit 'enables setting expectations', (done) -> 
 
         class TextExample1
 
@@ -55,7 +80,7 @@ describe 'Nez', ->
         test done
 
 
-    it 'creates the function on the object', (done) -> 
+    xit 'creates the function on the object', (done) -> 
 
         class TextExample2
         TextExample2.expectCall unImplementedFn: with: 'args'
@@ -64,7 +89,7 @@ describe 'Nez', ->
         test done
 
 
-    it 'removes the function after test()', (done) ->
+    xit 'removes the function after test()', (done) ->
 
       class TestExample3
 
@@ -76,7 +101,7 @@ describe 'Nez', ->
       done()
 
 
-    it 'replaces functions that already exist', (done) -> 
+    xit 'replaces functions that already exist', (done) -> 
 
         called = false
         class TestExample4
@@ -93,7 +118,7 @@ describe 'Nez', ->
     xit 'can optionally still call the original function', (done) -> 
 
 
-    it 'restores the original function', (done) -> 
+    xit 'restores the original function', (done) -> 
 
         called = false
         class TestExample5
@@ -111,7 +136,7 @@ describe 'Nez', ->
         done()
 
 
-    it 'resets on the expectation test', (done) -> 
+    xit 'resets on the expectation test', (done) -> 
 
         class TestExample6
         TestExample6.expectCall existingFn: with: 'args'
@@ -124,7 +149,7 @@ describe 'Nez', ->
         done()
 
 
-    it 'keeps track of calls to the ex-spectated function', (done) -> 
+    xit 'keeps track of calls to the ex-spectated function', (done) -> 
 
         #Nez.debug = true
 
@@ -138,7 +163,7 @@ describe 'Nez', ->
         test done
 
 
-    it 'keeps an index of expectations', (done) -> 
+    xit 'keeps an index of expectations', (done) -> 
 
         #Nez.debug = true
 
@@ -165,7 +190,7 @@ describe 'Nez', ->
         #
 
 
-    it 'has BUG2 fixed properly', (done) -> 
+    xit 'has BUG2 fixed properly', (done) -> 
 
         #Nez.debug = true
 
@@ -198,7 +223,7 @@ describe 'Nez', ->
 
 
 
-        it 'is empty when none fail', (done) -> 
+        xit 'is empty when none fail', (done) -> 
 
             # Nez.debug = true
 
@@ -213,7 +238,7 @@ describe 'Nez', ->
             done()
 
 
-        it 'has the expectations that were not realized', (done) -> 
+        xit 'has the expectations that were not realized', (done) -> 
 
             # Nez.debug = true
 
@@ -230,7 +255,7 @@ describe 'Nez', ->
             done()
 
 
-        it 'has the realizations that were not expected', (done) -> 
+        xit 'has the realizations that were not expected', (done) -> 
 
             # Nez.debug = true
 
@@ -250,7 +275,7 @@ describe 'Nez', ->
         describe 'has the expectations that were incorrectly realized', ->
 
             
-            it 'called "type" arg did not match expected', (done) -> 
+            xit 'called "type" arg did not match expected', (done) -> 
 
                 # Nez.debug = true
 
@@ -266,7 +291,7 @@ describe 'Nez', ->
                 done()
 
 
-            it 'called "object" arg did not match expected', (done) -> 
+            xit 'called "object" arg did not match expected', (done) -> 
 
                 eg = new TestExample8( 5 )
                 eg.expectCall useThisArray: with: [3,2,1]
@@ -281,7 +306,7 @@ describe 'Nez', ->
                 done()
 
 
-            it 'called multiple args did not match expected', (done) -> 
+            xit 'called multiple args did not match expected', (done) -> 
 
                 #Nez.debug = true
 
@@ -300,7 +325,7 @@ describe 'Nez', ->
 
             describe 'allows matching only specific args', (done) -> 
 
-                it 'with failure', (done) ->  
+                xit 'with failure', (done) ->  
 
                     # Nez.debug = true
 
@@ -312,7 +337,7 @@ describe 'Nez', ->
                     Nez.failedArray.length.should.equal 1
                     done()
 
-                it 'with successure', (done) ->
+                xit 'with successure', (done) ->
 
                     # Nez.debug = true
 

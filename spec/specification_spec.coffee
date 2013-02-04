@@ -1,8 +1,10 @@
+require 'should'
 Specification = require '../src/specification'
+Stack         = require '../src/stack'
 
 describe 'Specification', -> 
 
-    it 'is a __Repeatably__ Confirmable Expectation Realization Validation Cello', 
+    it 'is a Repeatably Confirmable Expectation Realization Validation', 
 
         (Lorry, Red) -> 
 
@@ -28,4 +30,20 @@ describe 'Specification', ->
 
 
     """, ->
+
+
+    it 'provides an interface to create', (done) -> 
+
+        Specification.create.should.be.an.instanceof Function
+        done()
+
+
+    it 'can create expectations', (done) -> 
+
+        Specification.create expectation: {}
+
+        expectations = Stack.current().expectations
+        expectations.length.should.equal 1
+        expectations[0].className.should.equal 'Expectation'
+        done()
 

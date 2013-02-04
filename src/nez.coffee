@@ -1,4 +1,65 @@
-require 'should'
+Spec = require './specification'
+
+Object.prototype.xpect = 
+
+    fn: (x) -> 
+
+        #
+        # *Thing.xpect.fn( ... )* 
+        # 
+        # To set an expectation involving a function.
+        #
+
+        Spec.create
+
+            expectation: 
+
+                type: 'function'
+                object: this
+                options: x
+
+
+    set: (x) -> 
+
+        #
+        # *Thing.xpect.set( ... )*
+        # 
+        # To set an expectation involving the setting 
+        # of a property .
+        #
+
+        
+
+
+    get: (x) ->
+
+        #
+        # *Thing.xpect.get( ... )*
+        # 
+        # To set an expectation involving the getting 
+        # of a property.
+        #
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################# refactor
+
+
+
 
 class Nez
 
@@ -322,41 +383,42 @@ class Expectation
 
 
 
-Object.prototype.expectCall = (xpect) -> 
+# Object.prototype.expectCall = (xpect) -> 
 
-    if Nez.debug 
+#     if Nez.debug 
 
-        console.log '\n', 'expectCall() to:', xpect, '\n'
+#         console.log '\n', 'expectCall() to:', xpect, '\n'
 
-    for fName of xpect
+#     for fName of xpect
 
-        #
-        # create expectation
-        #
+#         #
+#         # create expectation
+#         #
 
-        x = new Expectation fName, xpect[fName], this[fName], this
+#         x = new Expectation fName, xpect[fName], this[fName], this
 
-        if x.functionName == 'expectCall'
+#         if x.functionName == 'expectCall'
 
-            #
-            # BUG1 I dont understand why expectCall() itself is
-            #      registering through here as an expectation
-            # 
-            #      This is probably not the best way to stop it.
-            # 
+#             #
+#             # BUG1 I dont understand why expectCall() itself is
+#             #      registering through here as an expectation
+#             # 
+#             #      This is probably not the best way to stop it.
+#             # 
 
-            continue
+#             continue
 
 
-        Nez.expectArray.push x
+#         Nez.expectArray.push x
         
-        Nez.expectIndex[fName] ||= []
+#         Nez.expectIndex[fName] ||= []
 
-        Nez.expectIndex[fName].push Nez.expectArray.length - 1
+#         Nez.expectIndex[fName].push Nez.expectArray.length - 1
 
-        if Nez.debug
+#         if Nez.debug
 
-            console.log '\nexpectIndex with: ', Nez.expectIndex, '\n'
+#             console.log '\nexpectIndex with: ', Nez.expectIndex, '\n'
+
 
 
 module.exports = Nez

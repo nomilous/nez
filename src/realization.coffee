@@ -2,6 +2,8 @@ Notification = require './notification'
 
 module.exports = class Realization extends Notification
 
+    className: 'Realization'
+
     #
     # Realization
     # =========== 
