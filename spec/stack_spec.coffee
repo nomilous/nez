@@ -101,4 +101,25 @@ describe 'Stack', ->
 
 
 
+    describe 'end()', -> 
+
+
+
+
+
+        it 'pops the top node from the stack', (done) -> 
+
+            design = Stack.create 'design'
+            stack  = Stack.get 'design'
+            callback = -> 
+            design 'A thing', callback
+
+            stack.end()
+            stack.stack.length.should.equal 0
+            done()
+
+
+
+
+
 

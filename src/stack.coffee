@@ -23,7 +23,7 @@ class Stack
 
     end: ->
 
-        console.log "end()"
+        console.log 'end() popped:', @stack.pop()
 
 
 
