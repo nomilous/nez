@@ -183,6 +183,7 @@ describe 'Stack', ->
 
 
         stack[1].key.should.equal 'supercalafragalistic'
+        done()
 
 
 
