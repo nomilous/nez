@@ -175,9 +175,11 @@ describe 'Stack', ->
 
         design = Stack.create 'design'
         stack  = Stack.get('design').stack
+
         design 'A thing'
 
         stack[0].class.should.equal 'design'
+        stack[0].label.should.equal 'A thing'
         done()
 
 
@@ -186,13 +188,14 @@ describe 'Stack', ->
         design = Stack.create 'design'
         stack  = Stack.get('design').stack
 
-        design 'A thing', (className) -> 
 
-            className 'label text', -> 
+        design 'A thing', (For) -> 
 
-        stack[1].class.should.equal 'className'
-        stack[1].label.should.equal 'label text'
+            For 'increasingly evident reasons'
 
+
+        stack[1].class.should.equal 'For'
+        stack[1].label.should.equal 'increasingly evident reasons'
         done()
 
 
