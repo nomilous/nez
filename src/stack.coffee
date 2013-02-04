@@ -4,6 +4,8 @@ class Stack
 
     constructor: (@name) -> 
 
+        @stack = []
+
 
     pusher: (label, callback) => 
 
@@ -11,10 +13,8 @@ class Stack
         return @end()
 
 
-    push: (args) -> 
-
-        console.log "push( #{args.toString()} )"
-
+    push: (args) -> @stack.push label: args[0]
+    
 
     end: ->
 

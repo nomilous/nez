@@ -17,14 +17,22 @@ describe 'Stack', ->
 
     describe 'create()', -> 
 
-        it 'returns a function', (done) -> 
+        it 'returns pusher(), a function', (done) -> 
 
             fn = Stack.create 'stack1'
 
             fn.should.be.an.instanceof Function
             done()
 
-        it 'returns a function that pushes the stack', (done) -> 
+
+
+
+    describe 'pusher()', -> 
+
+
+
+
+        it 'calls push() if received args', (done) -> 
 
             pusher = Stack.create 'stack1'
             stack  = Stack.get 'stack1'
@@ -44,7 +52,8 @@ describe 'Stack', ->
             wasCalled.should.equal true
             done()
 
-        it 'calls end() if pushed without args', (done) -> 
+
+        it 'calls end() if received no args', (done) -> 
 
             pusher = Stack.create 'stack1'
             stack  = Stack.get 'stack1'
@@ -57,4 +66,29 @@ describe 'Stack', ->
 
             wasCalled.should.equal true
             done()
+
+
+
+
+    describe 'push()', -> 
+
+
+
+
+        it 'pushes a new labeled node into the stack', (done) -> 
+
+            design = Stack.create 'design'
+            stack  = Stack.get 'design'
+            design 'A thing'
+
+
+            stack.stack[0].label.should.equal 'A thing'
+            done()
+
+
+
+
+
+
+
 
