@@ -98,6 +98,13 @@ describe 'Stack', ->
             done()
 
 
+        it 'runs the callback', (done) -> 
+
+            design = Stack.create 'design'
+            stack  = Stack.get 'design'
+            wasCalled = false
+            design 'A thing', -> done()
+
 
 
 
@@ -107,7 +114,7 @@ describe 'Stack', ->
 
 
 
-        it 'pops the top node from the stack', (done) -> 
+        xit 'pops the top node from the stack', (done) -> 
 
             design = Stack.create 'design'
             stack  = Stack.get 'design'
@@ -119,7 +126,7 @@ describe 'Stack', ->
             done()
 
 
-        it "passes stack.pusher() to the popped node's callback", (done) -> 
+        xit "passes stack.pusher() to the popped node's callback", (done) -> 
 
             design = Stack.create 'design'
             stack  = Stack.get 'design'
@@ -135,6 +142,23 @@ describe 'Stack', ->
 
             stack.end()
 
+
+    it 'builds a stack', (done) -> 
+
+        design = Stack.create 'design'
+        stack  = Stack.get('design').stack
+
+        design 'A thing', (that) -> 
+            that 'uses a callback chain', (to) -> 
+                to 'build a stack', (By) -> 
+                    By 'handing the push() into the callback()', ->
+
+        stack[0].label.should.equal 'A thing'
+        stack[1].label.should.equal 'uses a callback chain'
+        stack[2].label.should.equal 'build a stack'
+        stack[3].label.should.equal 'handing the push() into the callback()'
+
+        done()
 
 
 

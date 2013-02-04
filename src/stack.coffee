@@ -15,10 +15,14 @@ class Stack
 
     push: (args) -> 
 
-        @stack.push 
+        node = 
 
             label:    args[0]
             callback: args[1]  # TODO: as last arg
+
+        @stack.push node
+
+        node.callback @pusher if node.callback
     
 
     end: ->
