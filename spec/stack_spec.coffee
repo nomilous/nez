@@ -174,7 +174,15 @@ describe 'Stack', ->
 
     it "knows the the 'text'() name of the callback arg...!", (challenge) ->
 
-        "a hopefully possible #{ challenge() }"
+        design = Stack.create 'design'
+        stack  = Stack.get('design').stack
+
+        design 'A thing', (supercalafragalistic) -> 
+
+            supercalafragalistic 'expialidotious', -> 
+
+
+        stack[1].key.should.equal 'supercalafragalistic'
 
 
 

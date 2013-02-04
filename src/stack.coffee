@@ -17,6 +17,7 @@ class Stack
 
         node = 
 
+            key:      '?????'
             label:    args[0]
             callback: args[1]  # TODO: as last arg
 
