@@ -1,4 +1,4 @@
-Stack       = require './stack'
+Stack       = require './ostack'
 Expectation = require './expectation'
 
 

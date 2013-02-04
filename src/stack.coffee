@@ -1,23 +1,25 @@
-expectations = []
+class Stack
 
-module.exports = 
-    
-    #
-    # Going to need to push and pop specSets to be able
-    # to set expectations in nested describe before and 
-    # beforeEach hooks
-    # 
-    # Later...
-    # 
-    # For now, just making sure no interface changes will
-    # be necessary when i get there.
-    # 
-    # 
+    className: 'Stack'
 
-    current: -> 
+    constructor: (@name) -> 
 
-        return {
+    pusher: -> 
 
-            expectations: expectations
 
-        }
+module.exports = stack = 
+
+    stacks: {}
+
+    create: (name) -> 
+
+        newStack = new Stack(name)
+
+        stack.stacks[name] = newStack
+
+        return newStack.pusher
+
+    get: (name) -> 
+
+        return stack.stacks[name]
+

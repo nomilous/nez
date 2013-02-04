@@ -1,6 +1,6 @@
 require 'should'
 Specification = require '../src/specification'
-Stack         = require '../src/stack'
+Stack         = require '../src/ostack'
 
 describe 'Specification', -> 
 
