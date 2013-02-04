@@ -159,14 +159,22 @@ describe 'Stack', ->
         design 'A thing', (that) -> 
             that 'uses a callback chain', (to) -> 
                 to 'build a stack', (By) -> 
-                    By 'handing the push() into the callback()', ->
+                    By 'handing the push() into the callback()', (For) ->
+                        For 'immediate execution!'
+
 
         stack[0].label.should.equal 'A thing'
         stack[1].label.should.equal 'uses a callback chain'
         stack[2].label.should.equal 'build a stack'
         stack[3].label.should.equal 'handing the push() into the callback()'
+        stack[4].label.should.equal 'immediate execution!'
 
         done()
+
+
+    it "knows the the 'text'() name of the callback arg...!", (challenge) ->
+
+        "a hopefully possible #{ challenge() }"
 
 
 
