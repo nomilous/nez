@@ -19,43 +19,75 @@ describe 'Nez', ->
             'zen' )& again() 
 
 
-    allude = it
+    allude = xit
 
      
     allude 'to an hopefully', (improvedClarity) -> 
 
-        'pince nez'.xpect.set carefully: onto: 'nose', for: improvedClarity()
+        'pince nez'.expect set: carefully: onto: 'nose', for: improvedClarity()
 
 
 
-    describe 'create an interface that', ->
+    describe 'providing an interface that can', ->
 
+        it 'create expectations', (done) -> 
 
-        it 'enables function call expectations', (done) -> 
-
-            Object.xpect.fn.should.be.an.instanceof Function
+            Object.expect.should.be.an.instanceof Function
             done()
 
 
-        it 'enables property setting expectations', (done) -> 
+        describe "create" , -> 
 
-            Object.xpect.set.should.be.an.instanceof Function
-            done()
+            before -> 
 
-
-        it 'enables property getting expectations', (done) -> 
-
-            Object.xpect.get.should.be.an.instanceof Function
-            done()
+                class Thing
+                @thing = new Thing()
 
 
+            xit 'mock function', (done) ->
+
+                @thing.expect function: mockFunction: returning: 'value'
+                @thing.mockFunction().should.equal 'value'
+                done() 
+
+
+            xit 'mock property get', (done) -> 
+
+                @thing.expect get: mockProperty: returning: 'value'
+                @thing.mockProperty.should.equal 'value'
+                done()
+
+
+            xit 'spy function', (done) -> 
+
+                @thing.expect function: spyFunction: with: 'value'
+                @thing.spyFunction('value')
+                done()
+
+            xit 'spy property set', (done) -> 
+
+                @thing.expect set: spyProperty: with: 'value'
+                @thing.spyProperty = 'value'
+                done()
+
+
+
+        # it 'enables property setting expectations', (done) -> 
+
+        #     Object.xpect.set.should.be.an.instanceof Function
+        #     done()
+
+
+        # it 'enables property getting expectations', (done) -> 
+
+        #     Object.xpect.get.should.be.an.instanceof Function
+        #     done()
 
 
 
 
 
-
-    ################### refactor
+    ################### refactor <---
 
 
     xit 'returns an expectation validator (test())', (done) ->

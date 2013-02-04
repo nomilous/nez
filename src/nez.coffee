@@ -1,64 +1,13 @@
 Spec = require './specification'
 
-Object.prototype.xpect = 
+Object.prototype.expect = (x) -> 
 
-    fn: (x) -> 
+    Spec.create 
+        expectation: 
+            object: this
+            options: x
 
-        #
-        # *Thing.xpect.fn( ... )* 
-        # 
-        # To set an expectation involving a function.
-        #
-
-        Spec.create
-
-            expectation: 
-
-                type: 'function'
-                object: this
-                options: x
-
-
-    set: (x) -> 
-
-        #
-        # *Thing.xpect.set( ... )*
-        # 
-        # To set an expectation involving the setting 
-        # of a property .
-        #
-
-        
-
-
-    get: (x) ->
-
-        #
-        # *Thing.xpect.get( ... )*
-        # 
-        # To set an expectation involving the getting 
-        # of a property.
-        #
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-################################# refactor
-
-
+################################# refactor <---
 
 
 class Nez
