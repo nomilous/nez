@@ -24,3 +24,37 @@ describe 'Stack', ->
             fn.should.be.an.instanceof Function
             done()
 
+        it 'returns a function that pushes the stack', (done) -> 
+
+            pusher = Stack.create 'stack1'
+            stack  = Stack.get 'stack1'
+
+            # 
+            # temp swap push() to spy 
+            # 
+            wasCalled = false
+            originalFn = stack.push
+            stack.push = -> wasCalled = true
+            #
+            # was push() called?
+            #
+            pusher 'label'
+            stack.push = originalFn
+
+            wasCalled.should.equal true
+            done()
+
+        it 'calls end() if pushed without args', (done) -> 
+
+            pusher = Stack.create 'stack1'
+            stack  = Stack.get 'stack1'
+
+            wasCalled = false
+            originalFn = stack.end
+            stack.end = -> wasCalled = true
+            pusher()
+            stack.end = originalFn
+
+            wasCalled.should.equal true
+            done()
+

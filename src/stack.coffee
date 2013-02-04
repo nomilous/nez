@@ -4,7 +4,23 @@ class Stack
 
     constructor: (@name) -> 
 
-    pusher: -> 
+
+    pusher: (label, callback) => 
+
+        return @push arguments if label
+        return @end()
+
+
+    push: (args) -> 
+
+        console.log "push( #{args.toString()} )"
+
+
+    end: ->
+
+        console.log "end()"
+
+
 
 
 module.exports = stack = 
