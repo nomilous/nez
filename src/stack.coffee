@@ -13,7 +13,12 @@ class Stack
         return @end()
 
 
-    push: (args) -> @stack.push label: args[0]
+    push: (args) -> 
+
+        @stack.push 
+
+            label:    args[0]
+            callback: args[1]  # TODO: as last arg
     
 
     end: ->

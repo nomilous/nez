@@ -75,6 +75,7 @@ describe 'Stack', ->
 
 
 
+
         it 'pushes a new labeled node into the stack', (done) -> 
 
             design = Stack.create 'design'
@@ -86,6 +87,15 @@ describe 'Stack', ->
             done()
 
 
+        it 'stores a callback on the new node', (done) -> 
+
+            design = Stack.create 'design'
+            stack  = Stack.get 'design'
+            callback = -> 
+            design 'A thing', callback
+
+            stack.stack[0].callback.should.equal callback
+            done()
 
 
 
