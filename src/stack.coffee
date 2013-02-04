@@ -1,3 +1,5 @@
+require 'fing'
+
 class Stack
 
     className: 'Stack'
@@ -15,11 +17,17 @@ class Stack
 
     push: (args) -> 
 
+        callback = args[1]  # TODO: as last arg
+
         node = 
 
-            key:      '?????'
+            callback: callback
+            class:    @pendingClass || @name
             label:    args[0]
-            callback: args[1]  # TODO: as last arg
+        
+        if callback and callback.fing.args.length > 0
+        
+            @pendingClass = callback.fing.args[0].name 
 
         @stack.push node
 
@@ -33,6 +41,10 @@ class Stack
         console.log 'end() popped:', node
 
         node.callback( @pusher ) if node.callback
+
+    argName: (fn) -> 
+
+
 
 
 

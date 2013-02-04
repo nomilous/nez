@@ -171,18 +171,28 @@ describe 'Stack', ->
 
         done()
 
+    it 'uses the stack name as the root node class name', (done) -> 
 
-    it "knows the the 'text'() name of the callback arg...!", (challenge) ->
+        design = Stack.create 'design'
+        stack  = Stack.get('design').stack
+        design 'A thing'
+
+        stack[0].class.should.equal 'design'
+        done()
+
+
+    it "is uses the callback arg label for all other node class names", (done) ->
 
         design = Stack.create 'design'
         stack  = Stack.get('design').stack
 
-        design 'A thing', (supercalafragalistic) -> 
+        design 'A thing', (className) -> 
 
-            supercalafragalistic 'expialidotious', -> 
+            className 'label text', -> 
 
+        stack[1].class.should.equal 'className'
+        stack[1].label.should.equal 'label text'
 
-        stack[1].key.should.equal 'supercalafragalistic'
         done()
 
 
