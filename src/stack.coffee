@@ -7,6 +7,7 @@ class Stack
     constructor: (@name) -> 
 
         @stack = []
+        @walker = @tree = []
 
 
     pusher: (label, callback) => 
@@ -24,28 +25,44 @@ class Stack
             callback: callback
             class:    @pendingClass || @name
             label:    args[0]
+            children: []
         
         if callback and callback.fing.args.length > 0
         
             @pendingClass = callback.fing.args[0].name 
 
+        #
+        # push new node before walking
+        # 
+
         @stack.push node
+        @walker.push node
 
-        node.callback @pusher if node.callback
+        if node.callback
+
+            #
+            # walk the callback
+            #
+
+            @walker = node.children
+            node.callback @pusher
+
+        else
+
+            #
+            # cul-de-sac-le-pop
+            #
+
+            @end()
     
-
     end: ->
 
         node = @stack.pop()
 
-        console.log 'end() popped:', node
+        @walker       = @stack[@stack.length - 1].children
+        @pendingClass = node.class
 
-        node.callback( @pusher ) if node.callback
-
-    argName: (fn) -> 
-
-
-
+        #console.log 'end() popped:', node
 
 
 

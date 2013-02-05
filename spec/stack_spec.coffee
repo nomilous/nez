@@ -1,4 +1,5 @@
-should = require 'should' 
+should = require 'should'
+print  = require('prettyjson').render
 Stack  = require '../src/stack'
 
 describe 'Stack', -> 
@@ -80,11 +81,10 @@ describe 'Stack', ->
 
             design = Stack.create 'design'
             stack  = Stack.get 'design'
-            design 'A thing'
+            design 'A thing', -> 
 
-
-            stack.stack[0].label.should.equal 'A thing'
-            done()
+                stack.stack[0].label.should.equal 'A thing'
+                done()
 
 
         it 'stores a callback on the new node', (done) -> 
@@ -95,6 +95,16 @@ describe 'Stack', ->
             design 'A thing', callback
 
             stack.stack[0].callback.should.equal callback
+            done()
+
+        it "creates a place for the node's children", (done) -> 
+
+            design = Stack.create 'design'
+            stack  = Stack.get 'design'
+            callback = -> 
+            design 'A thing', callback
+
+            stack.stack[0].children.should.be.an.instanceof Array
             done()
 
 
@@ -156,31 +166,34 @@ describe 'Stack', ->
         design = Stack.create 'design'
         stack  = Stack.get('design').stack
 
+        leaf = -> 
+
+            stack[0].label.should.equal 'A thing'
+            stack[1].label.should.equal 'uses a callback chain'
+            stack[2].label.should.equal 'build a stack'
+            stack[3].label.should.equal 'having the push() _BE_ the callback()'
+            stack[4].label.should.equal 'immediate execution!'
+            done()
+
+
         design 'A thing', (that) -> 
             that 'uses a callback chain', (to) -> 
                 to 'build a stack', (By) -> 
                     By 'having the push() _BE_ the callback()', (For) ->
-                        For 'immediate execution!'
-
-
-        stack[0].label.should.equal 'A thing'
-        stack[1].label.should.equal 'uses a callback chain'
-        stack[2].label.should.equal 'build a stack'
-        stack[3].label.should.equal 'having the push() _BE_ the callback()'
-        stack[4].label.should.equal 'immediate execution!'
-
-        done()
+                        For 'immediate execution!', -> 
+                            leaf()
+        
 
     it 'uses the stack name as the root node class name', (done) -> 
 
         design = Stack.create 'design'
         stack  = Stack.get('design').stack
 
-        design 'A thing'
+        design 'A thing', -> 
 
-        stack[0].class.should.equal 'design'
-        stack[0].label.should.equal 'A thing'
-        done()
+            stack[0].class.should.equal 'design'
+            stack[0].label.should.equal 'A thing'
+            done()
 
 
     it "is uses the callback arg label for all other node class names", (done) ->
@@ -191,12 +204,48 @@ describe 'Stack', ->
 
         design 'A thing', (For) -> 
 
-            For 'increasingly evident reasons'
+            For 'increasingly evident reasons', -> 
+
+                stack[1].class.should.equal 'For'
+                stack[1].label.should.equal 'increasingly evident reasons'
+                done()
 
 
-        stack[1].class.should.equal 'For'
-        stack[1].label.should.equal 'increasingly evident reasons'
-        done()
+    describe 'the walker that', ->  
+
+        it 'starts at the root of the tree', (done) ->
+
+            design = Stack.create 'design'
+            walker = Stack.get('design').walker
+            tree   = Stack.get('design').tree
+
+            tree.should.be.an.instanceof Array
+            tree.should.eql walker
+            done()
+
+
+        it 'walks when pushed, placing nodes into the tree', (done) -> 
+
+            design = Stack.create 'design'
+            tree   = Stack.get('design').tree   
+
+            design 'A thing', (With) -> 
+                With 'child1', (one) -> 
+                    one()
+                With 'child2', (two) -> 
+                    two()
+
+            tree[0].children[0].class.should.equal 'With'
+            tree[0].children[0].label.should.equal 'child1'
+            tree[0].children[1].class.should.equal 'With'
+            tree[0].children[1].label.should.equal 'child2'
+
+            console.log print Stack.get('design').tree
+
+            done()
+
+
+
 
 
 
