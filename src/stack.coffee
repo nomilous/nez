@@ -1,7 +1,7 @@
 require 'fing'
 Node = require './node'
 
-class Stack
+module.exports = class Stack
 
     className: 'Stack'
 
@@ -50,25 +50,4 @@ class Stack
 
             @pendingClass = node.class
 
-
-module.exports = stack = 
-
-    stacks: {}
-
-    link: (name) -> 
-
-        newStack = new Stack(name)
-
-        stack.stacks[name] = newStack
-
-        Object.defineProperty newStack.pusher, 'link' 
-
-            get: -> ->
-
-
-        return newStack.pusher
-
-    get: (name) -> 
-
-        return stack.stacks[name]
 

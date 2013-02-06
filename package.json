@@ -9,6 +9,7 @@
       "email": "nomilous@gmail.com"
     }
   ],
+  "main": "./lib/nez",
   "bin": {},
   "dependencies": {
     "should": "~1.2.1",
