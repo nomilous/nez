@@ -18,19 +18,28 @@ describe 'Stack', ->
 
     describe 'link()', -> 
 
-        it 'enables a rootward edge'
-
         it 'returns pusher(), a function', (done) -> 
 
             fn = Stack.link 'design'
             fn.should.be.an.instanceof Function
             done()
 
+        it 'enables a rootward edge'
+
+        it 'enables a leafward edge', (done) -> 
+
+            animal = Stack.link 'Animals'
+
+            animal 'Elephant', (properties) ->
+
+                properties.link 'Asian'
+                properties.link 'African'
+
+                properties.link.should.be.an.instanceof Function
+                done()
+
 
     describe 'pusher()', -> 
-
-
-
 
         it 'calls push() if received args', (done) -> 
 
@@ -55,10 +64,6 @@ describe 'Stack', ->
 
     describe 'push()', -> 
 
-
-
-
-
         it 'pushes a new labeled node into the stack', (done) -> 
 
             design = Stack.link 'design'
@@ -79,8 +84,7 @@ describe 'Stack', ->
                 done()
 
             design 'A thing', callback
-
-                
+           
 
         it "creates a place for the node's children", (done) -> 
 
@@ -108,43 +112,6 @@ describe 'Stack', ->
             #
             #   ,ever!
             #
-
-
-
-
-    describe 'end()', -> 
-
-
-
-
-
-        xit 'pops the top node from the stack', (done) -> 
-
-            design = Stack.link 'design'
-            stack  = Stack.get 'design'
-            callback = -> 
-            design 'A thing', callback
-
-            stack.end()
-            stack.stack.length.should.equal 0
-            done()
-
-
-        xit "passes stack.pusher() to the popped node's callback", (done) -> 
-
-            design = Stack.link 'design'
-            stack  = Stack.get 'design'
-
-            #
-            # design is a reference to stack.pusher()
-            #
-
-            design 'A thing', (that) -> 
-
-                that.should.equal design
-                done()
-
-            stack.end()
 
 
     it 'builds a stack', (done) -> 
@@ -198,6 +165,7 @@ describe 'Stack', ->
 
 
     describe 'the walker that', ->  
+    
 
         it 'starts at the root of the tree', (done) ->
 

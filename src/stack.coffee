@@ -61,6 +61,11 @@ module.exports = stack =
 
         stack.stacks[name] = newStack
 
+        Object.defineProperty newStack.pusher, 'link' 
+
+            get: -> ->
+
+
         return newStack.pusher
 
     get: (name) -> 
