@@ -89,7 +89,7 @@ describe 'Stack', ->
             stack  = Stack.get 'design'
 
             callback = -> 
-                stack.stack[0].children.should.be.an.instanceof Array
+                stack.stack[0].edges.should.be.an.instanceof Array
                 done()
 
             design 'A thing', callback
@@ -224,14 +224,14 @@ describe 'Stack', ->
 
             #console.log print Stack.get('design').tree
 
-            tree[0].children[0].class.should.equal 'With'
-            tree[0].children[0].label.should.equal 'child1'
+            tree[0].edges[0].class.should.equal 'With'
+            tree[0].edges[0].label.should.equal 'child1'
 
-            tree[0].children[0].children[0].class.should.equal 'one'
-            tree[0].children[0].children[0].label.should.equal '1'
+            tree[0].edges[0].edges[0].class.should.equal 'one'
+            tree[0].edges[0].edges[0].label.should.equal '1'
 
-            tree[0].children[1].class.should.equal 'With'
-            tree[0].children[1].label.should.equal 'child2'
+            tree[0].edges[1].class.should.equal 'With'
+            tree[0].edges[1].label.should.equal 'child2'
 
 
             done()

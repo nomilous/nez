@@ -1,4 +1,5 @@
 require 'fing'
+Node = require './node'
 
 class Stack
 
@@ -28,15 +29,14 @@ class Stack
 
         if label
 
-            node = 
+            node = new Node label,
+            
                 callback: callback
                 class:    klass
-                label:    label
-                children: []
 
             @stack.push node
             @walker.push node
-            @walker = node.children
+            @walker = node.edges
 
 
             node.callback @pusher if callback
@@ -47,7 +47,7 @@ class Stack
             if @stack.length > 0
 
                 parent = @stack[@stack.length - 1]
-                @walker = parent.children
+                @walker = parent.edges
 
             @pendingClass = node.class
 
