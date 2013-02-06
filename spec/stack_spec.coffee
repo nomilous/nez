@@ -54,23 +54,6 @@ describe 'Stack', ->
             done()
 
 
-        it 'calls end() if received no args', (done) -> 
-
-            pusher = Stack.create 'stack1'
-            stack  = Stack.get 'stack1'
-
-            wasCalled = false
-            originalFn = stack.end
-            stack.end = -> wasCalled = true
-            pusher()
-            stack.end = originalFn
-
-            wasCalled.should.equal true
-            done()
-
-
-
-
     describe 'push()', -> 
 
 
@@ -91,21 +74,25 @@ describe 'Stack', ->
 
             design = Stack.create 'design'
             stack  = Stack.get 'design'
+
             callback = -> 
+                stack.stack[0].callback.should.equal callback
+                done()
+
             design 'A thing', callback
 
-            stack.stack[0].callback.should.equal callback
-            done()
+                
 
         it "creates a place for the node's children", (done) -> 
 
             design = Stack.create 'design'
             stack  = Stack.get 'design'
-            callback = -> 
-            design 'A thing', callback
 
-            stack.stack[0].children.should.be.an.instanceof Array
-            done()
+            callback = -> 
+                stack.stack[0].children.should.be.an.instanceof Array
+                done()
+
+            design 'A thing', callback
 
 
         it 'runs the callback', (done) -> 
@@ -231,16 +218,21 @@ describe 'Stack', ->
 
             design 'A thing', (With) -> 
                 With 'child1', (one) -> 
-                    one()
+                    one '1'
                 With 'child2', (two) -> 
                     two()
 
+            #console.log print Stack.get('design').tree
+
             tree[0].children[0].class.should.equal 'With'
             tree[0].children[0].label.should.equal 'child1'
+
+            tree[0].children[0].children[0].class.should.equal 'one'
+            tree[0].children[0].children[0].label.should.equal '1'
+
             tree[0].children[1].class.should.equal 'With'
             tree[0].children[1].label.should.equal 'child2'
 
-            console.log print Stack.get('design').tree
 
             done()
 

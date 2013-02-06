@@ -12,58 +12,44 @@ class Stack
 
     pusher: (label, callback) => 
 
-        return @push arguments if label
-        return @end()
+        @push arguments
 
 
     push: (args) -> 
 
+        label    = args[0]
         callback = args[1]  # TODO: as last arg
-
-        node = 
-
-            callback: callback
-            class:    @pendingClass || @name
-            label:    args[0]
-            children: []
-        
+        klass    = @pendingClass || @name
+ 
         if callback and callback.fing.args.length > 0
         
             @pendingClass = callback.fing.args[0].name 
 
-        #
-        # push new node before walking
-        # 
 
-        @stack.push node
-        @walker.push node
+        if label
 
-        if node.callback
+            node = 
+                callback: callback
+                class:    klass
+                label:    label
+                children: []
 
-            #
-            # walk the callback
-            #
-
+            @stack.push node
+            @walker.push node
             @walker = node.children
-            node.callback @pusher
 
-        else
 
-            #
-            # cul-de-sac-le-pop
-            #
+            node.callback @pusher if callback
+            
 
-            @end()
-    
-    end: ->
+            node = @stack.pop()
 
-        node = @stack.pop()
+            if @stack.length > 0
 
-        @walker       = @stack[@stack.length - 1].children
-        @pendingClass = node.class
+                parent = @stack[@stack.length - 1]
+                @walker = parent.children
 
-        #console.log 'end() popped:', node
-
+            @pendingClass = node.class
 
 
 module.exports = stack = 
