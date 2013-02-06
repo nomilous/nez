@@ -45,3 +45,18 @@ describe 'Nez.link()', ->
 
             properties.link.should.be.an.instanceof Function
             done()
+
+
+
+describe 'Nez.test()', ->
+
+    it 'activates Object.prototype extensions for code tesing', (done) ->
+
+        test = Nez.test 'thing'
+
+        Object.prototype.expect.should.be.an.instanceof Function
+        Object.prototype.expectSet.should.be.an.instanceof Function
+        Object.prototype.expectGet.should.be.an.instanceof Function
+        done()
+
+

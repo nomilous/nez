@@ -6,4 +6,4 @@ module.exports = class Expectation extends Realization
 
     constructor: (opts = {}) -> 
 
-        #
+        console.log 'new Expectation', opts

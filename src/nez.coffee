@@ -1,4 +1,5 @@
-Stack = require './stack'
+Stack      = require './stack'
+prototypes = require './prototypes'
 
 module.exports = nez = 
 
@@ -12,5 +13,12 @@ module.exports = nez =
 
             get: -> ->
 
-
         return nez.stacks[name].pusher
+
+    test: (name) ->
+
+        prototypes.object.set.expect()
+        prototypes.object.set.expectSet()
+        prototypes.object.set.expectGet()
+
+        nez.link name

@@ -1,9 +1,7 @@
 Stack       = require './ostack'
 Expectation = require './expectation'
 
-
 module.exports = Specification =
-
 
     create: (opts = {}) -> 
 
