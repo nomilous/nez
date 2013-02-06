@@ -30,14 +30,13 @@ class Stack
         if label
 
             node = new Node label,
-            
+
                 callback: callback
                 class:    klass
 
             @stack.push node
             @walker.push node
             @walker = node.edges
-
 
             node.callback @pusher if callback
             
@@ -56,7 +55,7 @@ module.exports = stack =
 
     stacks: {}
 
-    create: (name) -> 
+    link: (name) -> 
 
         newStack = new Stack(name)
 

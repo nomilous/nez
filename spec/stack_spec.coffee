@@ -6,8 +6,8 @@ describe 'Stack', ->
 
     it 'can create multiple stacks', (done) -> 
 
-        Stack.create 'stack1'
-        Stack.create 'stack2'
+        Stack.link 'stack1'
+        Stack.link 'stack2'
 
         Stack.get('stack1').className.should.equal 'Stack'
         Stack.get('stack1').className.should.equal 'Stack'
@@ -16,16 +16,15 @@ describe 'Stack', ->
         done()
 
 
-    describe 'create()', -> 
+    describe 'link()', -> 
+
+        it 'enables a rootward edge'
 
         it 'returns pusher(), a function', (done) -> 
 
-            fn = Stack.create 'stack1'
-
+            fn = Stack.link 'design'
             fn.should.be.an.instanceof Function
             done()
-
-
 
 
     describe 'pusher()', -> 
@@ -35,7 +34,7 @@ describe 'Stack', ->
 
         it 'calls push() if received args', (done) -> 
 
-            pusher = Stack.create 'stack1'
+            pusher = Stack.link 'stack1'
             stack  = Stack.get 'stack1'
 
             # 
@@ -62,7 +61,7 @@ describe 'Stack', ->
 
         it 'pushes a new labeled node into the stack', (done) -> 
 
-            design = Stack.create 'design'
+            design = Stack.link 'design'
             stack  = Stack.get 'design'
             design 'A thing', -> 
 
@@ -72,7 +71,7 @@ describe 'Stack', ->
 
         it 'stores a callback on the new node', (done) -> 
 
-            design = Stack.create 'design'
+            design = Stack.link 'design'
             stack  = Stack.get 'design'
 
             callback = -> 
@@ -85,7 +84,7 @@ describe 'Stack', ->
 
         it "creates a place for the node's children", (done) -> 
 
-            design = Stack.create 'design'
+            design = Stack.link 'design'
             stack  = Stack.get 'design'
 
             callback = -> 
@@ -97,7 +96,7 @@ describe 'Stack', ->
 
         it 'runs the callback', (done) -> 
 
-            design = Stack.create 'design'
+            design = Stack.link 'design'
             stack  = Stack.get 'design'
 
             #
@@ -121,7 +120,7 @@ describe 'Stack', ->
 
         xit 'pops the top node from the stack', (done) -> 
 
-            design = Stack.create 'design'
+            design = Stack.link 'design'
             stack  = Stack.get 'design'
             callback = -> 
             design 'A thing', callback
@@ -133,7 +132,7 @@ describe 'Stack', ->
 
         xit "passes stack.pusher() to the popped node's callback", (done) -> 
 
-            design = Stack.create 'design'
+            design = Stack.link 'design'
             stack  = Stack.get 'design'
 
             #
@@ -150,7 +149,7 @@ describe 'Stack', ->
 
     it 'builds a stack', (done) -> 
 
-        design = Stack.create 'design'
+        design = Stack.link 'design'
         stack  = Stack.get('design').stack
 
         leaf = -> 
@@ -173,7 +172,7 @@ describe 'Stack', ->
 
     it 'uses the stack name as the root node class name', (done) -> 
 
-        design = Stack.create 'design'
+        design = Stack.link 'design'
         stack  = Stack.get('design').stack
 
         design 'A thing', -> 
@@ -185,7 +184,7 @@ describe 'Stack', ->
 
     it "is uses the callback arg label for all other node class names", (done) ->
 
-        design = Stack.create 'design'
+        design = Stack.link 'design'
         stack  = Stack.get('design').stack
 
 
@@ -202,7 +201,7 @@ describe 'Stack', ->
 
         it 'starts at the root of the tree', (done) ->
 
-            design = Stack.create 'design'
+            design = Stack.link 'design'
             walker = Stack.get('design').walker
             tree   = Stack.get('design').tree
 
@@ -213,7 +212,7 @@ describe 'Stack', ->
 
         it 'walks when pushed, placing nodes into the tree', (done) -> 
 
-            design = Stack.create 'design'
+            design = Stack.link 'design'
             tree   = Stack.get('design').tree   
 
             design 'A thing', (With) -> 
@@ -235,8 +234,6 @@ describe 'Stack', ->
 
 
             done()
-
-
 
 
 
