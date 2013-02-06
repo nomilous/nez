@@ -38,12 +38,12 @@ describe 'Specification', ->
         done()
 
 
-    it 'can create expectations', (done) -> 
+    it 'pushes new expectations into the provided array', (done) -> 
 
-        Specification.create expectation: {}
+        array = []
+        Specification.create array, expectation: {}
 
-        expectations = Stack.current().expectations
-        expectations.length.should.equal 1
-        expectations[0].className.should.equal 'Expectation'
+        array.length.should.equal 1
+        array[0].className.should.equal 'Expectation'
         done()
 

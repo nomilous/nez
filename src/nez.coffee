@@ -5,9 +5,13 @@ module.exports = nez =
 
     stacks: {}
 
-    link: (name) -> 
+    create: (name) ->
 
         nez.stacks[name] = new Stack(name)
+
+    link: (name) -> 
+
+        nez.create name
 
         Object.defineProperty nez.stacks[name].pusher, 'link' 
 
@@ -17,8 +21,10 @@ module.exports = nez =
 
     test: (name) ->
 
-        prototypes.object.set.expect()
-        prototypes.object.set.expectSet()
-        prototypes.object.set.expectGet()
+        nez.create name
 
-        nez.link name
+        prototypes.object.set.expect name
+        prototypes.object.set.expectSet name
+        prototypes.object.set.expectGet name
+
+        return nez.link name

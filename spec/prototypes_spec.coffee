@@ -12,7 +12,7 @@ describe 'prototypes', ->
 
             it 'is a function', (done) ->
 
-                prototypes.object.set.expect()
+                prototypes.object.set.expect 'stackName'
                 Function.prototype.expect.should.be.an.instanceof Function
                 done()
 
@@ -27,7 +27,7 @@ describe 'prototypes', ->
 
             it 'is a function', (done) ->
 
-                prototypes.object.set.expectSet()
+                prototypes.object.set.expectSet 'stackName'
                 Function.prototype.expectSet.should.be.an.instanceof Function
                 done()
 
@@ -39,7 +39,7 @@ describe 'prototypes', ->
 
             it 'is a function', (done) ->
 
-                prototypes.object.set.expectGet()
+                prototypes.object.set.expectGet 'stackName'
                 Function.prototype.expectGet.should.be.an.instanceof Function
                 done()
 

@@ -3,7 +3,7 @@ Expectation = require './expectation'
 
 module.exports = Specification =
 
-    create: (opts = {}) -> 
+    create: (array, opts = {}) -> 
 
         for key of opts
 
@@ -13,13 +13,9 @@ module.exports = Specification =
 
                 when 'expectation'
 
-                    Stack.current().expectations.push(
+                    array.push(
 
                         new Expectation opts[key]
 
                     )
-
-
-
-        
 
