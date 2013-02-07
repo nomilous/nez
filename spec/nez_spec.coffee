@@ -53,31 +53,18 @@ describe 'Nez.test()', ->
     it 'activates Object.prototype extensions for code tesing', (done) ->
 
         test = Nez.test 'thing'
-
         Object.prototype.expect.should.be.an.instanceof Function
-        Object.prototype.expectSet.should.be.an.instanceof Function
-        Object.prototype.expectGet.should.be.an.instanceof Function
         done()
 
 
     it 'passes the name of the stack to bind expectations to', (done) ->  
 
         swap = set = require('../lib/prototypes').object.set
-
-        expectName    = 'none'
-        expectGetName = 'none'
-        expectSetName = 'none'
-
-        set.expect    = (name) -> expectName    = name
-        set.expectGet = (name) -> expectGetName = name
-        set.expectSet = (name) -> expectSetName = name
-
+        expectName = 'none'
+        set.expect = (name) -> expectName    = name
         test = Nez.test 'thing'
         set  = swap
-
         expectName.should.equal 'thing'
-        same = expectName == expectGetName == expectSetName == 'thing'
-        same.should.equal true
         done()
 
 

@@ -5,43 +5,24 @@ describe 'prototypes', ->
 
     describe 'extends Object.prototype', ->
 
+        test = new (class Test)
+        push = require('../lib/nez').test 'stackName'
+
+        push 'grand parent', (push1) ->
+
+            push1 'parent', (push2) ->
+
+                push2 'sibling'
+
+                describe '.expect()', -> 
+
+                    it 'is a function', (done) ->
+
+                        prototypes.object.set.expect 'stackName'
+                        Function.prototype.expect.should.be.an.instanceof Function
+                        done()
 
 
-        describe '.expect()', -> 
-
-
-            it 'is a function', (done) ->
-
-                prototypes.object.set.expect 'stackName'
-                Function.prototype.expect.should.be.an.instanceof Function
-                done()
-
-
-            it 'enables setting function call expectations', (done) ->
-
-                done()
-
-
-
-        describe 'expectSet()', ->
-
-            it 'is a function', (done) ->
-
-                prototypes.object.set.expectSet 'stackName'
-                Function.prototype.expectSet.should.be.an.instanceof Function
-                done()
-
-            it 'enables placing property setting expectations'
-
-
-
-        describe 'expectGet()', ->
-
-            it 'is a function', (done) ->
-
-                prototypes.object.set.expectGet 'stackName'
-                Function.prototype.expectGet.should.be.an.instanceof Function
-                done()
-
-            it 'enables placing property getting expectations'
+                    xit 'it pushes expectations into the current node', (done) ->
+                 
 

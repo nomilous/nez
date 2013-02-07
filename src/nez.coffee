@@ -22,9 +22,6 @@ module.exports = nez =
     test: (name) ->
 
         nez.create name
-
         prototypes.object.set.expect name
-        prototypes.object.set.expectSet name
-        prototypes.object.set.expectGet name
 
         return nez.link name
