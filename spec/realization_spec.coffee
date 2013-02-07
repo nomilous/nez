@@ -148,6 +148,19 @@ describe 'Realization', ->
                 r.realized.property.args.should.eql 1:'nonimous'
                 done()
 
+            it 'creates interface to get spy result', (done) ->
+
+                r = new Realization @thing
+                r.createProperty 'name'
+
+                @thing.name = 'nonimous' # set it
+                @thing._got.name.should.equal 'nonimous'
+
+                @thing.name = 'nanimous'
+                @thing.name  # get it 
+                @thing._had.name.should.equal 'nanimous'
+                done()
+
 
     describe 'can be realized', -> 
 

@@ -83,10 +83,21 @@ module.exports = class Realization extends Notification
             get: => @realized.function
 
 
+        if @object.prototype and @object.prototype[@name]
 
-        @originalFunction = @object[@name]
+            #
+            # replace prototype if present
+            #
 
-        @object[@name] = newFunction
+            @prototyped = true
+            @originalFunction = @object.prototype[@name]
+            @object.prototype[@name] = newFunction
+
+        else
+
+            @prototyped = false
+            @originalFunction = @object[@name]
+            @object[@name] = newFunction
 
 
     # 
@@ -116,6 +127,9 @@ module.exports = class Realization extends Notification
                 # (for later expectation validation)
                 #
 
+                @object._got ||= {}
+                @object._got[ @name ] = value
+
                 @realizeProperty 0: value
                 @originalProperty = value
 
@@ -133,6 +147,8 @@ module.exports = class Realization extends Notification
 
                 else
 
+                    @object._had ||= {}
+                    @object._had[ @name ] = @originalProperty
                     @realizeProperty 0: @originalProperty
                     return @originalProperty
 
@@ -144,6 +160,8 @@ module.exports = class Realization extends Notification
 
 
     realizeProperty: (args) -> 
+
+        @object._had ||= {}
 
         @realized = property: args: @slide( args, 1 )
 

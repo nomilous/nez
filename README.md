@@ -61,8 +61,8 @@ describe 'Periscope', ->
         # 1. Create expectations
         #
 
-        periscope.expectCall riseToSurface: with: 'distance', returning: true
-        periscope.expectCall openLens: returning: true
+        periscope.expect riseToSurface: with: 'distance', returning: true
+        periscope.expect openLens: returning: true
 
 
         #

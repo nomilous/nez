@@ -71,7 +71,7 @@ module.exports = class Expectation
 
                     console.log 'WARNING: spy on non existant function %s(...)', name
 
-            when 'get'
+            when 'get', 'set'
 
                 expectationType = 'createProperty'
 
