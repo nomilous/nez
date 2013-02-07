@@ -1,3 +1,5 @@
+Specification = require './specification' 
+
 module.exports = 
 
     object:
@@ -9,6 +11,10 @@ module.exports =
                 console.log 'bind Object.prototype.expect() to', name
 
                 Object.prototype.expect = ->
+
+                    return unless edges = Stack.stacks[name].edges
+
+
 
             expectSet: (name) ->
 

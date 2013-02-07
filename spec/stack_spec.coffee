@@ -64,6 +64,20 @@ describe 'Stack', ->
                 arg.should.equal pusher
                 done()
 
+        it 'enables access to the top node in the stack', (done) ->
+
+            stack = new Stack 'stack'
+            push = stack.pusher
+
+            push 'label1', (again) ->
+                again 'label2', (more) ->
+                    more 'label3', (evenmore) ->
+                    more 'label4'
+
+                    stack.node.label.should.equal 'label2'
+                    done()
+
+
 
     it 'it populates a stack', (done) -> 
 

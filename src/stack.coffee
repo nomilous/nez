@@ -29,25 +29,25 @@ module.exports = class Stack
 
         if label
 
-            node = new Node label,
+            @node = new Node label,
 
                 callback: callback
                 class:    klass
 
-            @stack.push node
-            @walker.push node
-            @walker = node.edges
+            @stack.push @node
+            @walker.push @node
+            @walker = @node.edges
 
-            node.callback @pusher if callback
+            @node.callback @pusher if callback
             
 
             node = @stack.pop()
 
             if @stack.length > 0
 
-                parent = @stack[@stack.length - 1]
-                @walker = parent.edges
+                @node   = @stack[@stack.length - 1]
+                @walker = @node.edges
 
-            @pendingClass = node.class
+            @pendingClass = @node.class
 
 

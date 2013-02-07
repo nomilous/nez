@@ -1,6 +1,6 @@
 require 'should'
+Nez           = require '../src/nez'
 Specification = require '../src/specification'
-Stack         = require '../src/ostack'
 
 describe 'Specification', -> 
 
@@ -46,4 +46,19 @@ describe 'Specification', ->
         array.length.should.equal 1
         array[0].className.should.equal 'Expectation'
         done()
+
+
+    it "can provide the current containing node", (done) ->
+
+        push = Nez.link 'stackName'
+
+        push 'PARENT', (push) -> 
+
+            push 'PEER'
+
+            node = Specification.getNode('stackName')
+            node.label.should.equal 'PARENT'
+            node.edges[0].label.should.equal 'PEER'
+
+            done()
 
