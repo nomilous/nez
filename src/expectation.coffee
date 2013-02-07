@@ -57,6 +57,16 @@ module.exports = class Expectation
             name = key
             break # only 1
 
+        if config.opts[name].as == 'spy'
+
+            #
+            # TODO: properly warn
+            #
+
+            unless config.object[name]
+
+                console.log 'WARNING: spy on non existant function %s(...)', name 
+
         throw 'Malformed Expectation' unless name
 
 
