@@ -55,7 +55,9 @@ module.exports = class Realization extends Notification
             # It becomes a Mock() if opts.returns is defined... 
             #
 
-            return opts.returns if opts.returns
+            if opts.returns
+
+                return opts.returns
 
             #
             # It becomes a spy if no opts.returns was defined
