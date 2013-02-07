@@ -75,7 +75,7 @@ module.exports = class Realization extends Notification
 
 
         #
-        # .function.get returns realized { args: 'as called'}
+        # .function.got returns realized { args: 'as called'}
         # (for spying convenience)
         #
         Object.defineProperty newFunction, 'got', 
