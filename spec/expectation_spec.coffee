@@ -1,4 +1,4 @@
-require 'should'
+should = require 'should'
 Expectation = require '../src/expectation'
 test = require('../lib/nez').test 'NAME'
 
@@ -84,7 +84,6 @@ describe 'Expectation', ->
 
             thing.existing.got.args[1].should.equal 'SPIED ON THIS'
             thing.missingFunction.got.args[1].should.equal 'MOCKED THIS'
-
             done()
 
 
@@ -95,6 +94,17 @@ describe 'Expectation', ->
     it 'restores the original function if there was one'
 
 
+    it "can 'mock' the getting of a property", (done) ->
+
+        thing = new Thing()
+
+        test 'Thing', -> 
+
+            should.not.exist thing.PROPERTY
+            thing.expect PROPERTY: as: 'get', returns: 'THIS'
+
+            thing.PROPERTY.should.equal 'THIS'
+            done()
 
 
 

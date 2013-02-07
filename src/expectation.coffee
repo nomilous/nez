@@ -50,8 +50,9 @@ module.exports = class Expectation
 
     constructor: (config = {}) -> 
 
-        call = 'createFunction'
-        name = undefined
+        expectationType = 'createFunction'
+        name            = undefined
+
 
         for key of config.opts
             name = key
@@ -59,19 +60,24 @@ module.exports = class Expectation
 
         throw 'Malformed Expectation' unless name
 
-        if config.opts[name].as == 'spy'
+        opts = config.opts[name]
+        type = opts.as
 
-            #
-            # TODO: properly warn
-            #
+        switch type
 
-            unless config.object[name]
+            when 'spy'
 
-                console.log 'WARNING: spy on non existant function %s(...)', name
+                unless config.object[name]
+
+                    console.log 'WARNING: spy on non existant function %s(...)', name
+
+            when 'get'
+
+                expectationType = 'createProperty'
 
 
         @realization = new Realization config.object
-        @realization[call] name, config.opts[name]
+        @realization[expectationType] name, opts
 
 
 
