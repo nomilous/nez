@@ -1,28 +1,52 @@
-should     = require 'should'
-prototypes = require '../lib/prototypes'
+should        = require 'should'
+prototypes    = require '../lib/prototypes'
+Specification = require '../lib/specification'
 
 describe 'prototypes', ->
 
     describe 'extends Object.prototype', ->
 
-        test = new (class Test)
+        class Test
+            constructor: ->
+                @tes = 't'
+
+        testTHIS = new Test()
         push = require('../lib/nez').test 'stackName'
 
-        push 'grand parent', (push1) ->
+        describe '.expect()', -> 
 
-            push1 'parent', (push2) ->
+            it 'is a function', (done) ->
 
-                push2 'sibling'
+                prototypes.object.set.expect 'stackName'
+                Function.prototype.expect.should.be.an.instanceof Function
+                done()
 
-                describe '.expect()', -> 
+            it 'calls Specification.create with the expectation', (done) ->
 
-                    it 'is a function', (done) ->
+                push 'node', ->
 
-                        prototypes.object.set.expect 'stackName'
-                        Function.prototype.expect.should.be.an.instanceof Function
+                    swap = Specification.create
+                    Specification.create = (array, opts) -> 
+
+                        console.log array, opts
+
+                        #
+                        # test expectation creation
+                        #
+
+                        expectation = opts.expectation
+                        expectation.object.should.equal testTHIS
+                        expectation.opts[0].thisFunction.with.should.equal 'args'
+                      
+                        Specification.create = swap 
                         done()
 
 
-                    xit 'it pushes expectations into the current node', (done) ->
-                 
+                    #
+                    # set expectation
+                    #
 
+                    testTHIS.expect thisFunction: with: 'args'
+                    
+                    
+                 

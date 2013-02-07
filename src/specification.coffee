@@ -9,14 +9,13 @@ module.exports = Specification =
         #
 
         return require('./nez').stacks[stackName].node
-
-
+        
 
     create: (array, opts = {}) -> 
 
         for key of opts
 
-            continue if key == 'xpect' # dodge circular prototype weirdness
+            continue if key == 'expect'
 
             switch key
 
