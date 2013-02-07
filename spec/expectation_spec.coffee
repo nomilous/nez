@@ -15,7 +15,7 @@ describe 'Expectation', ->
             # missingFunction()
             #
 
-            return "existing(  #{ @missingFunction() }  )"
+            return "existing(  #{ @missingFunction('MOCKED THIS') }  )"
 
 
     it 'defaults to mock a function', (done) ->
@@ -71,7 +71,29 @@ describe 'Expectation', ->
 
 
 
-    it 'stores the called args for both a mock and spy'
+    it 'stores the called args for both a mock and spy', (done) ->
+
+        thing = new Thing()
+
+        test 'Thing', -> 
+
+            thing.expect existing: as: 'spy'           # still runs original
+            thing.expect missingFunction: returns: ''  # therefore requires this
+
+            thing.existing( 'SPIED ON THIS', 2 )
+
+            firstExpectation  = require('../lib/nez').stacks.NAME.node.edges[0]
+            secondExpectation = require('../lib/nez').stacks.NAME.node.edges[1]
+            firstArgs  = firstExpectation.realization.realized.function.args
+            secondArgs = secondExpectation.realization.realized.function.args
+
+            firstArgs[1].should.equal 'SPIED ON THIS'
+            secondArgs[1].should.equal 'MOCKED THIS'
+
+            done()
+
+
+
     it 'supports setting more than one expectation on the same function/property'
     it 'maintains called sequance to match up against the expected sequence'
     it 'thows if a spy and a mock are set on the same function in the same test'
