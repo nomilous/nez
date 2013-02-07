@@ -32,13 +32,13 @@ describe 'Specification', ->
     """, ->
 
 
-    it 'provides an interface to create', (done) -> 
+    xit 'provides an interface to create', (done) -> 
 
         Specification.create.should.be.an.instanceof Function
         done()
 
 
-    it 'pushes new expectations into the provided array', (done) -> 
+    xit 'pushes new expectations into the provided array', (done) -> 
 
         array = []
         Specification.create array, expectation: {}
@@ -48,7 +48,7 @@ describe 'Specification', ->
         done()
 
 
-    it "can provide the current containing node", (done) ->
+    xit "can provide the current containing node", (done) ->
 
         push = Nez.link 'stackName'
 
@@ -59,6 +59,21 @@ describe 'Specification', ->
             node = Specification.getNode('stackName')
             node.label.should.equal 'PARENT'
             node.edges[0].label.should.equal 'PEER'
+
+            done()
+
+    it 'uses', (done) ->
+
+        test = Nez.test 'test'
+
+        class Thing
+
+        thing = new Thing()
+
+        test 'node', -> 
+
+            thing.expect functionCall: with: 'args'
+
 
             done()
 

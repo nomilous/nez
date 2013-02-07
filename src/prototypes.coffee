@@ -17,4 +17,4 @@ module.exports =
                         expectation:
 
                             object: this
-                            opts: arguments
+                            opts: arguments[0]

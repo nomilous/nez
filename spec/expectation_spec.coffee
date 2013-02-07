@@ -8,5 +8,7 @@ describe 'Expectation', ->
 
     
 
-
+        #
+        # new Expectation { object: {}, opts: { functionCall: { with: 'args' } } }
+        #
 

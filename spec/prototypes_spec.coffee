@@ -28,15 +28,13 @@ describe 'prototypes', ->
                     swap = Specification.create
                     Specification.create = (array, opts) -> 
 
-                        console.log array, opts
-
                         #
                         # test expectation creation
                         #
 
                         expectation = opts.expectation
                         expectation.object.should.equal testTHIS
-                        expectation.opts[0].thisFunction.with.should.equal 'args'
+                        expectation.opts.thisFunction.with.should.equal 'args'
                       
                         Specification.create = swap 
                         done()

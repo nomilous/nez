@@ -9,7 +9,7 @@ module.exports = Specification =
         #
 
         return require('./nez').stacks[stackName].node
-        
+
 
     create: (array, opts = {}) -> 
 
