@@ -71,7 +71,7 @@ describe 'Expectation', ->
 
 
 
-    it 'stores the called args for both a mock and spy', (done) ->
+    it 'enables access to called args for both a mock and spy', (done) ->
 
         thing = new Thing()
 
@@ -82,13 +82,8 @@ describe 'Expectation', ->
 
             thing.existing( 'SPIED ON THIS', 2 )
 
-            firstExpectation  = require('../lib/nez').stacks.NAME.node.edges[0]
-            secondExpectation = require('../lib/nez').stacks.NAME.node.edges[1]
-            firstArgs  = firstExpectation.realization.realized.function.args
-            secondArgs = secondExpectation.realization.realized.function.args
-
-            firstArgs[1].should.equal 'SPIED ON THIS'
-            secondArgs[1].should.equal 'MOCKED THIS'
+            thing.existing.got.args[1].should.equal 'SPIED ON THIS'
+            thing.missingFunction.got.args[1].should.equal 'MOCKED THIS'
 
             done()
 
@@ -97,3 +92,9 @@ describe 'Expectation', ->
     it 'supports setting more than one expectation on the same function/property'
     it 'maintains called sequance to match up against the expected sequence'
     it 'thows if a spy and a mock are set on the same function in the same test'
+    it 'restores the original function if there was one'
+
+
+
+
+

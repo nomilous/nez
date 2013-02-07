@@ -107,6 +107,17 @@ describe 'Realization', ->
 
                 done()
 
+            it 'creates interface to get spy result', (done) ->
+
+                r = new Realization @thing
+                r.createFunction 'existingFunction'
+                @thing.existingFunction('alpha','omega')
+
+                @thing.existingFunction.got.args[1].should.equal 'alpha'
+                @thing.existingFunction.got.args[2].should.equal 'omega'
+
+                done()
+
 
         describe 'as Property', -> 
 
