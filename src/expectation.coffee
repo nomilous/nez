@@ -57,6 +57,8 @@ module.exports = class Expectation
             name = key
             break # only 1
 
+        throw 'Malformed Expectation' unless name
+
         if config.opts[name].as == 'spy'
 
             #
@@ -65,9 +67,7 @@ module.exports = class Expectation
 
             unless config.object[name]
 
-                console.log 'WARNING: spy on non existant function %s(...)', name 
-
-        throw 'Malformed Expectation' unless name
+                console.log 'WARNING: spy on non existant function %s(...)', name
 
 
         @realization = new Realization config.object
