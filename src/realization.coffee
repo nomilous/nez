@@ -161,8 +161,6 @@ module.exports = class Realization extends Notification
 
     realizeProperty: (args) -> 
 
-        @object._had ||= {}
-
         @realized = property: args: @slide( args, 1 )
 
 

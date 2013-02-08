@@ -9,8 +9,7 @@ module.exports = class Expectation
     # 
     # `config.object` 
     #  
-    #  The object upon which the expectation expectation is 
-    #  being placed.
+    #  The object upon which the expectation is being placed.
     # 
     # 'config.opts.*' 
     # 
@@ -67,7 +66,14 @@ module.exports = class Expectation
 
             when 'spy'
 
-                unless config.object[name]
+                unless config.object[name] or ( 
+
+                    # 
+                    # function already defined on instanceprototype
+                    # 
+                    
+                    config.object.prototype and config.object.prototype[name] 
+                )
 
                     console.log 'WARNING: spy on non existant function %s(...)', name
 
