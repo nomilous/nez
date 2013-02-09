@@ -65,11 +65,8 @@ describe 'Realizer', ->
             it 'creates reference to the realizable function', (done) ->
 
                 Realizer.createFunction 'newFunction', @thing, {}, ->
-                should.exists Realizer.realizers['instance:Thing:6:newFunction']
+                should.exist Realizer.realizers[ "#{@thing.fing.ref}:newFunction" ]
                 done()
-
-
-
 
 
 
