@@ -12,7 +12,7 @@ module.exports =
 
                     return unless edges = Specification.getNode(name).edges
 
-                    Specification.create edges,
+                    edges.push Specification.create 
 
                         expectation:
 

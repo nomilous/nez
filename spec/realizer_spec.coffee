@@ -10,7 +10,7 @@ describe 'Realizer', ->
         done()
 
 
-    it 'enabled creating function realizers', (done) ->
+    it 'enables creating function realizers', (done) ->
 
         Realizer.createFunction.fing.args.should.eql [
 

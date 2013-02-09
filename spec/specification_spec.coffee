@@ -16,7 +16,7 @@ describe 'Specification', ->
         Specification.create.fing.args.should.eql [
 
             {name: 'object'}
-            {name: 'expectation'}
+            {name: 'configuration'}
 
         ]
 
@@ -37,8 +37,8 @@ describe 'Specification', ->
     it 'stores a new instance of a Validation for each expectation', (done) ->
 
         object = new Object
-        expectation1 = { e: 'xpectation1' }
-        expectation2 = { e: 'xpectation2' }
+        expectation1 = { expectation: 'xpectation1' }
+        expectation2 = { expectation: 'xpectation2' }
         Specification.create object, expectation1
         Specification.create object, expectation2
 
@@ -50,7 +50,15 @@ describe 'Specification', ->
         confirmation2.fing.name.should.equal 'Confirmation'
         confirmation1.fing.ref.should.not.equal confirmation2.fing.ref
         done()
-        
+
+
+    it 'returns a not yet validated Confirmation', (done) ->
+
+        object = new Object
+        confirmation = Specification.create object, expectation: {}
+        confirmation.fing.name.should.equal 'Confirmation'
+        confirmation.pending.should.equal true
+        done()
 
 
 

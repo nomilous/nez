@@ -12,7 +12,7 @@ class Specification
 
     @objects: {}
 
-    @create: (object, expectation) ->
+    @create: (object, configuration) ->
 
         @objects[ object.fing.ref ] ||=
 
@@ -34,7 +34,7 @@ class Specification
         # expectated.
         # 
 
-        confirmation = new Confirmation object, expectation, (realization) -> 
+        confirmation = new Confirmation object, configuration, (realization) -> 
 
             console.log 'REALIZATION:', realization
             console.log 'TODO: it this realization back into the Confirmation stack'
@@ -45,6 +45,14 @@ class Specification
         #
 
         @objects[ object.fing.ref ].confirmations.push confirmation
+
+
+        #
+        # return the new confirmation
+        #
+
+        return confirmation
         
+
 
 module.exports = Specification

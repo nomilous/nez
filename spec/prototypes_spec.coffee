@@ -21,12 +21,13 @@ describe 'prototypes', ->
                 Function.prototype.expect.should.be.an.instanceof Function
                 done()
 
-            it 'calls Specification.create with the expectation', (done) ->
+
+            it 'calls Specification.create with an expectation configuration', (done) ->
 
                 push 'node', ->
 
                     swap = Specification.create
-                    Specification.create = (array, opts) -> 
+                    Specification.create = (opts) -> 
 
                         #
                         # test expectation creation

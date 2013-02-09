@@ -4,21 +4,21 @@ Realizer = require './realizer'
 class Confirmation
 
     #
-    # A confirmation is created to each expectation
+    # A confirmation is created for each expectation
     # 
     # `object` - The object upon which the expectation has
     #            been placed
     # 
-    # `expectation` - Config for the expectation
+    # `configuration` - Config for the Confirmation
     # 
     # `realization` - A callback to receive the realization
     #
 
-    constructor: (object, expectation, realization) ->
+    constructor: (object, configuration, realization) ->
+
+        @pending = true
 
 
-
-    
 
 
  
