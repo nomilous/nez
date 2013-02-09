@@ -1,6 +1,6 @@
 should        = require 'should'
 prototypes    = require '../lib/prototypes'
-Specification = require '../lib/specification'
+Specification = require '../lib/ospecification'
 
 describe 'prototypes', ->
 

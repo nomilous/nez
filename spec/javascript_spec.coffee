@@ -158,5 +158,3 @@ describe 'javascript', ->
 
 
 
-
-

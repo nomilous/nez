@@ -1,4 +1,4 @@
-Specification = require './specification' 
+Specification = require './ospecification' 
 
 module.exports = 
 
