@@ -1,3 +1,5 @@
+require 'fing'
+
 class Realizer
 
     # 
@@ -26,7 +28,20 @@ class Realizer
     # the function is called.
     # 
 
-    @createFunction: (name, object, realization, configuration) ->
+    @createFunction: (name, object, configuration, realization) ->
+
+        #
+        #
+        #
+
+        key = object.fing.ref + ':' + name
+
+        if typeof @realizers[key] == 'undefined'
+
+            @realizers[key] = {}
+
+
+        #realization = @realizers
 
         object[name] = -> realization()
 

@@ -5,10 +5,23 @@ describe 'Realizer', ->
 
     
     it 'contains a reference to all created realizers', (done) ->
+
         Realizer.realizers.should.be.an.instanceof Object
         done()
 
 
+    it 'enabled creating function realizers', (done) ->
+
+        Realizer.createFunction.fing.args.should.eql [
+
+            { name: 'name' },
+            { name: 'object' },
+            { name: 'configuration' },
+            { name: 'realization' }
+
+        ]
+
+        done()
 
 
     describe 'creates an interface to Realization ', -> 
@@ -31,7 +44,6 @@ describe 'Realizer', ->
 
         describe 'as a function that', ->
 
-
             it 'is actually created', (done) ->
 
                 Realizer.createFunction 'newFunction', @thing
@@ -46,8 +58,28 @@ describe 'Realizer', ->
                     done() # will timeout test unless the callback is fired
 
 
-                Realizer.createFunction 'newFunction', @thing, realizationCallback
+                Realizer.createFunction 'newFunction', @thing, {}, realizationCallback
                 @thing.newFunction()
+
+
+            it 'creates reference to the realizable function', (done) ->
+
+                Realizer.createFunction 'newFunction', @thing, {}, ->
+                should.exists Realizer.realizers['instance:Thing:6:newFunction']
+                done()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
