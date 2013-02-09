@@ -39,12 +39,15 @@ describe 'Realizer', ->
                 done()
 
 
-            it 'calls realization when the function is fired', (done) ->
+            it 'calls realization() when the function is fired', (done) ->
 
-                Realizer.createFunction 'newFunction', @thing, -> 
+                realizationCallback = ->
 
                     done() # will timeout test unless the callback is fired
 
+
+                Realizer.createFunction 'newFunction', @thing, realizationCallback
                 @thing.newFunction()
+
 
 
