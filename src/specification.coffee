@@ -2,8 +2,10 @@ require 'fing'
 Confirmation = require './confirmation'
 
 #
-# **Specification()** houses hash of objects each 
-# with a stack of pending expectation Confirmations
+# **Specification()** 
+# 
+# Houses hash of objects each with a stack of 
+# pending expectation Confirmations.
 # 
 
 class Specification
@@ -23,7 +25,26 @@ class Specification
             confirmations: []
 
 
-        confirmation = new Confirmation object, expectation
+
+        #
+        # Create a pending Expectation Confirmation with a
+        # callback for Realization.
+        # 
+        # The callback will fire with the action being
+        # expectated.
+        # 
+
+        confirmation = new Confirmation object, expectation, (realization) -> 
+
+            console.log 'REALIZATION:', realization
+            console.log 'TODO: it this realization back into the Confirmation stack'
+
+
+        #
+        # Push the new confirmation into the stack
+        #
+
         @objects[ object.fing.ref ].confirmations.push confirmation
+        
 
 module.exports = Specification
