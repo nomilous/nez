@@ -1,6 +1,12 @@
 require 'fing'
+Confirmation = require './confirmation'
 
-module.exports = class Specification
+#
+# **Specification()** houses hash of objects each 
+# with a stack of pending expectation Confirmations
+# 
+
+class Specification
 
     @objects: {}
 
@@ -10,10 +16,14 @@ module.exports = class Specification
 
             #
             # firsttime initialize storage for this
-            # object and it's expectations 
+            # object and it's expectation Confirmations 
             #
 
             object: object
-            expectations: []
+            confirmations: []
 
-        @objects[ object.fing.ref ].expectations.push expectation
+
+        confirmation = new Confirmation object, expectation
+        @objects[ object.fing.ref ].confirmations.push confirmation
+
+module.exports = Specification
