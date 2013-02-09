@@ -52,7 +52,18 @@ class Specification
         #
 
         return confirmation
-        
+
+
+    @getNode: (stackName) ->
+
+        #
+        # late require, need the stack as it currently is
+        #
+
+        #console.log require('./nez').stacks[stackName]
+
+        return require('./nez').stacks[stackName].node
+
 
 
 module.exports = Specification

@@ -1,4 +1,4 @@
-Specification = require './ospecification' 
+Specification = require './specification' 
 
 module.exports = 
 
@@ -10,11 +10,26 @@ module.exports =
 
                 Object.prototype.expect = ->
 
+                    #
+                    # pushes pending expectation Confirmations into the
+                    # current node of the tree 
+                    #
+
                     return unless edges = Specification.getNode(name).edges
 
-                    edges.push Specification.create 
+                    for key of arguments[0]
 
-                        expectation:
+                        configuration      = {}
+                        configuration[key] = arguments[0][key]
 
-                            object: this
-                            opts: arguments[0]
+                        console.log "create expectation on:", this, 'with:', configuration
+
+                        #
+                        # Specification generation returns pending Confirmations
+                        #
+
+                        edges.push Specification.create this, 
+
+                            expectation: configuration
+
+                            

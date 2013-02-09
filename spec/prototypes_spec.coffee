@@ -13,39 +13,43 @@ describe 'prototypes', ->
         testTHIS = new Test()
         push = require('../lib/nez').test 'stackName'
 
-        describe '.expect()', -> 
+        push 'node', ->
 
-            it 'is a function', (done) ->
+            describe '.expect()', -> 
 
-                prototypes.object.set.expect 'stackName'
-                Function.prototype.expect.should.be.an.instanceof Function
-                done()
+                it 'is a function', (done) ->
+
+                    prototypes.object.set.expect 'stackName'
+                    Function.prototype.expect.should.be.an.instanceof Function
+                    done()
 
 
-            it 'calls Specification.create with an expectation configuration', (done) ->
+                it 'pushes pending confirmations into the current node', (done) ->
 
-                push 'node', ->
+                    push 'node', ->
 
-                    swap = Specification.create
-                    Specification.create = (opts) -> 
+                        testTHIS.expect thisFunction: with: 'args'
 
-                        #
-                        # test expectation creation
-                        #
-
-                        expectation = opts.expectation
-                        expectation.object.should.equal testTHIS
-                        expectation.opts.thisFunction.with.should.equal 'args'
-                      
-                        Specification.create = swap 
+                        current = require('../lib/nez').stacks['stackName'].node.edges
+                        current[0].fing.name.should.equal 'Confirmation'
+                        console.log "TODO: finish this test once the Confirmation is identifiable" 
                         done()
+                        
+                      
+                it 'supports multiple inline expectations', (done) ->
 
+                    push 'node', ->
 
-                    #
-                    # set expectation
-                    #
+                        class Test
 
-                    testTHIS.expect thisFunction: with: 'args'
-                    
-                    
-                 
+                        Test.expect
+                            function1: with: 'ARG'
+                            function2: with: 1:'arg1', 5:'arg5'
+
+                        current = require('../lib/nez').stacks['stackName'].node.edges
+                        current[0].fing.name.should.equal 'Confirmation'
+                        current[1].fing.name.should.equal 'Confirmation'
+                        console.log "TODO: finish this test once the Confirmation is identifiable" 
+
+                        done()
+                     
