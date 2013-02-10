@@ -22,15 +22,18 @@ class Confirmation
         # constructed from the Expectation Configuration 
         #
 
-        @pending    = true
-        @validation = new Validation (
+        for key of configuration
 
-            new Expectation object, configuration
+            if key == 'expectation'
 
-        )
+                @pending    = true
+                @validation = new Validation (
 
- 
-    
+                    new Expectation object, configuration
+
+                )
+
+            # else if 'hmm...'
 
 
 module.exports = Confirmation
