@@ -25,12 +25,6 @@ describe 'Expectation', ->
                 error.message.should.equal 'undefined Expectation configuration'
                 done()
 
-        it 'can be a function name as string', (done) ->
-
-            e = new Expectation (new Object), 'function1'
-            e.configuration.function1.should.eql {}
-            done()
-
 
         it 'should be an object (hash)', (done) ->
 
@@ -58,9 +52,39 @@ describe 'Expectation', ->
             obj = new Object
             e = new Expectation obj, function1: with: 'ARG', returning: 'VALUE'
 
-            e.configuration.on.should.equal obj
-            e.configuration.function1.with.should.equal 'ARG'
-            e.configuration.function1.returning.should.equal 'VALUE'
+            e.on.should.equal obj
+            e.with.should.equal 'ARG'
+            e.returning.should.equal 'VALUE'
             done()
 
+
+        it 'marshals the expectation configuration', (done) ->
+
+            basic = new Expectation (new Object), 'function1'
+            mock = new Expectation (new Object), function2: returning: 'VALUE'
+            spy = new Expectation  (new Object), function3: as: 'spy', with: 'ARG'
+            get = new Expectation  (new Object), property1: as: 'get', returning: 'VALUE'
+            set = new Expectation  (new Object), property2: as: 'set', with: 'VALUE'
+
+            basic.realizerName.should.equal 'function1'
+            basic.realizerCall.should.equal 'createFunction'
+            basic.realizerType.should.equal 'mock'
+
+            mock.realizerName.should.equal 'function2'
+            mock.realizerCall.should.equal 'createFunction'
+            mock.realizerType.should.equal 'mock'
+
+            spy.realizerName.should.equal 'function3'
+            spy.realizerCall.should.equal 'createFunction'
+            spy.realizerType.should.equal 'spy'
+
+            get.realizerName.should.equal 'property1'
+            get.realizerCall.should.equal 'createProperty'
+            get.realizerType.should.equal 'get'
+
+            set.realizerName.should.equal 'property2'
+            set.realizerCall.should.equal 'createProperty'
+            set.realizerType.should.equal 'set'
+
+            done()
 

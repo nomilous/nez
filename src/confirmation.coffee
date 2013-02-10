@@ -24,9 +24,8 @@ class Confirmation
         #
 
         @pending     = true
-        @expectation = new Expectation object, configuration
+        @expectation = new Expectation object, configuration # TODO: probably dont need to expose this
         @validation  = new Validation @expectation
-        
 
  
     
