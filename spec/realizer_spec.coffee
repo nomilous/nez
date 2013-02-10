@@ -112,6 +112,28 @@ describe 'Realizer', ->
                 done()
 
 
+            it 'calls the realization in created order', (done) ->
+
+                object = new (class NewClass)
+                count = 0
+
+                Realizer.createFunction 'function', object, {}, (realization) ->
+
+                    realization.args[0].should.equal 'ONE'
+                    ++count
+
+
+                Realizer.createFunction 'function', object, {}, (realization) ->
+
+                    realization.args[0].should.equal 'TWO'
+                    (++count).should.equal 2 # should have been called second
+                    done()
+
+
+                object.function('ONE')
+                object.function('TWO')
+
+                
 
 
 

@@ -60,11 +60,19 @@ class Realizer
             object[name] = ->
 
                 # 
-                # TODO: shift from the realization stack
-                #       to callback in created order
+                # shift from the realization stack
+                # to call the realizations back in
+                # create order
                 #
 
-                realization()
+                object = Realizer.realizers[key].object
+                realizerCallback = Realizer.realizers[key].realizations.shift()
+                
+                realizerCallback 
+                   
+                    object: object
+                    args: arguments
+
 
 
         @realizers[key].realizations.push realization

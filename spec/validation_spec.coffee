@@ -1,6 +1,6 @@
-Validation = require '../src/validation'
-require 'should'
-require 'fing'
+Validation  = require '../src/validation'
+Expectation = require '../src/expectation'
+should      = require 'should'
 
 describe 'Validation', -> 
 
@@ -21,19 +21,40 @@ describe 'Validation', ->
 
     it 'contains reference to expectation', (done) ->
 
-        expectation = {}
-        validation = new Validation expectation
+        expectation = new Expectation (new Object), 'function'
+        validation  = new Validation expectation
         validation.expectation.should.equal expectation
         done()
 
 
-    it 'creates the realization callback', (done) ->
+    it 'contains storage for the realization - pending validation', (done) ->
 
-        expectation = {}
-        validation = new Validation expectation
-        realization = validation.createRealization()
-
-        realization().should.equal 'REALIZATION CALLBACK'
-        console.log 'TODO: test this once realization has flesh'
+        validation = new Validation (new Expectation (new Object), 'function')
+        validation.realization.should.eql {}
         done()
+
+
+    describe 'creates the realizer', ->
+
+        beforeEach ->
+
+            @object     = new Object
+            expectation = new Expectation @object, 'function1'
+            @validation  = new Validation expectation
+
+
+        it 'as a function', (done) ->
+
+            should.exist @object.function1
+            done()
+
+
+        it 'populates the realization with the realized data', (done) ->
+
+            @object.function1('ARG')
+            @validation.realization.args[0].should.equal 'ARG'
+            done()
+
+
+
 

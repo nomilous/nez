@@ -26,12 +26,12 @@ describe 'Confirmation', ->
         done()
 
 
-    it 'stores the expectation details', (done) ->
+    it 'contains the validation details', (done) ->
 
         confirmation = new Confirmation (new Object), expectation: {}
 
-        should.exist confirmation.expectation
-        confirmation.expectation.fing.name.should.equal 'Expectation'
+        should.exist confirmation.validation
+        confirmation.validation.fing.name.should.equal 'Validation'
         done()
 
 

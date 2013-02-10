@@ -1,15 +1,18 @@
+Realizer = require './realizer'
+
 class Validation
 
     constructor: (@expectation) ->
 
-    createRealization: -> 
+        @realization = {}
 
-        #
-        # Create the realization callback function to
-        # be used to validate the expectation.
-        #
+        call   = @expectation.realizerCall
+        name   = @expectation.realizerName
+        object = @expectation.on
 
-        -> 'REALIZATION CALLBACK'
+        Realizer[ call ] name, object, @expectation, (realization) =>
+
+            @realization = realization
 
 
 module.exports = Validation
