@@ -21,32 +21,53 @@ class Realizer
     # `name` The name of the function
     # 
     # `object` The object / 'class' to create the fuction on.
-    # 
-    # `realization` The callback to fire when the function is called.
-    # 
+    #
     # `configuration` To further configure the actions to take when
     # the function is called.
     # 
+    # `realization` The callback to fire when the function is called.
+    # 
 
     @createFunction: (name, object, configuration, realization) ->
-
-        #
-        #
-        #
 
         key = object.fing.ref + ':' + name
 
         if typeof @realizers[key] == 'undefined'
 
-            @realizers[key] = {}
+            #
+            # To support multiple expectations on the same
+            # <instance>.functionName / <prototype>.functionName
+            # store each realization callback in a stack.
+            # 
+            # The stack will be popped. 
+            # 
+            # SIDEEFFECT: Out of order expectations will cause
+            #             test failures... (a good thing)
+            #
+
+            @realizers[key] = 
+
+                object:       object
+                realizations: []
+            
+            #
+            # create the function
+            #
+            # TODO: temporary replace, prototype if
+            # TODO: tailor this function / and how it 
+            #       ataches per the configuration
+
+            object[name] = ->
+
+                # 
+                # TODO: shift from the realization stack
+                #       to callback in created order
+                #
+
+                realization()
 
 
-        #realization = @realizers
-
-        object[name] = -> realization()
-
-
-
+        @realizers[key].realizations.push realization
 
     
 module.exports = Realizer

@@ -69,9 +69,47 @@ describe 'Realizer', ->
                 done()
 
 
+            it 'has a realization callback stack attached to each realizer', (done) ->
+
+                # 
+                # to allow multiple expectation on the same function
+                #
+
+                realizationCallback1 = ->
+                realizationCallback2 = ->
+                Realizer.createFunction 'functionOne', @thing, {}, realizationCallback1
+                Realizer.createFunction 'functionOne', @thing, {}, realizationCallback2
+                #console.log Realizer.realizers[ "#{@thing.fing.ref}:functionOne" ]
+                realizations = Realizer.realizers[ "#{@thing.fing.ref}:functionOne" ].realizations
+                #console.log realizations
+
+                realizations[0].should.equal realizationCallback1
+                realizations[1].should.equal realizationCallback2
+                done()
 
 
+            it 'has the realizable object for context', (done) ->
 
+                Realizer.createFunction 'functionTwo', @thing, {}, ->
+
+                realizer = Realizer.realizers[ "#{@thing.fing.ref}:functionTwo" ]
+                realizer.object.should.equal @thing
+                done()
+
+
+            it 'knows when creating a function on a prototype', (done) ->
+
+                Realizer.createFunction 'function', (class NewClass), {}, ->
+
+                realizer = Realizer.realizers[ "#{NewClass.fing.ref}:function" ]
+                realizer.object.fing.type.should.equal 'prototype'
+                done()
+
+
+            it 'has accumulated a pile of realizations', (done) ->
+
+                console.log JSON.stringify Realizer.realizers, null, 4
+                done()
 
 
 

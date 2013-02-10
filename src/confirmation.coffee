@@ -11,11 +11,9 @@ class Confirmation
     #            been placed
     # 
     # `configuration` - Config for the Confirmation
-    # 
-    # `realization` - A callback to receive the realization
     #
 
-    constructor: (object, configuration, realization) ->
+    constructor: (object, configuration) ->
 
         console.log "new confirmation", arguments
 

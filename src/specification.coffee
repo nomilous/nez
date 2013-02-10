@@ -25,19 +25,11 @@ class Specification
             confirmations: []
 
 
-
         #
-        # Create a pending Expectation Confirmation with a
-        # callback for Realization.
-        # 
-        # The callback will fire with the action being
-        # expectated.
-        # 
+        # Create a pending Expectation Confirmation
+        #
 
-        confirmation = new Confirmation object, configuration, (realization) -> 
-
-            console.log 'REALIZATION:', realization
-            console.log 'TODO: it this realization back into the Confirmation stack'
+        confirmation = new Confirmation object, configuration
 
 
         #

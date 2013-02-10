@@ -23,10 +23,10 @@ describe 'Specification', ->
         done()
 
 
-    it 'inserts expectant objects and an confirmations stack into the hash', (done) ->
+    it 'inserts expectant objects and a confirmations stack into the hash', (done) ->
 
         object = new Object
-        expectation = null
+        expectation = {}
         Specification.create object, expectation
 
         Specification.objects[ object.fing.ref ].object.should.equal object
@@ -34,7 +34,7 @@ describe 'Specification', ->
         done()
 
 
-    it 'stores a new instance of a Validation for each expectation', (done) ->
+    it 'stores a new instance of a Confirmation for each expectation', (done) ->
 
         object = new Object
         expectation1 = { expectation: 'xpectation1' }
