@@ -1,5 +1,6 @@
 require 'fing'
-Realizer = require './realizer'
+Expectation = require './expectation'
+Realizer    = require './realizer'
 
 class Confirmation
 
@@ -15,6 +16,10 @@ class Confirmation
     #
 
     constructor: (object, configuration, realization) ->
+
+        console.log "new confirmation", arguments
+
+        @expectation = new Expectation object, configuration
 
         @pending = true
 

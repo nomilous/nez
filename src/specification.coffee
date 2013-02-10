@@ -60,8 +60,6 @@ class Specification
         # late require, need the stack as it currently is
         #
 
-        #console.log require('./nez').stacks[stackName]
-
         return require('./nez').stacks[stackName].node
 
 
