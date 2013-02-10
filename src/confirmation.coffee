@@ -1,5 +1,6 @@
 require 'fing'
 Expectation = require './expectation'
+Validation  = require './validation'
 Realizer    = require './realizer'
 
 class Confirmation
@@ -17,12 +18,15 @@ class Confirmation
 
         console.log "new confirmation", arguments
 
+        #
+        # A Confirmation is initialized as pending and 
+        # contains an Expectation and a Validation.
+        #
+
+        @pending     = true
         @expectation = new Expectation object, configuration
-
-        @pending = true
-
-
-
+        @validation  = new Validation @expectation
+        
 
  
     
