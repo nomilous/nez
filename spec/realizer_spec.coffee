@@ -134,8 +134,24 @@ describe 'Realizer', ->
                 object.function('TWO')
 
                 
+            it 'throws AssertionError if too many calls are made to the realizer', (done) ->
 
 
+                object = new (class NewClass)
+
+                Realizer.createFunction 'function', object, {}, (realization) ->
+                Realizer.createFunction 'function', object, {}, (realization) ->
+
+                object.function('ONE')
+                object.function('TWO')
+
+
+                try
+                    object.function('THREE')
+
+                catch error
+                    error.message.should.match /Unexpected call to/
+                    done()
 
 
 

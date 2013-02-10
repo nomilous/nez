@@ -1,3 +1,4 @@
+AssertionError = require('assert').AssertionError
 require 'fing'
 
 class Realizer
@@ -67,9 +68,14 @@ class Realizer
 
                 object = Realizer.realizers[key].object
                 realizerCallback = Realizer.realizers[key].realizations.shift()
-                
+
+                if typeof realizerCallback == 'undefined'
+                    throw new AssertionError
+                        message: 'Unexpected call to ' + key
+
+
                 realizerCallback 
-                   
+                       
                     object: object
                     args: arguments
 
