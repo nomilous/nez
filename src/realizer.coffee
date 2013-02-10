@@ -31,27 +31,31 @@ class Realizer
 
     @createFunction: (name, object, configuration, realization) ->
 
+        #
+        # Key is a unique refecence to a function and looks 
+        # approximately like this:  
+        # 
+        #   'instance:NewClass:8:functionName'
+        # 
+        #   or
+        # 
+        #   'prototype:NewClass:3:functionName'
+        #    
+        #
+        # It is used to key the Realizer storage uniquely by
+        # prototype/instance/functionname
+        # 
+
         key = object.fing.ref + ':' + name
+        
+        originalFunction = @getOriginal name, object
 
-        if object.fing.type == 'prototype'
-
-            originalFunction = object.prototype[name]
-
-        else 
-
-            originalFunction = object[name]
 
         if typeof @realizers[key] == 'undefined'
 
             #
-            # To support multiple expectations on the same
-            # <instance>.functionName / <prototype>.functionName
-            # store each realization callback in a stack.
-            # 
-            # The stack will be popped. 
-            # 
-            # SIDEEFFECT: Out of order expectations will cause
-            #             test failures... (a good thing)
+            # This is the first expectation on this function, 
+            # Prime the Realizer and Realization callback stack
             #
 
             @realizers[key] = 
@@ -64,7 +68,6 @@ class Realizer
             #
             # Realizer is a spy() that replaces the original
             # function to callback with the realizations.
-            # 
             #
 
             realizer = (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad) ->
@@ -72,6 +75,12 @@ class Realizer
                 object   = Realizer.realizers[key].object
                 config   = Realizer.realizers[key].config
                 original = Realizer.realizers[key].original
+
+                #
+                # realizerCallbacks are shifted() from the stack
+                # so that they are called in create order.
+                #
+
                 realizerCallback = Realizer.realizers[key].realizations.shift()
 
 
@@ -83,7 +92,7 @@ class Realizer
                     #
 
                     throw new AssertionError
-                    
+
                         message: 'Unexpected call to ' + key
 
 
@@ -110,18 +119,31 @@ class Realizer
                 return config.returning
 
 
-            if object.fing.type == 'prototype'
+            @replaceOriginal name, object, realizer
 
-                object.prototype[name] = realizer
-
-            else 
-
-                object[name] = realizer
-
-            
-
+          
+        #
+        # Each expectation being placed on this function
+        # has it's realization callback pushed into the
+        # same stack.
+        #
 
         @realizers[key].realizations.push realization
 
-    
+
+
+    @getOriginal: (name, object) ->
+        if object.fing.type == 'prototype'
+            originalFunction = object.prototype[name]
+        else 
+            originalFunction = object[name]
+
+
+    @replaceOriginal: (name, object, fn) ->
+        if object.fing.type == 'prototype'
+            object.prototype[name] = fn
+        else 
+            object[name] = fn
+
+
 module.exports = Realizer
