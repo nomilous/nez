@@ -106,7 +106,7 @@ describe 'Realizer', ->
                 done()
 
 
-            it 'has accumulated a pile of realizations', (done) ->
+            xit 'has accumulated a pile of realizations', (done) ->
 
                 console.log JSON.stringify Realizer.realizers, null, 4
                 done()
