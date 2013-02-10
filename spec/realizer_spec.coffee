@@ -154,5 +154,52 @@ describe 'Realizer', ->
                     done()
 
 
+            it 'keeps the original function', (done) ->
+
+                class NewClass
+                    function: -> 
+                        return 'ORIGINAL'
+
+                object = new NewClass
+                Realizer.createFunction 'function', object, {}, (realization) ->
+
+                realizer = Realizer.realizers[ "#{object.fing.ref}:function" ]
+                realizer.original().should.equal 'ORIGINAL'
+                done()
 
 
+            it 'keeps the configuration', (done) ->
+
+                config = returning: 'RETURN THIS INSTEAD'
+                object = new Object
+                Realizer.createFunction 'function', object, config, (realization) ->
+
+                realizer = Realizer.realizers[ "#{object.fing.ref}:function" ]
+                realizer.config.should.equal config
+                done()
+
+
+            it 'expectations on the prototype apply to all instances', (done) ->
+
+                class NewClass
+                    function: -> 
+                        return 'ORIGINAL'
+
+                before = new NewClass
+
+                Realizer.createFunction 'function', NewClass, {
+
+                    #
+                    # overrideing the NewClass prototype
+                    #
+                    returning: 'NEW'
+
+                }, (realization) ->
+
+
+                #
+                # before is an instance created before the override
+                # but the change still applies
+                #
+                before.function().should.equal 'NEW'
+                done()

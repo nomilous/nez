@@ -33,6 +33,14 @@ class Realizer
 
         key = object.fing.ref + ':' + name
 
+        if object.fing.type == 'prototype'
+
+            originalFunction = object.prototype[name]
+
+        else 
+
+            originalFunction = object[name]
+
         if typeof @realizers[key] == 'undefined'
 
             #
@@ -49,24 +57,20 @@ class Realizer
             @realizers[key] = 
 
                 object:       object
+                original:     originalFunction
+                config:       configuration
                 realizations: []
-            
-            #
-            # create the function
-            #
-            # TODO: temporary replace, prototype if
-            # TODO: tailor this function / and how it 
-            #       ataches per the configuration
 
-            object[name] = ->
+            #
+            # Realizer is a spy() that replaces the original
+            # function to callback with the realizations.
+            # 
+            #
 
-                # 
-                # shift from the realization stack
-                # to call the realizations back in
-                # create order
-                #
+            realizer = ->
 
                 object = Realizer.realizers[key].object
+                config = Realizer.realizers[key].config
                 realizerCallback = Realizer.realizers[key].realizations.shift()
 
                 if typeof realizerCallback == 'undefined'
@@ -79,6 +83,26 @@ class Realizer
                     object: object
                     args: arguments
 
+
+                return config.returning
+
+
+            #
+            # create the function
+            #
+            # TODO: temporary replace, prototype if
+            # TODO: tailor this function / and how it 
+            #       ataches per the configuration
+
+            if object.fing.type == 'prototype'
+
+                object.prototype[name] = realizer
+
+            else 
+
+                object[name] = realizer
+
+            
 
 
         @realizers[key].realizations.push realization
