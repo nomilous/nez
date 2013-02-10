@@ -203,3 +203,25 @@ describe 'Realizer', ->
                 #
                 before.function().should.equal 'NEW'
                 done()
+
+
+            it 'calls the original if configured to spy', (done) ->
+
+                arg3was = undefined
+                class NewClass
+                    function: (arg1, arg2, arg3) -> 
+                        arg3was = arg3
+
+                object = new NewClass
+                Realizer.createFunction 'function', NewClass, {
+
+                    as: 'spy'
+
+                }, (realization) ->
+                object.function "1", [2,2], {'3': 'THREE'}
+
+
+                arg3was.should.eql {'3': 'THREE'}
+                done()
+
+

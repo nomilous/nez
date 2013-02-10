@@ -67,16 +67,30 @@ class Realizer
             # 
             #
 
-            realizer = ->
+            realizer = (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad) ->
 
-                object = Realizer.realizers[key].object
-                config = Realizer.realizers[key].config
+                object   = Realizer.realizers[key].object
+                config   = Realizer.realizers[key].config
+                original = Realizer.realizers[key].original
                 realizerCallback = Realizer.realizers[key].realizations.shift()
 
+
                 if typeof realizerCallback == 'undefined'
+
+                    #
+                    # There are no more realizations in the 
+                    # callback stack for this function
+                    #
+
                     throw new AssertionError
+                    
                         message: 'Unexpected call to ' + key
 
+
+                #
+                # Post this call to the realizer callback for 
+                # later Expectation Validation
+                #
 
                 realizerCallback 
                        
@@ -84,15 +98,17 @@ class Realizer
                     args: arguments
 
 
+                #
+                # Call the original function or mock 
+                # according to config 
+                # 
+
+                if config.as == 'spy'
+
+                    return original arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad
+
                 return config.returning
 
-
-            #
-            # create the function
-            #
-            # TODO: temporary replace, prototype if
-            # TODO: tailor this function / and how it 
-            #       ataches per the configuration
 
             if object.fing.type == 'prototype'
 
