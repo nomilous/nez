@@ -1,6 +1,6 @@
 require 'should'
 require 'fing'
-Node = require '../src/node'
+Node = require '../lib/node'
 
 describe 'Node', -> 
 

@@ -1,5 +1,5 @@
 should       = require 'should'
-Confirmation = require '../src/confirmation'
+Confirmation = require '../lib/confirmation'
 
 describe 'Confirmation', -> 
 

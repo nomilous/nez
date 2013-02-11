@@ -1,6 +1,6 @@
 should = require 'should'
 print  = require('prettyjson').render
-Stack  = require '../src/stack'
+Stack  = require '../lib/stack'
 
 describe 'Stack', -> 
 

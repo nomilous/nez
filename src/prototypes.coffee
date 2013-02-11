@@ -21,15 +21,11 @@ module.exports =
 
                         configuration      = {}
                         configuration[key] = arguments[0][key]
-
-                        console.log "create expectation on:", this, 'with:', configuration
-
+                        
                         #
                         # Specification generation returns pending Confirmations
                         #
 
-                        edges.push Specification.create this, 
-
-                            expectation: configuration
+                        edges.push Specification.create this, configuration
 
                             

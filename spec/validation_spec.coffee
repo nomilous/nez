@@ -1,5 +1,5 @@
-Validation  = require '../src/validation'
-Expectation = require '../src/expectation'
+Validation  = require '../lib/validation'
+Expectation = require '../lib/expectation'
 should      = require 'should'
 
 describe 'Validation', -> 

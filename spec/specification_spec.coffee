@@ -1,5 +1,5 @@
 should        = require 'should'
-Specification = require '../src/specification'
+Specification = require '../lib/specification'
 
 describe 'Specification', ->
 

@@ -15,8 +15,6 @@ class Confirmation
 
     constructor: (object, configuration) ->
 
-        console.log "new confirmation", arguments
-
         #
         # A Confirmation contains a pending Validation that is
         # constructed from the Expectation Configuration 
