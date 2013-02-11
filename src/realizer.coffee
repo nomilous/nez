@@ -135,24 +135,82 @@ class Realizer
         @realizers[key].realizations.push realization
 
 
-    @createProperty: (name, object, configuration, realization) ->
+    @createProperty: (name, object, config, realization) ->
 
         target = @createTarget object
+        
+
+        #
+        # Get as Set properties are stored separately in
+        # the realization stack (per config.as in the key)
+        #
+
+        key = object.fing.ref + ':' + name + ':' + config.as
+
         originalProperty = target[name]
 
-        Object.defineProperty target, name,
+        #
+        # Create property realization stack
+        #
+
+        @realizers[key] = 
+
+            object:       object
+            original:     originalProperty
+            config:       config
+            realizations: []
+
+        #
+        # Create the realizer
+        #
+
+        realizer = 
         
             get: -> 
 
-                realization()
+                object   = Realizer.realizers[key].object
+                config   = Realizer.realizers[key].config
+                original = Realizer.realizers[key].original
+                realizerCallback = Realizer.realizers[key].realizations.shift()
 
-                if typeof configuration.returning != 'undefined'
+                returns = original
 
-                    return configuration.returning
+                if typeof config.returning != 'undefined'
 
-                return originalProperty
+                    returns = config.returning
 
+                #
+                # Realization callback fires on the get
+                # to enable spying on property getting
+                # 
+                
+                realizerCallback 
+                   
+                    object: object
+                    args: 0: original
+
+                if typeof config.returning != 'undefined'
+
+                    return config.returning
+
+                return original
+
+                
             set: (value) -> 
+
+        #
+        # Bind realizer to property
+        #
+
+        Object.defineProperty target, name, realizer
+
+
+        #
+        # Push first realization callback into the stack
+        #
+
+        @realizers[key].realizations.push realization
+
 
 
     @createTarget: (object) ->

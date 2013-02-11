@@ -231,12 +231,13 @@ describe 'Realizer', ->
 
             beforeEach -> 
 
+                seq = 0
 
                 class Thing
                     #
                     # A test class
                     #
-                    existingProperty: 'EXISTING VALUE'
+                    existingProperty: 'EXISTING VALUE' + ++seq
                         
 
                 #
@@ -247,21 +248,30 @@ describe 'Realizer', ->
 
             it 'is actually created', (done) ->
 
-                Realizer.createProperty 'newProperty', @thing, returning: '', ->
+                Realizer.createProperty 'newProperty', @thing, {
+                    as: 'get'
+                    returning: ''
+                }, ->
                 should.exist @thing.newProperty
                 done()
 
 
             it 'can be created on the prototype', (done) -> 
 
-                Realizer.createProperty 'property', class Thing, returning: '', ->
+                Realizer.createProperty 'property', class Thing, {
+                    as: 'get'
+                    returning: ''
+                }, ->
                 should.exist (new Thing).property
                 done()
 
 
             it 'can mock', (done) -> 
 
-                Realizer.createProperty 'property', class Thing, returning: 'MOCK VALUE', ->
+                Realizer.createProperty 'property', class Thing, {
+                    as: 'get'
+                    returning: 'MOCK VALUE'
+                }, ->
                 (new Thing).property.should.equal 'MOCK VALUE'
                 done()
 
@@ -269,19 +279,26 @@ describe 'Realizer', ->
             it 'calls back the Realization', (done) ->
 
                 Realizer.createProperty 'property', class Thing, {
-
-                    returning: 'MOCK VALUE', 
-
+                    as: 'get'
+                    returning: 'MOCK VALUE'
                 }, (realization) -> done()
 
                 (new Thing).property
 
 
+            it 'can spy on get', (done) ->
 
-            xit 'can spy', (done) ->
+                Realizer.createProperty 'existingProperty', @thing, {
 
-                Realizer.createProperty 'existingProperty', @thing, {}, ->
-                @thing.existingProperty.should.equal 'EXISTING VALUE'
-                done()
+                    as: 'get'
+
+                }, (realization) ->
+
+                    realization.args[0].should.equal 'EXISTING VALUE1'
+
+                    done()
+
+
+                @thing.existingProperty
 
 
