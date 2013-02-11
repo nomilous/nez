@@ -224,4 +224,39 @@ describe 'Realizer', ->
                 arg3was.should.eql {'3': 'THREE'}
                 done()
 
+            it 'resets to the original after validation'
+
+
+        describe 'as a property that', ->
+
+            beforeEach -> 
+
+
+                class Thing
+                    #
+                    # A test class
+                    #
+                    existingProperty: 'EXISTING VALUE'
+                        
+
+                #
+                # A test instance 
+                #
+                @thing = new Thing()
+
+
+            it 'is actually created', (done) ->
+
+                Realizer.createProperty 'newProperty', @thing
+                should.exist @thing.newProperty
+                done()
+
+
+            it 'can be created on the prototype', (done) -> 
+
+                Realizer.createProperty 'property', class Thing
+                should.exist (new Thing).property
+                done()
+
+
 

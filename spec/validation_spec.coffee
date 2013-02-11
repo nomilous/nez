@@ -58,7 +58,7 @@ describe 'Validation', ->
 
 
 
-    it 'can validate the Realization against the Expectation', (done) ->
+    xit 'can validate the Realization against the Expectation', (done) ->
 
         test = require('../lib/nez').test 'Example'
 

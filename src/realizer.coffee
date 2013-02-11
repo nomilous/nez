@@ -135,6 +135,21 @@ class Realizer
         @realizers[key].realizations.push realization
 
 
+    @createProperty: (name, object, configuration, realization) ->
+
+        target = @createTarget object
+
+        Object.defineProperty target, name,
+        
+            get: -> 'value'
+            set: (value) -> 
+
+
+    @createTarget: (object) ->
+        if object.fing.type == 'prototype'
+            return object.prototype
+        else 
+            return object
 
     @getOriginal: (name, object) ->
         if object.fing.type == 'prototype'
