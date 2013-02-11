@@ -138,10 +138,20 @@ class Realizer
     @createProperty: (name, object, configuration, realization) ->
 
         target = @createTarget object
+        originalProperty = target[name]
 
         Object.defineProperty target, name,
         
-            get: -> 'value'
+            get: -> 
+
+                realization()
+
+                if typeof configuration.returning != 'undefined'
+
+                    return configuration.returning
+
+                return originalProperty
+
             set: (value) -> 
 
 

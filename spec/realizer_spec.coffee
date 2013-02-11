@@ -247,16 +247,41 @@ describe 'Realizer', ->
 
             it 'is actually created', (done) ->
 
-                Realizer.createProperty 'newProperty', @thing
+                Realizer.createProperty 'newProperty', @thing, returning: '', ->
                 should.exist @thing.newProperty
                 done()
 
 
             it 'can be created on the prototype', (done) -> 
 
-                Realizer.createProperty 'property', class Thing
+                Realizer.createProperty 'property', class Thing, returning: '', ->
                 should.exist (new Thing).property
                 done()
 
+
+            it 'can mock', (done) -> 
+
+                Realizer.createProperty 'property', class Thing, returning: 'MOCK VALUE', ->
+                (new Thing).property.should.equal 'MOCK VALUE'
+                done()
+
+
+            it 'calls back the Realization', (done) ->
+
+                Realizer.createProperty 'property', class Thing, {
+
+                    returning: 'MOCK VALUE', 
+
+                }, (realization) -> done()
+
+                (new Thing).property
+
+
+
+            xit 'can spy', (done) ->
+
+                Realizer.createProperty 'existingProperty', @thing, {}, ->
+                @thing.existingProperty.should.equal 'EXISTING VALUE'
+                done()
 
 
