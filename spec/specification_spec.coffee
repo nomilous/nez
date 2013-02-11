@@ -26,7 +26,7 @@ describe 'Specification', ->
     it 'inserts expectant objects and a confirmations stack into the hash', (done) ->
 
         object = new Object
-        expectation = {}
+        expectation = expectation: 'function'
         Specification.create object, expectation
 
         Specification.objects[ object.fing.ref ].object.should.equal object
@@ -37,8 +37,8 @@ describe 'Specification', ->
     it 'stores a new instance of a Confirmation for each expectation', (done) ->
 
         object = new Object
-        expectation1 = { expectation: 'xpectation1' }
-        expectation2 = { expectation: 'xpectation2' }
+        expectation1 = expectation: 'xpectation1'
+        expectation2 = expectation: 'xpectation2'
         Specification.create object, expectation1
         Specification.create object, expectation2
 
@@ -55,7 +55,7 @@ describe 'Specification', ->
     it 'returns a not yet validated Confirmation', (done) ->
 
         object = new Object
-        confirmation = Specification.create object, expectation: {}
+        confirmation = Specification.create object, expectation: 'function'
         confirmation.fing.name.should.equal 'Confirmation'
         confirmation.pending.should.equal true
         done()

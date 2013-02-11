@@ -25,3 +25,5 @@ module.exports = nez =
         prototypes.object.set.expect name
 
         return nez.link name
+
+

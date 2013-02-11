@@ -27,7 +27,7 @@ class Confirmation
                 @pending    = true
                 @validation = new Validation (
 
-                    new Expectation object, configuration
+                    new Expectation object, configuration[key]
 
                 )
 

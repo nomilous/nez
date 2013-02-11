@@ -19,6 +19,8 @@ module.exports =
 
                     for key of arguments[0]
 
+                        continue if key == 'expect'
+
                         configuration      = {}
                         configuration[key] = arguments[0][key]
                         
@@ -26,6 +28,8 @@ module.exports =
                         # Specification generation returns pending Confirmations
                         #
 
-                        edges.push Specification.create this, configuration
+                        edges.push Specification.create this, 
+
+                            expectation: configuration
 
                             

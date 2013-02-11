@@ -1,54 +1,79 @@
 should        = require 'should'
 prototypes    = require '../lib/prototypes'
+Specification = require '../lib/specification'
 
 describe 'prototypes', ->
 
     describe 'extends Object.prototype', ->
+
+        prototypes.object.set.expect 'stackName'
 
         class Test
             constructor: ->
                 @tes = 't'
 
         testTHIS = new Test()
-        push = require('../lib/nez').test 'stackName'
 
-        push 'node', ->
+        describe '.expect()', -> 
 
-            describe '.expect()', -> 
+            it 'is a function', (done) ->
 
-                it 'is a function', (done) ->
+                
+                Function.prototype.expect.should.be.an.instanceof Function
+                done()
 
-                    prototypes.object.set.expect 'stackName'
-                    Function.prototype.expect.should.be.an.instanceof Function
+
+            it 'creates specifications', (done) ->
+
+                swap1 = Specification.create
+                swap2 = Specification.getNode
+                Specification.getNode = -> edges: []
+                Specification.create = (object, configuration) ->
+
+                    object.should.equal testTHIS
+                    configuration.should.eql
+
+                        expectation: 
+                            thisFunction: 
+                                with: 'args'
+
+                    Specification.create = swap1
+                    Specification.getNode = swap2
                     done()
 
+                testTHIS.expect thisFunction: with: 'args'
+                    
+                  
+            it 'supports multiple inline expectations', (done) ->
 
-                it 'pushes pending confirmations into the current node', (done) ->
+                class Test
+                count = 0
 
-                    push 'node', ->
+                swap1 = Specification.create
+                swap2 = Specification.getNode
+                Specification.getNode = -> edges: []
+                Specification.create = (object, configuration) ->
 
-                        testTHIS.expect thisFunction: with: 'args'
+                    object.should.equal Test
+                    if ++count == 2
 
-                        current = require('../lib/nez').stacks['stackName'].node.edges
-                        current[0].fing.name.should.equal 'Confirmation'
-                        console.log "TODO: finish this test once the Confirmation is identifiable" 
+                        #
+                        # test second calls config
+                        #
+
+                        configuration.should.eql
+                            expectation: 
+                                function2: 
+                                    with: 1:'arg1', 5:'arg5'
+
+                        Specification.create = swap1
+                        Specification.getNode = swap2
                         done()
-                        
-                      
-                it 'supports multiple inline expectations', (done) ->
 
-                    push 'node', ->
 
-                        class Test
+                Test.expect
 
-                        Test.expect
-                            function1: with: 'ARG'
-                            function2: with: 1:'arg1', 5:'arg5'
+                    function1: with: 'ARG'
+                    function2: with: 1:'arg1', 5:'arg5'
 
-                        current = require('../lib/nez').stacks['stackName'].node.edges
-                        current[0].fing.name.should.equal 'Confirmation'
-                        current[1].fing.name.should.equal 'Confirmation'
-                        console.log "TODO: finish this test once the Confirmation is identifiable" 
-
-                        done()
-                     
+                 

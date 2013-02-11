@@ -21,14 +21,14 @@ describe 'Confirmation', ->
 
     it 'is pending and unvalidated', (done) ->
 
-        confirmation = new Confirmation (new Object), expectation: {}
+        confirmation = new Confirmation (new Object), expectation: 'function'
         confirmation.pending.should.equal true
         done()
 
 
     it 'contains the validation details', (done) ->
 
-        confirmation = new Confirmation (new Object), expectation: {}
+        confirmation = new Confirmation (new Object), expectation: 'function'
 
         should.exist confirmation.validation
         confirmation.validation.fing.name.should.equal 'Validation'
