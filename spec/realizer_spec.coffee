@@ -175,7 +175,7 @@ describe 'Realizer', ->
                 Realizer.createFunction 'function', object, config, (realization) ->
 
                 realizer = Realizer.realizers[ "#{object.fing.ref}:function" ]
-                realizer.config.should.equal config
+                realizer.configs[0].should.equal config
                 done()
 
 
@@ -231,19 +231,19 @@ describe 'Realizer', ->
 
             beforeEach -> 
 
-                seq = 0
-
                 class Thing
+                    
                     #
                     # A test class
                     #
-                    existingProperty: 'EXISTING VALUE' + ++seq
-                        
+                    existingProperty: 'EXISTING VALUE'
+                
 
                 #
                 # A test instance 
                 #
                 @thing = new Thing()
+
 
 
             it 'is actually created', (done) ->
@@ -294,11 +294,38 @@ describe 'Realizer', ->
 
                 }, (realization) ->
 
-                    realization.args[0].should.equal 'EXISTING VALUE1'
+                    realization.args[0].should.equal 'EXISTING VALUE'
+                    done()
 
+                @thing.existingProperty
+
+
+            it 'can spy on multiple calls to get', (done) ->
+
+                Realizer.createProperty 'existingProperty', @thing, {
+                    as: 'get'
+                }, (realization) ->
+
+                    realization.args[0].should.equal 'EXISTING VALUE'
+                    
+
+                Realizer.createProperty 'existingProperty', @thing, {
+
+                    as: 'get'
+                    returning: 'INBETWEEN'  # <------------------ 
+
+
+                }, ->
+
+                Realizer.createProperty 'existingProperty', @thing, {
+                    as: 'get'
+                }, (realization) ->
+
+                    realization.args[0].should.equal 'EXISTING VALUE'
                     done()
 
 
                 @thing.existingProperty
-
+                @thing.existingProperty.should.equal 'INBETWEEN'
+                @thing.existingProperty
 

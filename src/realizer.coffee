@@ -57,6 +57,7 @@ class Realizer
             # 
 
             @realizers[key].realizations.push realization
+            @realizers[key].configs.push configuration
 
             return
 
@@ -72,7 +73,7 @@ class Realizer
 
             object:       object
             original:     originalFunction
-            config:       configuration
+            configs:      []
             realizations: []
 
 
@@ -84,15 +85,15 @@ class Realizer
         realizer = (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad) ->
 
             object   = Realizer.realizers[key].object
-            config   = Realizer.realizers[key].config
             original = Realizer.realizers[key].original
 
             #
             # realizerCallbacks are shifted() from the stack
             # so that they are called in create order.
             #
-
+            
             realizerCallback = Realizer.realizers[key].realizations.shift()
+            config = Realizer.realizers[key].configs.shift()
 
 
             if typeof realizerCallback == 'undefined'
@@ -133,6 +134,7 @@ class Realizer
         @replaceOriginal name, object, realizer
 
         @realizers[key].realizations.push realization
+        @realizers[key].configs.push configuration
 
 
     @createProperty: (name, object, config, realization) ->
@@ -147,6 +149,20 @@ class Realizer
 
         key = object.fing.ref + ':' + name + ':' + config.as
 
+        if @realizers[key]
+
+
+            #
+            # Already have a Realizer on this property,
+            # push this new Realization into the stack
+            # 
+
+            @realizers[key].realizations.push realization
+            @realizers[key].configs.push config
+
+            return
+
+
         originalProperty = target[name]
 
         #
@@ -157,7 +173,7 @@ class Realizer
 
             object:       object
             original:     originalProperty
-            config:       config
+            configs:      []
             realizations: []
 
         #
@@ -169,8 +185,8 @@ class Realizer
             get: -> 
 
                 object   = Realizer.realizers[key].object
-                config   = Realizer.realizers[key].config
                 original = Realizer.realizers[key].original
+                config   = Realizer.realizers[key].configs.shift()
                 realizerCallback = Realizer.realizers[key].realizations.shift()
 
                 returns = original
@@ -183,17 +199,13 @@ class Realizer
                 # Realization callback fires on the get
                 # to enable spying on property getting
                 # 
-                
+
                 realizerCallback 
                    
                     object: object
-                    args: 0: original
+                    args: 0: returns
 
-                if typeof config.returning != 'undefined'
-
-                    return config.returning
-
-                return original
+                return returns
 
                 
             set: (value) -> 
@@ -210,6 +222,7 @@ class Realizer
         #
 
         @realizers[key].realizations.push realization
+        @realizers[key].configs.push config
 
 
 
