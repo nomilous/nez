@@ -329,3 +329,12 @@ describe 'Realizer', ->
                 @thing.existingProperty.should.equal 'INBETWEEN'
                 @thing.existingProperty
 
+
+
+            it 'can spy on property set', (done) -> 
+
+                console.log 'gosh... look at the time'
+                true.should.equal false
+                done()
+
+
