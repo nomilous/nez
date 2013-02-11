@@ -1,6 +1,7 @@
-Validation  = require '../lib/validation'
-Expectation = require '../lib/expectation'
-should      = require 'should'
+Validation    = require '../lib/validation'
+Expectation   = require '../lib/expectation'
+Specification = require('../lib/specification')
+should        = require 'should'
 
 describe 'Validation', -> 
 
@@ -56,5 +57,53 @@ describe 'Validation', ->
             done()
 
 
+
+    it 'can validate the Realization against the Expectation', (done) ->
+
+        test = require('../lib/nez').test 'Example'
+
+        test 'Example', (to) ->
+
+            to 'ensure the validation has the Expectation and the Realization', -> 
+
+
+                #
+                # mock a function and call it
+                #
+
+                (class Thing).expect mockFunction: with: 2: 'EXPECTED SECOND ARG'
+                thing = new Thing
+                thing.mockFunction 'ACTUAL ARG 1', 'ACTUAL ARG 2'
+
+
+                #
+                # ensure that action is now validatable
+                #
+
+                specification = Specification.objects[ Thing.fing.ref ]
+                validation    = specification.confirmations[0].validation
+
+
+                #
+                # it has the expectation
+                #
+
+                validation.expectation.with.should.eql 
+
+                    2: 'EXPECTED SECOND ARG'
+
+
+                #
+                # it has the realization
+                #
+
+                validation.realization.args.should.eql
+
+                    0: 'ACTUAL ARG 1'
+                    1: 'ACTUAL ARG 2'
+
+
+
+                done() 
 
 
