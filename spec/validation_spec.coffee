@@ -107,7 +107,7 @@ describe 'Validation', ->
                 done() 
 
 
-    xit 'can validate the Realization against the Expectation for functions', (done) ->
+    xit 'can validate the Realization against the Expectation for properties', (done) ->
 
         test 'property expectation', (to) ->
 
@@ -125,5 +125,4 @@ describe 'Validation', ->
 
 
         done()
-
 
