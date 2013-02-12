@@ -224,6 +224,24 @@ describe 'Realizer', ->
                 arg3was.should.eql {'3': 'THREE'}
                 done()
 
+
+            it 'can be assigned a function to run instaed', (done) ->
+
+
+                object = new Object
+                Realizer.createFunction 'function', object, {
+
+                    substitute: (mock_arg) ->
+
+                        mock_arg.should.equal 'INLINE MOCK DEFIN' 
+                        done()
+
+                }, ->
+
+                object.function 'INLINE MOCK DEFIN'
+
+
+
             it 'resets to the original after validation'
 
 

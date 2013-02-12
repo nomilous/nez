@@ -118,6 +118,10 @@ class Realizer
                 object: object
                 args: arguments
 
+            if config.substitute
+
+                return config.substitute arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad
+
 
             #
             # Call the original function or mock 

@@ -126,3 +126,15 @@ describe 'Validation', ->
 
         done()
 
+
+    it 'allows inline mock function definition', (done) ->
+
+        (class Thing).expect mockFunction: (arg) -> 
+
+            arg.should.equal 'THIS'
+            done()
+
+        (new Thing).mockFunction 'THIS'
+
+
+

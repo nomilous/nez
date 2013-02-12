@@ -88,3 +88,10 @@ describe 'Expectation', ->
 
             done()
 
+        it 'sets the mock substitute function if defined', (done) ->
+
+            sub = ->
+            expectation = new Expectation (new Object), mockedFunction: sub
+            expectation.substitute.should.equal sub
+            done()  
+

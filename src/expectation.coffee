@@ -34,6 +34,9 @@ class Expectation
             @realizerName = key
             @assignParameters configuration[key]
 
+            if configuration[key] instanceof Function
+                @substitute = configuration[key]
+
             if ++count > 1
                 throw new AssertionError 
                     message: 'Multiple key hash not a valid Expectation configuration'
