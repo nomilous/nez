@@ -207,7 +207,7 @@ class Realizer
                 realizerCallback 
                    
                     object: object
-                    args: 0: returns
+                    args: returns
 
                 return returns
 
@@ -226,7 +226,7 @@ class Realizer
                 realizerCallback 
                    
                     object: object
-                    args: 0: value
+                    args: value
 
                 original = value
 

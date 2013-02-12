@@ -3,6 +3,8 @@ Expectation   = require '../lib/expectation'
 Specification = require('../lib/specification')
 should        = require 'should'
 
+test = require('../lib/nez').test 'Example'
+
 describe 'Validation', -> 
 
     it 'converts Expectations + Realizations into...', (confirmations) -> 
@@ -58,11 +60,9 @@ describe 'Validation', ->
 
 
 
-    xit 'can validate the Realization against the Expectation', (done) ->
+    xit 'can validate the Realization against the Expectation for functions', (done) ->
 
-        test = require('../lib/nez').test 'Example'
-
-        test 'Example', (to) ->
+        test 'fuction expectation', (to) ->
 
             to 'ensure the validation has the Expectation and the Realization', -> 
 
@@ -73,7 +73,7 @@ describe 'Validation', ->
 
                 (class Thing).expect mockFunction: with: 2: 'EXPECTED SECOND ARG'
                 thing = new Thing
-                thing.mockFunction 'ACTUAL ARG 1', 'ACTUAL ARG 2'
+                thing.mockFunction 'ARG1', 'WRONG SECOND ARG'
 
 
                 #
@@ -99,11 +99,31 @@ describe 'Validation', ->
 
                 validation.realization.args.should.eql
 
-                    0: 'ACTUAL ARG 1'
-                    1: 'ACTUAL ARG 2'
+                    0: 'ARG1'
+                    1: 'WRONG SECOND ARG'
 
 
 
                 done() 
+
+
+    xit 'can validate the Realization against the Expectation for functions', (done) ->
+
+        test 'property expectation', (to) ->
+
+            to 'ensure the validation has the Expectation and the Realization', -> 
+
+                (class Thing).expect mockProperty: as: 'set', with: 'EXPECTED VALUE'
+                thing = new Thing
+                thing.mockProperty = 'WRONG VALUE'
+
+                specification = Specification.objects[ Thing.fing.ref ]
+                validation    = specification.confirmations[0].validation
+
+                validation.expectation.with.should.eql 'EXPECTED VALUE'
+                validation.realization.args.should.eql 'WRONG VALUE'
+
+
+        done()
 
 

@@ -294,7 +294,7 @@ describe 'Realizer', ->
 
                 }, (realization) ->
 
-                    realization.args[0].should.equal 'EXISTING VALUE'
+                    realization.args.should.equal 'EXISTING VALUE'
                     done()
 
                 @thing.existingProperty
@@ -306,7 +306,7 @@ describe 'Realizer', ->
                     as: 'get'
                 }, (realization) ->
 
-                    realization.args[0].should.equal 'EXISTING VALUE'
+                    realization.args.should.equal 'EXISTING VALUE'
                     
 
                 Realizer.createProperty 'existingProperty', @thing, {
@@ -321,7 +321,7 @@ describe 'Realizer', ->
                     as: 'get'
                 }, (realization) ->
 
-                    realization.args[0].should.equal 'EXISTING VALUE'
+                    realization.args.should.equal 'EXISTING VALUE'
                     done()
 
 
@@ -352,7 +352,7 @@ describe 'Realizer', ->
                 Realizer.createProperty 'existingProperty', @thing, {
                     as: 'set'
                 }, (realization) ->
-                    realization.args[0].should.equal 'SEEN'
+                    realization.args.should.equal 'SEEN'
                     done()
 
                 @thing.existingProperty = 'SEEN'
