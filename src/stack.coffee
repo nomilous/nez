@@ -8,7 +8,8 @@ module.exports = class Stack
     constructor: (@name) -> 
 
         @stack = []
-        @walker = @tree = []
+        @node = new Node 'root'
+        @walker = @tree = @node.edges
 
 
     pusher: (label, callback) => 

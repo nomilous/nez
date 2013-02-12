@@ -4,6 +4,13 @@ Stack  = require '../lib/stack'
 
 describe 'Stack', -> 
 
+    it 'has a root node', (done) ->
+
+        stack = new Stack 'stack'
+        stack.node.label.should.equal 'root'
+        done()
+
+
     describe 'pusher()', -> 
 
         it 'calls to validate', (done) ->

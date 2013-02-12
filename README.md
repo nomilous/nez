@@ -50,7 +50,7 @@ should    = require 'should'
 Periscope = require '../src/submarine/tools/periscope'
 test      = require('nez').test
 
-describe 'Periscope', -> 
+describe 'Periscope', -> rm 
 
     it 'keeps your head above water', (done) -> 
 

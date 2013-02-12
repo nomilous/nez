@@ -1,4 +1,4 @@
-test  = require('../lib/nez').test 'Example'
+test  = require('../lib/nez').test
 
 
 class Example
@@ -18,5 +18,5 @@ test 'An Example', (to) ->
             done()
 
 
-tree = require('../lib/nez').stacks['Example'].tree
+tree = require('../lib/nez').stacks['0'].tree
 console.log JSON.stringify tree, null, 1
