@@ -48,7 +48,7 @@ This may change:
 
 should    = require 'should'
 Periscope = require '../src/submarine/tools/periscope'
-test      = require 'nez/test'
+test      = require('nez').test
 
 describe 'Periscope', -> 
 

@@ -1,7 +1,7 @@
 Stack      = require './stack'
 prototypes = require './prototypes'
 
-module.exports = nez = 
+nez = 
 
     stacks: {}
 
@@ -19,11 +19,15 @@ module.exports = nez =
 
         return nez.stacks[name].pusher
 
-    test: (name) ->
 
+Object.defineProperty nez, 'test',
+
+    get: ->
+
+        name = '0'
         nez.create name
         prototypes.object.set.expect name
-
         return nez.link name
 
 
+module.exports = nez

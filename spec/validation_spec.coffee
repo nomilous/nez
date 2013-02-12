@@ -3,7 +3,7 @@ Expectation   = require '../lib/expectation'
 Specification = require('../lib/specification')
 should        = require 'should'
 
-test = require('../lib/nez').test 'Example'
+test = require('../lib/nez').test
 
 describe 'Validation', -> 
 

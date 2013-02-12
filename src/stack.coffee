@@ -13,6 +13,15 @@ module.exports = class Stack
 
     pusher: (label, callback) => 
 
+        if label instanceof Function
+
+            #
+            # TODO: call validations
+            #
+            @validate()
+
+            return label()
+
         @push arguments
 
 
@@ -50,4 +59,6 @@ module.exports = class Stack
 
             @pendingClass = @node.class
 
+
+    validate: ->
 

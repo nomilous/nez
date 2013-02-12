@@ -1,23 +1,38 @@
 should = require 'should'
 Nez = require '../lib/nez'
 
+
+describe 'Nez', -> 
+
+    it 'can run unlinked', (done) ->
+
+        test = Nez.test
+        test done
+
+
+
+
+
+
+
+
+#
+# Later...
+#
+
+
 describe 'Nez.link()', -> 
 
     it 'returns a function for building a callback chain', (done) -> 
 
-
         fn = Nez.link 'thing'
-
         fn.should.be.an.instanceof Function
         done()
-
-
 
     it 'enables building a dependancy tree using the callback chain', (done) -> 
 
 
         project = Nez.link 'project'
-
         project 'Get your ducks in a row', (milestone) ->
 
             milestone 'Found all the ducks'
@@ -25,12 +40,6 @@ describe 'Nez.link()', ->
             milestone 'Located suitable pond'
 
             done()
-
-
-
-    #
-    # later...
-    #
 
     it 'provides a rootward edge linker'
 
@@ -45,30 +54,5 @@ describe 'Nez.link()', ->
 
             properties.link.should.be.an.instanceof Function
             done()
-
-
-
-describe 'Nez.test()', ->
-
-    it 'activates Object.prototype extensions for code tesing', (done) ->
-
-        test = Nez.test 'thing'
-        Object.prototype.expect.should.be.an.instanceof Function
-        done()
-
-
-    it 'passes the name of the stack to bind expectations to', (done) ->  
-
-        swap = set = require('../lib/prototypes').object.set
-        expectName = 'none'
-        set.expect = (name) -> expectName    = name
-        test = Nez.test 'thing'
-        set  = swap
-        expectName.should.equal 'thing'
-        done()
-
-
-
-
 
 

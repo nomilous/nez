@@ -6,19 +6,30 @@ describe 'Stack', ->
 
     describe 'pusher()', -> 
 
+        it 'calls to validate', (done) ->
+
+            stack = new Stack 'stack'
+            wasCalled = false
+            originalFn = stack.validate
+            stack.validate = -> wasCalled = true
+            stack.pusher ->
+            stack.validate = originalFn
+
+            wasCalled.should.equal true
+            done()
+
+        it 'runs done', (done) ->
+
+            stack = new Stack 'stack'
+            stack.pusher done
+
+
         it 'calls push() if received args', (done) -> 
 
             stack = new Stack 'stack'
-
-            # 
-            # temp swap push() to spy 
-            # 
             wasCalled = false
             originalFn = stack.push
             stack.push = -> wasCalled = true
-            #
-            # was push() called?
-            #
             stack.pusher 'label'
             stack.push = originalFn
 
