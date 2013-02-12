@@ -191,6 +191,10 @@ class Realizer
 
                 returns = original
 
+                if typeof realizerCallback == 'undefined'
+                    throw new AssertionError
+                        message: 'Unexpected call to ' + key
+
                 if typeof config.returning != 'undefined'
 
                     returns = config.returning
@@ -209,6 +213,22 @@ class Realizer
 
                 
             set: (value) -> 
+
+                object   = Realizer.realizers[key].object
+                original = Realizer.realizers[key].original
+                config   = Realizer.realizers[key].configs.shift()
+                realizerCallback = Realizer.realizers[key].realizations.shift()
+
+                if typeof realizerCallback == 'undefined'
+                    throw new AssertionError
+                        message: 'Unexpected call to ' + key
+
+                realizerCallback 
+                   
+                    object: object
+                    args: 0: value
+
+                original = value
 
         #
         # Bind realizer to property

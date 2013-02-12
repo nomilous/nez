@@ -330,11 +330,45 @@ describe 'Realizer', ->
                 @thing.existingProperty
 
 
+            it 'raises AssertionError if call get count exceeds expectation', (done) ->
+
+                Realizer.createProperty 'existingProperty', @thing, {
+                    as: 'get'
+                }, (realization) ->
+
+                try
+                    @thing.existingProperty
+                    @thing.existingProperty
+
+                catch error
+                    error.should.match /Unexpected call to/
+                    done()
+
+
+
 
             it 'can spy on property set', (done) -> 
 
-                console.log 'gosh... look at the time'
-                true.should.equal false
-                done()
+                Realizer.createProperty 'existingProperty', @thing, {
+                    as: 'set'
+                }, (realization) ->
+                    realization.args[0].should.equal 'SEEN'
+                    done()
 
+                @thing.existingProperty = 'SEEN'
+
+
+            it 'raises AssertionError if call set count exceeds expectation', (done) ->
+
+                Realizer.createProperty 'existingProperty', @thing, {
+                    as: 'set'
+                }, (realization) ->
+
+                try
+                    @thing.existingProperty = 1
+                    @thing.existingProperty = 2
+
+                catch error
+                    error.should.match /Unexpected call to/
+                    done()
 
