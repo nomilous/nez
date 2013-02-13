@@ -71,7 +71,7 @@ describe 'Validation', ->
                 # mock a function and call it
                 #
 
-                (class Thing).expect mockFunction: with: 2: 'EXPECTED SECOND ARG'
+                (class Thing).expect mockFunction: with: 1: 'ARG1', 2: 'EXPECTED SECOND ARG'
                 thing = new Thing
                 thing.mockFunction 'ARG1', 'WRONG SECOND ARG'
 
@@ -90,6 +90,7 @@ describe 'Validation', ->
 
                 validation.expectation.with.should.eql 
 
+                    1: 'ARG1'
                     2: 'EXPECTED SECOND ARG'
 
 
@@ -103,8 +104,7 @@ describe 'Validation', ->
                     1: 'WRONG SECOND ARG'
 
 
-
-                done() 
+                test done
 
 
     xit 'can validate the Realization against the Expectation for properties', (done) ->
@@ -124,7 +124,7 @@ describe 'Validation', ->
                 validation.realization.args.should.eql 'WRONG VALUE'
 
 
-        done()
+                test done
 
 
     it 'allows inline mock function definition', (done) ->
@@ -135,6 +135,22 @@ describe 'Validation', ->
             done()
 
         (new Thing).mockFunction 'THIS'
+
+
+    it 'validates expected args against realised args', (done) ->
+
+        thing1 = new (class Thing)
+        thing1.expect function: with: 6: 'ARG6'
+
+        thing1.function 1, 2, 3, 4, 5, 6
+
+        try
+            test done
+
+        catch error
+
+            error.should.match /expected/
+            done()
 
 
 

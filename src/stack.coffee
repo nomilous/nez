@@ -63,3 +63,6 @@ module.exports = class Stack
 
     validate: ->
 
+        for node in @node.edges
+
+            node.validate() if node.validate

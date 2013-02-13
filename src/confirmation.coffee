@@ -33,5 +33,9 @@ class Confirmation
 
             # else if 'hmm...'
 
+    validate: ->
+
+        @validation.validate()
+
 
 module.exports = Confirmation

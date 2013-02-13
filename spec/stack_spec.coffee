@@ -13,7 +13,7 @@ describe 'Stack', ->
 
     describe 'pusher()', -> 
 
-        it 'calls to validate', (done) ->
+        it 'calls to validate when the first arg is a function', (done) ->
 
             stack = new Stack 'stack'
             wasCalled = false
@@ -184,6 +184,24 @@ describe 'Stack', ->
             tree[0].edges[1].class.should.equal 'With'
             tree[0].edges[1].label.should.equal 'child2'
 
+
+            done()
+
+    describe 'validate()', ->
+
+        it 'validates each validatable object in the current node', (done) ->
+
+            count = 0
+            stack = new Stack 'stack'
+
+            stack.node.edges.push
+                validate: -> 
+                    count++
+
+            stack.node.edges.push {}
+
+            stack.validate()
+            count.should.equal 1
 
             done()
 
