@@ -13,7 +13,8 @@
   "bin": {},
   "dependencies": {
     "should": "~1.2.1",
-    "fing": "0.0.2"
+    "fing": "0.0.2",
+    "colors": "~0.6.0-1"
   },
   "devDependencies": {
     "hound": "~1.0.4",

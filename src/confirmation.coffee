@@ -33,9 +33,9 @@ class Confirmation
 
             # else if 'hmm...'
 
-    validate: ->
+    validate: (failedArray) ->
 
-        @validation.validate()
+        @validation.validate failedArray
 
 
 module.exports = Confirmation

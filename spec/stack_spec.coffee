@@ -200,7 +200,7 @@ describe 'Stack', ->
 
             stack.node.edges.push {}
 
-            stack.validate()
+            stack.validate ->
             count.should.equal 1
 
             done()

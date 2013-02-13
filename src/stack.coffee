@@ -17,11 +17,10 @@ module.exports = class Stack
         if label instanceof Function
 
             #
-            # TODO: call validations
+            # mocha done was passed in as label
             #
-            @validate()
 
-            return label()
+            return @validate label
 
         @push arguments
 
@@ -61,8 +60,12 @@ module.exports = class Stack
             @pendingClass = @node.class
 
 
-    validate: ->
+    validate: (done) ->
+
+        failed = []
 
         for node in @node.edges
 
-            node.validate() if node.validate
+            node.validate failed if node.validate
+
+        done failed[0]

@@ -60,7 +60,7 @@ describe 'Validation', ->
 
 
 
-    xit 'can validate the Realization against the Expectation for functions', (done) ->
+    it 'can validate the Realization against the Expectation for functions', (done) ->
 
         test 'fuction expectation', (to) ->
 
@@ -107,7 +107,7 @@ describe 'Validation', ->
                 test done
 
 
-    xit 'can validate the Realization against the Expectation for properties', (done) ->
+    it 'can validate the Realization against the Expectation for properties', (done) ->
 
         test 'property expectation', (to) ->
 
@@ -140,7 +140,7 @@ describe 'Validation', ->
     it 'validates expected args against realised args', (done) ->
 
         thing1 = new (class Thing)
-        thing1.expect function: with: 6: 'ARG6'
+        thing1.expect function: with: 1:1, 2:2, 4:4, 6:7
 
         thing1.function 1, 2, 3, 4, 5, 6
 
@@ -151,6 +151,9 @@ describe 'Validation', ->
 
             error.should.match /expected/
             done()
+
+
+    
 
 
 
