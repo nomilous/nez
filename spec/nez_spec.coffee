@@ -11,7 +11,7 @@ describe 'Nez', ->
 
     nez 'is French for "nose" ', (knows) ->
 
-        test knows
+        test -> knows()
 
 
 
