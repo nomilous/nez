@@ -1,15 +1,41 @@
 should = require 'should'
-Nez = require '../lib/nez'
+Nez    = require '../lib/nez'
+test   = idea = blueprint = Nez.test
+nez    = it
 
 
 describe 'Nez', -> 
 
-    it 'can run unlinked', (done) ->
 
-        test = Nez.test
-        test done
 
-    
+
+    nez 'is French for "nose" ', (knows) ->
+
+        test knows
+
+
+
+
+    nez 'is Flower for "hello" ', (stamen) ->
+
+        idea -> stamen()
+
+
+
+
+    nez 'is Tree for "blueprint" ', (pollinate) ->
+
+        blueprint( ->->-> pollinate() )('A')('I')
+
+
+
+
+    nez is: 'realization', -> 
+
+
+
+
+
 
 
 
@@ -21,7 +47,7 @@ describe 'Nez', ->
 #
 
 
-describe 'Nez.link()', -> 
+xdescribe 'Nez.link()', -> 
 
     it 'returns a function for building a callback chain', (done) -> 
 
@@ -41,9 +67,9 @@ describe 'Nez.link()', ->
 
             done()
 
-    it 'provides a rootward edge linker'
+    it 'provides a rootside hyper edge'
 
-    it 'provides a leafward edge linker', (done) -> 
+    it 'provides a leafside hyper edge', (done) -> 
 
         animal = Nez.link 'Animals'
 
@@ -51,6 +77,7 @@ describe 'Nez.link()', ->
 
             properties.link 'Asian'
             properties.link 'African'
+            properties.link 'Pink'
 
             properties.link.should.be.an.instanceof Function
             done()
