@@ -9,14 +9,61 @@ class Example
 
 test 'An Example', (to) ->
 
-    to 'verify that', (it) ->
+    to 'verify that', (IT) ->
 
-        it 'builds a tree', (done) ->
+        IT 'builds a tree', (done) ->
 
             Example.expect function2: as: 'spy', with: 2: 'ARG2'
             (new Example).function1()
-            done()
+            
+            test done
 
+# tree = require('../lib/nez').stacks['0'].tree
+# console.log JSON.stringify tree, null, 1
 
-tree = require('../lib/nez').stacks['0'].tree
-console.log JSON.stringify tree, null, 1
+#
+#
+#
+# [
+#  {
+#   "class": "0",
+#   "label": "An Example",
+#   "edges": [
+#    {
+#     "class": "to",
+#     "label": "verify that",
+#     "edges": [
+#      {
+#       "class": "IT",
+#       "label": "builds a tree",
+#       "edges": [
+#        {
+#         "pending": true,
+#         "validation": {
+#          "expectation": {
+#           "realizerName": "function2",         # brain
+#           "realizerCall": "createFunction",    # storm
+#           "realizerType": "spy",               # realize, ∞
+#           "with": {
+#            "0": "FAILED EXPECTATION on prototype:Example:4.function2()",
+#            "2": "ARG2"
+#           }
+#          },
+#          "realization": {
+#           "args": {
+#            "0": "ARG1",
+#            "1": "ARG2"
+#           }
+#          }
+#         }
+#        }
+#       ]
+#      }
+#     ]
+#    }
+#   ]
+#  }
+# ]
+#
+# later... 
+#
