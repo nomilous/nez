@@ -30,7 +30,7 @@ describe 'prototypes', ->
                     try
                         Object.expect '', ""
                     catch error
-                        error.should.match /Malformed expect config/
+                        error.should.match /Malformed expectation config/
                         done()
 
 

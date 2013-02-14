@@ -1,14 +1,17 @@
 should       = require 'should'
 Confirmation = require '../lib/confirmation'
-Validation  = require '../lib/validation'
+Validation   = require '../lib/validation'
+test         = require('../lib/nez').test
+
+
 
 describe 'Confirmation', -> 
 
-    xit 'is a Realizable Expectation', (okgood) -> 
+    it 'is a Realizable Expectation', (okgood) -> 
 
         okgood()
 
-    xit 'is constructed with object and configuration', (done) ->
+    it 'is constructed with object and configuration', (done) ->
 
         Confirmation.fing.args.should.eql [
 
@@ -20,14 +23,14 @@ describe 'Confirmation', ->
         done()
 
 
-    xit 'is pending and unvalidated', (done) ->
+    it 'is pending and unvalidated', (done) ->
 
         confirmation = new Confirmation (new Object), expectation: 'function'
         confirmation.pending.should.equal true
         done()
 
 
-    xit 'contains the validation details', (done) ->
+    it 'contains the validation details', (done) ->
 
         confirmation = new Confirmation (new Object), expectation: 'function'
 
@@ -36,7 +39,7 @@ describe 'Confirmation', ->
         done()
 
 
-    it 'calls validate', (done) ->
+    it 'calls onward to validation.validate()', (done) ->
 
         swap = Validation.prototype.validate
         Validation.prototype.validate = ->
@@ -44,10 +47,6 @@ describe 'Confirmation', ->
             Validation.prototype.validate = swap
             done()
 
-        test = require('../lib/nez').test
-        object = new Object
-        object.expect 'function'
-        object.function()
-
-        test ->
+        confirmation = new Confirmation (new Object), expectation: 'function'
+        confirmation.validate()
 

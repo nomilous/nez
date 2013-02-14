@@ -24,7 +24,7 @@ module.exports =
 
                         unless typeof arguments[1] == 'undefined' 
 
-                            throw 'Malformed expect config... use Object.expect <config>'
+                            throw 'Malformed expectation config... use <instance|ClassName>.expect <config>'
 
                         return unless edges = Specification.getNode(name).edges
 
