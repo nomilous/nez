@@ -27,6 +27,7 @@ Object.defineProperty nez, 'test',
         name = '0'
         nez.create name
         prototypes.object.set.expect name
+        prototypes.object.set.mock name
         return nez.link name
 
 
