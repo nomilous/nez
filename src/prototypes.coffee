@@ -8,6 +8,8 @@ module.exports =
 
             expect: (name) ->
 
+                return unless typeof Object.expect == 'undefined' 
+
                 Object.defineProperty Object.prototype, 'expect', 
 
                     #
@@ -32,10 +34,6 @@ module.exports =
                         else
 
                             for key of arguments[0]
-
-                                console.log "-------------", key
-
-                                continue if key == 'expect'
                                 
                                 configuration      = {}
                                 configuration[key] = arguments[0][key]
@@ -48,4 +46,3 @@ module.exports =
 
                                     expectation: configuration
 
-                                    

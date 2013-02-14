@@ -29,8 +29,6 @@ class Expectation
         count = 0
         for key of configuration
 
-            continue if key == 'expect'
-
             @realizerName = key
             @assignParameters configuration[key]
 
