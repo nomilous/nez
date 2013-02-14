@@ -37,8 +37,6 @@ class Validation
 
         for seq of expected
 
-            continue if seq == 'expect'
-
             #
             # align 0 based realization args
             # to 1 based expectation args
