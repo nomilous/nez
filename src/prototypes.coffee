@@ -8,39 +8,44 @@ module.exports =
 
             expect: (name) ->
 
-                Object.prototype.expect = ->
+                Object.defineProperty Object.prototype, 'expect', 
 
                     #
-                    # pushes pending expectation Confirmations into the
-                    # current node of the tree 
+                    # Object.expect is a property that returns a function
+                    # for creating Specifications and pushing them into
+                    # the named Stack
                     #
 
-                    return unless edges = Specification.getNode(name).edges
+                    get: -> -> 
 
-                    if typeof arguments[0] == 'string'
+                        return unless edges = Specification.getNode(name).edges
 
-                        configuration      = {}
-                        configuration[arguments[0]] = {}
+                        if typeof arguments[0] == 'string'
 
-                        edges.push Specification.create this, 
-
-                            expectation: configuration
-
-                    else
-
-                        for key of arguments[0]
-
-                            continue if key == 'expect'
-                            
                             configuration      = {}
-                            configuration[key] = arguments[0][key]
-                            
-                            #
-                            # Specification generation returns pending Confirmations
-                            #
+                            configuration[arguments[0]] = {}
 
                             edges.push Specification.create this, 
 
                                 expectation: configuration
 
+                        else
+
+                            for key of arguments[0]
+
+                                console.log "-------------", key
+
+                                continue if key == 'expect'
                                 
+                                configuration      = {}
+                                configuration[key] = arguments[0][key]
+                                
+                                #
+                                # Specification generation returns pending Confirmations
+                                #
+
+                                edges.push Specification.create this, 
+
+                                    expectation: configuration
+
+                                    
