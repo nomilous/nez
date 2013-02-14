@@ -6,27 +6,10 @@ A Declarative Expectation Framework<br />
 *For Node / Mocha / Coffee*
 
 
-### Backstory
+### Due Homage
 
-```
-I was dating Ruby for quite some time. Were getting rather serious. 
-I even got close to proposing to her. Then I met Node. Wild! We
-had an affair.
+[RSpec](http://rspec.info/)
 
-I've subsequently broken up with Ruby. We'll still see a lot of 
-each other. For the sake of the children. (Bastards... winks@stu)
-
-But there is something I really really miss about Ruby - she has...
-
-
-
-          Theee Most Beautiful Rspec. (due homage)
-
-
-
-Node - In contrast - Is kinda flat from the back.
-
-```
 
 
 ### Install
