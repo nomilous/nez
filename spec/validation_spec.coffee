@@ -60,7 +60,7 @@ describe 'Validation', ->
 
 
 
-    it 'can validate the Realization against the Expectation for functions', (done) ->
+    xit 'can validate the Realization against the Expectation for functions', (done) ->
 
         test 'fuction expectation', (to) ->
 
@@ -107,7 +107,7 @@ describe 'Validation', ->
                 test done
 
 
-    it 'can validate the Realization against the Expectation for properties', (done) ->
+    xit 'can validate the Realization against the Expectation for properties', (done) ->
 
         test 'property expectation', (to) ->
 
@@ -137,7 +137,7 @@ describe 'Validation', ->
         (new Thing).mockFunction 'THIS'
 
 
-    it 'validates expected args against realised args', (done) ->
+    xit 'validates expected args against realised args', (done) ->
 
         thing1 = new (class Thing)
         thing1.expect function: with: 1:1, 2:2, 4:4, 6:7

@@ -2,19 +2,23 @@ child_process = require 'child_process'
 hound         = require 'hound'
 
 docs = (after) ->
+    console.log 'docs...'
     opts = ['src/*.coffee']
     docco = child_process.spawn './node_modules/.bin/docco', opts
     docco.stdout.pipe process.stdout
     docco.stderr.pipe process.stderr
-    after()
+    docco.on 'exit', -> after()
 
-build = ->
+build = (after) ->
+    console.log 'build...'
     options = ['-c','-b', '-o', 'lib', 'src']
     builder = child_process.spawn './node_modules/.bin/coffee', options
     builder.stdout.pipe process.stdout
     builder.stderr.pipe process.stderr
+    builder.on 'exit', -> after()
 
-runSpec = (fileOrFolder) ->
+runSpec = (fileOrFolder, after) ->
+    console.log 'run test...'
     test_runner = child_process.spawn './node_modules/.bin/mocha', [
         '--colors',
         '--compilers', 
@@ -23,20 +27,20 @@ runSpec = (fileOrFolder) ->
     ]
     test_runner.stdout.pipe process.stdout
     test_runner.stderr.pipe process.stderr
+    test_runner.on 'exit', -> after()
 
 changed = (file) ->
     match = file.match /(src|spec)\/(.+)(_spec)?.coffee/
     spec_file = 'spec/' + match[2] + '_spec.coffee'
     spec_file = file if match[1] == 'spec'
     console.log 'Running: ', spec_file
-    runSpec spec_file
+    runSpec spec_file, ->
 
 watchSrcDir = ->
     console.log 'Watching ./src'
     watcher = hound.watch './src'
     watcher.on 'change', (file, stats) ->
-        changed file
-        build()
+        build -> changed file
 
 watchSpecDir = ->
     console.log 'Watching ./spec'
@@ -51,11 +55,11 @@ task 'dev', 'Run dev/spec', ->
 
 
 task 'spec', 'Run all tests', -> 
-    runSpec './spec'
+    build -> runSpec './spec', ->
 
 
 task 'build', 'Build', ->
-    build()
+    build ->
 
 task 'doc', 'Docco build', ->
-    docs ->
+    docs -> 

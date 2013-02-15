@@ -48,23 +48,22 @@ class Specification
 
 
         #
-        # Confirmations are referenced internally by object
+        # Confirmations are referenced internally by object ref
+        # as key into a local hash
         #
 
         confirmations = @objects[ object.fing.ref ].confirmations
 
 
         #
-        # Confirmations are referenced externally by associating with
-        # as Edges/Children of the current Node in the tree
+        # Confirmations are referenced externally by insertion into
+        # the tree as Edges/Children of the current Node
         #
 
         unless edges = @getNode(stackName).edges
 
             throw "Cannot access current Node in stack='#{stackName}'"
 
-
-        confirmations = @objects[ object.fing.ref ].confirmations
 
         #
         # Support multiple Specifications defined in 
@@ -76,7 +75,6 @@ class Specification
         for name of config
 
             expectation = {}
-
             expectation[name] = config[name]
             expectation[name].realizer = realizer
 
