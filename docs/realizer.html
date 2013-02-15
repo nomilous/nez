@@ -1,0 +1,159 @@
+<!DOCTYPE html>  <html> <head>   <title>realizer.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="confirmation.html">                 confirmation.coffee               </a>                                           <a class="source" href="expectation.html">                 expectation.coffee               </a>                                           <a class="source" href="nez.html">                 nez.coffee               </a>                                           <a class="source" href="node.html">                 node.coffee               </a>                                           <a class="source" href="notification.html">                 notification.coffee               </a>                                           <a class="source" href="prototypes.html">                 prototypes.coffee               </a>                                           <a class="source" href="realizer.html">                 realizer.coffee               </a>                                           <a class="source" href="specification.html">                 specification.coffee               </a>                                           <a class="source" href="stack.html">                 stack.coffee               </a>                                           <a class="source" href="validation.html">                 validation.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               realizer.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">AssertionError = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;assert&#39;</span><span class="p">).</span><span class="nx">AssertionError</span>
+<span class="nx">require</span> <span class="s">&#39;fing&#39;</span>
+
+<span class="k">class</span> <span class="nx">Realizer</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Realizer creates or overrides functions or properties
+on a specified object / prototype ('class')</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@realizers: </span><span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>It keeps a reference to each created override</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p><strong>createFunction()</strong> Create a function expectation.</p>
+
+<p><code>name</code> The name of the function</p>
+
+<p><code>object</code> The object / 'class' to create the fuction on.</p>
+
+<p><code>configuration</code> To further configure the actions to take when
+the function is called.</p>
+
+<p><code>realization</code> The callback to fire when the function is called.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@createFunction: </span><span class="nf">(name, object, configuration, realization) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Key is a unique refecence to a function and looks 
+approximately like this:  </p>
+
+<p>'instance:NewClass:8:functionName'</p>
+
+<p>or</p>
+
+<p>'prototype:NewClass:3:functionName'</p>
+
+<p>It is used to key the Realizer storage uniquely by
+prototype/instance/functionname</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">key = </span><span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">ref</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">name</span>
+
+        <span class="k">if</span> <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Already have a Realizer on this function,
+push this new Realization into the stack</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">realizations</span><span class="p">.</span><span class="nx">push</span> <span class="nx">realization</span>
+            <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">configs</span><span class="p">.</span><span class="nx">push</span> <span class="nx">configuration</span>
+
+            <span class="k">return</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>This is the first expectation on this function, 
+Prime the Realizer and Realizations stack</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">originalFunction = </span><span class="nx">@getOriginal</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">object</span>
+
+        <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> 
+
+            <span class="nv">object: </span>      <span class="nx">object</span>
+            <span class="nv">original: </span>    <span class="nx">originalFunction</span>
+            <span class="nv">configs: </span>     <span class="p">[]</span>
+            <span class="nv">realizations: </span><span class="p">[]</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Realizer is a spy() that replaces the original
+function to callback with the realizations.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">realizer = </span><span class="nf">(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, areYouMad) -&gt;</span>
+
+            <span class="nv">object   = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">object</span>
+            <span class="nv">original = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">original</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>realizerCallbacks are shifted() from the stack
+so that they are called in create order.</p>             </td>             <td class="code">               <div class="highlight"><pre>            
+            <span class="nv">realizerCallback = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">realizations</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span>
+            <span class="nv">config = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">configs</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span>
+
+
+            <span class="k">if</span> <span class="k">typeof</span> <span class="nx">realizerCallback</span> <span class="o">==</span> <span class="s">&#39;undefined&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>There are no more realizations in the 
+callback stack for this function</p>             </td>             <td class="code">               <div class="highlight"><pre>                <span class="k">throw</span> <span class="k">new</span> <span class="nx">AssertionError</span>
+
+                    <span class="nv">message: </span><span class="s">&#39;Unexpected call to &#39;</span> <span class="o">+</span> <span class="nx">key</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Post this call to the realizer callback for 
+later Expectation Validation</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">realizerCallback</span> 
+                   
+                <span class="nv">object: </span><span class="nx">object</span>
+                <span class="nv">args: </span><span class="nx">arguments</span>
+
+            <span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">substitute</span>
+
+                <span class="k">return</span> <span class="nx">config</span><span class="p">.</span><span class="nx">substitute</span> <span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">,</span> <span class="nx">arg3</span><span class="p">,</span> <span class="nx">arg4</span><span class="p">,</span> <span class="nx">arg5</span><span class="p">,</span> <span class="nx">arg6</span><span class="p">,</span> <span class="nx">arg7</span><span class="p">,</span> <span class="nx">arg8</span><span class="p">,</span> <span class="nx">areYouMad</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Call the original function or mock 
+according to config </p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">as</span> <span class="o">==</span> <span class="s">&#39;spy&#39;</span>
+
+                <span class="k">return</span> <span class="nx">original</span> <span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">,</span> <span class="nx">arg3</span><span class="p">,</span> <span class="nx">arg4</span><span class="p">,</span> <span class="nx">arg5</span><span class="p">,</span> <span class="nx">arg6</span><span class="p">,</span> <span class="nx">arg7</span><span class="p">,</span> <span class="nx">arg8</span><span class="p">,</span> <span class="nx">areYouMad</span>
+
+            <span class="k">return</span> <span class="nx">config</span><span class="p">.</span><span class="nx">returning</span>
+
+        <span class="nx">@replaceOriginal</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">object</span><span class="p">,</span> <span class="nx">realizer</span>
+
+        <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">realizations</span><span class="p">.</span><span class="nx">push</span> <span class="nx">realization</span>
+        <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">configs</span><span class="p">.</span><span class="nx">push</span> <span class="nx">configuration</span>
+
+
+    <span class="vi">@createProperty: </span><span class="nf">(name, object, config, realization) -&gt;</span>
+
+        <span class="nv">target = </span><span class="nx">@createTarget</span> <span class="nx">object</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Get as Set properties are stored separately in
+the realization stack (per config.as in the key)</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">key = </span><span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">ref</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">config</span><span class="p">.</span><span class="nx">as</span>
+
+        <span class="k">if</span> <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>Already have a Realizer on this property,
+push this new Realization into the stack</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">realizations</span><span class="p">.</span><span class="nx">push</span> <span class="nx">realization</span>
+            <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">configs</span><span class="p">.</span><span class="nx">push</span> <span class="nx">config</span>
+
+            <span class="k">return</span>
+
+
+        <span class="nv">originalProperty = </span><span class="nx">target</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>Create property realization stack</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> 
+
+            <span class="nv">object: </span>      <span class="nx">object</span>
+            <span class="nv">original: </span>    <span class="nx">originalProperty</span>
+            <span class="nv">configs: </span>     <span class="p">[]</span>
+            <span class="nv">realizations: </span><span class="p">[]</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>Create the realizer</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">realizer = </span>
+        
+            <span class="nv">get: </span><span class="o">-&gt;</span> 
+
+                <span class="nv">object   = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">object</span>
+                <span class="nv">original = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">original</span>
+                <span class="nv">config   = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">configs</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span>
+                <span class="nv">realizerCallback = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">realizations</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span>
+
+                <span class="nv">returns = </span><span class="nx">original</span>
+
+                <span class="k">if</span> <span class="k">typeof</span> <span class="nx">realizerCallback</span> <span class="o">==</span> <span class="s">&#39;undefined&#39;</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">AssertionError</span>
+                        <span class="nv">message: </span><span class="s">&#39;Unexpected call to &#39;</span> <span class="o">+</span> <span class="nx">key</span>
+
+                <span class="k">if</span> <span class="k">typeof</span> <span class="nx">config</span><span class="p">.</span><span class="nx">returning</span> <span class="o">!=</span> <span class="s">&#39;undefined&#39;</span>
+
+                    <span class="nv">returns = </span><span class="nx">config</span><span class="p">.</span><span class="nx">returning</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Realization callback fires on the get
+to enable spying on property getting</p>             </td>             <td class="code">               <div class="highlight"><pre>                <span class="nx">realizerCallback</span> 
+                   
+                    <span class="nv">object: </span><span class="nx">object</span>
+                    <span class="nv">args: </span><span class="nx">returns</span>
+
+                <span class="k">return</span> <span class="nx">returns</span>
+
+                
+            <span class="nv">set: </span><span class="nf">(value) -&gt;</span> 
+
+                <span class="nv">object   = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">object</span>
+                <span class="nv">original = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">original</span>
+                <span class="nv">config   = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">configs</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span>
+                <span class="nv">realizerCallback = </span><span class="nx">Realizer</span><span class="p">.</span><span class="nx">realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">realizations</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="k">typeof</span> <span class="nx">realizerCallback</span> <span class="o">==</span> <span class="s">&#39;undefined&#39;</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">AssertionError</span>
+                        <span class="nv">message: </span><span class="s">&#39;Unexpected call to &#39;</span> <span class="o">+</span> <span class="nx">key</span>
+
+                <span class="nx">realizerCallback</span> 
+                   
+                    <span class="nv">object: </span><span class="nx">object</span>
+                    <span class="nv">args: </span><span class="nx">value</span>
+
+                <span class="nv">original = </span><span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Bind realizer to property</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span> <span class="nx">target</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">realizer</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Push first realization callback into the stack</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">realizations</span><span class="p">.</span><span class="nx">push</span> <span class="nx">realization</span>
+        <span class="nx">@realizers</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">configs</span><span class="p">.</span><span class="nx">push</span> <span class="nx">config</span>
+
+
+
+    <span class="vi">@createTarget: </span><span class="nf">(object) -&gt;</span>
+        <span class="k">if</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s">&#39;prototype&#39;</span>
+            <span class="k">return</span> <span class="nx">object</span><span class="p">.</span><span class="nx">prototype</span>
+        <span class="k">else</span> 
+            <span class="k">return</span> <span class="nx">object</span>
+
+    <span class="vi">@getOriginal: </span><span class="nf">(name, object) -&gt;</span>
+        <span class="k">if</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s">&#39;prototype&#39;</span>
+            <span class="nv">originalFunction = </span><span class="nx">object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
+        <span class="k">else</span> 
+            <span class="nv">originalFunction = </span><span class="nx">object</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
+
+
+    <span class="vi">@replaceOriginal: </span><span class="nf">(name, object, fn) -&gt;</span>
+        <span class="k">if</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s">&#39;prototype&#39;</span>
+            <span class="nx">object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">fn</span>
+        <span class="k">else</span> 
+            <span class="nx">object</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">fn</span>
+
+
+<span class="nv">module.exports = </span><span class="nx">Realizer</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

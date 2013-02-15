@@ -134,7 +134,6 @@ class Realizer
 
             return config.returning
 
-
         @replaceOriginal name, object, realizer
 
         @realizers[key].realizations.push realization

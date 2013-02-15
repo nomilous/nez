@@ -1,0 +1,66 @@
+<!DOCTYPE html>  <html> <head>   <title>specification.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="confirmation.html">                 confirmation.coffee               </a>                                           <a class="source" href="expectation.html">                 expectation.coffee               </a>                                           <a class="source" href="nez.html">                 nez.coffee               </a>                                           <a class="source" href="node.html">                 node.coffee               </a>                                           <a class="source" href="notification.html">                 notification.coffee               </a>                                           <a class="source" href="prototypes.html">                 prototypes.coffee               </a>                                           <a class="source" href="realizer.html">                 realizer.coffee               </a>                                           <a class="source" href="specification.html">                 specification.coffee               </a>                                           <a class="source" href="stack.html">                 stack.coffee               </a>                                           <a class="source" href="validation.html">                 validation.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               specification.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <hr />
+
+<p>Houses hash of interfaces/objects each with a stack of 
+pending Confirmations.</p>
+
+<hr />             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">require</span> <span class="s">&#39;fing&#39;</span>
+<span class="nv">Confirmation = </span><span class="nx">require</span> <span class="s">&#39;./confirmation&#39;</span>
+
+<span class="k">class</span> <span class="nx">Specification</span>
+
+    <span class="vi">@objects: </span><span class="p">{}</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>Specification.create( <code>opts</code> )</h2>
+
+<p>Create a new Specification with <code>opts</code> as:</p>
+
+<p><code>stack</code>     - Name of the active Stack</p>
+
+<p><code>interface</code> - Object or interface to/from the object to 
+              which the Specification is assocaited.</p>
+
+<p><code>config</code>    - A hash of config for the specification.</p>
+
+<p><code>realizer</code>  - For realizer plugins. Later.</p>
+
+<hr />             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@create: </span><span class="nf">(opts) -&gt;</span>
+
+        <span class="nv">stackName = </span><span class="nx">opts</span><span class="p">.</span><span class="nx">stack</span>
+
+        <span class="nv">object    = </span><span class="nx">opts</span><span class="p">.</span><span class="nx">interface</span>
+        <span class="nv">config    = </span><span class="nx">opts</span><span class="p">.</span><span class="nx">config</span>
+        <span class="nv">realizer  = </span><span class="nx">opts</span><span class="p">.</span><span class="nx">realizer</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Ensure initialized Confirmation stack</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">@objects</span><span class="p">[</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">ref</span> <span class="p">]</span> <span class="o">||=</span>
+
+            <span class="nv">interface: </span><span class="nx">object</span>
+            <span class="nv">confirmations: </span><span class="p">[]</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Confirmations are referenced internally by object</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">confirmations = </span><span class="nx">@objects</span><span class="p">[</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">ref</span> <span class="p">].</span><span class="nx">confirmations</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Confirmations are referenced externally by associating with
+as Edges/Children of the current Node in the tree</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">unless</span> <span class="nv">edges = </span><span class="nx">@getNode</span><span class="p">(</span><span class="nx">stackName</span><span class="p">).</span><span class="nx">edges</span>
+
+            <span class="k">throw</span> <span class="s">&quot;Cannot access current Node in stack=&#39;</span><span class="si">#{</span><span class="nx">stackName</span><span class="si">}</span><span class="s">&#39;&quot;</span>
+
+
+        <span class="nv">confirmations = </span><span class="nx">@objects</span><span class="p">[</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">ref</span> <span class="p">].</span><span class="nx">confirmations</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Support multiple Specifications defined in 
+opts.config</p>
+
+<p>For each key in the has</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">for</span> <span class="nx">name</span> <span class="k">of</span> <span class="nx">config</span>
+
+            <span class="nv">expectation = </span><span class="p">{}</span>
+
+            <span class="nx">expectation</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">config</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
+            <span class="nx">expectation</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nv">realizer = </span><span class="nx">realizer</span>
+
+
+            <span class="nv">confirmation = </span><span class="k">new</span> <span class="nx">Confirmation</span> <span class="nx">object</span><span class="p">,</span>
+
+                <span class="nv">expectation: </span><span class="nx">expectation</span>
+
+
+            <span class="nx">confirmations</span><span class="p">.</span><span class="nx">push</span> <span class="nx">confirmation</span>
+            <span class="nx">edges</span><span class="p">.</span><span class="nx">push</span> <span class="nx">confirmation</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Push the new confirmation into the stack</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">@objects</span><span class="p">[</span> <span class="nx">object</span><span class="p">.</span><span class="nx">fing</span><span class="p">.</span><span class="nx">ref</span> <span class="p">].</span><span class="nx">confirmations</span><span class="p">.</span><span class="nx">push</span> <span class="nx">confirmation</span>
+
+
+
+    <span class="vi">@getNode: </span><span class="nf">(stackName) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>late require, need the stack as it currently is</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">return</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;./nez&#39;</span><span class="p">).</span><span class="nx">stacks</span><span class="p">[</span><span class="nx">stackName</span><span class="p">].</span><span class="nx">node</span>
+
+
+
+<span class="nv">module.exports = </span><span class="nx">Specification</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

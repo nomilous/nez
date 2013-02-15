@@ -1,0 +1,72 @@
+<!DOCTYPE html>  <html> <head>   <title>prototypes.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="confirmation.html">                 confirmation.coffee               </a>                                           <a class="source" href="expectation.html">                 expectation.coffee               </a>                                           <a class="source" href="nez.html">                 nez.coffee               </a>                                           <a class="source" href="node.html">                 node.coffee               </a>                                           <a class="source" href="notification.html">                 notification.coffee               </a>                                           <a class="source" href="prototypes.html">                 prototypes.coffee               </a>                                           <a class="source" href="realizer.html">                 realizer.coffee               </a>                                           <a class="source" href="specification.html">                 specification.coffee               </a>                                           <a class="source" href="stack.html">                 stack.coffee               </a>                                           <a class="source" href="validation.html">                 validation.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               prototypes.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">Specification = </span><span class="nx">require</span> <span class="s">&#39;./specification&#39;</span> 
+
+<span class="nv">module.exports = </span>
+
+    <span class="nv">object:</span>
+
+        <span class="nv">set:</span>
+
+            <span class="nv">expect: </span><span class="nf">(stackName) -&gt;</span>
+
+                <span class="k">return</span> <span class="nx">unless</span> <span class="k">typeof</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">expect</span> <span class="o">==</span> <span class="s">&#39;undefined&#39;</span> 
+
+                <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="s">&#39;expect&#39;</span><span class="p">,</span> 
+
+                    <span class="nv">get: </span><span class="o">-&gt;</span> </pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p><strong>Object.expect( <code>config</code> )</strong> </p>
+
+<p>A globally available property on <em>any</em> object that returns a 
+<code>function()</code> for creating Specifications associated with the object 
+and pushing those Specifications into the named Stack</p>             </td>             <td class="code">               <div class="highlight"><pre>                        <span class="nf">(config) -&gt;</span> 
+
+
+                            <span class="nx">unless</span> <span class="k">typeof</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;undefined&#39;</span> 
+
+                                <span class="k">throw</span> <span class="s">&#39;Malformed expectation config... use &lt;instance|ClassName&gt;.expect &lt;config&gt;&#39;</span>
+                            
+
+                            <span class="nv">expectation = </span><span class="nx">config</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Marshal default config from 'string'</p>             </td>             <td class="code">               <div class="highlight"><pre>                            <span class="k">if</span> <span class="k">typeof</span> <span class="nx">config</span> <span class="o">==</span> <span class="s">&#39;string&#39;</span>
+
+                                <span class="nv">expectation         = </span><span class="p">{}</span>
+                                <span class="nx">expectation</span><span class="p">[</span><span class="nx">config</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>create a new realizable Expectation on <code>this</code> via the Specification
+interface</p>             </td>             <td class="code">               <div class="highlight"><pre>                            <span class="nx">Specification</span><span class="p">.</span><span class="nx">create</span>
+
+                                <span class="nv">stack: </span><span class="nx">stackName</span>
+
+                                <span class="nv">interface: </span><span class="k">this</span>
+
+                                <span class="nv">config: </span><span class="nx">expectation</span>
+
+                                <span class="nv">realizer: </span><span class="s">&#39;PLACEHOLDER&#39;</span>
+
+                                
+
+
+            <span class="nv">mock: </span><span class="o">-&gt;</span>
+
+                <span class="k">return</span> <span class="nx">unless</span> <span class="k">typeof</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">mock</span> <span class="o">==</span> <span class="s">&#39;undefined&#39;</span> 
+
+                <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="s">&#39;mock&#39;</span><span class="p">,</span> 
+
+                    <span class="nv">get: </span><span class="o">-&gt;</span> </pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p><strong>Object.mock( <code>className</code>, <code>config</code> )</strong> </p>
+
+<p>As globally available property on Object that returns a 
+function for creating a mock object and assigning
+a set of Specifications to the new object.</p>             </td>             <td class="code">               <div class="highlight"><pre>                        <span class="nf">(className, config) -&gt;</span> 
+
+                            <span class="nx">unless</span> <span class="k">typeof</span> <span class="nx">className</span> <span class="o">==</span> <span class="s">&#39;string&#39;</span>
+
+                                <span class="k">throw</span> <span class="s">&#39;Malformed mock config... use Object.mock \&#39;MockObjectName\&#39;, &lt;config&gt;&#39;</span>
+
+
+                            <span class="nb">eval</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">                                this.klass = (function() {</span>
+<span class="s">                                    function </span><span class="si">#{</span><span class="nx">className</span><span class="si">}</span><span class="s">() {}</span>
+<span class="s">                                    return </span><span class="si">#{</span><span class="nx">className</span><span class="si">}</span><span class="s">;</span>
+<span class="s">                                })();</span>
+<span class="s">                            &quot;&quot;&quot;</span>
+
+                            <span class="nx">@klass</span><span class="p">.</span><span class="nx">expect</span> <span class="nx">config</span> <span class="k">if</span> <span class="nx">config</span>
+
+                            <span class="k">return</span> <span class="k">new</span> <span class="nx">@klass</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

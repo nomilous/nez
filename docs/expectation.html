@@ -1,0 +1,87 @@
+<!DOCTYPE html>  <html> <head>   <title>expectation.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="confirmation.html">                 confirmation.coffee               </a>                                           <a class="source" href="expectation.html">                 expectation.coffee               </a>                                           <a class="source" href="nez.html">                 nez.coffee               </a>                                           <a class="source" href="node.html">                 node.coffee               </a>                                           <a class="source" href="notification.html">                 notification.coffee               </a>                                           <a class="source" href="prototypes.html">                 prototypes.coffee               </a>                                           <a class="source" href="realizer.html">                 realizer.coffee               </a>                                           <a class="source" href="specification.html">                 specification.coffee               </a>                                           <a class="source" href="stack.html">                 stack.coffee               </a>                                           <a class="source" href="validation.html">                 validation.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               expectation.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">AssertionError = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;assert&#39;</span><span class="p">).</span><span class="nx">AssertionError</span>
+
+<span class="k">class</span> <span class="nx">Expectation</span>
+
+    <span class="nv">constructor: </span><span class="nf">(object, configuration) -&gt;</span>
+
+        <span class="nx">@validate</span> <span class="nx">configuration</span>
+        <span class="vi">@on = </span><span class="nx">object</span>
+
+
+    <span class="nv">validate: </span><span class="nf">(configuration) -&gt;</span> 
+
+        <span class="k">if</span> <span class="k">typeof</span> <span class="nx">configuration</span> <span class="o">==</span> <span class="s">&#39;undefined&#39;</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">AssertionError</span>
+                <span class="nv">message: </span><span class="s">&#39;undefined Expectation configuration&#39;</span>
+
+        <span class="k">if</span> <span class="k">typeof</span> <span class="nx">configuration</span> <span class="o">==</span> <span class="s">&#39;string&#39;</span>
+            <span class="vi">@realizerName = </span><span class="nx">configuration</span>
+            <span class="vi">@realizerCall = </span><span class="s">&#39;createFunction&#39;</span>
+            <span class="vi">@realizerType = </span><span class="s">&#39;mock&#39;</span>
+            
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="k">typeof</span> <span class="nx">configuration</span> <span class="o">==</span> <span class="s">&#39;object&#39;</span>
+            <span class="k">if</span> <span class="nx">configuration</span> <span class="k">instanceof</span> <span class="nb">Array</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">AssertionError</span> 
+                    <span class="nv">message: </span><span class="s">&#39;Array not a valid Expectation configuration&#39;</span>
+
+        <span class="nv">count = </span><span class="mi">0</span>
+        <span class="k">for</span> <span class="nx">key</span> <span class="k">of</span> <span class="nx">configuration</span>
+
+            <span class="vi">@realizerName = </span><span class="nx">key</span>
+            <span class="nx">@assignParameters</span> <span class="nx">configuration</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nx">configuration</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="k">instanceof</span> <span class="nb">Function</span>
+                <span class="vi">@substitute = </span><span class="nx">configuration</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="o">++</span><span class="nx">count</span> <span class="o">&gt;</span> <span class="mi">1</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">AssertionError</span> 
+                    <span class="nv">message: </span><span class="s">&#39;Multiple key hash not a valid Expectation configuration&#39;</span>
+
+
+
+    <span class="nv">assignParameters: </span><span class="nf">(parameters) -&gt;</span>
+
+        <span class="vi">@realizerCall = </span><span class="s">&#39;createFunction&#39;</span>
+        <span class="vi">@realizerType = </span><span class="s">&#39;mock&#39;</span>
+
+        <span class="k">for</span> <span class="nx">key</span> <span class="k">of</span> <span class="nx">parameters</span>
+
+            <span class="k">if</span> <span class="nx">key</span> <span class="o">==</span> <span class="s">&#39;as&#39;</span>
+
+                <span class="nx">@setRealizationConfig</span> <span class="nx">parameters</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+                <span class="k">continue</span>
+
+            <span class="nx">@</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">parameters</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+
+
+    <span class="nv">setRealizationConfig: </span><span class="nf">(parameter) -&gt;</span>
+
+        <span class="k">switch</span> <span class="nx">parameter</span>
+
+            <span class="k">when</span> <span class="s">&#39;mock&#39;</span>
+
+                <span class="vi">@realizerCall = </span><span class="s">&#39;createFunction&#39;</span>
+                <span class="vi">@realizerType = </span><span class="s">&#39;mock&#39;</span>
+
+            <span class="k">when</span> <span class="s">&#39;spy&#39;</span>
+
+                <span class="vi">@realizerCall = </span><span class="s">&#39;createFunction&#39;</span>
+                <span class="vi">@realizerType = </span><span class="s">&#39;spy&#39;</span>
+
+            <span class="k">when</span> <span class="s">&#39;get&#39;</span>
+
+                <span class="vi">@realizerCall = </span><span class="s">&#39;createProperty&#39;</span>
+                <span class="vi">@realizerType = </span><span class="s">&#39;get&#39;</span>
+
+            <span class="k">when</span> <span class="s">&#39;set&#39;</span>
+
+                <span class="vi">@realizerCall = </span><span class="s">&#39;createProperty&#39;</span>
+                <span class="vi">@realizerType = </span><span class="s">&#39;set&#39;</span>
+
+
+
+<span class="nv">module.exports = </span><span class="nx">Expectation</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

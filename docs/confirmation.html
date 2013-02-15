@@ -1,0 +1,27 @@
+<!DOCTYPE html>  <html> <head>   <title>confirmation.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="confirmation.html">                 confirmation.coffee               </a>                                           <a class="source" href="expectation.html">                 expectation.coffee               </a>                                           <a class="source" href="nez.html">                 nez.coffee               </a>                                           <a class="source" href="node.html">                 node.coffee               </a>                                           <a class="source" href="notification.html">                 notification.coffee               </a>                                           <a class="source" href="prototypes.html">                 prototypes.coffee               </a>                                           <a class="source" href="realizer.html">                 realizer.coffee               </a>                                           <a class="source" href="specification.html">                 specification.coffee               </a>                                           <a class="source" href="stack.html">                 stack.coffee               </a>                                           <a class="source" href="validation.html">                 validation.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               confirmation.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">Expectation = </span><span class="nx">require</span> <span class="s">&#39;./expectation&#39;</span>
+<span class="nv">Validation  = </span><span class="nx">require</span> <span class="s">&#39;./validation&#39;</span>
+
+
+<span class="k">class</span> <span class="nx">Confirmation</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>A confirmation is created for each expectation</p>
+
+<p><code>object</code> - The object upon which the expectation has
+           been placed</p>
+
+<p><code>configuration</code> - Config for the Confirmation</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">constructor: </span><span class="nf">(object, configuration) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>A Confirmation contains a pending Validation that is
+constructed from the Expectation Configuration </p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">for</span> <span class="nx">key</span> <span class="k">of</span> <span class="nx">configuration</span>
+
+            <span class="k">if</span> <span class="nx">key</span> <span class="o">==</span> <span class="s">&#39;expectation&#39;</span>
+
+                <span class="vi">@pending    = </span><span class="kc">true</span>
+                <span class="vi">@validation = </span><span class="k">new</span> <span class="nx">Validation</span> <span class="p">(</span>
+
+                    <span class="k">new</span> <span class="nx">Expectation</span> <span class="nx">object</span><span class="p">,</span> <span class="nx">configuration</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+
+                <span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>else if 'hmm...'</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">validate: </span><span class="nf">(failedArray) -&gt;</span>
+
+        <span class="nx">@validation</span><span class="p">.</span><span class="nx">validate</span> <span class="nx">failedArray</span>
+
+
+<span class="nv">module.exports = </span><span class="nx">Confirmation</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

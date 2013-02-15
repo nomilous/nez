@@ -6,85 +6,94 @@ module.exports =
 
         set:
 
-            expect: (name) ->
-
-                #
-                # **Object.expect** 
-                # 
-                # A globally available property on *any* object that returns a 
-                # function for creating Specifications associated with the object 
-                # and pushing those Specifications into the `name`d Stack
-                #
+            expect: (stackName) ->
 
                 return unless typeof Object.expect == 'undefined' 
 
                 Object.defineProperty Object.prototype, 'expect', 
 
-                    get: -> -> 
+                    get: -> 
 
-                        unless typeof arguments[1] == 'undefined' 
+                        #
+                        # **Object.expect( `config` )** 
+                        # 
+                        # A globally available property on *any* object that returns a 
+                        # `function()` for creating Specifications associated with the object 
+                        # and pushing those Specifications into the named Stack
+                        #
 
-                            throw 'Malformed expectation config... use <instance|ClassName>.expect <config>'
+                        (config) -> 
 
-                        return unless edges = Specification.getNode(name).edges
 
-                        if typeof arguments[0] == 'string'
+                            unless typeof arguments[1] == 'undefined' 
 
-                            configuration      = {}
-                            configuration[arguments[0]] = {}
+                                throw 'Malformed expectation config... use <instance|ClassName>.expect <config>'
+                            
 
-                            edges.push Specification.create this, 
+                            expectation = config
 
-                                expectation: configuration
 
-                        else
+                            #
+                            # Marshal default config from 'string'
+                            #
 
-                            for key of arguments[0]
+                            if typeof config == 'string'
+
+                                expectation         = {}
+                                expectation[config] = {}
+
+
+                            #
+                            # create a new realizable Expectation on `this` via the Specification
+                            # interface
+                            #
+
+                            Specification.create
+
+                                stack: stackName
+
+                                interface: this
+
+                                config: expectation
+
+                                realizer: 'PLACEHOLDER'
+
                                 
-                                configuration      = {}
-                                configuration[key] = arguments[0][key]
-                                
-                                #
-                                # Specification generation returns pending Confirmations
-                                #
 
-                                edges.push Specification.create this, 
-
-                                    expectation: configuration
 
             mock: ->
-
-                #
-                # **Object.mock** 
-                # 
-                # As globally available property on Object that returns a 
-                # function for creating a mock object and assigning
-                # a set of Specifications to the new object.
-                # 
 
                 return unless typeof Object.mock == 'undefined' 
 
                 Object.defineProperty Object.prototype, 'mock', 
 
-                    get: -> -> 
+                    get: -> 
 
-                        unless typeof arguments[0] == 'string'
+                        #
+                        # **Object.mock( `className`, `config` )** 
+                        # 
+                        # As globally available property on Object that returns a 
+                        # function for creating a mock object and assigning
+                        # a set of Specifications to the new object.
+                        # 
 
-                            throw 'Malformed mock config... use Object.mock \'MockObjectName\', <config>'
+                        (className, config) -> 
 
-                        className = arguments[0]
-                        expectations = arguments[1]
+                            unless typeof className == 'string'
 
-                        eval """
-                            this.klass = (function() {
-                                function #{className}() {}
-                                return #{className};
-                            })();
-                        """
+                                throw 'Malformed mock config... use Object.mock \'MockObjectName\', <config>'
 
-                        @klass.expect expectations if expectations
 
-                        return new @klass
+                            eval """
+                                this.klass = (function() {
+                                    function #{className}() {}
+                                    return #{className};
+                                })();
+                            """
+
+                            @klass.expect config if config
+
+                            return new @klass
 
 
 

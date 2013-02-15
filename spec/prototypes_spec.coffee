@@ -35,58 +35,44 @@ describe 'prototypes', ->
 
 
 
+
             it 'creates specifications', (done) ->
 
                 swap1 = Specification.create
                 swap2 = Specification.getNode
                 Specification.getNode = -> edges: []
-                Specification.create = (object, configuration) ->
+                Specification.create = (specification) ->
 
-                    object.should.equal testTHIS
-                    configuration.should.eql
-
-                        expectation: 
-                            thisFunction: 
-                                with: 'args'
+                    specification.interface.should.equal testTHIS
+                    specification.config.should.eql
+                        thisFunction: 
+                            with: 'args'
 
                     Specification.create = swap1
                     Specification.getNode = swap2
                     done()
 
                 testTHIS.expect thisFunction: with: 'args'
-                    
-                  
-            it 'supports multiple inline expectations', (done) ->
 
-                class Test
-                count = 0
+
+
+            it 'marshals configuration for string', (done) ->
 
                 swap1 = Specification.create
                 swap2 = Specification.getNode
                 Specification.getNode = -> edges: []
-                Specification.create = (object, configuration) ->
+                Specification.create = (specification) ->
 
-                    object.should.equal Test
-                    if ++count == 2
+                    specification.config.should.eql
+                        thisFunction: {}
+                            
+                    Specification.create = swap1
+                    Specification.getNode = swap2
+                    done()
 
-                        #
-                        # test second calls config
-                        #
-
-                        configuration.should.eql
-                            expectation: 
-                                function2: 
-                                    with: 1:'arg1', 5:'arg5'
-
-                        Specification.create = swap1
-                        Specification.getNode = swap2
-                        done()
-
-
-                Test.expect
-
-                    function1: with: 'ARG'
-                    function2: with: 1:'arg1', 5:'arg5'
+                testTHIS.expect 'thisFunction'
+                    
+                  
 
                  
         describe '.mock()', ->
@@ -117,6 +103,7 @@ describe 'prototypes', ->
                 thing.fing.name.should.equal 'MockClassName'
                 thing.fing.type.should.equal 'instance'
 
+                thing.functionName.should.be.an.instanceof Function
                 thing.functionName().should.equal 'VALUE'
                 done()
 

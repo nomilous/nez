@@ -1,35 +1,94 @@
+#  --------------
+# Houses hash of interfaces/objects each with a stack of 
+# pending Confirmations.
+#  --------------
+
 require 'fing'
 Confirmation = require './confirmation'
-
-#
-# **Specification()** 
-# 
-# Houses hash of objects each with a stack of 
-# pending expectation Confirmations.
-# 
 
 class Specification
 
     @objects: {}
 
-    @create: (object, configuration) ->
+
+    #
+    # Specification.create( `opts` )
+    # -------------------------------
+    # 
+    # Create a new Specification with `opts` as:
+    # 
+    # `stack`     - Name of the active Stack
+    # 
+    # `interface` - Object or interface to/from the object to 
+    #               which the Specification is assocaited.
+    # 
+    # `config`    - A hash of config for the specification.
+    # 
+    # `realizer`  - For realizer plugins. Later.
+    #  --------------
+
+
+    @create: (opts) ->
+
+        stackName = opts.stack
+
+        object    = opts.interface
+        config    = opts.config
+        realizer  = opts.realizer
+
+
+        #
+        # Ensure initialized Confirmation stack
+        #
 
         @objects[ object.fing.ref ] ||=
 
-            #
-            # firsttime initialize storage for this
-            # object and it's expectation Confirmations 
-            #
-
-            object: object
+            interface: object
             confirmations: []
 
 
         #
-        # Create a pending Expectation Confirmation
+        # Confirmations are referenced internally by object
         #
 
-        confirmation = new Confirmation object, configuration
+        confirmations = @objects[ object.fing.ref ].confirmations
+
+
+        #
+        # Confirmations are referenced externally by associating with
+        # as Edges/Children of the current Node in the tree
+        #
+
+        unless edges = @getNode(stackName).edges
+
+            throw "Cannot access current Node in stack='#{stackName}'"
+
+
+        confirmations = @objects[ object.fing.ref ].confirmations
+
+        #
+        # Support multiple Specifications defined in 
+        # opts.config
+        # 
+        # For each key in the has
+        #
+
+        for name of config
+
+            expectation = {}
+
+            expectation[name] = config[name]
+            expectation[name].realizer = realizer
+
+
+            confirmation = new Confirmation object,
+
+                expectation: expectation
+
+
+            confirmations.push confirmation
+            edges.push confirmation
+
 
 
         #
@@ -38,12 +97,6 @@ class Specification
 
         @objects[ object.fing.ref ].confirmations.push confirmation
 
-
-        #
-        # return the new confirmation
-        #
-
-        return confirmation
 
 
     @getNode: (stackName) ->

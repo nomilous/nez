@@ -18,8 +18,8 @@ test 'An Example', (to) ->
             
             test done
 
-# tree = require('../lib/nez').stacks['0'].tree
-# console.log JSON.stringify tree, null, 1
+tree = require('../lib/nez').stacks['0'].tree
+console.log JSON.stringify tree, null, 1
 
 #
 #

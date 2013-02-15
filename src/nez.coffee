@@ -1,34 +1,36 @@
 Stack      = require './stack'
 prototypes = require './prototypes'
 
-nez = 
+class Nez
 
-    stacks: {}
-
-    create: (name) ->
-
-        nez.stacks[name] = new Stack(name)
-
-    link: (name) -> 
-
-        nez.create name
-
-        Object.defineProperty nez.stacks[name].pusher, 'link' 
-
-            get: -> ->
-
-        return nez.stacks[name].pusher
-
-
-Object.defineProperty nez, 'test',
+Object.defineProperty Nez, 'test',
 
     get: ->
 
         name = '0'
-        nez.create name
+        Nez.create name
         prototypes.object.set.expect name
         prototypes.object.set.mock()
-        return nez.link name
+        return Nez.link name
 
 
-module.exports = nez
+
+Nez.stacks = {}
+
+Nez.create = (name) ->
+
+        Nez.stacks[name] = new Stack(name)
+
+Nez.link = (name) -> 
+
+        Nez.create name
+
+        Object.defineProperty Nez.stacks[name].pusher, 'link' 
+
+            get: -> ->
+
+        return Nez.stacks[name].pusher
+
+
+
+module.exports = Nez
