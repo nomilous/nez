@@ -18,12 +18,21 @@ A Declarative Expectation Framework<br />
 npm install nez --save-dev
 ```
 
+
+### For Developers.
+
+```bash
+npm install -g nez
+cd ~/my_git_root/my_latest_crazy_awesome_idea
+nez  # [--dev js] 
+```
+
 ### Recommends
 
 [Coffee Script](http://coffeescript.org/) - For a symantically ideal experience.
 
 
-### Usage
+### Usage (in your spec files)
 
 This may change:
 
