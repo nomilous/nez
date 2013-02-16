@@ -51,6 +51,9 @@ class Specification
             global = false
 
 
+        @validateGlobals config if global
+
+
         #
         # Ensure initialized Confirmation stack
         #
@@ -110,6 +113,17 @@ class Specification
 
         @objects[ object.fing.ref ].confirmations.push confirmation
 
+
+    @validateGlobals: (config) ->
+
+        for key of config
+
+            continue if key == 'beforeAll'
+            continue if key == 'beforeEach'
+            continue if key == 'afterAll'
+            continue if key == 'afterEach'
+            
+            throw 'Cannot create global specifications'
 
 
     @getNode: (stackName) ->

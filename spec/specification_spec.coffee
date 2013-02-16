@@ -70,9 +70,35 @@ describe 'Specification', ->
         object.expect function: ->
         Specification.objects[ object.fing.ref ].global.should.equal false
 
+        swap = beforeEach
         expect beforeEach: ->
+        beforeEach = swap  # best not to stomp on mocha's one
+
         Specification.objects[ fing.ref ].global.should.equal true
 
         done()
+
+    it 'does not allow userdefined expectations on global', (done) ->
+
+
+        try
+            expect newFunction: returning: """
+
+                Doing this would define newFunction() { return "this explanation" } on 
+                the running Node instance itself.
+
+                Sounds like a bad idea.
+
+                So i'm going to use global expect() as the mechanism for pushing
+                beforeAll, beforeEach, afterAll and afterEach into the spec stack.
+
+            """ 
+
+        catch error
+
+            delete newFunction # or mocha says, "Error: global leak detectedd: newFunction"
+            error.should.match /Cannot create global specifications/
+            done()
+
 
 
