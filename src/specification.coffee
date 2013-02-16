@@ -36,7 +36,7 @@ class Specification
         config    = opts.config
         realizer  = opts.realizer
 
-        console.log 'Specification on:', object
+        # console.log 'Specification on:', object
 
         #
         # is object 'node' global 

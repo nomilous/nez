@@ -1,24 +1,52 @@
-test  = require('../lib/nez').test
+test = require('../lib/nez').test
 
 
 class Example
     constructor: ->
-    function1: -> @function2 'ARG1', 'ARG2'
     function2: (agr1, arg2) -> 'RETURN'
+    active: -> return false
+    function1: -> 
+
+        #
+        # only runs function2 if 'beforeAll' re-defined
+        # the behaviour of active()
+        #
+
+        if @active()
+
+            @function2 'ARG1', 'ARG2'
 
 
-test 'An Example', (to) ->
 
-    expect this: {}
+test 'Example', (as) ->
 
-    to 'verify that', (IT) ->
+    
+    as 'active', (it) -> 
 
-        IT 'builds a tree', (done) ->
+        expect beforeEach: ->
+
+            Example.expect active: returning: true
+
+
+        it 'calls function2', (done) ->
 
             Example.expect function2: as: 'spy', with: 2: 'ARG2'
             (new Example).function1()
             
             test done
+
+    # 
+    # 
+    # as 'inactive', (It) ->
+    # 
+    #     It 'does not call function2', (done) ->
+    # 
+    #         Example.reject 'function2'
+    # 
+    #   ...maybe
+    # 
+    #
+
 
 tree = require('../lib/nez').stacks['0'].tree
 console.log JSON.stringify tree, null, 1
