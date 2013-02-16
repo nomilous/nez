@@ -50,3 +50,17 @@ describe 'Confirmation', ->
         confirmation = new Confirmation (new Object), expectation: 'function'
         confirmation.validate()
 
+
+    it 'sets pending to false on validation()', (done) ->
+
+        swap = Validation.prototype.validate
+        Validation.prototype.validate = ->
+
+            Validation.prototype.validate = swap
+            
+
+        confirmation = new Confirmation (new Object), expectation: 'function'
+        confirmation.validate()
+        confirmation.pending.should.equal false
+        done()      
+

@@ -36,6 +36,7 @@ class Confirmation
     validate: (failedArray) ->
 
         @validation.validate failedArray
+        @pending = false
 
 
 module.exports = Confirmation

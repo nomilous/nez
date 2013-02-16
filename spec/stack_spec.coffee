@@ -4,6 +4,11 @@ Stack  = require '../lib/stack'
 
 describe 'Stack', -> 
 
+    describe 'is a eventEmitter', ->
+
+        it 'allows assembling the tree in parallel'
+
+
     it 'has a root node', (done) ->
 
         stack = new Stack 'stack'
@@ -55,21 +60,27 @@ describe 'Stack', ->
                 done()
 
 
-        it 'stores a passed function on the new node', (done) -> 
-
-            stack = new Stack 'stack'
-
-            callback = -> 
-                stack.stack[0].callback.should.equal callback
-                done()
-
-            stack.pusher 'A thing', callback
+        describe 'with function as second arg', ->
 
 
-        it 'runs the function', (done) -> 
 
-            stack = new Stack 'stack'
-            stack.pusher 'A thing', -> done()
+            it 'stores the function on the new node pushed into the stack', (done) -> 
+
+                stack = new Stack 'stack'
+
+                callback = -> 
+                    stack.stack[0].callback.should.equal callback
+                    done()
+
+                stack.pusher 'A thing', callback
+
+
+            it 'runs the function', (done) -> 
+
+                stack = new Stack 'stack'
+                stack.pusher 'A thing', -> 
+                
+                    done()
 
 
         it 'passes the pusher() as arg to the called function', (done) ->
@@ -204,6 +215,7 @@ describe 'Stack', ->
             count.should.equal 1
 
             done()
+
 
 
 

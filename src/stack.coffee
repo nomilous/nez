@@ -7,17 +7,43 @@ module.exports = class Stack
 
     constructor: (@name) -> 
 
-        @stack = []
-        @node = new Node 'root'
-        @walker = @tree = @node.edges
+        @stack   = []
+        @node    = new Node 'root'
+
+        #
+        # TODO: move the tree out of here
+        # TODO: add an event emitter, the tree builder can subscribe
+        #
+
+        @walker  = @tree = @node.edges
 
 
     pusher: (label, callback) => 
 
+        # if label == @pusher
         if label instanceof Function
 
             #
-            # mocha done was passed in as label
+            # Encountered a call to validate the current
+            # stack.
+            # 
+            # ie. 
+            # <pre>
+            # 
+            # test 'A Thing', (it) ->
+            # 
+            #   it 'does stuff', (that) ->
+            # 
+            #     that 'is important', (done) ->
+            # 
+            #       # make some expectations
+            # 
+            #       # do something that should cause
+            #       # the expectations to be met
+            #  
+            #       test done  # <--- this call was made
+            #        
+            #      
             #
 
             return @validate label
@@ -64,8 +90,14 @@ module.exports = class Stack
 
         failed = []
 
+        #
+        # TODO: populate all beforeEach
+        # 
+
         for node in @node.edges
 
             node.validate failed if node.validate
+
+
 
         done failed[0]

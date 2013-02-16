@@ -7,6 +7,10 @@ test = require('../lib/nez').test
 
 describe 'Validation', -> 
 
+
+    it 'validates the entire stack when the walker reaches a validatable leaf'
+    
+
     it 'converts Expectations + Realizations into...', (confirmations) -> 
 
         confirmations()
