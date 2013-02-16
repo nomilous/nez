@@ -9,6 +9,8 @@ class Example
 
 test 'An Example', (to) ->
 
+    expect this: {}
+
     to 'verify that', (IT) ->
 
         IT 'builds a tree', (done) ->

@@ -60,7 +60,19 @@ describe 'Specification', ->
 
         confirmation1.fing.name.should.equal 'Confirmation'
         confirmation2.fing.name.should.equal 'Confirmation'
-        confirmation1.fing.ref.should.not.equal confirmation2.fing.ref
+        confirmation1.should.not.equal confirmation2
+        done()
+
+
+    it 'distinguishes between global and local specifications', (done) ->
+
+        object = new Object
+        object.expect function: ->
+        Specification.objects[ object.fing.ref ].global.should.equal false
+
+        expect beforeEach: ->
+        Specification.objects[ fing.ref ].global.should.equal true
+
         done()
 
 

@@ -36,6 +36,20 @@ class Specification
         config    = opts.config
         realizer  = opts.realizer
 
+        console.log 'Specification on:', object
+
+        #
+        # is object 'node' global 
+        #
+
+        try
+
+            global = object.process.title == 'node'
+
+        catch error
+
+            global = false
+
 
         #
         # Ensure initialized Confirmation stack
@@ -44,6 +58,7 @@ class Specification
         @objects[ object.fing.ref ] ||=
 
             interface: object
+            global: global
             confirmations: []
 
 
