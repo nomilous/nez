@@ -78,8 +78,8 @@ describe 'Specification', ->
 
         done()
 
-    it 'does not allow userdefined expectations on global', (done) ->
 
+    it 'does not allow userdefined expectations on global', (done) ->
 
         try
             expect newFunction: returning: """

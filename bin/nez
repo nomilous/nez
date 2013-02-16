@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+require(
+
+    require('path').join(
+
+        require('path').dirname(
+
+            require('fs').realpathSync(
+
+                __filename
+
+            )
+
+        ), '../lib/exec/nez'
+
+    )
+
+).exec(
+
+    /* bad developer... 'no biscuit!' */
+
+);
+

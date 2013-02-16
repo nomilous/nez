@@ -10,11 +10,14 @@
     }
   ],
   "main": "./lib/nez",
-  "bin": {},
+  "bin": {
+    "nez": "./bin/nez",
+  },
   "dependencies": {
     "should": "~1.2.1",
     "fing": "0.0.2",
-    "colors": "~0.6.0-1"
+    "colors": "~0.6.0-1",
+    "commander": "~1.1.1"
   },
   "devDependencies": {
     "hound": "~1.0.4",
