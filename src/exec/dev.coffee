@@ -1,4 +1,5 @@
-fs = require 'fs'
+fs    = require 'fs'
+hound = require 'hound'
 
 module.exports = class Dev
 
@@ -13,29 +14,19 @@ module.exports = class Dev
         #
 
         try 
-            libdir = fs.lstatSync './lib'
+            dir = fs.lstatSync './lib'
+            if dir.isDirectory
+
+                app = './lib'
 
         try
-            appdir = fs.lstatSync './app'
+            dir = fs.lstatSync './app'
+            if dir.isDirectory
+                if app
+                    console.log 'Appologies. Supports ./app OR ./lib dirs. Not both.'
+                    return
 
-        #
-        # not initially going to support the complexitites
-        # of having both.
-        #
-
-        if libdir and libdir.isDirectory
-
-            app = './lib'
-
-        if appdir and appdir.isDirectory
-
-            if app
-
-                console.log 'Appologies. Supports ./app OR ./lib dirs. Not both.'
-                return
-
-            app = './app'
-
+                app = './app'
 
 
         @config = 
@@ -44,11 +35,26 @@ module.exports = class Dev
             src:  @program.srcdir  || './src'
             app:  app              || './app'
 
-        
-
 
     start: ->
 
-
         console.log "running config:", @config
+
+        @watch 'spec', @onchange
+        @watch 'src', @onchange
+        
+
+    watch: (what, onchange) ->
+
+        console.log 'Watching: ', @config[what]
+        watcher = hound.watch @config[what]
+
+        watcher.on 'change', (file, stats) -> 
+
+            onchange what, file, stats
+
+
+    onchange: (what, file, stats) -> 
+
+        console.log 'changed %s file: %s', what, file
 
