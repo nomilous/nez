@@ -1,7 +1,7 @@
 fs    = require 'fs'
 hound = require 'hound'
 
-module.exports = class Dev
+module.exports = class DevCoffee
 
     #
     # developer environment

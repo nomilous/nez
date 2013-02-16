@@ -4,31 +4,83 @@
 
 program = require 'commander'
 
-program.option '-d, --dev', 'Run development environment.'
+program.option '-d, --dev [flavour]',     'Run development environment. [coffee|js]'
+program.option '-u, --uplink [hostname]', 'Uplink to your Nimbal instance'
 
 program.parse process.argv
+
 
 module.exports = 
 
     exec: ->
 
+        #
+        # enable dev CLI module by default
+        #
+        
+        program.dev = true unless program.dev
+
+
+
+        #
+        # list of modules (from lib/exec/*) to load  
+        #
+
+        execModules = {}
+
+
+
+        if program.uplink
+
+            #
+            # uplink is enabled, default to personal instance
+            #
+
+            hostname = 'localhost'
+
+            if typeof program.uplink == 'string'
+
+                hostname = program.uplink
+
+
+            execModules['./uplink'] = hostname: hostname      
+
+
+
+
+        
         if program.dev
 
             #
-            # --dev 
+            # developer CLI was enabled
             #
 
-            run = './dev'
+            if typeof program.dev == 'boolean'
+
+                #
+                # default to coffee
+                #
+
+                flavour = 'coffee'
+
+            else
+
+                flavour = program.dev
+
+
+            execModules["./dev/#{flavour}"] = program: program
+
 
 
         #
-        # for now - make dev the default
+        # activate all enabled modules
         #
 
-        run = './dev'
+        for name of execModules
 
+            ( 
 
+                new ( require name ) execModules[name] 
 
-        app = new ( require run ) program
-        app.start()
+            ).start()
             
