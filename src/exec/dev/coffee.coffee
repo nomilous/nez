@@ -51,7 +51,7 @@ module.exports = class Coffee
 
         watcher.on 'change', (file, stats) => 
 
-            onchange.call @, what, file, stats
+            @onchange what, file, stats
 
 
     onchange: (what, file, stats) -> 
