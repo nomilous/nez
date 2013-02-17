@@ -49,12 +49,48 @@ module.exports = class Coffee
         console.log 'Watching: ', @config[what]
         watcher = hound.watch @config[what]
 
-        watcher.on 'change', (file, stats) -> 
+        watcher.on 'change', (file, stats) => 
 
-            onchange what, file, stats
+            onchange.call @, what, file, stats
 
 
     onchange: (what, file, stats) -> 
 
-        console.log 'changed %s file: %s', what, file
+        #console.log 'changed %s file: %s', what, file
+
+        switch what
+
+            when 'spec'
+
+                @test file
+
+            when 'src'
+
+                @compile file, => @test @toSpec file
+
+            when 'app'
+
+                @test @toSpec file
+
+
+    compile: (file, after) ->
+
+        console.log 'pending compile:', file
+        after()
+
+
+
+    toSpec: (file) -> 
+
+        #
+        # convert eg ./src/thing.coffee to ./spec/thing_spec.coffee
+        #
+
+        console.log 'pending convert to specfilename:', file
+        'specfilename'
+
+
+    test: (file) -> 
+
+        console.log 'pending run spec:', file
 
