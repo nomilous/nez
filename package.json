@@ -20,7 +20,8 @@
     "commander": "~1.1.1",
     "hound": "~1.0.4",
     "coffee-script": "~1.4.0",
-    "mocha": "~1.8.1"
+    "mocha": "~1.8.1",
+    "inflection": "~1.2.5"
   },
   "devDependencies": {
     "prettyjson": "~0.7.1",
