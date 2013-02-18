@@ -81,8 +81,18 @@ module.exports = class Coffee
     compile: (file, after) ->
 
         console.log 'compile:', file
-        after()
 
+        outDir = file.match(/^.*\//)[0].replace(
+
+            new RegExp "^\.\/#{@config.src[2..-1]}"
+            "#{@config.app}"
+
+        )
+        options = [ '-c', '-b', '-o', outDir, file ]
+        builder = child_process.spawn './node_modules/.bin/coffee', options
+        builder.stdout.pipe process.stdout
+        builder.stderr.pipe process.stderr
+        builder.on 'exit', -> after()
 
 
     toSpec: (file) -> 
