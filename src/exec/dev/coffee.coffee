@@ -1,5 +1,6 @@
-fs    = require 'fs'
-hound = require 'hound'
+child_process = require 'child_process'
+hound         = require 'hound'
+fs            = require 'fs'
 
 module.exports = class Coffee
 
@@ -42,6 +43,10 @@ module.exports = class Coffee
 
         @watch 'spec', @onchange
         @watch 'src', @onchange
+
+    done: (file) ->
+
+        console.log 'done: ', file
         
 
     watch: (what, onchange) ->
@@ -66,7 +71,7 @@ module.exports = class Coffee
 
             when 'src'
 
-                @compile file, => @test @toSpec file
+                @compile file, => @test @toSpec(file), => @done(file)
 
             when 'app'
 
@@ -75,7 +80,7 @@ module.exports = class Coffee
 
     compile: (file, after) ->
 
-        console.log 'pending compile:', file
+        console.log 'compile:', file
         after()
 
 
@@ -104,7 +109,17 @@ module.exports = class Coffee
         # )
 
 
-    test: (file) -> 
+    test: (file, after) -> 
 
-        console.log 'pending run spec:', file
+        console.log "test: ", file
+
+        test_runner = child_process.spawn './node_modules/.bin/mocha', [
+            '--colors',
+            '--compilers', 
+            'coffee:coffee-script', 
+            file
+        ]
+        test_runner.stdout.pipe process.stdout
+        test_runner.stderr.pipe process.stderr
+        test_runner.on 'exit', -> after()
 
