@@ -1,6 +1,7 @@
 child_process = require 'child_process'
 hound         = require 'hound'
 fs            = require 'fs'
+i             = require 'inflection'
 
 module.exports = class Coffee
 
@@ -39,8 +40,7 @@ module.exports = class Coffee
 
     start: ->
 
-        console.log "running config:", @config
-
+        #console.log "running config:", @config
         @watch 'spec', @onchange
         @watch 'src', @onchange
 
@@ -51,7 +51,7 @@ module.exports = class Coffee
 
     watch: (what, onchange) ->
 
-        console.log 'Watching: ', @config[what]
+        console.log 'watch:', @config[what], 'for changes.'
         watcher = hound.watch @config[what]
 
         watcher.on 'change', (file, stats) => 
@@ -67,7 +67,7 @@ module.exports = class Coffee
 
             when 'spec'
 
-                @test file
+                @test file, ->
 
             when 'src'
 
@@ -101,6 +101,8 @@ module.exports = class Coffee
         # convert eg ./src/thing.coffee to ./spec/thing_spec.coffee
         #
 
+
+
         specFile = file.replace(
 
             new RegExp "^\.\/#{@config.src[2..-1]}"
@@ -123,13 +125,101 @@ module.exports = class Coffee
 
         console.log "test: ", file
 
-        test_runner = child_process.spawn './node_modules/.bin/mocha', [
-            '--colors',
-            '--compilers', 
-            'coffee:coffee-script', 
-            file
-        ]
-        test_runner.stdout.pipe process.stdout
-        test_runner.stderr.pipe process.stderr
-        test_runner.on 'exit', -> after()
+        unless fs.existsSync file
+
+            @noSpecFile file, after
+
+        else
+
+            test_runner = child_process.spawn './node_modules/.bin/mocha', [
+                '--colors',
+                '--compilers', 
+                'coffee:coffee-script', 
+                file
+            ]
+            test_runner.stdout.pipe process.stdout
+            test_runner.stderr.pipe process.stderr
+            test_runner.on 'exit', -> after()
+
+
+    noSpecFile: (file, after) ->
+
+        parts = @klast file
+
+        return if @program.noautospec
+
+        #
+        # Automatically generate missing spec snippet
+        #
+
+        unless fs.existsSync parts.path
+
+            @mkdirMinusP parts.path
+
+        fs.writeFile parts.path + parts.specname, """
+
+        #{parts.classname} = require '#{parts.require}'
+
+        describe '#{parts.classname}', ->
+
+
+        """, (err) ->
+
+            if err
+
+                console.log 'failed to create file:', file
+                return
+
+            console.log 'generated:', file
+            after()
+ 
+
+
+    klast: (file) -> 
+
+        parts = file.match /^(.*\/)(.*)_spec\..*$/
+
+        rpath = ''
+
+        for part in file.split('/')[2..-1]
+
+            rpath += '../'
+
+        rpath = (rpath += parts[1]).replace(
+
+            "./#{@config.spec}", "#{@config.app}"
+
+        )
+
+
+
+        return {
+
+            path:      parts[1]
+            specname:  "#{parts[2]}_spec.coffee"
+            filename:  "#{parts[2]}.coffee"
+            require:   "#{rpath}#{parts[2]}"
+            classname: i.classify parts[2]
+
+        }
+
+
+    mkdirMinusP: (path) -> 
+
+        minusP = ''
+
+        for dir in path.split '/'
+
+            continue if dir == ''
+
+            minusP += dir + '/'
+
+            unless fs.existsSync minusP
+
+                console.log "mkdir:", minusP
+
+                fs.mkdirSync minusP
+
+
+
 

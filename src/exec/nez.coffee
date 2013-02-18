@@ -6,6 +6,7 @@ program = require 'commander'
 
 program.option '-d, --dev [flavour]',     'Run development environment. [coffee|js]'
 program.option '-u, --uplink [hostname]', 'Uplink to your Nimbal instance'
+program.option '-n, --noautospec',        'Disable autogeneration of missing specs'
 
 program.parse process.argv
 

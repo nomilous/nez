@@ -4,14 +4,18 @@ Coffee = require '../../../lib/exec/dev/coffee'
 
 describe 'Coffee', ->
 
-    it 'converts src to spec file name', (done) ->
+    beforeEach -> 
 
-        coffee = new Coffee 
-
+        @coffee = new Coffee 
+        
             srcdir: './src'
             specdir: './spec'
 
-        coffee.toSpec( 
+
+
+    it 'converts src to spec file name', (done) ->
+
+        @coffee.toSpec( 
 
             './src/directory/directory/file.coffee'
 
@@ -20,17 +24,30 @@ describe 'Coffee', ->
         done()
 
 
-    it 'converts app to spec file name', (done) ->
+    it 'can convert to spec file', (done) ->
 
-        coffee = new Coffee 
-        
-            srcdir: './app'
-            specdir: './spec'
+        @coffee.toSpec( 
 
-        coffee.toSpec( 
+            './src/dir/ectory/class_name.coffee'
 
-            './app/directory/directory/file.coffee'
-
-        ).should.equal './spec/directory/directory/file_spec.coffee'
+        ).should.equal './spec/dir/ectory/class_name_spec.coffee'
 
         done()
+
+
+    it 'can klast a specfile', (done) ->
+
+        @coffee.klast(
+
+            './spec/dir/ectory/class_name_spec.coffee'
+
+        ).should.eql 
+
+            path: './spec/dir/ectory/'
+            specname: 'class_name_spec.coffee'
+            filename: 'class_name.coffee'
+            require: '../../../lib/dir/ectory/class_name'
+            classname: 'ClassName'
+
+        done()
+
