@@ -40,7 +40,7 @@ module.exports = class Coffee
 
     start: ->
 
-        #console.log "running config:", @config
+        console.log "running config:", @config
         @watch 'spec', @onchange
         @watch 'src', @onchange
 
@@ -80,14 +80,14 @@ module.exports = class Coffee
 
     compile: (file, after) ->
 
-        console.log 'compile:', file
-
         outDir = file.match(/^.*\//)[0].replace(
 
             new RegExp "^\.\/#{@config.src[2..-1]}"
             "#{@config.app}"
 
         )
+
+        console.log 'compile:', file, 'to:', outDir
         options = [ '-c', '-b', '-o', outDir, file ]
         builder = child_process.spawn './node_modules/.bin/coffee', options
         builder.stdout.pipe process.stdout
@@ -101,8 +101,6 @@ module.exports = class Coffee
         # convert eg ./src/thing.coffee to ./spec/thing_spec.coffee
         #
 
-
-
         specFile = file.replace(
 
             new RegExp "^\.\/#{@config.src[2..-1]}"
@@ -114,12 +112,6 @@ module.exports = class Coffee
             "_spec.coffee"
 
         )
-
-        # .replace(
-        #     /\.js$/
-        #     "_spec.js"
-        # )
-
 
     test: (file, after) -> 
 
@@ -190,8 +182,6 @@ module.exports = class Coffee
             "./#{@config.spec}", "#{@config.app}"
 
         )
-
-
 
         return {
 
