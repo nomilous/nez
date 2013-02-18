@@ -8,14 +8,14 @@ module.exports = class Js extends Coffee
         @watch 'app',  @onchange
 
 
-    toSpec: (file) ->
+    # toSpec: (file) ->
 
-        #
-        # convert eg ./app/thing.js to ./spec/thing_spec.[??]
-        #
+    #     #
+    #     # convert eg ./app/thing.js to ./spec/thing_spec.[??]
+    #     #
 
-        console.log 'pending js convert to specfilename ', file
-        'specfile'
+    #     console.log 'pending js convert to specfilename ', file
+    #     'specfile'
 
 
 

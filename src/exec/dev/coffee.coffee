@@ -86,8 +86,22 @@ module.exports = class Coffee
         # convert eg ./src/thing.coffee to ./spec/thing_spec.coffee
         #
 
-        console.log 'pending convert to specfilename:', file
-        'specfilename'
+        specFile = file.replace(
+
+            new RegExp "^\.\/#{@config.src[2..-1]}"
+            "#{@config.spec}"
+
+        ).replace(
+
+            /\.coffee$/
+            "_spec.coffee"
+
+        )
+
+        # .replace(
+        #     /\.js$/
+        #     "_spec.js"
+        # )
 
 
     test: (file) -> 
