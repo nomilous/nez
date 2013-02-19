@@ -8,7 +8,8 @@ nez
 
 imagine running: 'your tests', (in) -> 
 
-    in.productionMode """
+    in production: mode: """
+
 
         And they become the implemention!
 
