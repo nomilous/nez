@@ -1,5 +1,6 @@
 child_process = require 'child_process'
 hound         = require 'hound'
+path          = require 'path'
 fs            = require 'fs'
 i             = require 'inflection'
 
