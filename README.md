@@ -25,7 +25,7 @@ imagine running: 'your tests', (in) ->
 
 ```
 
-...but i'm looking into it.
+...but i'm [looking into it](https://github.com/nomilous/nimbal/blob/master/objective)
 
 
 ### Due Homage
