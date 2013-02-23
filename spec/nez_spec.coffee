@@ -66,30 +66,30 @@ describe 'Nez.realize()', ->
             done()
 
 
-    it 'injects the test stack assembler as arg2', (done) -> 
+    it 'injects the validator as arg2', (done) -> 
 
         Injector.expect findModule: with: 'Node', returning: '../lib/node'
 
-        Nez.realize 'Node', (Node, push) -> 
+        Nez.realize 'Node', (Node, validate) -> 
+
+            validate.should.equal blueprint
+            done()
+
+    it 'injects the test stack assembler as arg3', (done) -> 
+
+        Injector.expect findModule: with: 'Node', returning: '../lib/node'
+
+        Nez.realize 'Node', (Node, validate, push) -> 
 
             push.should.equal blueprint
             done()
 
 
-    it 'injects the validator as arg3', (done) -> 
-
-        Injector.expect findModule: with: 'Node', returning: '../lib/node'
-
-        Nez.realize 'Node', (Node, push, validate) -> 
-
-            validate.should.equal blueprint
-            done()
-
     it 'injects all further args as third party modules/services', (done) -> 
 
         Injector.expect findModule: with: 'Node', returning: '../lib/node'
 
-        Nez.realize 'Node', (Node, push, validate, hound, fing, colors) -> 
+        Nez.realize 'Node', (Node, validate, push, hound, fing, colors) -> 
 
             hound.should.equal  require 'hound'
             fing.should.equal   require 'fing'
