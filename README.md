@@ -24,13 +24,23 @@ nez  # [--dev js]
 [Coffee Script](http://coffeescript.org/) - For a symantically ideal experience.
 
 
-### Usage (in your spec files)
+### Usage (overview)
+
+This may change:
+
+```coffee
+require('nez').realize 'ClassName', (ClassName, validator, stacker, module1,,, moduleN ) -> 
+```
+
+
+
+### Usage (`spec/periscope_spec.coffee`)
 
 This may change:
 
 ```coffee
 
-require('nez').realize 'Periscope', (Periscope, test, it, should) ->
+require('nez').realize 'Periscope', (Periscope, test, stacker, should) ->
 
     it 'keeps your head above water', (done) -> 
 
@@ -99,6 +109,16 @@ require('nez').realize 'Periscope', (Periscope, test, it, should) ->
         #    THIS BIT STILL UNDER DEVELOPMENT
         #
 
+        test done
+
+
+    it "injected visionmedia's should as a service", (done) ->
+
+        #
+        # assuming should.is installed
+        #
+
+        should.should.equal require 'should'  # :)
         test done
 
 
