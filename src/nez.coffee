@@ -1,11 +1,20 @@
 Stack      = require './stack'
 prototypes = require './prototypes'
+Injector   = require './injector'
+Inflection = require 'inflection'
 
 class Nez
 
 Object.defineProperty Nez, 'realize', 
 
-    get: -> -> 
+    get: -> ->
+
+        klass  = arguments[0]
+        func   = arguments[1]
+        module = Injector.findModule klass
+        func require module
+
+
 
 
 

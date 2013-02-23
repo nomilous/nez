@@ -1,5 +1,6 @@
-should = require 'should'
-Nez    = require '../lib/nez'
+should   = require 'should'
+Nez      = require '../lib/nez'
+Injector = require '../lib/injector'
 test   = idea = blueprint = Nez.test
 nez    = it
 
@@ -45,8 +46,14 @@ describe 'Nez.realize()', ->
         done()
 
 
+    it 'injects the specified ClassName into a call to passed function', (done) ->
 
+        Injector.expect findModule: with: 'Node', returning: '../lib/node'
 
+        Nez.realize 'Node', (Node) -> 
+
+            require('../lib/node').should.equal Node
+            done()
 
 
 
