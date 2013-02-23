@@ -40,61 +40,11 @@ describe 'Nez', ->
 
 describe 'Nez.realize()', -> 
 
-    it 'is a property that returns a function', (done) -> 
+    it 'is a property that returns the injector', (done) -> 
 
-        Nez.realize.should.be.an.instanceof Function
+        Nez.realize.should.equal require('../lib/injector').inject
         done()
 
-
-    it 'runs the function passed as last argument', (thisFunctionWasCalled) ->
-
-        Injector.expect findModule: with: 'Node', returning: '../lib/node'
-
-        Nez.realize 'Node', optional: 'things', (Node) ->  
-
-            thisFunctionWasCalled()
-
-
-
-    it 'injects the prototype of the specified ClassName as arg1', (done) ->  
-
-        Injector.expect findModule: with: 'Node', returning: '../lib/node'
-
-        Nez.realize 'Node', (Node) -> 
-
-            Node.should.equal require('../lib/node')
-            done()
-
-
-    it 'injects the validator as arg2', (done) -> 
-
-        Injector.expect findModule: with: 'Node', returning: '../lib/node'
-
-        Nez.realize 'Node', (Node, validate) -> 
-
-            validate.should.equal blueprint
-            done()
-
-    it 'injects the test stack assembler as arg3', (done) -> 
-
-        Injector.expect findModule: with: 'Node', returning: '../lib/node'
-
-        Nez.realize 'Node', (Node, validate, push) -> 
-
-            push.should.equal blueprint
-            done()
-
-
-    it 'injects all further args as third party modules/services', (done) -> 
-
-        Injector.expect findModule: with: 'Node', returning: '../lib/node'
-
-        Nez.realize 'Node', (Node, validate, push, hound, fing, colors) -> 
-
-            hound.should.equal  require 'hound'
-            fing.should.equal   require 'fing'
-            colors.should.equal require 'colors'
-            done()
 
 
 #
