@@ -42,6 +42,20 @@ This may change:
 
 require('nez').realize 'Periscope', (Periscope, test, stacker, should) ->
 
+
+
+    it "injected visionmedia's should as a service", (done) ->
+
+        #
+        # assuming should.is installed
+        #
+
+        should.should.equal require 'should'  # :)
+        test done
+
+
+
+
     it 'keeps your head above water', (done) -> 
 
         periscope = new Periscope()
@@ -109,16 +123,6 @@ require('nez').realize 'Periscope', (Periscope, test, stacker, should) ->
         #    THIS BIT STILL UNDER DEVELOPMENT
         #
 
-        test done
-
-
-    it "injected visionmedia's should as a service", (done) ->
-
-        #
-        # assuming should.is installed
-        #
-
-        should.should.equal require 'should'  # :)
         test done
 
 
