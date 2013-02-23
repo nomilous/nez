@@ -37,6 +37,15 @@ describe 'Nez', ->
 
 
 
+describe 'Nez.realize()', -> 
+
+    it 'is a property that returns a function', (done) -> 
+
+        Nez.realize.should.be.an.instanceof Function
+        done()
+
+
+
 
 
 

@@ -30,7 +30,7 @@ This may change:
 
 ```coffee
 
-require('nez').realize 'Periscope', (Periscope, test, it, should), ->
+require('nez').realize 'Periscope', (Periscope, test, it, should) ->
 
     it 'keeps your head above water', (done) -> 
 

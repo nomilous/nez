@@ -3,6 +3,12 @@ prototypes = require './prototypes'
 
 class Nez
 
+Object.defineProperty Nez, 'realize', 
+
+    get: -> -> 
+
+
+
 Object.defineProperty Nez, 'test',
 
     get: ->
