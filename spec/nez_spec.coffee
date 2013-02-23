@@ -46,15 +46,44 @@ describe 'Nez.realize()', ->
         done()
 
 
-    it 'injects the specified ClassName into a call to passed function', (done) ->
+    it 'runs the function passed as last argument', (thisFunctionWasCalled) ->
+
+        Injector.expect findModule: with: 'Node', returning: '../lib/node'
+
+        Nez.realize 'Node', optional: 'things', (Node) ->  
+
+            thisFunctionWasCalled()
+
+
+
+    it 'injects the prototype of the specified ClassName as arg1', (done) ->  
 
         Injector.expect findModule: with: 'Node', returning: '../lib/node'
 
         Nez.realize 'Node', (Node) -> 
 
-            require('../lib/node').should.equal Node
+            Node.should.equal require('../lib/node')
             done()
 
+
+    it 'injects the test stack assembler as arg2', (done) -> 
+
+        Injector.expect findModule: with: 'Node', returning: '../lib/node'
+
+        Nez.realize 'Node', (Node, push) -> 
+
+            push.should.equal blueprint
+            done()
+
+
+    it 'injects the validator as arg3', (done) -> 
+
+        Injector.expect findModule: with: 'Node', returning: '../lib/node'
+
+        Nez.realize 'Node', (Node, push, validate) -> 
+
+            validate.should.equal blueprint
+            done()
 
 
 

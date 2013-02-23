@@ -10,9 +10,22 @@ Object.defineProperty Nez, 'realize',
     get: -> ->
 
         klass  = arguments[0]
-        func   = arguments[1]
+
+        for key of arguments
+
+            #
+            # function is the last argument
+            #
+
+            func = arguments[key]
+
+
+
         module = Injector.findModule klass
-        func require module
+        pusher = Nez.stacks['0'].pusher
+        validator = pusher 
+
+        func require(module), pusher, validator
 
 
 
