@@ -30,11 +30,7 @@ This may change:
 
 ```coffee
 
-should    = require 'should'
-Periscope = require '../src/submarine/tools/periscope'
-test      = require('nez').test
-
-describe 'Periscope', -> 
+require('nez').realize 'Periscope', (Periscope, test, it, should), ->
 
     it 'keeps your head above water', (done) -> 
 
