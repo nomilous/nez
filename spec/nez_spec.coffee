@@ -85,6 +85,16 @@ describe 'Nez.realize()', ->
             validate.should.equal blueprint
             done()
 
+    it 'injects all further args as third party modules/services', (done) -> 
+
+        Injector.expect findModule: with: 'Node', returning: '../lib/node'
+
+        Nez.realize 'Node', (Node, push, validate, hound, fing, colors) -> 
+
+            hound.should.equal  require 'hound'
+            fing.should.equal   require 'fing'
+            colors.should.equal require 'colors'
+            done()
 
 
 #
