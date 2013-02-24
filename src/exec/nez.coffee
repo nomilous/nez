@@ -3,6 +3,7 @@
 #
 
 program = require 'commander'
+colors  = require 'colors'
 
 program.option '-d, --dev [flavour]',     'Run development environment. [coffee|js]'
 program.option '-u, --uplink [hostname]', 'Uplink to your Nimbal instance'
@@ -16,10 +17,16 @@ module.exports =
     exec: (@objective, @config) ->
 
         #
-        # objective config
+        # Eyes on the target!
+        # (Show the objective at startup)
         #
 
-        console.log @objective, @config
+        console.log 'Objective:', @objective.bold
+
+        for meta of @config
+
+            continue if meta == 'nimbal'
+            console.log "#{meta}:", @config[meta].bold
 
 
         #
