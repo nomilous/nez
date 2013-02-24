@@ -23,27 +23,42 @@ describe 'Injector', ->
             Node.should.equal require('../lib/node')
             done()
 
+    it 'initializes the test stack', (done) ->
 
-    xit 'injects the validator as arg2', (done) -> 
+        Injector.inject 'Node', (Node) -> 
+
+            should.exist require('../lib/nez').stack
+
+            done()
+
+    it 'injects the validator as arg2', (done) -> 
 
         Injector.inject 'Node', (Node, validate) -> 
 
-            validate.should.equal blueprint
+            validate.should.equal require('../lib/nez').stack.pusher
             done()
 
-    xit 'injects the test stack assembler as arg3', (done) -> 
+    it 'injects the test stack assembler as arg3', (done) -> 
 
-        Injector.inject 'Node', (Node, validate, push) -> 
+        Injector.inject 'Node', (Node, validate, context) -> 
 
-            push.should.equal blueprint
+            context.should.equal require('../lib/nez').stack.pusher
             done()
 
 
-    xit 'injects all further args as third party modules/services', (done) -> 
+    it 'injects all further args (if downcased) as third party modules/services', (done) -> 
 
-       Injector.inject 'Node', (Node, validate, push, hound, fing, colors) -> 
+       Injector.inject 'Node', (Node, validate, context, hound, fing, colors) -> 
 
             hound.should.equal  require 'hound'
             fing.should.equal   require 'fing'
             colors.should.equal require 'colors'
             done()
+
+    it 'injects all further args (if CamelCase) as local modules', (done) ->
+
+        Injector.inject 'Node', (Node, validate, context, hound, Notification) ->
+
+            Notification.should.equal require '../lib/notification'
+            done()
+

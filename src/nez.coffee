@@ -2,32 +2,56 @@ Stack      = require './stack'
 prototypes = require './prototypes'
 Injector   = require './injector'
 
+
+
 class Nez
+
+#
+# Public
+# 
+
+enumerable = true
+
+
+# 
+# **Nez.realize(`ObjectiveClass`, `options`, `testFunction`)**
+#
 
 Object.defineProperty Nez, 'realize', 
 
-    get: -> Injector.inject
+    get: ->
+
+        #
+        # Property 'realize' returns Injector.inject (function)
+        # 
+
+        Injector.inject
 
 
-# Object.defineProperty Nez, 'test',
-#     get: ->
-#         name = '0'
-#         Nez.create name
-#         prototypes.object.set.expect name
-#         prototypes.object.set.mock()
-#         return Nez.link name
+    enumerable: enumerable
 
 
 
-#Nez.stack = {}
 
-Nez.create = (name) ->
+#
+# Private
+#
 
-        Nez.stack = new Stack(name)
+enumerable = false
+stack      = undefined
 
-Nez.link = (name) -> 
 
-        Nez.create name
+Object.defineProperty Nez, 'stack',
+
+    get: -> stack
+    enumerable: enumerable
+
+
+Object.defineProperty Nez, 'link',
+
+    get: -> (name) ->
+
+        stack = new Stack(name)
         prototypes.object.set.expect()
         prototypes.object.set.mock()
 
@@ -35,8 +59,9 @@ Nez.link = (name) ->
 
             get: -> ->
 
-        return Nez.stack.pusher
+        return @stack.pusher
 
+    enumerable: enumerable
 
 
 module.exports = Nez
