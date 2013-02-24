@@ -12,7 +12,7 @@ describe 'Injector', ->
 
     it 'can find the relative path to a module definition by ClassName', (done) ->
 
-        Injector.findModule('Node').should.equal '../lib/node'
+        Injector.findModule('Uplink').should.equal '../lib/exec/uplink'
         done()
 
 

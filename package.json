@@ -21,7 +21,8 @@
     "hound": "~1.0.4",
     "coffee-script": "~1.4.0",
     "mocha": "~1.8.1",
-    "inflection": "~1.2.5"
+    "inflection": "~1.2.5",
+    "wrench": "~1.4.4"
   },
   "devDependencies": {
     "prettyjson": "~0.7.1",

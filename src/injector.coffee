@@ -1,4 +1,8 @@
+require 'fing'
+Nez        = require './nez'
 Inflection = require 'inflection'
+fs         = require 'fs'
+wrench     = require 'wrench'
 
 module.exports = Injector = 
 
@@ -13,21 +17,7 @@ module.exports = Injector =
             func = arguments[key]
 
 
-
-
-
         klass  = arguments[0]
-
-        # for key of arguments
-
-        #     #
-        #     # function is the last argument
-        #     #
-
-        #     func = arguments[key]
-
-
-
         module = Injector.findModule klass
         # pusher = Nez.stacks['0'].pusher
         # validator = pusher
@@ -65,21 +55,62 @@ module.exports = Injector =
         #    b. Maya
         #    c. http://www.youtube.com/watch?v=rlwueICyUxk
         # 
+        #
+        # 1. A directory called 'spec' will be one of cwd's 
+        #    ancestors.
         # 
-        # 1. The source file will be nested somewhere
+        # 
+        # 2. The source file will be nested somewhere
         #    within a directory called 'lib' or 'app'
         # 
         # 
-        # 2. The 'lib' or 'app' directory will be cwd's 
+        # 3. The 'lib' or 'app' directory will be cwd's 
         #    sibling, uncle or great(n) uncle...
         #    
         #    a. Think about it...
         #    b. LOL
+        #    c. 'lib' or 'app' is a sibling of 'spec'
         #
 
-        name = Inflection.camelize klass
+        name     = Inflection.underscore klass
+        sfile    = undefined
+        sdir     = undefined
+        relative = ''
+        depth    = 0
 
 
+        for calls in fing.trace()
 
-        return '../lib/#{name}'
+            if match = calls.file.match /(.*)\/spec\/(.*)_spec\./
+
+                repoRoot = match[1]
+                depth = match[2].split('/').length
+
+        for srcDir in ['lib', 'app']
+
+            searchPath = repoRoot + "/#{srcDir}"
+
+            if fs.existsSync searchPath
+
+                for file in wrench.readdirSyncRecursive(searchPath)
+
+                    if match = file.match new RegExp "^(.*#{name})\.(coffee|js)$"
+
+                        if sfile 
+
+                            console.log "TODO: name: '../' as inject options"
+                            throw "Found two source files for module '#{name}'"
+
+                        else
+
+                            sfile = match[1]
+                            sdir = srcDir
+
+        throw "Found no source files for module '#{name}'" unless sfile
+
+
+        while depth-- > 0 
+            relative += '../'
+
+        return relative + "#{sdir}/#{sfile}"
 
