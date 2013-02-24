@@ -67,6 +67,7 @@ require('nez').realize 'Periscope', (Periscope, test, stacker, should) ->
 
         periscope.expect riseToSurface: with: 'distance', returning: true
         periscope.expect openLens: returning: true
+        periscope.exepct "AdmiralEyeball"
 
 
         #
