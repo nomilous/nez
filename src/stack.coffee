@@ -2,9 +2,7 @@ require 'fing'
 Node = require './node'
 
 module.exports = class Stack
-
-    className: 'Stack'
-
+    
     constructor: (@name) -> 
 
         @stack   = []
@@ -19,12 +17,14 @@ module.exports = class Stack
         @walker  = @tree = @node.edges
 
 
-    stacker: (label, callback) => 
+    stacker: (label, callback) -> 
 
         @push arguments
 
 
     push: (args) -> 
+
+        console.log 'push'
 
         label    = args[0]
         callback = args[1]  # TODO: as last arg
@@ -73,19 +73,21 @@ module.exports = class Stack
             @pendingClass = @node.class
 
 
-    validator: (done) =>
+    validator: (done) ->
 
         console.log "validate"
 
         testString = ''
         leafNode   = undefined
 
-        for node in @stack
+        if @stack
 
-            testString += "#{node.class.bold} #{node.label} "
-            leafNode = node
-            
-        console.log testString
+            for node in @stack
+
+                testString += "#{node.class.bold} #{node.label} "
+                leafNode = node
+                
+            console.log testString
         
         done()
 

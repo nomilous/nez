@@ -1,5 +1,5 @@
 require 'fing'
-#Nez       = require './nez' # Doesn't work here. Don't CLEARLY understand why.
+Nez        = require './nez' # Doesn't work here. Don't CLEARLY understand why.
 Inflection = require 'inflection'
 fs         = require 'fs'
 wrench     = require 'wrench'
@@ -15,27 +15,30 @@ module.exports = Injector =
 
         objective = arguments[0]
 
+        console.log '(test)', objective
+
 
         #
         # initialize test stack
         #
 
         Nez = require './nez'
-        Nez.link objective
+        stack = Nez.link objective
 
+        console.log '------------', stack
 
         #
         # Test stack validator()
         # 
 
-        validator = Nez.stack.validator
+        validator = stack.validator
 
 
         #
         # Test stack stacker()
         #
 
-        stacker = Nez.stack.stacker
+        stacker = stack.stacker
 
 
 

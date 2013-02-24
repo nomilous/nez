@@ -22,11 +22,13 @@ Object.defineProperty Nez, 'realize',
 
     get: ->
 
+        console.log "realize"
+
         #
         # Property 'realize' returns Injector.inject (function)
         # 
 
-        Injector.inject
+        return Injector.inject
 
 
     enumerable: enumerable
@@ -57,21 +59,23 @@ Object.defineProperty Nez, 'stack',
     enumerable: enumerable
 
 
-Object.defineProperty Nez, 'link',
+    Object.defineProperty Nez, 'link',
 
-    get: -> (name) ->
+        get: -> (name) ->
 
-        stack = new Stack(name)
-        prototypes.object.set.expect()
-        prototypes.object.set.mock()
+            stack = new Stack(name)
+            prototypes.object.set.expect()
+            prototypes.object.set.mock()
 
-        Object.defineProperty Nez.stack.stacker, 'link' 
+            unless typeof stack.stacker.link == 'function'
 
-            get: -> ->
+                Object.defineProperty stack.stacker, 'link' 
 
-        return @stack.stacker
+                    get: -> ->
 
-    enumerable: enumerable
+            return stack
+
+        enumerable: enumerable
 
 
 module.exports = Nez

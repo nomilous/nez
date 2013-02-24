@@ -42,7 +42,7 @@ describe 'Injector', ->
 
         Injector.inject 'Node', (Node, validate, context) -> 
 
-            context.should.equal require('../lib/nez').stack.pusher
+            context.should.equal require('../lib/nez').stack.stacker
             done()
 
 
@@ -57,8 +57,8 @@ describe 'Injector', ->
 
     it 'injects all further args (if CamelCase) as local modules', (done) ->
 
-        Injector.inject 'Node', (Node, validate, context, hound, Notification) ->
+        Injector.inject 'Node', (Node, validate, context, hound, Notifier) ->
 
-            Notification.should.equal require '../lib/notification'
+            Notifier.should.equal require '../lib/notifier'
             done()
 
