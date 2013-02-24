@@ -13,7 +13,14 @@ program.parse process.argv
 
 module.exports = 
 
-    exec: ->
+    exec: (@objective, @config) ->
+
+        #
+        # objective config
+        #
+
+        console.log @objective, @config
+
 
         #
         # enable dev CLI module by default

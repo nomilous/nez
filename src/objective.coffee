@@ -1,5 +1,10 @@
 module.exports = Objective = 
 
-    validate: ->
+    validate: (objective, config) ->
 
-        require('./exec/nez').exec
+        #
+        # start dev environment WITH objective
+        #
+
+        require('./exec/nez').exec objective, config
+

@@ -5,10 +5,9 @@ Exec       = require '../lib/exec/nez'
 
 describe 'Objective', -> 
 
-    it 'runs the dev environment', (wasCalled) ->
+    it 'returns the dev environment exec()', (wasCalled) ->
 
         Exec.exec = -> wasCalled()
 
-        Objective.validate()()
+        Objective.validate()
 
-    
