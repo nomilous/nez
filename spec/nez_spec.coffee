@@ -1,7 +1,7 @@
 should   = require 'should'
 Nez      = require '../lib/nez'
 Injector = require '../lib/injector'
-test   = idea = blueprint = Nez.test
+test   = idea = blueprint = Nez.link 'name'
 nez    = it
 
 

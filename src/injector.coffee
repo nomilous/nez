@@ -46,6 +46,10 @@ module.exports = Injector =
     findModule: (klass) -> 
 
         #
+        # TODO: util.path.findRelative( commonAncestor, /name/ )
+        # 
+
+        #
         # Assumptions: 
         # 
         # 0. The sourcefile containing a klass 'CalledThisOne'

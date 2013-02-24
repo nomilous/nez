@@ -6,7 +6,7 @@ module.exports =
 
         set:
 
-            expect: (stackName) ->
+            expect: ->
 
                 return unless typeof Object.expect == 'undefined' 
 
@@ -49,8 +49,6 @@ module.exports =
                             #
 
                             Specification.create
-
-                                stack: stackName
 
                                 interface: this
 

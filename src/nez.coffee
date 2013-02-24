@@ -9,15 +9,13 @@ Object.defineProperty Nez, 'realize',
     get: -> Injector.inject
 
 
-Object.defineProperty Nez, 'test',
-
-    get: ->
-
-        name = '0'
-        Nez.create name
-        prototypes.object.set.expect name
-        prototypes.object.set.mock()
-        return Nez.link name
+# Object.defineProperty Nez, 'test',
+#     get: ->
+#         name = '0'
+#         Nez.create name
+#         prototypes.object.set.expect name
+#         prototypes.object.set.mock()
+#         return Nez.link name
 
 
 
@@ -25,17 +23,19 @@ Nez.stacks = {}
 
 Nez.create = (name) ->
 
-        Nez.stacks[name] = new Stack(name)
+        Nez.stack = new Stack(name)
 
 Nez.link = (name) -> 
 
         Nez.create name
+        prototypes.object.set.expect()
+        prototypes.object.set.mock()
 
-        Object.defineProperty Nez.stacks[name].pusher, 'link' 
+        Object.defineProperty Nez.stack.pusher, 'link' 
 
             get: -> ->
 
-        return Nez.stacks[name].pusher
+        return Nez.stack.pusher
 
 
 
