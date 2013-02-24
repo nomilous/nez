@@ -16,7 +16,7 @@ describe 'Stack', ->
         done()
 
 
-    describe 'pusher()', -> 
+    describe 'stacker()', -> 
 
         it 'calls push() if received args', (done) -> 
 
@@ -178,5 +178,19 @@ describe 'Stack', ->
             tree[0].edges[1].label.should.equal 'child2'
 
             done()
+
+    describe 'validator()', ->
+
+        it 'validates the stack when called', (done) ->
+
+            s = new Stack 'Implement'
+            implement    = s.stacker
+            validate  = s.validator
+            stack  = s.stack
+
+            implement 'a thing', (For) ->
+                For 'a reason', (reason) ->
+                    validate reason
+                    done()
 
 

@@ -10,6 +10,7 @@ module.exports = class Stack
         @stack   = []
         @node    = new Node 'root'
 
+
         #
         # TODO: move the tree out of here
         # TODO: add an event emitter, the tree builder can subscribe
@@ -19,34 +20,6 @@ module.exports = class Stack
 
 
     stacker: (label, callback) => 
-
-        # # if label == @pusher
-        # if label instanceof Function
-
-        #     #
-        #     # Encountered a call to validate the current
-        #     # stack.
-        #     # 
-        #     # ie. 
-        #     # <pre>
-        #     # 
-        #     # test 'A Thing', (it) ->
-        #     # 
-        #     #   it 'does stuff', (that) ->
-        #     # 
-        #     #     that 'is important', (done) ->
-        #     # 
-        #     #       # make some expectations
-        #     # 
-        #     #       # do something that should cause
-        #     #       # the expectations to be met
-        #     #  
-        #     #       test done  # <--- this call was made
-        #     #        
-        #     #      
-        #     #
-
-        #     return @validate label
 
         @push arguments
 
@@ -73,7 +46,21 @@ module.exports = class Stack
             @walker.push @node
             @walker = @node.edges
 
-            @node.callback @stacker if callback
+            try
+
+                @node.callback @stacker if callback
+
+            catch error
+
+                #
+                # Ignore assertion errors while assembling 
+                # the test stack.
+                # 
+                # validator() re-executes entire stack from 
+                # each 'leaf'
+                # 
+
+                throw error unless error.name = 'AssertionError'
             
 
             node = @stack.pop()
@@ -86,21 +73,19 @@ module.exports = class Stack
             @pendingClass = @node.class
 
 
-    validator: (done) ->
+    validator: (done) =>
 
         console.log "validate"
+
+        testString = ''
+        leafNode   = undefined
+
+        for node in @stack
+
+            testString += "#{node.class.bold} #{node.label} "
+            leafNode = node
+            
+        console.log testString
+        
         done()
 
-        # failed = []
-
-        # #
-        # # TODO: populate all beforeEach
-        # # 
-
-        # for node in @node.edges
-
-        #     node.validate failed if node.validate
-
-
-
-        # done failed[0]

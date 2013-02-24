@@ -21,12 +21,16 @@ module.exports =
         # (Show the objective at startup)
         #
 
-        console.log 'Objective:', @objective.bold
+        console.log '\n' + "(objective) " + @objective.bold
 
         for meta of @config
 
             continue if meta == 'nimbal'
-            console.log "#{meta}:", @config[meta].bold
+            continue if meta == 'description'
+
+            console.log "(#{meta}) " + @config[meta].bold 
+
+        console.log @config['description'].bold
 
 
         #
@@ -98,4 +102,5 @@ module.exports =
                 new ( require name ) execModules[name] 
 
             ).start()
+
             
