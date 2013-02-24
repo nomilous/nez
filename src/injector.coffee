@@ -16,11 +16,14 @@ module.exports = Injector =
 
             func = arguments[key]
 
+        console.log Nez
 
         klass  = arguments[0]
         module = Injector.findModule klass
-        # pusher = Nez.stacks['0'].pusher
+        # pusher = Nez.stack.pusher
         # validator = pusher
+
+
 
         # skip = 0
         # service = []
@@ -40,14 +43,14 @@ module.exports = Injector =
         # # so...
         # # 
 
-        func require(module) #, pusher, validator, service[0], service[1], service[2], service[3], service[4], service[5], service[6], service[7], service[8], service[9], service[10], service[11], service[12], service[13], service[14], service[15], service[16], service[17], service[18], service[19], service[20], service[21], service[22]  # i suspect that'll suffice... :)
+        func require(module) #, pusher, validator #, service[0], service[1], service[2], service[3], service[4], service[5], service[6], service[7], service[8], service[9], service[10], service[11], service[12], service[13], service[14], service[15], service[16], service[17], service[18], service[19], service[20], service[21], service[22]  # i suspect that'll suffice... :)
 
 
     findModule: (klass) -> 
 
         #
-        # TODO: util.path.findRelative( commonAncestor, /name/ )
-        # 
+        # returns absolute path to module source
+        #
 
         #
         # Assumptions: 
@@ -76,12 +79,8 @@ module.exports = Injector =
         #    c. 'lib' or 'app' is a sibling of 'spec'
         #
 
-        name     = Inflection.underscore klass
-        sfile    = undefined
-        sdir     = undefined
-        relative = ''
-        depth    = 0
-
+        name   = Inflection.underscore klass
+        source = undefined
 
         for calls in fing.trace()
 
@@ -100,21 +99,16 @@ module.exports = Injector =
 
                     if match = file.match new RegExp "^(.*#{name})\.(coffee|js)$"
 
-                        if sfile 
+                        if source 
 
                             console.log "TODO: name: '../' as inject options"
                             throw "Found two source files for module '#{name}'"
 
                         else
 
-                            sfile = match[1]
-                            sdir = srcDir
+                            source = "#{searchPath}/#{match[1]}"
 
-        throw "Found no source files for module '#{name}'" unless sfile
+        throw "Found no source files for module '#{name}'" unless source
 
-
-        while depth-- > 0 
-            relative += '../'
-
-        return relative + "#{sdir}/#{sfile}"
+        return source
 

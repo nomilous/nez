@@ -10,13 +10,13 @@ describe 'Injector', ->
 
             thisFunctionWasCalled()
 
-    it 'can find the relative path to a module definition by ClassName', (done) ->
+    it 'can find the absolute path to a module definition by ClassName', (done) ->
 
-        Injector.findModule('Uplink').should.equal '../lib/exec/uplink'
+        Injector.findModule('Uplink').should.match /\/.*\/lib\/exec\/uplink/
         done()
 
 
-    xit 'injects the prototype of the specified ClassName as arg1', (done) ->  
+    it 'injects the prototype of the specified ClassName as arg1', (done) ->  
 
         Injector.inject 'Node', (Node) -> 
 

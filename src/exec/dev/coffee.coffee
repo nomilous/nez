@@ -134,12 +134,16 @@ module.exports = class Coffee
 
         else
 
-            test_runner = child_process.spawn './node_modules/.bin/mocha', [
-                '--colors',
-                '--compilers', 
-                'coffee:coffee-script', 
-                file
-            ]
+            test_runner = @getCompiler()
+
+            # test_runner = child_process.spawn './node_modules/.bin/mocha', [
+            #     '--colors',
+            #     '--compilers', 
+            #     'coffee:coffee-script', 
+            #     file
+            # ]
+
+            test_runner = child_process.spawn @getCompiler(), [file]
             test_runner.stdout.pipe process.stdout
             test_runner.stderr.pipe process.stderr
             test_runner.on 'exit', -> after()

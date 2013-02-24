@@ -19,7 +19,7 @@ Object.defineProperty Nez, 'realize',
 
 
 
-Nez.stacks = {}
+#Nez.stack = {}
 
 Nez.create = (name) ->
 
