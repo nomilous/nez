@@ -18,31 +18,13 @@ describe 'Stack', ->
 
     describe 'pusher()', -> 
 
-        it 'calls to validate when the first arg is a function', (done) ->
-
-            stack = new Stack 'stack'
-            wasCalled = false
-            originalFn = stack.validate
-            stack.validate = -> wasCalled = true
-            stack.pusher ->
-            stack.validate = originalFn
-
-            wasCalled.should.equal true
-            done()
-
-        it 'runs done', (done) ->
-
-            stack = new Stack 'stack'
-            stack.pusher done
-
-
         it 'calls push() if received args', (done) -> 
 
             stack = new Stack 'stack'
             wasCalled = false
             originalFn = stack.push
             stack.push = -> wasCalled = true
-            stack.pusher 'label'
+            stack.stacker 'label'
             stack.push = originalFn
 
             wasCalled.should.equal true
@@ -54,7 +36,7 @@ describe 'Stack', ->
         it 'pushes a new labeled node into the stack', (done) -> 
 
             stack  = new Stack 'design'
-            stack.pusher 'A thing', -> 
+            stack.stacker 'A thing', -> 
 
                 stack.stack[0].label.should.equal 'A thing'
                 done()
@@ -72,13 +54,13 @@ describe 'Stack', ->
                     stack.stack[0].callback.should.equal callback
                     done()
 
-                stack.pusher 'A thing', callback
+                stack.stacker 'A thing', callback
 
 
             it 'runs the function', (done) -> 
 
                 stack = new Stack 'stack'
-                stack.pusher 'A thing', -> 
+                stack.stacker 'A thing', -> 
                 
                     done()
 
@@ -86,17 +68,17 @@ describe 'Stack', ->
         it 'passes the pusher() as arg to the called function', (done) ->
 
             stack = new Stack 'stack'
-            pusher = stack.pusher
+            stacker = stack.stacker
 
-            stack.pusher 'A thing', (arg) ->
+            stack.stacker 'A thing', (arg) ->
 
-                arg.should.equal pusher
+                arg.should.equal stacker
                 done()
 
         it 'enables access to the top node in the stack', (done) ->
 
             stack = new Stack 'stack'
-            push = stack.pusher
+            push = stack.stacker
 
             push 'label1', (again) ->
                 again 'label2', (more) ->
@@ -111,7 +93,7 @@ describe 'Stack', ->
     it 'it populates a stack', (done) -> 
 
         s = new Stack 'stack'
-        design = s.pusher
+        design = s.stacker
         stack = s.stack
         
         leaf = -> 
@@ -134,7 +116,7 @@ describe 'Stack', ->
     it 'uses the stack name as the root node class name', (done) -> 
 
         s = new Stack 'design'
-        design = s.pusher
+        design = s.stacker
         stack  = s.stack
 
         design 'A thing', -> 
@@ -147,7 +129,7 @@ describe 'Stack', ->
     it "is uses the callback arg label for all other node class names", (done) ->
 
         s = new Stack 'design'
-        design = s.pusher
+        design = s.stacker
         stack  = s.stack
 
         design 'A thing', (For) -> 
@@ -164,7 +146,7 @@ describe 'Stack', ->
         it 'starts at the root of the tree', (done) ->
 
             s = new Stack 'design'
-            design = s.pusher
+            design = s.stacker
             tree   = s.tree
             walker = s.walker
 
@@ -176,7 +158,7 @@ describe 'Stack', ->
         xit 'walks when pushed, placing nodes into the tree', (done) -> 
 
             s = new Stack 'design'
-            design = s.pusher
+            design = s.stacker
             tree   = s.tree
             walker = s.walker
 
@@ -195,28 +177,6 @@ describe 'Stack', ->
             tree[0].edges[1].class.should.equal 'With'
             tree[0].edges[1].label.should.equal 'child2'
 
-
             done()
-
-    describe 'validate()', ->
-
-        it 'validates each validatable object in the current node', (done) ->
-
-            count = 0
-            stack = new Stack 'stack'
-
-            stack.node.edges.push
-                validate: -> 
-                    count++
-
-            stack.node.edges.push {}
-
-            stack.validate ->
-            count.should.equal 1
-
-            done()
-
-
-
 
 

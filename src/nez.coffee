@@ -65,11 +65,11 @@ Object.defineProperty Nez, 'link',
         prototypes.object.set.expect()
         prototypes.object.set.mock()
 
-        Object.defineProperty Nez.stack.pusher, 'link' 
+        Object.defineProperty Nez.stack.stacker, 'link' 
 
             get: -> ->
 
-        return @stack.pusher
+        return @stack.stacker
 
     enumerable: enumerable
 

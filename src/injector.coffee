@@ -25,19 +25,17 @@ module.exports = Injector =
 
 
         #
-        # test validator()
-        # 
-        # (currently validator and stacker are the same function )
+        # Test stack validator()
         # 
 
-        validator = Nez.stack.pusher
+        validator = Nez.stack.validator
 
 
         #
-        # Test stacker()
+        # Test stack stacker()
         #
 
-        stacker = Nez.stack.pusher
+        stacker = Nez.stack.stacker
 
 
 

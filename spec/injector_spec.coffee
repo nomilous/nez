@@ -35,7 +35,7 @@ describe 'Injector', ->
 
         Injector.inject 'Node', (Node, validate) -> 
 
-            validate.should.equal require('../lib/nez').stack.pusher
+            validate.should.equal require('../lib/nez').stack.validator
             done()
 
     it 'injects the test stack assembler as arg3', (done) -> 

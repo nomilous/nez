@@ -1,7 +1,8 @@
 should   = require 'should'
 Nez      = require '../lib/nez'
 Injector = require '../lib/injector'
-test   = idea = blueprint = Nez.link 'name'
+Nez.link 'name'
+test     = idea = blueprint = Nez.stack.validator
 nez    = it
 
 
@@ -12,7 +13,7 @@ describe 'Nez', ->
 
     nez 'is French for "nose" ', (knows) ->
 
-        test -> knows()
+        test knows
 
 
 

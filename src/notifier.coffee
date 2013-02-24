@@ -1,4 +1,4 @@
-module.exports = class Notification
+module.exports = class Notifier
     
     #
     # later...

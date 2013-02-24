@@ -18,35 +18,35 @@ module.exports = class Stack
         @walker  = @tree = @node.edges
 
 
-    pusher: (label, callback) => 
+    stacker: (label, callback) => 
 
-        # if label == @pusher
-        if label instanceof Function
+        # # if label == @pusher
+        # if label instanceof Function
 
-            #
-            # Encountered a call to validate the current
-            # stack.
-            # 
-            # ie. 
-            # <pre>
-            # 
-            # test 'A Thing', (it) ->
-            # 
-            #   it 'does stuff', (that) ->
-            # 
-            #     that 'is important', (done) ->
-            # 
-            #       # make some expectations
-            # 
-            #       # do something that should cause
-            #       # the expectations to be met
-            #  
-            #       test done  # <--- this call was made
-            #        
-            #      
-            #
+        #     #
+        #     # Encountered a call to validate the current
+        #     # stack.
+        #     # 
+        #     # ie. 
+        #     # <pre>
+        #     # 
+        #     # test 'A Thing', (it) ->
+        #     # 
+        #     #   it 'does stuff', (that) ->
+        #     # 
+        #     #     that 'is important', (done) ->
+        #     # 
+        #     #       # make some expectations
+        #     # 
+        #     #       # do something that should cause
+        #     #       # the expectations to be met
+        #     #  
+        #     #       test done  # <--- this call was made
+        #     #        
+        #     #      
+        #     #
 
-            return @validate label
+        #     return @validate label
 
         @push arguments
 
@@ -73,7 +73,7 @@ module.exports = class Stack
             @walker.push @node
             @walker = @node.edges
 
-            @node.callback @pusher if callback
+            @node.callback @stacker if callback
             
 
             node = @stack.pop()
@@ -86,18 +86,21 @@ module.exports = class Stack
             @pendingClass = @node.class
 
 
-    validate: (done) ->
+    validator: (done) ->
 
-        failed = []
+        console.log "validate"
+        done()
 
-        #
-        # TODO: populate all beforeEach
-        # 
+        # failed = []
 
-        for node in @node.edges
+        # #
+        # # TODO: populate all beforeEach
+        # # 
 
-            node.validate failed if node.validate
+        # for node in @node.edges
+
+        #     node.validate failed if node.validate
 
 
 
-        done failed[0]
+        # done failed[0]
