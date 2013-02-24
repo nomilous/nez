@@ -46,6 +46,14 @@ describe 'Nez.realize()', ->
         done()
 
 
+describe 'Nez.objective()', -> 
+
+    it 'is a property that returns the validation looper', (done) ->
+
+        Nez.objective.should.equal require('../lib/objective').validate
+        done()
+
+
 
 #
 # Later...

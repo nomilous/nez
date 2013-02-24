@@ -1,6 +1,7 @@
 Stack      = require './stack'
 prototypes = require './prototypes'
 Injector   = require './injector'
+Objective  = require './objective'
 
 
 
@@ -15,7 +16,7 @@ enumerable = true
 
 # 
 # **Nez.realize(`ObjectiveClass`, `options`, `testFunction`)**
-#
+# 
 
 Object.defineProperty Nez, 'realize', 
 
@@ -30,6 +31,15 @@ Object.defineProperty Nez, 'realize',
 
     enumerable: enumerable
 
+
+#
+# **Nez.objective(`config`)**
+# 
+
+Object.defineProperty Nez, 'objective', 
+
+    get: -> Objective.validate
+    enumerable: enumerable
 
 
 
