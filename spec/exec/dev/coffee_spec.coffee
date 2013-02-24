@@ -34,6 +34,14 @@ describe 'Coffee', ->
 
         done()
 
+    it 'uses a global coffee script compiler if installed'
+
+
+    it 'uses the local coffee-script compiler', (done) ->
+
+        @coffee.getCompiler().should.match /nez\/node_modules\/\.bin\/coffee/
+        done()
+
 
     it 'can klast a specfile', (done) ->
 
