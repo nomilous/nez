@@ -116,6 +116,9 @@ describe 'Injector', ->
                 done()
 
 
+        it 'supports function injection', (thenSome) ->
 
+            Injector.inject [ (-> 'syn'), (-> 'hapstien') ], (a,b) ->
 
-
+                a() + b() and thenSome()
+                
