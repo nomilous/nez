@@ -179,7 +179,7 @@ module.exports = Injector =
                         if source 
 
                             console.log "TODO: name: '../' as inject options"
-                            throw "Found two source files for module '#{name}'"
+                            throw "Found more than 1 source for module '#{name}'"
 
                         else
 

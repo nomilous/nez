@@ -96,3 +96,26 @@ describe 'Injector', ->
                 fing.should.equal require 'fing'
                 done()
 
+        it 'recurses in search of the local module', (done) ->
+
+            Injector.inject (Node, Js) -> 
+
+                Node.should.equal require '../lib/node'
+                Js.should.equal require '../lib/exec/dev/js'
+                done()
+
+
+        xit 'has a better mechanism to handle this:'
+        it 'throws on duplicate names', (done) ->
+
+            try
+                Injector.inject (Nez) -> 
+
+            catch error
+                error.should.match /Found more than 1 source for module 'nez'/
+                done()
+
+
+
+
+
