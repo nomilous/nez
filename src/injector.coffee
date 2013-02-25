@@ -6,7 +6,11 @@ wrench     = require 'wrench'
 
 module.exports = Injector = 
 
-    inject: -> 
+
+    #
+    # TODO: factor this into the Realizer (later...)
+    #
+    realize: -> 
 
 
         #
@@ -14,8 +18,9 @@ module.exports = Injector =
         #
 
         objective = arguments[0]
+        module    = Injector.findModule objective
 
-        console.log '(test)', objective
+        #console.log '(test)', objective
 
 
         #
@@ -52,10 +57,7 @@ module.exports = Injector =
             # function is the last argument
             #
 
-            testFunction = arguments[key]
-
-        
-        module = Injector.findModule objective
+            testFunction = arguments[key]    
 
 
         #
@@ -103,6 +105,47 @@ module.exports = Injector =
             service[12], service[13], service[14], service[15], 
             service[16], service[17], service[18], service[19], 
             service[20], service[21] # i suspect that'll suffice... :)
+
+
+    inject: ->
+
+        if typeof arguments[0] == 'function' 
+
+            #
+            # ** Injector.inject (module1,,, noduleN) -> ** 
+            # 
+
+            fn = arguments[0]
+            fn.apply null, Injector.loadServices fn.fing.args
+
+        else
+
+            console.log "list + fn"
+
+
+    loadServices: (args) ->
+
+        services = []
+        for arg in args
+
+            if arg.name.match /^[A-Z]/
+
+                #
+                # Inject local module (from ./lib of ./app)
+                #
+
+                services.push require Injector.findModule arg.name
+
+            else
+
+                #
+                # Inject installed npm module
+                #
+
+                services.push require arg.name
+
+        return services
+
 
 
     findModule: (klass) -> 
