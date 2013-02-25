@@ -22,13 +22,11 @@ Object.defineProperty Nez, 'realize',
 
     get: ->
 
-        console.log "realize"
-
         #
         # Property 'realize' returns Injector.inject (function)
         # 
 
-        return Injector.inject
+        Injector.inject
 
 
     enumerable: enumerable

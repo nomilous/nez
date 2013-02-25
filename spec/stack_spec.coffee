@@ -90,7 +90,7 @@ describe 'Stack', ->
 
 
 
-    xit 'it populates a stack', (done) -> 
+    it 'it populates a stack', (done) -> 
 
         s = new Stack 'stack'
         design = s.stacker
@@ -113,7 +113,7 @@ describe 'Stack', ->
                             leaf()
         
 
-    xit 'uses the stack name as the root node class name', (done) -> 
+    it 'uses the stack name as the root node class name', (done) -> 
 
         s = new Stack 'design'
         design = s.stacker
@@ -126,7 +126,7 @@ describe 'Stack', ->
             done()
 
 
-    xit "is uses the callback arg label for all other node class names", (done) ->
+    it "is uses the callback arg label for all other node class names", (done) ->
 
         s = new Stack 'design'
         design = s.stacker
@@ -141,7 +141,7 @@ describe 'Stack', ->
                 done()
 
 
-    xdescribe 'the walker that', ->  
+    describe 'the walker that', ->  
 
         it 'starts at the root of the tree', (done) ->
 
@@ -179,7 +179,7 @@ describe 'Stack', ->
 
             done()
 
-    xdescribe 'validator()', ->
+    describe 'validator()', ->
 
         it 'validates the stack when called', (done) ->
 

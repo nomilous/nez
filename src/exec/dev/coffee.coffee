@@ -41,18 +41,18 @@ module.exports = class Coffee
 
     start: ->
 
-        console.log "running config:", @config
+        console.log "(config)", @config
         @watch 'spec', @onchange
         @watch 'src', @onchange
 
     done: (file) ->
 
-        console.log 'done: ', file
+        console.log '(done)', file
         
 
     watch: (what, onchange) ->
 
-        console.log 'watch:', @config[what], 'for changes.'
+        console.log '(watch)', @config[what]
         watcher = hound.watch @config[what]
 
         watcher.on 'change', (file, stats) => 
@@ -89,7 +89,7 @@ module.exports = class Coffee
         )
 
         compiler = @getCompiler()
-        console.log 'compile:', file, 'to:', outDir
+        console.log '(compile)', file
         options = [ '-c', '-b', '-o', outDir, file ]
         builder = child_process.spawn compiler, options
         builder.stdout.pipe process.stdout
@@ -126,7 +126,7 @@ module.exports = class Coffee
 
     test: (file, after) -> 
 
-        console.log "test: ", file
+        console.log "(spec)", file
 
         unless fs.existsSync file
 

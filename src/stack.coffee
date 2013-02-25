@@ -1,11 +1,14 @@
 require 'fing'
-Node = require './node'
+
+Node  = require './node'
+stack = undefined
 
 module.exports = class Stack
     
     constructor: (@name) -> 
 
         @stack   = []
+        @classes = []
         @node    = new Node 'root'
 
 
@@ -16,22 +19,22 @@ module.exports = class Stack
 
         @walker  = @tree = @node.edges
 
+        stack = @
+
 
     stacker: (label, callback) -> 
 
-        @push arguments
+        stack.push arguments
 
 
     push: (args) -> 
-
-        console.log 'push'
 
         label    = args[0]
         callback = args[1]  # TODO: as last arg
         klass    = @pendingClass || @name
  
         if callback and callback.fing.args.length > 0
-        
+
             @pendingClass = callback.fing.args[0].name 
 
 
@@ -45,6 +48,7 @@ module.exports = class Stack
             @stack.push @node
             @walker.push @node
             @walker = @node.edges
+            @classes.push klass
 
             try
 
@@ -52,15 +56,19 @@ module.exports = class Stack
 
             catch error
 
-                #
-                # Ignore assertion errors while assembling 
-                # the test stack.
-                # 
-                # validator() re-executes entire stack from 
-                # each 'leaf'
-                # 
+                if error.name = 'AssertionError'
 
-                throw error unless error.name = 'AssertionError'
+                    #
+                    # assumes that no AssertionError will
+                    # be thrown enywhere but at a leaf node
+                    # on the test tree
+                    # 
+
+                    @validate()
+
+                else
+
+                    throw error
             
 
             node = @stack.pop()
@@ -70,12 +78,22 @@ module.exports = class Stack
                 @node   = @stack[@stack.length - 1]
                 @walker = @node.edges
 
-            @pendingClass = @node.class
+
+            @pendingClass = @classes.pop()
+
+            
+
+
 
 
     validator: (done) ->
 
-        console.log "validate"
+        stack.validate done
+
+
+    validate: (done) ->
+
+        # return if done == 'end'
 
         testString = ''
         leafNode   = undefined
@@ -84,10 +102,12 @@ module.exports = class Stack
 
             for node in @stack
 
-                testString += "#{node.class.bold} #{node.label} "
+                testString += "#{node.class} #{node.label.bold} "
                 leafNode = node
                 
             console.log testString
+
+            # leafNode.callback 'end'
         
-        done()
+        done() if done
 

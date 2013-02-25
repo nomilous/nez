@@ -25,8 +25,6 @@ module.exports = Injector =
         Nez = require './nez'
         stack = Nez.link objective
 
-        console.log '------------', stack
-
         #
         # Test stack validator()
         # 
