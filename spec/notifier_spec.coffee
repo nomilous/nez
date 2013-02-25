@@ -5,7 +5,7 @@ describe 'Notifier', ->
 
     it 'is an event emitter', (done) ->
 
-        n = new Notifier
+        n = Notifier.create()
         n.on.should.be.an.instanceof Function
         n.emit.should.be.an.instanceof Function
         done()
@@ -15,14 +15,14 @@ describe 'Notifier', ->
 
         beforeEach -> 
 
-            @subject = new Notifier
+            @subject = Notifier.create 'name',
 
                 #
                 # possibly don;t need descriptions
                 #
 
-                event1: 'Description1'
-                event2: 'Description2'
+                event1: { event: 'config' }
+                event2: { event: 'config' }
 
 
         it 'throws on non event registrations', (done) ->

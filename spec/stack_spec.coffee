@@ -16,6 +16,13 @@ describe 'Stack', ->
         done()
 
 
+    it 'has an event emitter', (thisFunctionRan) ->
+
+        stack = new Stack 'stack'
+        stack.once 'start', -> thisFunctionRan()
+        stack.stacker 'pushing'
+
+
     describe 'stacker()', -> 
 
         it 'calls push() if received args', (done) -> 

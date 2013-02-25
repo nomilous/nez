@@ -1,7 +1,11 @@
 require 'fing'
 
-Node  = require './node'
-stack = undefined
+Node      = require './node'
+Notifyier = require './notifier'
+
+stack     = undefined
+notifier  = undefined
+
 
 module.exports = class Stack
     
@@ -10,12 +14,27 @@ module.exports = class Stack
         @stack   = []
         @classes = []
         @node    = new Node 'root'
+        @end     = false
 
 
         #
         # TODO: move the tree out of here
         # TODO: add an event emitter, the tree builder can subscribe
         #
+
+        notifier = Notifyier.create @name,
+
+            #
+            # Stack is an EventEmitter, 
+            # 
+            # Events:
+            # 
+
+            start: description: 'Enter root node'
+            enter: description: 'Enter a node'
+            exit:  description: 'Exit a node'
+            end:   description: 'Exit root node'
+
 
         @walker  = @tree = @node.edges
 
@@ -27,7 +46,25 @@ module.exports = class Stack
         stack.push arguments
 
 
+    on: (event, callback) -> 
+
+        notifier.on event, callback
+
+    once: (event, callback) ->
+
+        notifier.once event, callback
+        
+
     push: (args) -> 
+
+        if @stack.length == 0
+
+            unless @end
+            
+                notifier.emit 'start', ''
+                @end = true
+
+
 
         label    = args[0]
         callback = args[1]  # TODO: as last arg
