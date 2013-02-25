@@ -60,73 +60,49 @@ module.exports = Injector =
             testFunction = arguments[key]    
 
 
-        #
-        # import services for injection
-        #
+        Injector.inject [require(module), validator, stacker], testFunction
 
-        skip = 0
-        service = []
-        for arg in testFunction.fing.args
-
-            continue unless ++skip > 3
-
-            if arg.name.match /^[A-Z]/
-
-                #
-                # Inject local module (from ./lib of ./app)
-                #
-
-                service.push require Injector.findModule arg.name
-
-            else
-
-                #
-                # Inject installed npm module
-                #
-
-                service.push require arg.name
-
-
-        #
-        # dont know 'if it's possible' / 'how' to tack an array 
-        # onto the end of a function call such that the elements
-        # are appended eachly instead of allfully
-        #
-        # and googling such an abstract notion will take
-        # more time than i want to allocate right now
-        # 
-        # so...
-        # 
-
-        testFunction require(module), validator, stacker, 
-            service[0], service[1], service[2], service[3], 
-            service[4], service[5], service[6], service[7], 
-            service[8], service[9], service[10], service[11], 
-            service[12], service[13], service[14], service[15], 
-            service[16], service[17], service[18], service[19], 
-            service[20], service[21] # i suspect that'll suffice... :)
-
+    #
+    # ** Injector.inject (module1,,, noduleN) -> ** 
+    # ** Injector.inject [list,of,things], (list, of, things, module1, ... ) **
+    # 
 
     inject: ->
 
         if typeof arguments[0] == 'function' 
-
-            #
-            # ** Injector.inject (module1,,, noduleN) -> ** 
-            # 
 
             fn = arguments[0]
             fn.apply null, Injector.loadServices fn.fing.args
 
         else
 
-            console.log "list + fn"
+            list = arguments[0]
+
+            #
+            # fn as last argument
+            #
+
+            for key of arguments
+
+                #
+                # function is the last argument
+                #
+
+                fn = arguments[key]
+
+            fn.apply null, Injector.loadServices(fn.fing.args, list)
 
 
-    loadServices: (args) ->
 
-        services = []
+    loadServices: (args, list = []) ->
+
+        skip = list.length
+
+        services = list
+
         for arg in args
+
+            continue if skip-- > 0
 
             if arg.name.match /^[A-Z]/
 
@@ -145,7 +121,6 @@ module.exports = Injector =
                 services.push require arg.name
 
         return services
-
 
 
     findModule: (klass) -> 

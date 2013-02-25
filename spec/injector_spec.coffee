@@ -65,7 +65,8 @@ describe 'Injector', ->
 
     describe 'inject()', ->
 
-        it 'can inject', (done) -> 
+
+        it 'can inject npm installed modules', (done) -> 
 
             Injector.inject (hound) ->
 
@@ -73,14 +74,25 @@ describe 'Injector', ->
                 done()
 
 
-        xit 'can append injectables', (done) -> 
+        it 'can inject local source modules', (done) ->
 
-            Injector.expect findModule: with: 'four', returning: 4
+            Injector.inject (hound, Node, colors) -> 
 
-            Injector.inject [1,2,3], (one, two, three, four) -> 
+                colors.should.equal require 'colors'
+                hound.should.equal require 'hound'
+                Node.should.equal require '../lib/node'
+                done()
 
+
+        it 'can append injectables', (done) -> 
+
+            Injector.inject [1,2,3], (one, two, three, Objective, fing) -> 
+
+                one.should.equal 1
+                two.should.equal 2
                 three.should.equal 3
-                four.should.equal 4
 
+                Objective.should.equal require '../lib/objective'
+                fing.should.equal require 'fing'
                 done()
 
