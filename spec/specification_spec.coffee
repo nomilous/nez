@@ -1,6 +1,6 @@
 should        = require 'should'
 Specification = require '../lib/specification'
-test          = require('../lib/nez').test
+test          = require('../lib/nez').link 'test'
 Confirmation  = require '../lib/confirmation'
 
 describe 'Specification', ->
@@ -31,7 +31,6 @@ describe 'Specification', ->
             object = new Object
 
             Specification.create 
-                stack: '0'
                 interface: object
                 realizer: 'PLACEHOLDER'
                 config: 
@@ -48,7 +47,6 @@ describe 'Specification', ->
         object = new Object
 
         Specification.create 
-            stack: '0'
             interface: object
             realizer: 'PLACEHOLDER'
             config: 

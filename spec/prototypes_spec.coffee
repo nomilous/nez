@@ -8,7 +8,7 @@ describe 'prototypes', ->
 
     describe 'extends Object.prototype', ->
 
-        prototypes.object.set.expect 'stackName'
+        prototypes.object.set.expect()
         prototypes.object.set.mock()
 
         class Test

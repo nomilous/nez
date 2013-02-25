@@ -24,17 +24,37 @@ nez  # [--dev js]
 [Coffee Script](http://coffeescript.org/) - For a symantically ideal experience.
 
 
-### Usage (in your spec files)
+### Usage (overview)
+
+This may change:
+
+```coffee
+require('nez').realize 'ClassName', (ClassName, validator, stacker, module1,,, moduleN ) -> 
+```
+
+
+
+### Usage (`spec/periscope_spec.coffee`)
 
 This may change:
 
 ```coffee
 
-should    = require 'should'
-Periscope = require '../src/submarine/tools/periscope'
-test      = require('nez').test
+require('nez').realize 'Periscope', (Periscope, test, stacker, should) ->
 
-describe 'Periscope', -> 
+
+
+    it "injected visionmedia's should as a service", (done) ->
+
+        #
+        # assuming should.is installed
+        #
+
+        should.should.equal require 'should'  # :)
+        test done
+
+
+
 
     it 'keeps your head above water', (done) -> 
 
@@ -47,6 +67,7 @@ describe 'Periscope', ->
 
         periscope.expect riseToSurface: with: 'distance', returning: true
         periscope.expect openLens: returning: true
+        periscope.exepct "AdmiralEyeball"
 
 
         #

@@ -1,7 +1,9 @@
-should = require 'should'
-Nez    = require '../lib/nez'
-test   = idea = blueprint = Nez.test
-nez    = it
+should   = require 'should'
+Nez      = require '../lib/nez'
+Injector = require '../lib/injector'
+Nez.link 'name'
+test     = idea = blueprint = Nez.stack.validator
+nez      = it
 
 
 describe 'Nez', -> 
@@ -11,7 +13,7 @@ describe 'Nez', ->
 
     nez 'is French for "nose" ', (knows) ->
 
-        test -> knows()
+        test knows
 
 
 
@@ -37,8 +39,20 @@ describe 'Nez', ->
 
 
 
+describe 'Nez.realize()', -> 
+
+    it 'is a property that returns the injector', (done) -> 
+
+        Nez.realize.should.equal require('../lib/injector').inject
+        done()
 
 
+describe 'Nez.objective()', -> 
+
+    it 'is a property that returns the validation looper', (done) ->
+
+        Nez.objective.should.equal require('../lib/objective').validate
+        done()
 
 
 
@@ -47,15 +61,16 @@ describe 'Nez', ->
 #
 
 
-xdescribe 'Nez.link()', -> 
+describe 'Nez.link()', -> 
 
-    it 'returns a function for building a callback chain', (done) -> 
+    it 'returns a new test stack', (done) -> 
 
-        fn = Nez.link 'thing'
-        fn.should.be.an.instanceof Function
+        stack = Nez.link 'thing'
+        stack.stacker.should.be.an.instanceof Function
+        stack.validator.should.be.an.instanceof Function
         done()
 
-    it 'enables building a dependancy tree using the callback chain', (done) -> 
+    xit 'enables building a dependancy tree using the callback chain', (done) -> 
 
 
         project = Nez.link 'project'
@@ -67,9 +82,9 @@ xdescribe 'Nez.link()', ->
 
             done()
 
-    it 'provides a rootside hyper edge'
+    xit 'provides a rootside hyper edge'
 
-    it 'provides a leafside hyper edge', (done) -> 
+    xit 'provides a leafside hyper edge', (done) -> 
 
         animal = Nez.link 'Animals'
 

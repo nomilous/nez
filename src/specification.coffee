@@ -17,8 +17,6 @@ class Specification
     # 
     # Create a new Specification with `opts` as:
     # 
-    # `stack`     - Name of the active Stack
-    # 
     # `interface` - Object or interface to/from the object to 
     #               which the Specification is assocaited.
     # 
@@ -29,8 +27,6 @@ class Specification
 
 
     @create: (opts) ->
-
-        stackName = opts.stack
 
         object    = opts.interface
         config    = opts.config
@@ -78,9 +74,9 @@ class Specification
         # the tree as Edges/Children of the current Node
         #
 
-        unless edges = @getNode(stackName).edges
+        unless edges = @getNode().edges
 
-            throw "Cannot access current Node in stack='#{stackName}'"
+            throw "Cannot access current Node"
 
 
         #
@@ -126,13 +122,13 @@ class Specification
             throw 'Cannot create global specifications'
 
 
-    @getNode: (stackName) ->
+    @getNode: ->
 
         #
         # late require, need the stack as it currently is
         #
 
-        return require('./nez').stacks[stackName].node
+        return require('./nez').stack.node
 
 
 

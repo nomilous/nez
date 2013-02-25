@@ -1,8 +1,6 @@
 should       = require 'should'
 Confirmation = require '../lib/confirmation'
 Validation   = require '../lib/validation'
-test         = require('../lib/nez').test
-
 
 
 describe 'Confirmation', -> 

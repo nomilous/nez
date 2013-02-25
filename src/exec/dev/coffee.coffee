@@ -88,12 +88,22 @@ module.exports = class Coffee
 
         )
 
+        compiler = @getCompiler()
         console.log 'compile:', file, 'to:', outDir
         options = [ '-c', '-b', '-o', outDir, file ]
-        builder = child_process.spawn './node_modules/.bin/coffee', options
+        builder = child_process.spawn compiler, options
         builder.stdout.pipe process.stdout
         builder.stderr.pipe process.stderr
         builder.on 'exit', -> after()
+
+    getCompiler: ->
+
+        #
+        # use locally installed coffee-script
+        # TODO: use global one if installed
+
+        nezRoot = __dirname.match(/^(.*\/nez\/)(.*)/)[1]
+        return nezRoot + 'node_modules/.bin/coffee'
 
 
     toSpec: (file) -> 
@@ -124,12 +134,16 @@ module.exports = class Coffee
 
         else
 
-            test_runner = child_process.spawn './node_modules/.bin/mocha', [
-                '--colors',
-                '--compilers', 
-                'coffee:coffee-script', 
-                file
-            ]
+            test_runner = @getCompiler()
+
+            # test_runner = child_process.spawn './node_modules/.bin/mocha', [
+            #     '--colors',
+            #     '--compilers', 
+            #     'coffee:coffee-script', 
+            #     file
+            # ]
+
+            test_runner = child_process.spawn @getCompiler(), [file]
             test_runner.stdout.pipe process.stdout
             test_runner.stderr.pipe process.stderr
             test_runner.on 'exit', -> after()

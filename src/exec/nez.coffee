@@ -3,6 +3,7 @@
 #
 
 program = require 'commander'
+colors  = require 'colors'
 
 program.option '-d, --dev [flavour]',     'Run development environment. [coffee|js]'
 program.option '-u, --uplink [hostname]', 'Uplink to your Nimbal instance'
@@ -13,7 +14,24 @@ program.parse process.argv
 
 module.exports = 
 
-    exec: ->
+    exec: (@objective, @config) ->
+
+        #
+        # Eyes on the target!
+        # (Show the objective at startup)
+        #
+
+        console.log '\n' + "(objective) " + @objective.bold
+
+        for meta of @config
+
+            continue if meta == 'nimbal'
+            continue if meta == 'description'
+
+            console.log "(#{meta}) " + @config[meta].bold 
+
+        console.log @config['description'].bold
+
 
         #
         # enable dev CLI module by default
@@ -84,4 +102,5 @@ module.exports =
                 new ( require name ) execModules[name] 
 
             ).start()
+
             
