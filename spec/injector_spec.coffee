@@ -116,9 +116,11 @@ describe 'Injector', ->
                 done()
 
 
-        it 'supports function injection', (thenSome) ->
+        it 'supports function injection', (a) ->
 
-            Injector.inject [ (-> 'syn'), (-> 'haptein'), (-> '?') ], (a,b) ->
+            Injector.inject [ (->), (-> 'syn'), (-> 'haptein')], (quite, short, sentance) ->
 
-                a() + b() and thenSome()
+                a quite short sentance
+
+
                 
