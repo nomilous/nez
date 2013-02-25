@@ -116,11 +116,17 @@ describe 'Injector', ->
                 done()
 
 
-        it 'supports function injection', (a) ->
+        it 'supports function injection', (what) ->
 
-            Injector.inject [ (->), (-> 'syn'), (-> 'haptein')], (quite, short, sentance) ->
+            Injector.inject [ (->), (-> 'syn'), (-> 'haptein'), '!'], (the, door, mouse, said) ->
 
-                a quite short sentance
+                what the door mouse said
+
+                #
+                # no, resist! this! rabbit! hole!
+                # 
+                # http://www.youtube.com/watch?v=R_raXzIRgsA
+                # 
 
 
                 
