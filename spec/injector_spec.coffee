@@ -116,7 +116,7 @@ describe 'Injector', ->
                 done()
 
 
-        it 'supports function injection', (what) ->
+        it 'enables heirarchy - meaning', (what) ->
 
             Injector.inject [ (->), (-> 'syn'), (-> 'haptein'), '!'], (the, door, mouse, said) ->
 
