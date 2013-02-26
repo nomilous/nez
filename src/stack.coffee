@@ -29,7 +29,7 @@ module.exports = class Stack
             # Events:
             # 
 
-            start: description: 'Enters root node'
+            begin: description: 'Enters root node'
             push:  description: 'Enters a node'
             pop:   description: 'Exits a node'
             end:   description: 'Exits root node'
@@ -55,9 +55,7 @@ module.exports = class Stack
 
     push: (args) -> 
 
-        if @stack.length == 0
-
-            notifier.emit 'start', ''
+        
 
 
         label    = args[0]
@@ -76,7 +74,11 @@ module.exports = class Stack
                 callback: callback
                 class:    klass
 
-            notifier.emit 'push', ''
+            if @stack.length == 0
+
+                notifier.emit 'begin', '', @node
+
+            notifier.emit 'push', '', @node
 
             @stack.push @node
             @walker.push @node
@@ -104,9 +106,15 @@ module.exports = class Stack
                     throw error
             
 
+
             node = @stack.pop()
 
-            notifier.emit 'pop', ''
+            notifier.emit 'pop', '', node
+
+            if @stack.length == 0
+
+                notifier.emit 'end', '', node
+
 
             if @stack.length > 0
 
@@ -114,12 +122,14 @@ module.exports = class Stack
                 @walker = @node.edges
 
 
+            
+                
+
+
             @pendingClass = @classes.pop()
 
             
-        if @stack.length == 0
-
-            notifier.emit 'end', ''
+        
 
 
 

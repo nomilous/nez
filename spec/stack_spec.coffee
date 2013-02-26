@@ -23,13 +23,13 @@ describe 'Stack', ->
 
         before ->
 
-            @stack = new Stack 'stack'
+            @stack = new Stack 'Title'
 
-        it 'emits "start" and "push" events on first push', (done) ->
+        xit 'emits "start" and "push" events on first push', (done) ->
 
             ranStart = false
             ranPush = false
-            @stack.once 'start', -> ranStart = true
+            @stack.once 'begin', -> ranStart = true
             @stack.once 'push', -> ranPush = true
             
             @stack.stacker 'pushing', ->
@@ -38,7 +38,7 @@ describe 'Stack', ->
                 done()
 
 
-        it 'emits "end" and "pop" events on last pop', (done) ->
+        xit 'emits "end" and "pop" events on last pop', (done) ->
 
             ranPop = false
             ranEnd = false
@@ -51,7 +51,7 @@ describe 'Stack', ->
             ranEnd.should.equal true
             done()
 
-        it 'emits only "push" and "pop" from child node', (done) ->
+        xit 'emits only "push" and "pop" from child node', (done) ->
 
             @stack.stacker 'push1', () =>
                 ranPush = false
@@ -65,6 +65,58 @@ describe 'Stack', ->
                 
                 ranPop.should.equal true
                 done()
+
+        xdescribe 'sends the node being "entered"', -> 
+
+            it 'begin', (done) ->
+
+                @stack.once 'begin', (placeholder, node) -> 
+                    node.label.should.equal 'Label1'
+                    done()
+                @stack.stacker 'Label1', () ->
+
+            it 'push', (done) ->
+
+                @stack.once 'push', (placeholder, node) -> 
+                    node.label.should.equal 'Label1'
+                    done()
+                @stack.stacker 'Label1', () ->
+
+
+        xdescribe 'sends the node being "exited"', ->
+
+
+            it 'pop', (done) ->
+
+                @stack.once 'pop', (placeholder, node) -> 
+                    node.label.should.equal 'Label1'
+                    done()
+                @stack.stacker 'Label1', () ->
+
+
+            it 'end', (done) ->
+
+                @stack.once 'end', (placeholder, node) -> 
+                    node.label.should.equal 'Label1'
+                    done()
+                @stack.stacker 'Label1', () ->
+
+
+
+        xit '"push" and "pop" sends the next node as payload', (done) ->
+
+            pushed = undefined
+            popped = undefined
+
+            @stack.stacker 'Label1', (childNode) =>
+                @stack.once 'push', (placeholder, node) -> pushed = node
+                @stack.once 'pop', (placeholder, node) -> popped = node
+                childNode 'Label2', =>
+
+            pushed.label.should.equal 'Label2'
+            pushed.class.should.equal 'childNode'
+            popped.should.equal pushed
+            done()
 
 
     xdescribe 'stacker()', -> 
