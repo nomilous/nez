@@ -13,7 +13,8 @@ module.exports = class Stack
 
         @stack   = []
         @classes = []
-        @node    = new Node 'root'
+        @root    = new Node 'root'
+        @node    = @root
         @end     = false
 
 
@@ -33,6 +34,7 @@ module.exports = class Stack
             push:  description: 'Enters a node'
             pop:   description: 'Exits a node'
             end:   description: 'Exits root node'
+            edge:  description: 'Edge traversal'
 
         @walker  = @tree = @node.edges
 
@@ -56,7 +58,7 @@ module.exports = class Stack
     push: (args) -> 
 
         
-
+        from     = @node
 
         label    = args[0]
         callback = args[1]  # TODO: as last arg
@@ -79,6 +81,7 @@ module.exports = class Stack
                 notifier.emit 'begin', '', @node
 
             notifier.emit 'push', '', @node
+            notifier.emit 'edge', '', from: from, to: @node
 
             @stack.push @node
             @walker.push @node
@@ -107,25 +110,26 @@ module.exports = class Stack
             
 
 
-            node = @stack.pop()
+            
+            from = @stack.pop()
+            notifier.emit 'pop', '', from
 
-            notifier.emit 'pop', '', node
 
             if @stack.length == 0
 
-                notifier.emit 'end', '', node
-
-
-            if @stack.length > 0
-
-                @node   = @stack[@stack.length - 1]
-                @walker = @node.edges
-
-
-            
+                @node = @root
+                notifier.emit 'end', '', from
                 
 
+            else
 
+                @node = @stack[@stack.length - 1]
+
+
+            notifier.emit 'edge', '', from: from, to: @node
+
+
+            @walker = @node.edges             
             @pendingClass = @classes.pop()
 
             

@@ -4,12 +4,12 @@ Stack  = require '../lib/stack'
 
 describe 'Stack', -> 
 
-    xdescribe 'is a eventEmitter', ->
+    describe 'is a eventEmitter', ->
 
         it 'allows assembling the tree in parallel'
 
 
-    xit 'has a root node', (done) ->
+    it 'has a root node', (done) ->
 
         stack = new Stack 'stack'
         stack.node.label.should.equal 'root'
@@ -25,7 +25,7 @@ describe 'Stack', ->
 
             @stack = new Stack 'Title'
 
-        xit 'emits "start" and "push" events on first push', (done) ->
+        it 'emits "start" and "push" events on first push', (done) ->
 
             ranStart = false
             ranPush = false
@@ -38,7 +38,7 @@ describe 'Stack', ->
                 done()
 
 
-        xit 'emits "end" and "pop" events on last pop', (done) ->
+        it 'emits "end" and "pop" events on last pop', (done) ->
 
             ranPop = false
             ranEnd = false
@@ -51,7 +51,7 @@ describe 'Stack', ->
             ranEnd.should.equal true
             done()
 
-        xit 'emits only "push" and "pop" from child node', (done) ->
+        it 'emits only "push" and "pop" from child node', (done) ->
 
             @stack.stacker 'push1', () =>
                 ranPush = false
@@ -66,7 +66,7 @@ describe 'Stack', ->
                 ranPop.should.equal true
                 done()
 
-        xdescribe 'sends the node being "entered"', -> 
+        describe 'sends the node being "entered"', -> 
 
             it 'begin', (done) ->
 
@@ -83,7 +83,7 @@ describe 'Stack', ->
                 @stack.stacker 'Label1', () ->
 
 
-        xdescribe 'sends the node being "exited"', ->
+        describe 'sends the node being "exited"', ->
 
 
             it 'pop', (done) ->
@@ -101,25 +101,35 @@ describe 'Stack', ->
                     done()
                 @stack.stacker 'Label1', () ->
 
+        describe 'edge event', ->
+
+            it 'is emitted with each traversal from one node to another', (done) ->
+
+                STACK = @stack
+                @stack.on 'edge', (placeholder, nodes) ->
+                    #
+                    # exiting THREE?
+                    #
+                    if nodes.from.label == 'THREE'
+                        #
+                        # GOT thing in it?
+                        #
+                        nodes.from.stick.this.into.should.equal 'IT'
+                        done()
 
 
-        xit '"push" and "pop" sends the next node as payload', (done) ->
+                @stack.stacker 'ONE', (Parent) -> 
+                    Parent 'TWO', (Child) -> 
+                        Child 'THREE', (GrandChild) -> 
+                            #
+                            # PUT thing in it
+                            #
+                            STACK.node.stick = this: into: 'IT'
 
-            pushed = undefined
-            popped = undefined
-
-            @stack.stacker 'Label1', (childNode) =>
-                @stack.once 'push', (placeholder, node) -> pushed = node
-                @stack.once 'pop', (placeholder, node) -> popped = node
-                childNode 'Label2', =>
-
-            pushed.label.should.equal 'Label2'
-            pushed.class.should.equal 'childNode'
-            popped.should.equal pushed
-            done()
+                
 
 
-    xdescribe 'stacker()', -> 
+    describe 'stacker()', -> 
 
         it 'calls push() if received args', (done) -> 
 
@@ -134,7 +144,7 @@ describe 'Stack', ->
             done()
 
 
-    xdescribe 'push()', -> 
+    describe 'push()', -> 
 
         it 'pushes a new labeled node into the stack', (done) -> 
 
@@ -193,7 +203,7 @@ describe 'Stack', ->
 
 
 
-    xit 'it populates a stack', (done) -> 
+    it 'it populates a stack', (done) -> 
 
         s = new Stack 'stack'
         design = s.stacker
@@ -216,7 +226,7 @@ describe 'Stack', ->
                             leaf()
         
 
-    xit 'uses the stack name as the root node class name', (done) -> 
+    it 'uses the stack name as the root node class name', (done) -> 
 
         s = new Stack 'design'
         design = s.stacker
@@ -229,7 +239,7 @@ describe 'Stack', ->
             done()
 
 
-    xit "is uses the callback arg label for all other node class names", (done) ->
+    it "is uses the callback arg label for all other node class names", (done) ->
 
         s = new Stack 'design'
         design = s.stacker
@@ -244,7 +254,7 @@ describe 'Stack', ->
                 done()
 
 
-    xdescribe 'the walker that', ->  
+    describe 'the walker that', ->  
 
         it 'starts at the root of the tree', (done) ->
 
@@ -258,7 +268,7 @@ describe 'Stack', ->
             done()
 
 
-        xit 'walks when pushed, placing nodes into the tree', (done) -> 
+        it 'walks when pushed, placing nodes into the tree', (done) -> 
 
             s = new Stack 'design'
             design = s.stacker
@@ -282,7 +292,7 @@ describe 'Stack', ->
 
             done()
 
-    xdescribe 'validator()', ->
+    describe 'validator()', ->
 
         it 'validates the stack when called', (done) ->
 
