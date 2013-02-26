@@ -1,4 +1,3 @@
-should = require 'should'
 Stack  = require '../lib/stack'
 Tree   = require '../lib/tree'
 
@@ -14,11 +13,13 @@ describe 'Tree', ->
 
             THAT 'has inner node1'
 
-            THAT 'has inner node2', (AND) -> 
+            THAT 'has inner node2', (AND, should, Notifier) ->
 
-                AND 'proceeds deeper', ->
+                Notifier.should.equal require '../lib/notifier'
 
-                    done()
+                AND 'proceeds deeper', -> 
+
+        done()
 
 # 
 #   undefined root     ------>  PARENT Outer Node

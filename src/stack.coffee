@@ -2,6 +2,7 @@ require 'fing'
 
 Node      = require './node'
 Notifyier = require './notifier'
+Injector  = require './injector'
 
 stack     = undefined
 notifier  = undefined
@@ -90,7 +91,7 @@ module.exports = class Stack
 
             try
 
-                @node.callback @stacker if callback
+                Injector.inject [@stacker], callback if callback
 
             catch error
 
