@@ -4,26 +4,70 @@ Stack  = require '../lib/stack'
 
 describe 'Stack', -> 
 
-    describe 'is a eventEmitter', ->
+    xdescribe 'is a eventEmitter', ->
 
         it 'allows assembling the tree in parallel'
 
 
-    it 'has a root node', (done) ->
+    xit 'has a root node', (done) ->
 
         stack = new Stack 'stack'
         stack.node.label.should.equal 'root'
         done()
 
 
-    it 'has an event emitter', (thisFunctionRan) ->
-
-        stack = new Stack 'stack'
-        stack.once 'start', -> thisFunctionRan()
-        stack.stacker 'pushing'
+    
 
 
-    describe 'stacker()', -> 
+    describe 'has an event emitter', ->
+
+        before ->
+
+            @stack = new Stack 'stack'
+
+        it 'emits "start" and "push" events on first push', (done) ->
+
+            ranStart = false
+            ranPush = false
+            @stack.once 'start', -> ranStart = true
+            @stack.once 'push', -> ranPush = true
+            
+            @stack.stacker 'pushing', ->
+                ranStart.should.equal true
+                ranPush.should.equal true
+                done()
+
+
+        it 'emits "end" and "pop" events on last pop', (done) ->
+
+            ranPop = false
+            ranEnd = false
+            @stack.once 'pop', -> ranPop = true
+            @stack.once 'end', -> ranEnd = true
+
+            @stack.stacker 'pushing', ->
+
+            ranPop.should.equal true
+            ranEnd.should.equal true
+            done()
+
+        it 'emits only "push" and "pop" from child node', (done) ->
+
+            @stack.stacker 'push1', () =>
+                ranPush = false
+                ranPop = false
+                @stack.once 'push', -> ranPush = true
+                @stack.once 'pop', -> ranPop = true
+
+                @stack.stacker 'push2', () ->
+                    ranPop.should.equal false
+                    ranPush.should.equal true
+                
+                ranPop.should.equal true
+                done()
+
+
+    xdescribe 'stacker()', -> 
 
         it 'calls push() if received args', (done) -> 
 
@@ -38,7 +82,7 @@ describe 'Stack', ->
             done()
 
 
-    describe 'push()', -> 
+    xdescribe 'push()', -> 
 
         it 'pushes a new labeled node into the stack', (done) -> 
 
@@ -97,7 +141,7 @@ describe 'Stack', ->
 
 
 
-    it 'it populates a stack', (done) -> 
+    xit 'it populates a stack', (done) -> 
 
         s = new Stack 'stack'
         design = s.stacker
@@ -120,7 +164,7 @@ describe 'Stack', ->
                             leaf()
         
 
-    it 'uses the stack name as the root node class name', (done) -> 
+    xit 'uses the stack name as the root node class name', (done) -> 
 
         s = new Stack 'design'
         design = s.stacker
@@ -133,7 +177,7 @@ describe 'Stack', ->
             done()
 
 
-    it "is uses the callback arg label for all other node class names", (done) ->
+    xit "is uses the callback arg label for all other node class names", (done) ->
 
         s = new Stack 'design'
         design = s.stacker
@@ -148,7 +192,7 @@ describe 'Stack', ->
                 done()
 
 
-    describe 'the walker that', ->  
+    xdescribe 'the walker that', ->  
 
         it 'starts at the root of the tree', (done) ->
 
@@ -186,7 +230,7 @@ describe 'Stack', ->
 
             done()
 
-    describe 'validator()', ->
+    xdescribe 'validator()', ->
 
         it 'validates the stack when called', (done) ->
 

@@ -25,16 +25,14 @@ module.exports = class Stack
         notifier = Notifyier.create @name,
 
             #
-            # Stack is an EventEmitter, 
-            # 
+            # Stack is an EventEmitter
             # Events:
             # 
 
-            start: description: 'Enter root node'
-            enter: description: 'Enter a node'
-            exit:  description: 'Exit a node'
-            end:   description: 'Exit root node'
-
+            start: description: 'Enters root node'
+            push:  description: 'Enters a node'
+            pop:   description: 'Exits a node'
+            end:   description: 'Exits root node'
 
         @walker  = @tree = @node.edges
 
@@ -59,11 +57,7 @@ module.exports = class Stack
 
         if @stack.length == 0
 
-            unless @end
-            
-                notifier.emit 'start', ''
-                @end = true
-
+            notifier.emit 'start', ''
 
 
         label    = args[0]
@@ -81,6 +75,8 @@ module.exports = class Stack
 
                 callback: callback
                 class:    klass
+
+            notifier.emit 'push', ''
 
             @stack.push @node
             @walker.push @node
@@ -110,6 +106,8 @@ module.exports = class Stack
 
             node = @stack.pop()
 
+            notifier.emit 'pop', ''
+
             if @stack.length > 0
 
                 @node   = @stack[@stack.length - 1]
@@ -119,7 +117,9 @@ module.exports = class Stack
             @pendingClass = @classes.pop()
 
             
+        if @stack.length == 0
 
+            notifier.emit 'end', ''
 
 
 
