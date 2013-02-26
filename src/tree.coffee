@@ -12,13 +12,13 @@ class Tree
 
         subscribe 'edge', @edge
 
-    edge: (door, nodes) => 
+    edge: (placeholder, nodes) => 
 
         @traverse nodes.from, nodes.to
 
     traverse: (from, to) ->
 
-        console.log arguments
+        console.log "#{from.class} #{from.label}", '\t------>\t', "#{to.class} #{to.label}"
 
 
 #
