@@ -12,7 +12,7 @@ class Tree
 
         subscribe 'edge', @edge
 
-    edge: (placeholder, nodes) => 
+    edge: (door, nodes) => 
 
         @traverse nodes.from, nodes.to
 

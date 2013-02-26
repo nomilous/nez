@@ -1,0 +1,39 @@
+#!/usr/bin/env coffee
+
+require('nez').objective 'Nez',
+
+    nimbal: 'https://localhost:10101/'
+
+    class: 'Root Module - Realization'
+
+    classification: 'Process'
+
+    description: """
+
+        A framework capable of housing an heirarchy of inter-dependant 
+        Objectives with an extended capacity to express the levels of 
+        accessability to the in-process accumulation of information
+        stored in that heirarchy to enable the various role players
+        an appropriate view into progress being made.
+        
+
+        And for the specific case of software design and implementation, 
+        a system capable of measuring the efforts and successes throughout 
+        the process of realizing the Objectives by harnessing information 
+        garnishable from the development process itself (the test runs).
+
+    """
+
+    possibility: """
+
+        Imagine a framework capable of houseing a graph of nodes, each 
+        representing a component of a complex system, and a set edges 
+        along which a configured 'consciousness' can traverse as it 
+        endeavours to complete its assigned task.
+
+    """
+
+
+    and: 'what the door mouse said'
+
+
