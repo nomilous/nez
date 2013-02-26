@@ -122,8 +122,6 @@ describe 'Injector', ->
 
                 what the door mouse said
 
-                #
-                # no, resist! this! rabbit! hole!
                 # 
                 # http://www.youtube.com/watch?v=R_raXzIRgsA
                 # 
