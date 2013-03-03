@@ -252,45 +252,7 @@ describe 'Stack', ->
                 stack[1].class.should.equal 'For'
                 stack[1].label.should.equal 'increasingly evident reasons'
                 done()
-
-
-    describe 'the walker that', ->  
-
-        it 'starts at the root of the tree', (done) ->
-
-            s = new Stack 'design'
-            design = s.stacker
-            tree   = s.tree
-            walker = s.walker
-
-            tree.should.be.an.instanceof Array
-            tree.should.eql walker
-            done()
-
-
-        it 'walks when pushed, placing nodes into the tree', (done) -> 
-
-            s = new Stack 'design'
-            design = s.stacker
-            tree   = s.tree
-            walker = s.walker
-
-            design 'A thing', (With) -> 
-                With 'child1', (one) -> 
-                    one '1'
-                With 'child2', (two) -> 
-                    two()
-
-            tree[0].edges[0].class.should.equal 'With'
-            tree[0].edges[0].label.should.equal 'child1'
-
-            tree[0].edges[0].edges[0].class.should.equal 'one'
-            tree[0].edges[0].edges[0].label.should.equal '1'
-
-            tree[0].edges[1].class.should.equal 'With'
-            tree[0].edges[1].label.should.equal 'child2'
-
-            done()
+                
 
     describe 'validator()', ->
 

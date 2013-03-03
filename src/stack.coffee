@@ -19,11 +19,6 @@ module.exports = class Stack
         @end     = false
 
 
-        #
-        # TODO: move the tree out of here
-        # TODO: add an event emitter, the tree builder can subscribe
-        #
-
         notifier = Notifyier.create @name,
 
             #
@@ -36,8 +31,6 @@ module.exports = class Stack
             pop:   description: 'Exits a node'
             end:   description: 'Exits root node'
             edge:  description: 'Edge traversal'
-
-        @walker  = @tree = @node.edges
 
         stack = @
 
@@ -85,8 +78,6 @@ module.exports = class Stack
             notifier.emit 'edge', '', from: from, to: @node
 
             @stack.push @node
-            @walker.push @node
-            @walker = @node.edges
             @classes.push klass
 
             try
@@ -130,15 +121,8 @@ module.exports = class Stack
                 @node = @stack[@stack.length - 1]
 
 
-            notifier.emit 'edge', '', from: from, to: @node
-
-
-            @walker = @node.edges             
+            notifier.emit 'edge', '', from: from, to: @node           
             @pendingClass = @classes.pop()
-
-            
-        
-
 
 
     validator: (done) ->
