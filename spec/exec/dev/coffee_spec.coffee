@@ -1,5 +1,6 @@
 should = require 'should'
 Coffee = require '../../../lib/exec/dev/coffee'
+hound  = require 'hound'
 
 
 describe 'Coffee', ->
@@ -11,6 +12,36 @@ describe 'Coffee', ->
             srcdir: './src'
             specdir: './spec'
 
+
+    it 'watches specdir and srcdir dir', (done) ->
+
+        swap = hound.watch
+        watched = {}
+
+        hound.watch = (what) -> 
+            on: (event, callback)->
+                watched[what] = for: event
+
+        @coffee.start()
+        hound.watch = swap
+
+        watched['./spec'].should.eql for: 'change'
+        watched['./src'].should.eql for: 'change'
+        done()
+
+    it 'failes gracefully if spec or src dir are missing', (done) ->
+
+        coffee = new Coffee
+            srcdir: './lib'   # eg. js dev (no src)
+            specdir: './test'
+
+        try
+            coffee.start()
+
+        catch error
+            should.not.exist error
+
+        done()
 
 
     it 'converts src to spec file name', (done) ->

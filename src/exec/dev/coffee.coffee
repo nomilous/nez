@@ -1,4 +1,5 @@
 child_process = require 'child_process'
+colors        = require 'colors'
 hound         = require 'hound'
 path          = require 'path'
 fs            = require 'fs'
@@ -42,6 +43,23 @@ module.exports = class Coffee
     start: ->
 
         console.log "(config)", @config
+
+        #
+        # do nothing (And say why) if srcdir and specdir
+        # are not present
+        # 
+        missing = []
+        for parameter in ['spec', 'src']
+            unless fs.existsSync @config[parameter]
+                missing.push @config[parameter]
+
+        if missing.length > 0
+            console.log 'Expected directory(ies):'.red.bold, missing.toString()
+            return
+
+
+
+
         @watch 'spec', @onchange
         @watch 'src', @onchange
 
