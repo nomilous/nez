@@ -40,7 +40,7 @@ module.exports = class Stack
         # fire before and after hooks
         #
 
-        @hooks = Hooks.create stack 
+        @hooks = Hooks.getFor stack
 
 
     stacker: (label, callback) -> 
@@ -66,18 +66,11 @@ module.exports = class Stack
         callback = args[1]  # TODO: as last arg
         klass    = @pendingClass || @name
 
-
-        #
-        # before and after hooks 
-        #
         unless typeof label == 'string'
+        
+            @hooks.set from, label
+            return
 
-            for key of label
-                switch key
-                    when 'beforeAll' then label.beforeAll()
-                    when 'afterAll' then @hooks.set key, from, label[key]
-                    when 'afterEach' then @hooks.set key, from, label[key]
-                    when 'beforeEach' then @hooks.set key, from, label[key]
  
         if callback and callback.fing.args.length > 0
 

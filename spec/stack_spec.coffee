@@ -151,19 +151,35 @@ describe 'Stack', ->
             stack = new Stack 'stack'
             @ran = false
             stack.stacker beforeAll: => @ran = true
-            @ran.should.equal true
-            done()
+            stack.stacker 'into child node', =>
+                @ran.should.equal true
+                done()
 
         it 'runs afterAll hook immediately afterwards', (done) ->
 
             stack = new Stack 'stack'
             ran = 'not run yet'
-            stack.stacker afterAll: -> ran = 'has run now'
+            
+            stack.stacker afterAll: -> 
+                ran = 'has run now'
 
             stack.stacker 'into child node', ->
-                ran.should.equal 'not run yet'
+                console.log ran
 
             ran.should.equal 'has run now'
+            done()
+
+        it 'runs beforeEach on every ancestors edge', (done) ->
+
+            stack = new Stack 'stack'
+            ran = 0
+            stack.stacker afterAll: -> ran++
+
+            stack.stacker 'into child node', (child) ->
+                child 'child', (grandchild) ->
+                    grandchild 'grandchild', ->
+
+            ran.should.equal 3
             done()
 
 
