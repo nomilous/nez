@@ -42,7 +42,6 @@ Object.defineProperty Nez, 'objective',
     enumerable: enumerable
 
 
-
 #
 # Private
 #
