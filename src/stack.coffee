@@ -82,8 +82,8 @@ module.exports = class Stack
 
             try
 
-                # Injector.inject [@stacker], callback if callback
-                callback @stacker if callback
+                Injector.inject [@stacker], callback if callback
+                #callback @stacker if callback
 
             catch error
 
@@ -94,6 +94,8 @@ module.exports = class Stack
                     # be thrown enywhere but at a leaf node
                     # on the test tree
                     # 
+
+                    console.log error.message.red
 
                     @validate()
 
