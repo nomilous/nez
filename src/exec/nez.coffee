@@ -12,25 +12,36 @@ program.option '-n, --noautospec',        'Disable autogeneration of missing spe
 program.parse process.argv
 
 
-module.exports = 
+module.exports = ExecNez = 
 
-    exec: (@objective, @config) ->
+    exec: (objective, config) ->
 
         #
         # Eyes on the target!
         # (Show the objective at startup)
         #
 
-        console.log '\n' + "(objective) " + @objective.bold
+        console.log '\n' + "(objective) " + objective.bold
 
-        for meta of @config
+        ExecNez.objective = objective
+
+        return ExecNez.start unless config
+
+        ExecNez.start config
+
+
+    start: (config) ->
+
+        ExecNez.config = config
+
+        for meta of config
 
             continue if meta == 'nimbal'
             continue if meta == 'description'
 
-            console.log "(#{meta}) " + @config[meta].bold 
+            console.log "(#{meta}) " + ExecNez.config[meta].bold 
 
-        console.log @config['description'].bold
+        console.log config['description'].bold
 
 
         #
