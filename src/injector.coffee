@@ -96,6 +96,8 @@ module.exports = Injector =
 
     loadServices: (args, list = []) ->
 
+        # console.log "services:", args
+
         skip = list.length
 
         services = list
@@ -119,6 +121,8 @@ module.exports = Injector =
                 #
 
                 services.push require arg.name
+
+        #console.log "services:", services
 
         return services
 
@@ -159,6 +163,8 @@ module.exports = Injector =
         name   = Inflection.underscore klass
         source = undefined
 
+        # console.log fing.trace()
+
         for calls in fing.trace()
 
             if match = calls.file.match /(.*)\/spec\/(.*)_spec\./
@@ -170,6 +176,8 @@ module.exports = Injector =
 
             searchPath = repoRoot + "/#{srcDir}"
 
+            # console.log "SEARCH:", searchPath
+
             if fs.existsSync searchPath
 
                 for file in wrench.readdirSyncRecursive(searchPath)
@@ -178,14 +186,16 @@ module.exports = Injector =
 
                         if source 
 
-                            console.log "TODO: name: '../' as inject options"
+                            # console.log "TODO: name: '../' as inject options"
                             throw "Found more than 1 source for module '#{name}'"
 
                         else
 
                             source = "#{searchPath}/#{match[1]}"
 
-        throw "Found no source files for module '#{name}'" unless source
+        unless source
+            # console.log "Found no source files for module '#{name}'" 
+            throw "Found no source files for module '#{name}'" 
 
         return source
 

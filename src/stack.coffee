@@ -91,7 +91,8 @@ module.exports = class Stack
 
             try
 
-                Injector.inject [@stacker], callback if callback
+                # Injector.inject [@stacker], callback if callback
+                callback @stacker if callback
 
             catch error
 
@@ -106,6 +107,8 @@ module.exports = class Stack
                     @validate()
 
                 else
+
+                    console.log error
 
                     throw error
             

@@ -13,13 +13,11 @@ describe 'Tree', ->
 
             THAT 'has inner node1'
 
-            THAT 'has inner node2', (AND, should, Notifier) ->
-
-                Notifier.should.equal require '../lib/notifier'
+            THAT 'has inner node2', (AND) ->
 
                 AND 'proceeds deeper', -> 
 
-        done()
+                    done()
 
 # 
 #   undefined root     ------>  PARENT Outer Node
