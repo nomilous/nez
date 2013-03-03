@@ -122,7 +122,20 @@ module.exports = Injector =
                 # Inject installed npm module
                 #
 
-                services.push require arg.name
+                try
+
+                    module = require arg.name
+
+                catch error
+
+                    #
+                    # TODO: consider auto installing npms 
+                    #       upon first injection as --save-dev
+                    #
+                    
+                    throw error
+
+                services.push module
 
         #console.log "services:", services
 
