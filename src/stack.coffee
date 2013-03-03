@@ -95,9 +95,9 @@ module.exports = class Stack
                     # on the test tree
                     # 
 
-                    console.log error.message.red
+                    # console.log error.message.red
 
-                    @validate()
+                    @validate null, error
 
                 else
 
@@ -132,7 +132,7 @@ module.exports = class Stack
         stack.validate done
 
 
-    validate: (done) ->
+    validate: (done, error) ->
 
         # return if done == 'end'
 
@@ -145,8 +145,15 @@ module.exports = class Stack
 
                 testString += "#{node.class} #{node.label.bold} "
                 leafNode = node
-                
-            console.log testString
+            
+            if error
+
+                console.log 'FAILED:'.red, testString
+                console.log error.message.red
+
+            else
+
+                console.log 'PASSED:'.green, testString
 
             # leafNode.callback 'end'
         
