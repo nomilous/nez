@@ -182,11 +182,13 @@ module.exports = class Coffee
             @mkdirMinusP parts.path
 
         fs.writeFile parts.path + parts.specname, """
+        require('nez').realize '#{parts.classname}', (#{parts.classname}, test, context, should) -> 
 
-        #{parts.classname} = require '#{parts.require}'
+            context 'in CONTEXT', (does) ->
 
-        describe '#{parts.classname}', ->
+                does 'an EXPECTATION', (done) ->
 
+                    test done
 
         """, (err) ->
 

@@ -23,10 +23,10 @@ Object.defineProperty Nez, 'realize',
     get: ->
 
         #
-        # Property 'realize' returns Injector.inject (function)
+        # Property 'realize' returns Injector.realize (function)
         # 
 
-        Injector.inject
+        Injector.realize
 
 
     enumerable: enumerable

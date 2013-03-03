@@ -41,9 +41,9 @@ describe 'Nez', ->
 
 describe 'Nez.realize()', -> 
 
-    it 'is a property that returns the injector', (done) -> 
+    it 'is a property that returns the realization flavoured injector', (done) -> 
 
-        Nez.realize.should.equal require('../lib/injector').inject
+        Nez.realize.should.equal require('../lib/injector').realize
         done()
 
 

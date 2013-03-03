@@ -90,6 +90,8 @@ module.exports = Injector =
 
                 fn = arguments[key]
 
+            console.log "LIST:", list
+
             fn.apply null, Injector.loadServices(fn.fing.args, list)
 
 
