@@ -3,6 +3,7 @@ require 'fing'
 Node      = require './node'
 Notifyier = require './notifier'
 Injector  = require './injector'
+Hooks     = require './hooks'
 
 stack     = undefined
 notifier  = undefined
@@ -18,7 +19,6 @@ module.exports = class Stack
         @node    = @root
         @end     = false
 
-
         notifier = Notifyier.create @name,
 
             #
@@ -33,6 +33,14 @@ module.exports = class Stack
             edge:  description: 'Edge traversal'
 
         stack = @
+
+
+        #
+        # hooks binds to the eevnt emitter to 
+        # fire before and after hooks
+        #
+
+        @hooks = Hooks.create stack 
 
 
     stacker: (label, callback) -> 
@@ -57,6 +65,19 @@ module.exports = class Stack
         label    = args[0]
         callback = args[1]  # TODO: as last arg
         klass    = @pendingClass || @name
+
+
+        #
+        # before and after hooks 
+        #
+        unless typeof label == 'string'
+
+            for key of label
+                switch key
+                    when 'beforeAll' then label.beforeAll()
+                    when 'afterAll' then @hooks.set key, from, label[key]
+                    when 'afterEach' then @hooks.set key, from, label[key]
+                    when 'beforeEach' then @hooks.set key, from, label[key]
  
         if callback and callback.fing.args.length > 0
 
@@ -123,7 +144,8 @@ module.exports = class Stack
                 @node = @stack[@stack.length - 1]
 
 
-            notifier.emit 'edge', '', from: from, to: @node           
+            notifier.emit 'edge', '', from: from, to: @node
+
             @pendingClass = @classes.pop()
 
 

@@ -146,6 +146,28 @@ describe 'Stack', ->
 
     describe 'push()', -> 
 
+        it 'runs beforeAll hook immediately', (done) ->
+
+            stack = new Stack 'stack'
+            @ran = false
+            stack.stacker beforeAll: => @ran = true
+            @ran.should.equal true
+            done()
+
+        it 'runs afterAll hook immediately afterwards', (done) ->
+
+            stack = new Stack 'stack'
+            ran = 'not run yet'
+            stack.stacker afterAll: -> ran = 'has run now'
+
+            stack.stacker 'into child node', ->
+                ran.should.equal 'not run yet'
+
+            ran.should.equal 'has run now'
+            done()
+
+
+
         it 'pushes a new labeled node into the stack', (done) -> 
 
             stack  = new Stack 'design'
