@@ -162,50 +162,13 @@ describe 'Stack', ->
 
     describe 'push()', -> 
 
-        it 'attaches refence to the stack onto the node', (done) ->
+        xit 'attaches refence to the stack onto the node', (done) ->
 
             stack = new Stack 'stack'
             stack.stacker 'into child node', ->
                 node = stack.stack[0]
                 node.stack.should.equal stack
                 done()
-
-
-        xit 'runs beforeAll hook immediately', (done) ->
-
-            stack = new Stack 'stack'
-            @ran = false
-            stack.stacker beforeAll: => @ran = true
-            stack.stacker 'into child node', =>
-                @ran.should.equal true
-                done()
-
-        xit 'runs afterAll hook immediately afterwards', (done) ->
-
-            stack = new Stack 'stack'
-            ran = 'not run yet'
-            
-            stack.stacker afterAll: -> 
-                ran = 'has run now'
-
-            stack.stacker 'into child node', ->
-                console.log ran
-
-            ran.should.equal 'has run now'
-            done()
-
-        it 'runs beforeEach on every ancestors edge', (done) ->
-
-            stack = new Stack 'stack'
-            ran = 0
-            stack.stacker afterAll: -> ran++
-
-            stack.stacker 'into child node', (child) ->
-                child 'child', (grandchild) ->
-                    grandchild 'grandchild', ->
-
-            ran.should.equal 3
-            done()
 
 
         xit 'pushes a new labeled node into the stack', (done) -> 
@@ -224,7 +187,7 @@ describe 'Stack', ->
                 done()
 
 
-        xdescribe 'with function as second arg', ->
+        describe 'with function as second arg', ->
 
             it 'stores the function on the new node pushed into the stack', (done) -> 
 

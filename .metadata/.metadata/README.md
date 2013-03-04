@@ -16,9 +16,11 @@
 
                             ipso. 
                                
-                               Enables rapid project realization with an
-                               ability to swiftly respond to the whimsey 
-                               of market pressure variability.
+                                Enables rapid project realization with 
+                                 an ability to swiftly respond to the 
+                                  chaotic whimsey of market pressure 
+                                   and 
+                                        Necessity Variability.
 
 
 
@@ -29,14 +31,12 @@
                                in a Leading Role' goes to...
 
 
-                                                Dog.
-
-                                      Chasing it's own tail **
+                                                Dog
 
 
 
 
-
+                                         Chasing its** tail
 
 
 
@@ -53,9 +53,9 @@
 
 
 
+                       ** unless there is are HIGHLY devoted† custodians of quality
 
-
-                  ** unless there is are HIGHLY devoted custodians of quality present
-                 
+                   † pitched firm - in the everwending trenches of the corporate exigency
+          
                                                                                                              .
 </pre>
