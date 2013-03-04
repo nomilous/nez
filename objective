@@ -34,6 +34,10 @@ require('nez').objective 'Nez',
     """
 
 
-    and: 'what the door mouse said'
+    ALSO: 'what the door mouse said'
+
+          #
+          # https://github.com/nomilous/nez/commit/eeb5b031e32c6fe9f4245b8632aa913735c639c8
+          #
 
 
