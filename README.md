@@ -24,23 +24,32 @@ nez  # [--dev js]
 [Coffee Script](http://coffeescript.org/) - For a symantically ideal experience.
 
 
-### Usage (overview)
+### Usage (general)
 
-This may change:
+This may (Still) change:
 
 ```coffee
-require('nez').realize 'ClassName', (ClassName, validator, stacker, module1,,, moduleN ) -> 
+require('nez').realize 'ClassName', (Subject, validate, stacker, should,,, moduleN ) ->
+
+    stacker 'push labeled node into tree', (that) ->
+
+        that 'is a heirarchy of tests', (done) ->
+
+            should.exist 'tests (here)'
+            validate done
+
+
 ```
 
 
 
-### Usage (`spec/periscope_spec.coffee`)
+### Usage (example `spec/periscope_spec.coffee`)
 
 This may change:
 
 ```coffee
 
-require('nez').realize 'Periscope', (Periscope, test, stacker, should) ->
+require('nez').realize 'Periscope', (Periscope, test, it, should) ->
 
 
 
@@ -67,7 +76,7 @@ require('nez').realize 'Periscope', (Periscope, test, stacker, should) ->
 
         periscope.expect riseToSurface: with: 'distance', returning: true
         periscope.expect openLens: returning: true
-        periscope.exepct "AdmiralEyeball"
+        periscope.exepct "Admiral's Allseeing Eyeball"
 
 
         #
