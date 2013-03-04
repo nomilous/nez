@@ -28,7 +28,7 @@ class Hooks
     handle: (placeholder, nodes) -> 
 
         #
-        # This is called from and EventEmitter
+        # This is called from an EventEmitter
         # and has lost all sence of self...  
         # 
         #  ie. @ == 'The node process'
@@ -90,38 +90,26 @@ class Hooks
             delete node.hooks[allHook]
 
 
-
-
-
-
-
-
-
-
-        return
-
-
         ancestors = node.stack.ancestorsOf node
 
+        for ancestor in ancestors
 
-        if nodes.tree == 'down'
+            #
+            # Run all (before|after)Each hooks present 
+            # in the ancestor sequence
+            #
 
-            beforeAll = nodes.from.hooks['beforeAll']
+            if typeof ancestor.hooks[eachHook] != 'undefined'
 
-            if beforeAll
+                ancestor.hooks[eachHook]()
 
-                beforeAll()
-                delete nodes.from.hooks['beforeAll']
+        #
+        # Then run the local (before|after)Each on the local node
+        #
 
+        if typeof node.hooks[eachHook] != 'undefined'
 
-        else if nodes.tree == 'up'
-
-            afterAll = nodes.to.hooks['afterAll']
-
-            if afterAll
-
-                afterAll()
-                delete nodes.to.hooks['afterAll']
+            node.hooks[eachHook]()
 
 
 #

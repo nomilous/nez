@@ -4,7 +4,7 @@ Node   = require '../lib/node'
 
 describe 'Hooks', ->
 
-    xit 'subscribes to stack edge events', (yip) ->
+    it 'subscribes to stack edge events', (yip) ->
 
         stack = 
 
@@ -20,7 +20,7 @@ describe 'Hooks', ->
         Hooks.getFor stack
 
 
-    xit 'binds only prefefined hooks to the node', (done) ->
+    it 'binds only prefefined hooks to the node', (done) ->
 
         hooks = Hooks.getFor on:(event, handler)=>
         node  = new Node 'name'
@@ -51,6 +51,9 @@ describe 'Hooks', ->
 
         hooks = Hooks.getFor on:(event, handler)=>
         node  = new Node 'name',
+            #
+            # mock stack with two ancestors
+            #
             stack:
                 ancestorsOf: -> [ 
                     new Node 'parent'
@@ -78,7 +81,12 @@ describe 'Hooks', ->
     it 'runs afterAll only once', (done) ->
 
         hooks = Hooks.getFor on:(event, handler)=>
-        node  = new Node 'name'
+        node  = new Node 'name',
+            stack:
+                ancestorsOf: -> [ 
+                    new Node 'parent'
+                    new Node 'pparent' 
+                ]
         afterAll = 0
         hooks.set node, afterAll: -> afterAll++
 
@@ -96,32 +104,70 @@ describe 'Hooks', ->
         done()
         
 
-    xit 'runs beforeEach every time', (done) ->
+    it 'runs beforeEach every time', (done) ->
 
         hooks = Hooks.getFor on:(event, handler)=>
-        node  = new Node 'name'
+
         beforeEach = 0
+        ancestor1 = new Node 'ancestor1'
+        ancestor1.hooks.beforeEach = -> beforeEach++
+        ancestor2 = new Node 'ancestor2'
+        ancestor2.hooks.beforeEach = -> beforeEach++
+
+        node  = new Node 'name',
+            #
+            # mock stack with to ancestors each having a 
+            # before each hook
+            #
+            stack:
+                ancestorsOf: -> 
+                    [ ancestor1, ancestor2 ]
+        
         hooks.set node, beforeEach: -> beforeEach++
 
         hooks.handle '', 
             tree: 'down'
             from: node 
-            to: new Node 'other'
+            to: new Node  """
+
+                    entering this child node, so run all before hooks 
+                    on the 'departed' from.nodes's ancestry (and self)
+
+            """
 
         hooks.handle '', 
             tree: 'down'
             from: node 
             to: new Node 'other'
 
-        beforeEach.should.equal 2
+        #
+        # it should have run all beforeEach hooks 
+        # on the ancestors for each handled edge
+        # ie. 
+        #      2 hooks X 2 node (test 'leafs')
+        #      + 1 X 2 for each local beforeEach
+        #
+
+        beforeEach.should.equal 6
 
         done()
 
-    xit 'runs afterEach every time', (done) ->
+    it 'runs afterEach every time', (done) ->
 
         hooks = Hooks.getFor on:(event, handler)=>
-        node  = new Node 'name'
+
         afterEach = 0
+        ancestor1 = new Node 'ancestor1'
+        ancestor1.hooks.afterEach = -> afterEach++
+        ancestor2 = new Node 'ancestor2'
+        ancestor2.hooks.afterEach = -> afterEach++
+
+
+        node  = new Node 'name', 
+            stack: 
+                ancestorsOf: -> 
+                    [ ancestor1, ancestor2 ]
+
         hooks.set node, afterEach: -> afterEach++
 
         hooks.handle '', 
@@ -131,10 +177,15 @@ describe 'Hooks', ->
 
         hooks.handle '', 
             tree: 'up'
-            from: new Node 'other'
+            from: new Node """
+
+                    exitting this child node, so run all after hooks 
+                    on the 'destination' to.nodes's ancestry (and self)
+
+            """
             to: node
 
-        afterEach.should.equal 2
+        afterEach.should.equal 6
 
         done()
         
