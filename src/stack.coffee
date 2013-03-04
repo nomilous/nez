@@ -47,6 +47,14 @@ module.exports = class Stack
 
         stack.push arguments
 
+    ancestorsOf: (node) ->
+
+        ancestors = []
+        for ancestor in @stack
+            break if node == ancestor
+            ancestors.push ancestor
+        return ancestors
+
 
     on: (event, callback) -> 
 
@@ -82,6 +90,7 @@ module.exports = class Stack
             @node = new Node label,
 
                 callback: callback
+                stack:    stack
                 class:    klass
 
             if @stack.length == 0
@@ -89,7 +98,24 @@ module.exports = class Stack
                 notifier.emit 'begin', '', @node
 
             notifier.emit 'push', '', @node
-            notifier.emit 'edge', '', from: from, to: @node
+
+
+            #
+            # edge event
+            # 
+            # - For the case of a tree the event
+            #   contains an additonal paramreter
+            #   to define direction.
+            #   
+            #   up   - rootward
+            #   down - leafward
+            #
+
+            notifier.emit 'edge', '', 
+
+                tree: 'down'
+                from: from, 
+                to: @node
 
             @stack.push @node
             @classes.push klass
@@ -137,7 +163,10 @@ module.exports = class Stack
                 @node = @stack[@stack.length - 1]
 
 
-            notifier.emit 'edge', '', from: from, to: @node
+            notifier.emit 'edge', '',
+                tree: 'up'
+                from: from
+                to: @node
 
             @pendingClass = @classes.pop()
 

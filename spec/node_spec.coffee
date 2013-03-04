@@ -35,3 +35,5 @@ describe 'Node', ->
         node = new Node 'label'
         node.hooks.should.be.instanceof Object
         done()
+
+
