@@ -114,17 +114,3 @@ describe 'Injector', ->
             catch error
                 error.should.match /Found more than 1 source for module 'nez'/
                 done()
-
-
-        it 'enables heirarchy - meaning', (what) ->
-
-            Injector.inject [ (->), (-> 'syn'), (-> 'haptein'), '!'], (the, door, mouse, said) ->
-
-                what the door mouse said
-
-                # 
-                # http://www.youtube.com/watch?v=R_raXzIRgsA
-                # 
-
-
-                
