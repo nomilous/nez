@@ -1,7 +1,7 @@
 {
   "name": "nez",
   "description": "Declarative Expectation Framework (for Mocha)",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "nomilous <nomilous@gmail.com>",
   "contributors": [
     {
