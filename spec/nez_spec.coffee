@@ -54,6 +54,13 @@ describe 'Nez.objective()', ->
         Nez.objective.should.equal require('../lib/objective').validate
         done()
 
+describe 'Nez.plugin()', ->
+
+    it 'is a property that returns the plugin loader', (done) ->
+
+        Nez.plugin.should.equal require('../lib/plugin_loader').load
+        done()
+
 
 
 #

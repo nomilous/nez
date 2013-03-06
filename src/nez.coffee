@@ -2,6 +2,7 @@ Stack      = require './stack'
 prototypes = require './prototypes'
 Injector   = require './injector'
 Objective  = require './objective'
+Plugin     = require './plugin_loader'
 
 
 
@@ -39,6 +40,16 @@ Object.defineProperty Nez, 'realize',
 Object.defineProperty Nez, 'objective', 
 
     get: -> Objective.validate
+    enumerable: enumerable
+
+
+#
+# **Nez.plugin(`config`)**
+# 
+
+Object.defineProperty Nez, 'plugin', 
+
+    get: -> Plugin.load
     enumerable: enumerable
 
 
