@@ -15,7 +15,7 @@ module.exports = class Stack
 
         @stack   = []
         @classes = []
-        @root    = new Node 'root'
+        @root    = new Node 'root', stack: this
         @node    = @root
         @end     = false
 

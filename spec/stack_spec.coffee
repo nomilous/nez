@@ -9,10 +9,11 @@ describe 'Stack', ->
         it 'allows assembling the tree in parallel'
 
 
-    xit 'has a root node', (done) ->
+    xit 'has a root node with backref to the stack', (done) ->
 
         stack = new Stack 'stack'
         stack.node.label.should.equal 'root'
+        stack.node.stack.shouls.equal stack
         done()
 
 
