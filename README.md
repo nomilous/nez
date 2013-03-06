@@ -35,7 +35,7 @@ require('nez').realize 'ClassName', (Subject, validate, stacker, should,,, modul
 
         that 'is a heirarchy of tests', (done) ->
 
-            should.exist 'tests (here)'
+            should.should.should.exist 'tests (here)'
             validate done
 
 
