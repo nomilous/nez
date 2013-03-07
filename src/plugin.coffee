@@ -4,4 +4,7 @@
 
 module.exports = Plugin =
 
-    configure: (opts) -> 
+    configure: (stacker, config) -> 
+
+      
+

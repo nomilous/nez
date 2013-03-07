@@ -1,13 +1,15 @@
-should = require 'should'
-Plugin = require '../lib/plugin_loader'
+should       = require 'should'
+PluginLoader = require '../lib/plugin_loader'
+Plugin       = require '../lib/plugin'
+Nez          = require '../lib/nez'
 
-describe 'Plugin', ->
+describe 'PluginLoader', ->
 
     it 'loads plugin modules', (done) ->
 
         try
 
-            Plugin.load 'test'
+            PluginLoader.load 'test'
 
         catch error
 
@@ -16,22 +18,25 @@ describe 'Plugin', ->
 
     it 'validates the plugin', (done) ->
 
-        swap = Plugin.validate 
+        swap = PluginLoader.validate
+        validated = false
 
-        Plugin.validate = (potentialPlugin) -> 
-
+        PluginLoader.validate = (potentialPlugin) -> 
             potentialPlugin.should.equal require '../lib/plugin'
-            Plugin.validate = swap
-            done()
+            validated = true
+            potentialPlugin
 
-        Plugin.load '../lib/plugin'
+        PluginLoader.load '../lib/plugin'
+        PluginLoader.validate = swap
+        validated.should.equal true
+        done()
 
 
     it 'throws a PluginException on invalid plugin', (done) ->
 
         try
         
-            Plugin.validate {}
+            PluginLoader.validate {}
 
         catch error
 
@@ -39,7 +44,12 @@ describe 'Plugin', ->
             done()
 
 
-    describe 'extends the stack functionality', ->
+    it 'load() passes the stacker to Plugin.configure() and returs it', (done) ->
 
-        it "by assigning additional behaviours to the node 'class' names"
+        stacker = null
+        Plugin.configure = (arg1, arg2) ->
+            stacker = arg1
+
+        PluginLoader.load('../lib/plugin').should.equal stacker
+        done()
 

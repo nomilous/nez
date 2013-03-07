@@ -1,8 +1,8 @@
-Stack      = require './stack'
-prototypes = require './prototypes'
-Injector   = require './injector'
-Objective  = require './objective'
-Plugin     = require './plugin_loader'
+Stack        = require './stack'
+prototypes   = require './prototypes'
+Injector     = require './injector'
+Objective    = require './objective'
+PluginLoader = require './plugin_loader'
 
 
 
@@ -49,7 +49,7 @@ Object.defineProperty Nez, 'objective',
 
 Object.defineProperty Nez, 'plugin', 
 
-    get: -> Plugin.load
+    get: -> PluginLoader.load
     enumerable: enumerable
 
 
