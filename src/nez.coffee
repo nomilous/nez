@@ -3,87 +3,63 @@ prototypes   = require './prototypes'
 Injector     = require './injector'
 Objective    = require './objective'
 PluginLoader = require './plugin_loader'
+stack        = undefined
+
+
+module.exports = Nez = 
+
+
+    # 
+    # **Nez.realize(`ObjectiveClass`, `options`, `testFunction`)**
+    # 
+
+    realize: Injector.realize
+
+
+    #
+    # **Nez.objective(`config`)**
+    # 
+
+    objective: Objective.validate
+
+
+    #
+    # **Nez.plugin(`config`)**
+    # 
+
+    plugin: PluginLoader.load
+
+
+    #
+    # **Nez.link(`name`)
+    #
+
+    link: (name) -> Nez.stack
+
+        # (name) ->   
+        #     stack = new Stack(name)
+        #     prototypes.object.set.expect()
+        #     prototypes.object.set.mock()
+        #     return stack
 
 
 
-class Nez
+    #
+    # **Nez.linked(`name`)
+    #
 
-#
-# Public
-# 
-
-enumerable = true
-
-
-# 
-# **Nez.realize(`ObjectiveClass`, `options`, `testFunction`)**
-# 
-
-Object.defineProperty Nez, 'realize', 
-
-    get: ->
+    linked: (name) -> 
 
         #
-        # Property 'realize' returns Injector.realize (function)
-        # 
+        # TODO: ensure classname in current node
+        #
 
-        Injector.realize
-
-
-    enumerable: enumerable
+        Nez.stack.stacker
 
 
-#
-# **Nez.objective(`config`)**
-# 
 
-Object.defineProperty Nez, 'objective', 
-
-    get: -> Objective.validate
-    enumerable: enumerable
+    stack: stack ||= new Stack()
 
 
-#
-# **Nez.plugin(`config`)**
-# 
-
-Object.defineProperty Nez, 'plugin', 
-
-    get: -> PluginLoader.load
-    enumerable: enumerable
 
 
-#
-# Private
-#
-
-enumerable = false
-stack      = undefined
-
-
-Object.defineProperty Nez, 'stack',
-
-    get: -> stack
-    enumerable: enumerable
-
-
-    Object.defineProperty Nez, 'link',
-
-        get: -> (name) ->
-
-            stack = new Stack(name)
-            prototypes.object.set.expect()
-            prototypes.object.set.mock()
-
-            unless typeof stack.stacker.link == 'function'
-
-                Object.defineProperty stack.stacker, 'link' 
-
-                    get: -> ->
-
-            return stack
-
-        enumerable: enumerable
-
-
-module.exports = Nez

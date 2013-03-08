@@ -4,6 +4,7 @@ Node      = require './node'
 Notifyier = require './notifier'
 Injector  = require './injector'
 Hooks     = require './hooks'
+Link      = require './link'
 
 stack     = undefined
 notifier  = undefined
@@ -43,7 +44,20 @@ module.exports = class Stack
         @hooks = Hooks.getFor stack
 
 
+        #
+        # stacker provides access to linker
+        # 
+
+        unless typeof @stacker.link == 'function'
+
+            Object.defineProperty @stacker, 'link',
+
+                get: -> Link.linker
+
+
     stacker: (label, callback) -> 
+
+
 
         stack.push arguments
 
