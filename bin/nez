@@ -1,24 +1,24 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 
-require(
+// require(
 
-    require('path').join(
+//     require('path').join(
 
-        require('path').dirname(
+//         require('path').dirname(
 
-            require('fs').realpathSync(
+//             require('fs').realpathSync(
 
-                __filename
+//                 __filename
 
-            )
+//             )
 
-        ), '../lib/exec/nez'
+//         ), '../lib/exec/nez'
 
-    )
+//     )
 
-).exec(
+// ).exec(
 
-    /* bad developer... 'no biscuit!' */
+//     /* bad developer... 'no biscuit!' */
 
-);
+// );
 

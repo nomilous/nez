@@ -10,9 +10,6 @@
     }
   ],
   "main": "./lib/nez",
-  "bin": {
-    "nez": "./bin/nez"
-  },
   "dependencies": {
     "should": "~1.2.1",
     "fing": "0.0.4",
