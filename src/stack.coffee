@@ -57,8 +57,6 @@ module.exports = class Stack
 
     stacker: (label, callback) -> 
 
-
-
         stack.push arguments
 
     ancestorsOf: (node) ->
@@ -106,12 +104,6 @@ module.exports = class Stack
                 callback: callback
                 stack:    stack
                 class:    klass
-
-            if @stack.length == 0
-
-                notifier.emit 'begin', '', @node
-
-            notifier.emit 'push', '', @node
 
 
             #
@@ -163,14 +155,12 @@ module.exports = class Stack
 
             
             from = @stack.pop()
-            notifier.emit 'pop', '', from
+            
 
 
             if @stack.length == 0
 
-                @node = @root
-                notifier.emit 'end', '', from
-                
+                @node = @root                
 
             else
 

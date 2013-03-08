@@ -1,4 +1,4 @@
-Stack     = require './stack'
+Node      = require './node' 
 Exception = require './exception'
 
 module.exports = PluginFactory = 
@@ -7,18 +7,18 @@ module.exports = PluginFactory =
 
         plugin = PluginFactory.validate require pluginName
 
-
-        #
-        # init a new stack
-        #
-
-        stack = new Stack pluginName
-
-
         #
         # pass the stacker through the plugin configurer
         # for 3rd party extensions
         #
+
+        stack = require('./nez').stack
+        stack.name = pluginName
+
+
+        console.log stack
+
+
 
         plugin.configure stack.stacker, config
 

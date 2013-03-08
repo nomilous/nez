@@ -1,6 +1,6 @@
 should        = require 'should'
 Specification = require '../lib/specification'
-test          = require('../lib/nez').link 'test'
+test          = require('../lib/nez').test()
 Confirmation  = require '../lib/confirmation'
 
 describe 'Specification', ->

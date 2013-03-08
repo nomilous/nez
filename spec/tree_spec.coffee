@@ -1,9 +1,6 @@
-Stack  = require '../lib/stack'
 Tree   = require '../lib/tree'
-
-stack  = new Stack 'PARENT'
+stack  = require('../lib/nez').link()
 tree   = Tree.create stack
-
 
 describe 'Tree', -> 
 

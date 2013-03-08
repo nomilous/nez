@@ -3,7 +3,8 @@ prototypes   = require './prototypes'
 Injector     = require './injector'
 Objective    = require './objective'
 PluginLoader = require './plugin_loader'
-stack        = undefined
+
+stack        = new Stack()
 
 
 module.exports = Nez = 
@@ -43,7 +44,6 @@ module.exports = Nez =
         #     return stack
 
 
-
     #
     # **Nez.linked(`name`)
     #
@@ -58,7 +58,18 @@ module.exports = Nez =
 
 
 
-    stack: stack ||= new Stack()
+    #
+    # **Nez.test()**
+    #
+
+    test: -> 
+
+        prototypes.object.set.expect()
+        prototypes.object.set.mock()
+        return Nez.stack
+
+
+    stack: stack
 
 
 

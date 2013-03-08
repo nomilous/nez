@@ -1,7 +1,6 @@
 should       = require 'should'
 PluginLoader = require '../lib/plugin_loader'
 Plugin       = require '../lib/plugin'
-Nez          = require '../lib/nez'
 
 describe 'PluginLoader', ->
 
