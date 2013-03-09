@@ -38,25 +38,19 @@ describe 'Nez', ->
 
 
 
-
-describe 'Nez.realize()', -> 
-
-    it 'is a property that returns the realization flavoured injector', (done) -> 
+    it 'defines realize()', (done) -> 
 
         Nez.realize.should.equal require('../lib/injector').realize
         done()
 
 
-describe 'Nez.objective()', -> 
-
-    it 'is a property that returns the validation looper', (done) ->
+    it 'defines objective()', (done) ->
 
         Nez.objective.should.equal require('../lib/objective').validate
         done()
 
-describe 'Nez.plugin()', ->
 
-    it 'is a property that returns the plugin loader', (done) ->
+    it 'defines plugin()', (done) ->
 
         Nez.plugin.should.equal require('../lib/plugin_loader').load
         done()

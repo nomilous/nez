@@ -23,6 +23,7 @@
   "devDependencies": {
     "prettyjson": "~0.7.1",
     "docco": "~0.4.0",
-    "should": "~1.2.2"
+    "should": "~1.2.2",
+    "mocha": "~1.8.1"
   }
 }
