@@ -49,7 +49,7 @@ monitor 'domain.com', (proxy) ->
                 make.link
 
                     type: 'socket.io'
-                    uri:  'https://dear.liza.net/spares/bucket'
+                    uri:  "https://dear.liza.net/spares/bucket/#{ make.retry++ }"
                     because: Mountains.get( 'Harā Bərəzaitī' )
                         
 
