@@ -54,13 +54,15 @@ monitor 'domain.com', (proxy, Tx, Rx) ->
 
                         type:   'orion.io'
                         stream: 'Harā Bərəzaitī'
+                        carrier: 'nanotrino'
                         channel: Rx.GHz 22/7.000420004100040
+
                         
 
 
     proxy DO: 'Stop messing about now...', (done, Much, To, Be, there, Is) ->
 
-        there Is Much To Be done( Tx.getNext() )
+        there Is Much To Be done( Tx.get 'next' )
 
 ```
 
