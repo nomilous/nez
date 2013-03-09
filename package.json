@@ -1,7 +1,7 @@
 {
   "name": "nez",
   "description": "Realization Framework",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "nomilous <nomilous@gmail.com>",
   "contributors": [
     {
@@ -12,18 +12,17 @@
   "main": "./lib/nez",
   "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
-    "should": "~1.2.1",
     "fing": "0.0.4",
     "colors": "~0.6.0-1",
     "commander": "~1.1.1",
     "hound": "~1.0.4",
     "coffee-script": "~1.4.0",
-    "mocha": "~1.8.1",
     "inflection": "~1.2.5",
     "wrench": "~1.4.4"
   },
   "devDependencies": {
     "prettyjson": "~0.7.1",
-    "docco": "~0.4.0"
+    "docco": "~0.4.0",
+    "should": "~1.2.2"
   }
 }
