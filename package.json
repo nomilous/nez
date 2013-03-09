@@ -1,6 +1,6 @@
 {
   "name": "nez",
-  "description": "Declarative Expectation Framework (for Mocha)",
+  "description": "Realization Framework",
   "version": "0.0.1",
   "author": "nomilous <nomilous@gmail.com>",
   "contributors": [
@@ -10,6 +10,7 @@
     }
   ],
   "main": "./lib/nez",
+  "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
     "should": "~1.2.1",
     "fing": "0.0.4",
