@@ -50,6 +50,7 @@ monitor 'domain.com', (proxy) ->
 
                     type: 'socket.io'
                     uri:  'https://dear.liza.net/spares/bucket'
+                    because: Mountain()
 
 
     proxy DO: 'Stop messing about now...', (theres, Much, To, Be, done) ->
