@@ -2,7 +2,17 @@
 
 [RSpec](http://rspec.info/)
 
+### Current Version
 
+0.0.1 (pre-release)
+
+### Pending Features
+
+* function and property expections
+* before and after hooks
+* expanded linking capabilities
+* expanded plugin capabilities
+* tree integration
 
 ### Install
 
@@ -41,20 +51,6 @@ This may change:
 ```coffee
 
 require('nez').realize 'Periscope', (Periscope, test, it, should) ->
-
-
-
-    it "injected visionmedia's should as a service", (done) ->
-
-        #
-        # assuming should.is installed
-        #
-
-        should.should.equal require 'should'  # :)
-        test done
-
-
-
 
     it 'keeps your head above water', (done) -> 
 
@@ -129,8 +125,4 @@ require('nez').realize 'Periscope', (Periscope, test, it, should) ->
 
 ```
 
-ChangeLog
----------
-
-0.0.1 currently under development
 
