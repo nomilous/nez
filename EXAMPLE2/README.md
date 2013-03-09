@@ -54,9 +54,9 @@ monitor 'domain.com', (proxy) ->
                         
 
 
-    proxy DO: 'Stop messing about now...', (theres, Much, To, Be, done) ->
+    proxy DO: 'Stop messing about now...', (done, Much, To, Be, there, is) ->
 
-        theres Much To Be done()
+        there is Much To Be done()
 
 ```
 
