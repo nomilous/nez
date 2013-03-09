@@ -42,7 +42,7 @@ monitor 'domain.com', (proxy) ->
 
     proxy 'monitor.mailrelays.domian.com', (jack) ->
 
-        jack 'jill', (hill, Mountain) -> 
+        jack 'jill', (hill, Mountains) -> 
 
             hill 'mole', (make) -> 
 
@@ -50,7 +50,8 @@ monitor 'domain.com', (proxy) ->
 
                     type: 'socket.io'
                     uri:  'https://dear.liza.net/spares/bucket'
-                    because: Mountain()
+                    because: Mountains.get( 'Harā Bərəzaitī' )
+                        
 
 
     proxy DO: 'Stop messing about now...', (theres, Much, To, Be, done) ->
