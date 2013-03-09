@@ -1,4 +1,4 @@
 ### ./requirements
 
 * Use cases and what not.
-* Not implemented / integrated
+* Not yet fully implemented / integrated

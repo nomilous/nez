@@ -27,8 +27,7 @@ describe 'Injector', ->
 
         Injector.realize 'Node', (Node) -> 
 
-            should.exist require('../lib/nez').stack
-
+            require('../lib/nez').stack.name.should.equal 'Node'
             done()
 
     it 'injects the validator as arg2', (done) -> 

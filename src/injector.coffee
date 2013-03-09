@@ -8,8 +8,9 @@ module.exports = Injector =
 
 
     #
-    # TODO: factor this into the Realizer (later...)
+    # TODO: refactor realize() as plugin  (later...)
     #
+
     realize: -> 
 
 
@@ -24,11 +25,12 @@ module.exports = Injector =
 
 
         #
-        # initialize test stack
+        # connect to the stack
         #
 
         Nez = require './nez'
-        stack = Nez.link objective
+        stack = Nez.link()
+        stack.name = objective
 
         #
         # Test stack validator()
