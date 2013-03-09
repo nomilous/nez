@@ -52,8 +52,9 @@ monitor 'domain.com', (proxy) ->
                     uri:  "https://dear.liza.net/spares/bucket/#{ make.retry++ }"
                     interpolate: Mountains.link 
 
+                        type:   'orion.io'
                         stream: 'Harā Bərəzaitī'
-                        channel: 22/7.0004200042
+                        channel: 22/7.000420004100040
                         
 
 
