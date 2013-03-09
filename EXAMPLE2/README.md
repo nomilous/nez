@@ -22,7 +22,7 @@ monitor = require('nez').plugin 'trax',
     cert: '/path/to/crypto/certs'
 
 
-monitor 'domain.com', (proxy) -> 
+monitor 'domain.com', (proxy, Tx, Rx) -> 
 
 
     proxy 'monitor.databases.domain.com', (et) -> 
@@ -54,13 +54,13 @@ monitor 'domain.com', (proxy) ->
 
                         type:   'orion.io'
                         stream: 'Harā Bərəzaitī'
-                        channel: 22/7.000420004100040
+                        channel: Rx.GHz 22/7.000420004100040
                         
 
 
     proxy DO: 'Stop messing about now...', (done, Much, To, Be, there, Is) ->
 
-        there Is Much To Be done()
+        there Is Much To Be done( Tx.getNext() )
 
 ```
 
