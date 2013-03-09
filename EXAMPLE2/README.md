@@ -50,7 +50,10 @@ monitor 'domain.com', (proxy) ->
 
                     type: 'socket.io'
                     uri:  "https://dear.liza.net/spares/bucket/#{ make.retry++ }"
-                    interpolate: Mountains.link( stream: 'Harā Bərəzaitī' ).river( 22 / 7.0004200042 )
+                    interpolate: Mountains.link 
+
+                        stream: 'Harā Bərəzaitī'
+                        channel: 22/7.0004200042
                         
 
 
