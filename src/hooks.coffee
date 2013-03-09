@@ -43,9 +43,9 @@ class Hooks
         #            necessary variables
         # 
 
-        switch nodes.tree
+        switch nodes.class
 
-            when 'down'
+            when 'Tree.Leafward'
 
                 #
                 # Going 'deeper' into the tree.
@@ -59,7 +59,7 @@ class Hooks
                 allHook  = 'beforeAll'
 
 
-            when 'up'
+            when 'Tree.Rootward'
 
                 #
                 # Returning from 'deeper'

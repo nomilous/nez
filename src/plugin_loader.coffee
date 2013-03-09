@@ -16,10 +16,6 @@ module.exports = PluginFactory =
         stack.name = pluginName
 
 
-        console.log stack
-
-
-
         plugin.configure stack.stacker, config
 
 

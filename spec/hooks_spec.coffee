@@ -65,12 +65,12 @@ describe 'Hooks', ->
         hooks.set node, beforeAll: -> beforeAll++
 
         hooks.handle '', 
-            tree: 'down'
+            class: 'Tree.Leafward'
             from: node 
             to: new Node 'other'
 
         hooks.handle '', 
-            tree: 'down'
+            class: 'Tree.Leafward'
             from: node 
             to: new Node 'other'
 
@@ -91,12 +91,12 @@ describe 'Hooks', ->
         hooks.set node, afterAll: -> afterAll++
 
         hooks.handle '', 
-            tree: 'up'
+            class: 'Tree.Rootward'
             from: new Node 'other'
             to: node
 
         hooks.handle '', 
-            tree: 'up'
+            class: 'Tree.Rootward'
             from: new Node 'other'
             to: node
 
@@ -126,7 +126,7 @@ describe 'Hooks', ->
         hooks.set node, beforeEach: -> beforeEach++
 
         hooks.handle '', 
-            tree: 'down'
+            class: 'Tree.Leafward'
             from: node 
             to: new Node  """
 
@@ -136,7 +136,7 @@ describe 'Hooks', ->
             """
 
         hooks.handle '', 
-            tree: 'down'
+            class: 'Tree.Leafward'
             from: node 
             to: new Node 'other'
 
@@ -171,12 +171,12 @@ describe 'Hooks', ->
         hooks.set node, afterEach: -> afterEach++
 
         hooks.handle '', 
-            tree: 'up'
+            class: 'Tree.Rootward'
             from: new Node 'other'
             to: node
 
         hooks.handle '', 
-            tree: 'up'
+            class: 'Tree.Rootward'
             from: new Node """
 
                     exitting this child node, so run all after hooks 

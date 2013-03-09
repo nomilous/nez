@@ -106,22 +106,12 @@ module.exports = class Stack
                 class:    klass
 
 
-            #
-            # edge event
-            # 
-            # - For the case of a tree the event
-            #   contains an additonal paramreter
-            #   to define direction.
-            #   
-            #   up   - rootward
-            #   down - leafward
-            #
+            notifier.emit 'edge', null,
 
-            notifier.emit 'edge', '', 
-
-                tree: 'down'
-                from: from, 
+                class: 'Tree.Leafward'
+                from: from
                 to: @node
+
 
             @stack.push @node
             @classes.push klass
@@ -129,7 +119,6 @@ module.exports = class Stack
             try
 
                 Injector.inject [@stacker], callback if callback
-                #callback @stacker if callback
 
             catch error
 
@@ -167,8 +156,9 @@ module.exports = class Stack
                 @node = @stack[@stack.length - 1]
 
 
-            notifier.emit 'edge', '',
-                tree: 'up'
+            notifier.emit 'edge', null,
+
+                class: 'Tree.Rootward'
                 from: from
                 to: @node
 
