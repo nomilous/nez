@@ -50,13 +50,13 @@ monitor 'domain.com', (proxy) ->
 
                     type: 'socket.io'
                     uri:  "https://dear.liza.net/spares/bucket/#{ make.retry++ }"
-                    because: Mountains.get( 'Harā Bərəzaitī' )
+                    interpolate: Mountains.link( stream: 'Harā Bərəzaitī' ).river( 22 / 7.0004200042 )
                         
 
 
-    proxy DO: 'Stop messing about now...', (done, Much, To, Be, there, is) ->
+    proxy DO: 'Stop messing about now...', (done, Much, To, Be, there, Is) ->
 
-        there is Much To Be done()
+        there Is Much To Be done()
 
 ```
 
