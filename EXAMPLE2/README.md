@@ -55,7 +55,7 @@ monitor 'domain.com', (proxy, Tx, Rx) ->
                         type:   'orion.io'
                         stream: 'Harā Bərəzaitī'
                         carrier: 'nanotrino'
-                        channel: Rx.GHz 22/7.000420004100040
+                        channel: Rx.THz 22/7.000420004100040
 
                         
 
