@@ -70,3 +70,53 @@ module.exports = Plugin =
     fox: -> 
     dog: ->
 
+    # 
+    # The following nodes on the tree should each be handled by
+    # the 'Requirements' plugin...
+    # 
+    #    Session
+    # 
+    #        as:    'user of the system'
+    #        need:  'logout button'
+    #        to:    'safely leave my workstation unattended' 
+    #        title: 'logout', (specs) ->
+    #         
+    #    Session
+    # 
+    #        as:    'user of the system'
+    #        want:  'lock session button'
+    #        to:    'secure my workstation and still keep my work in progress'
+    #        title: 'lock', (specs) ->
+    #
+    # 
+    # ...but the node class: 'Session' was not declared as handled by 
+    #    the 'Requirements' plugin so the walker will attempt to match
+    #    a plugin from the keys of the node properties hash.
+    # 
+    #     
+    # Plugins should therefore define the list of key matches. 
+    # (which may be an empty array)
+    # 
+
+    matches: ['speed','colour','disposition']
+
+    #
+    # And for each a passthough function that (can do 
+    # other things but) should return reference to a 
+    # handler when appropriate
+    #
+
+    speed: (value) -> 
+
+        return Plugin.fox if value is 'quick'
+
+    colour: (value) -> 
+
+        return Plugin.fox if value is 'brown'
+
+    disposition: (value) -> 
+
+        return Plugin.dog if value is 'lazy'
+
+
+

@@ -48,15 +48,23 @@ module.exports = PluginFactory =
 
         unless plugin.handles instanceof Array
 
-            throw Exception.create 'INVALID_PLUGIN', 'Undefined Plugin.handles() array'
+            throw Exception.create 'INVALID_PLUGIN', 'Undefined Plugin.handles:[] array'
 
         for nodeType in plugin.handles
 
             unless typeof plugin[nodeType] == 'function'
 
-                throw Exception.create 'INVALID_PLUGIN', "Undefined Plugin.#{ nodeType  }()"
+                throw Exception.create 'INVALID_PLUGIN', "Undefined Plugin.#{ nodeType  }() handler"
 
+        unless plugin.matches instanceof Array
 
+            throw Exception.create 'INVALID_PLUGIN', 'Undefined Plugin.matches:[] array'
+
+        for keyMatch in plugin.matches
+
+            unless typeof plugin[keyMatch] == 'function'
+
+                throw Exception.create 'INVALID_PLUGIN', "Undefined Plugin.#{ keyMatch  }() matcher"
 
         return plugin
 

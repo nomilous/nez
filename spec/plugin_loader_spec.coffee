@@ -58,6 +58,26 @@ describe 'PluginLoader', ->
             error.message.should.match /Undefined Plugin.YellowLorry/
             done()
 
+    it 'ensures the plugin supplies a list of node metafield key matchers', (done) ->
+
+        try
+            plugin = 
+                configure: ->
+                edge: ->
+                handles: ['AnnoyedOyster']
+                AnnoyedOyster: ->
+                matches: ['noiseTipe']
+                noiseType: (value) -> 
+                    if value == 'NOISEY'
+                        return plugin.AnnoyedOyster
+
+            PluginLoader.validate plugin
+
+        catch error
+
+            error.message.should.match /Undefined Plugin.noiseTipe/
+            done()
+
 
     it 'registers the plugin', (wasRegistered) ->
 
