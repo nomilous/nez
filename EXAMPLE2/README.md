@@ -40,7 +40,7 @@ monitor 'domain.com', (proxy, Tx, Rx) ->
         eo 'ipso'
 
 
-    proxy 'monitor.mailrelays.domian.com', (jack) ->
+    proxy 'monitor.planet3.sol.mw', (jack) ->
 
         jack 'jill', (hill, Mountains) -> 
 
@@ -48,21 +48,22 @@ monitor 'domain.com', (proxy, Tx, Rx) ->
 
                 make.link
 
-                    type: 'socket.io'
-                    uri:  "https://dear.liza.net/spares/bucket/#{ make.retry++ }"
-                    interpolate: Mountains.link 
+                    protocol:  'socket.io'
+                    password:  '*********'
+                    uri:       "https://dear.liza.net/spares/bucket/#{ make.retry++ }"
+                    interpolate: Mountains.link, 'Elbrus'
 
-                        type:    'orion.io'
-                        stream:  'Harā Bərəzaitī'
-                        carrier: 'nanotrino'
-                        band:    Rx.THz 22/7.000420004100040..
+                        protocol: 'orion.io'
+                        password: 'Harā Bərəzaitī'
+                        carrier:  'nanotrino'
+                        band:     Rx.THz 22/7.000420004100040..
 
                         
 
 
     proxy DO: 'Stop messing about now...', (done, Much, To, Be, there, Is) ->
 
-        there Is Much To Be done( Tx.get 'next' )
+        there Is Much To Be done()
 
 ```
 
