@@ -71,6 +71,8 @@ module.exports = Plugin =
     dog: ->
 
     # 
+    # Hypothetically: 
+    #
     # The following nodes on the tree should each be handled by
     # the 'Requirements' plugin...
     # 
