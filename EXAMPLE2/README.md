@@ -52,10 +52,10 @@ monitor 'domain.com', (proxy, Tx, Rx) ->
                     uri:  "https://dear.liza.net/spares/bucket/#{ make.retry++ }"
                     interpolate: Mountains.link 
 
-                        type:   'orion.io'
-                        stream: 'Harā Bərəzaitī'
+                        type:    'orion.io'
+                        stream:  'Harā Bərəzaitī'
                         carrier: 'nanotrino'
-                        channel: Rx.THz 22/7.000420004100040
+                        band:    Rx.THz 22/7.000420004100040..
 
                         
 
