@@ -45,19 +45,19 @@ GeoStay3 = require('../lib/nez').objective 'GeoStay3',
 
     """, (requirements) -> 
 
-        requirements.link 'requirements/inputs/thrust_vectors'
-        requirements.link 'requirements/inputs/groundstations_rx1'
-        requirements.link 'requirements/inputs/groundstations_rx2'
-        requirements.link 'requirements/inputs/position_sensor1'
-        requirements.link 'requirements/inputs/position_sensor2'
-        requirements.link 'requirements/inputs/field_sensor1'
-        requirements.link 'requirements/inputs/field_sensor2'
-        requirements.link 'requirements/inputs/gyro1'
-        requirements.link 'requirements/inputs/gyro2'
+        #requirements.link 'requirements/inputs/thrust_vectors'
+        #requirements.link 'requirements/inputs/groundstations_rx1'
+        #requirements.link 'requirements/inputs/groundstations_rx2'
+        #requirements.link 'requirements/inputs/position_sensor1'
+        #requirements.link 'requirements/inputs/position_sensor2'
+        #requirements.link 'requirements/inputs/field_sensor1'
+        #requirements.link 'requirements/inputs/field_sensor2'
+        #requirements.link 'requirements/inputs/gyro1'
+        #requirements.link 'requirements/inputs/gyro2'
         
-        requirements.link 'requirements/outputs/groundstations_tx1'
-        requirements.link 'requirements/outputs/groundstations_tx2'
+        #requirements.link 'requirements/outputs/groundstations_tx1'
+        #requirements.link 'requirements/outputs/groundstations_tx2'
         requirements.link 'requirements/outputs/thruster_signal_bus1'
-        requirements.link 'requirements/outputs/thruster_signal_bus2'
+        #requirements.link 'requirements/outputs/thruster_signal_bus2'
         
 

@@ -9,7 +9,11 @@ module.exports = Objective =
         stack = require('./nez').link()
         stack.name = objective
 
+        console.log "objective:", objective
+
         if typeof callback == 'function'
+
+            console.log "calling:", callback.toString()
         
             require('./injector').inject [stack.stacker], callback
 
