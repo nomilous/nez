@@ -43,6 +43,22 @@ describe 'PluginLoader', ->
             error.code.should.equal 'INVALID_PLUGIN'
             done()
 
+    it 'ensures the plugin supplies a list of node class handlers', (done) ->
+
+        try
+            PluginLoader.validate 
+                configure: ->
+                edge: ->
+                handles: ['RedLorry','YellowLorry']
+                RedLorry: ->
+                YellowLolly:-> 
+
+        catch error
+
+            error.message.should.match /Undefined Plugin.YellowLorry/
+            done()
+
+
     it 'registers the plugin', (wasRegistered) ->
 
         swap = PluginRegister.register

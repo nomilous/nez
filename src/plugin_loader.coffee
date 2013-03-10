@@ -46,5 +46,17 @@ module.exports = PluginFactory =
 
             throw Exception.create 'INVALID_PLUGIN', 'Undefined Plugin.edge()'
 
+        unless plugin.handles instanceof Array
+
+            throw Exception.create 'INVALID_PLUGIN', 'Undefined Plugin.handles() array'
+
+        for nodeType in plugin.handles
+
+            unless typeof plugin[nodeType] == 'function'
+
+                throw Exception.create 'INVALID_PLUGIN', "Undefined Plugin.#{ nodeType  }()"
+
+
+
         return plugin
 
