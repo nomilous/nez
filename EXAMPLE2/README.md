@@ -56,7 +56,7 @@ monitor 'domain.com', (proxy, Tx, Rx) ->
                         protocol: 'orion.io'
                         password: 'Harā Bərəzaitī'
                         carrier:  'nanotrino'
-                        band:     Rx.THz 22/7.000420004100040..
+                        band:     Rx.THz 22/7.00000220000021..0000001
 
                         
 
