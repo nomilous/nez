@@ -1,5 +1,6 @@
-Node      = require './node' 
-Exception = require './exception'
+Node           = require './node' 
+Exception      = require './exception'
+PluginRegister = require './plugin_register'
 
 module.exports = PluginFactory = 
 
@@ -18,12 +19,20 @@ module.exports = PluginFactory =
 
         plugin.configure stack.stacker, config
 
+        #
+        # register the plugin
+        #
+
+        PluginRegister.register plugin
+
 
         #
-        # register plugin for edge events
+        # subscribe to edge events
         #
 
         stack.on 'edge', plugin.edge
+
+
 
         return stack.stacker
 

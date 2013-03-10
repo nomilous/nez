@@ -87,6 +87,9 @@ module.exports = class Stack
         klass    = @pendingClass || @name
 
         unless typeof label == 'string'
+
+
+            console.log label
         
             @hooks.set from, label
             return

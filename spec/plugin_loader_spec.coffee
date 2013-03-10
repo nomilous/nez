@@ -1,6 +1,7 @@
-should       = require 'should'
-PluginLoader = require '../lib/plugin_loader'
-Plugin       = require '../lib/plugin'
+should         = require 'should'
+PluginLoader   = require '../lib/plugin_loader'
+PluginRegister = require '../lib/plugin_register'
+Plugin         = require '../lib/plugin'
 
 describe 'PluginLoader', ->
 
@@ -41,6 +42,16 @@ describe 'PluginLoader', ->
 
             error.code.should.equal 'INVALID_PLUGIN'
             done()
+
+    it 'registers the plugin', (wasRegistered) ->
+
+        swap = PluginRegister.register
+        PluginRegister.register = (plugin) -> 
+
+            PluginRegister.register = swap
+            wasRegistered() if plugin == Plugin
+
+        PluginLoader.load '../lib/plugin'
 
 
     it 'load() passes the stacker to Plugin.configure() and returs it', (done) ->
