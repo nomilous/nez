@@ -19,8 +19,22 @@ describe 'Hooks', ->
 
         Hooks.getFor stack
 
+    it 'returns true when provided a valid hook config', (done) ->
 
-    it 'binds only prefefined hooks to the node', (done) ->
+        hooks = Hooks.getFor on:(event, handler)=>
+        node  = new Node 'name'
+        hooks.set( node, beforeEach: -> ).should.equal true
+        done()
+
+    it 'returns false when provided an invalid hook config', (done) ->
+
+        hooks = Hooks.getFor on:(event, handler)=>
+        node  = new Node 'name'
+        hooks.set( node, giantPeach: -> ).should.equal false
+        done()
+
+
+    it 'binds only predefined hooks to the node', (done) ->
 
         hooks = Hooks.getFor on:(event, handler)=>
         node  = new Node 'name'
