@@ -1,5 +1,3 @@
-require 'fing'
-
 plugins  = []
 handlers = {}
 matchers = {}

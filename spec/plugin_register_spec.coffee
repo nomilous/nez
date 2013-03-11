@@ -25,17 +25,17 @@ describe 'PluginRegister.handler()', ->
             # 
             # ie. 'majorAxis' in the following example
             # 
-            #    elipse2337 { majorAxis: 20, minorAxis: 3 }, (behaviour) ->
+            #    ellipse2337 { majorAxis: 20, minorAxis: 3 }, (behaviour) ->
             # 
             #
 
             matches: ['majorAxis']
             majorAxis: (value) -> 
-                return plugin.largeElipse if value >= 20
-                return plugin.smallElipse
-            largeElipse: (node) -> 
+                return plugin.largeEllipse if value >= 20
+                return plugin.smallEllipse
+            largeEllipse: (node) -> 
                 node.area  = Math.PI * 0.25 * node.label.majorAxis * node.label.minorAxis
-                node.label = 'large elipse' 
+                node.label = 'large ellipse' 
 
 
         Plugins.register @plugin
@@ -56,8 +56,10 @@ describe 'PluginRegister.handler()', ->
             majorAxis: 20
             minorAxis: 2
 
-        Plugins.handle( node ).area.should.equal 31.41592653589793
+        Plugins.handle node
 
+        node.label.should.equal 'large ellipse'
+        node.area.should.equal   31.41592653589793
         done()
 
 
