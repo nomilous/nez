@@ -13,16 +13,23 @@ class Hooks
 
     set: (node, config) -> 
 
+        wasHook = false
+
         for key of config
 
             if key == 'beforeEach' or key == 'afterEach'
 
                 node.hooks[key] = config[key]
 
+                wasHook = true
+
             if key == 'beforeAll' or key == 'afterAll'
 
                 node.hooks[key] = config[key]
 
+                wasHook = true
+
+        return wasHook
 
 
     handle: (placeholder, nodes) -> 
