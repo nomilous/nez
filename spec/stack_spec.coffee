@@ -1,6 +1,7 @@
-should = require 'should'
-print  = require('prettyjson').render
-stack  = require('../lib/nez').link()
+should  = require 'should'
+print   = require('prettyjson').render
+stack   = require('../lib/nez').link()
+Plugins = require '../lib//plugin_register'
 
 describe 'Stack', -> 
 
@@ -58,6 +59,21 @@ describe 'Stack', ->
 
             wasCalled.should.equal true
             done()
+
+
+    it 'locates a plugin from the edge class and label', (done) -> 
+
+        stack.stacker 'parent', (CLASS) ->
+
+            swap = Plugins.match
+            Plugins.match = (klass, label) -> 
+                Plugins.match = swap
+                klass.should.equal 'CLASS'
+                label.should.eql 'LABEL'
+                done()
+
+            CLASS 'LABEL', (next) ->
+        
 
     describe 'ancestorsOf()', ->
 

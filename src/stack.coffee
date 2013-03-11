@@ -5,6 +5,7 @@ Notifyier = require './notifier'
 Injector  = require './injector'
 Hooks     = require './hooks'
 Link      = require './link'
+Plugins   = require './plugin_register'
 
 stack     = undefined
 notifier  = undefined
@@ -86,13 +87,30 @@ module.exports = class Stack
         callback = args[1]  # TODO: as last arg
         klass    = @pendingClass || @name
 
+
+        return if typeof label == 'undefined'
+        #
+        # called test done (or no args to stacker)
+        #
+
+
         unless typeof label == 'string'
 
+            return if @hooks.set from, label
+            #
+            # proceeed no further if label was a before 
+            # or after hook config
+            #
 
-            console.log label
         
-            @hooks.set from, label
-            return
+
+        plugin = Plugins.match klass, label
+
+        @node = new Node label,
+
+            callback: callback
+            stack:    stack
+            class:    klass
 
  
         if callback and callback.fing.args.length > 0
@@ -101,13 +119,6 @@ module.exports = class Stack
 
 
         if label
-
-            @node = new Node label,
-
-                callback: callback
-                stack:    stack
-                class:    klass
-
 
             notifier.emit 'edge', null,
 
@@ -120,6 +131,8 @@ module.exports = class Stack
             @classes.push klass
 
             try
+
+
 
                 Injector.inject [@stacker], callback if callback
 

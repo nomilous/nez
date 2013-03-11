@@ -7,5 +7,5 @@ ThrusterSignalBus1
     need:  'thruster instruction sequence package'
     title: 'burn package', (specs) -> 
 
-        specs.link 'spec/protocols/burn_package_spec'
+        specs.link 'spec/bus_protocols/burn_package_spec'
 

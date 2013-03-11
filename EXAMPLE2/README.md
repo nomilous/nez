@@ -58,8 +58,6 @@ monitor 'domain.com', (proxy, Tx, Rx) ->
                         carrier:  'nanotrino'
                         band:     Rx.THz 22/7.00000220000021..0000001
 
-                        
-
 
     proxy DO: 'Stop messing about now...', (done, Much, To, Be, there, Is) ->
 
