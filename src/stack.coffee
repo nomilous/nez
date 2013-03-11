@@ -102,15 +102,26 @@ module.exports = class Stack
             # or after hook config
             #
 
-        
 
-        plugin = Plugins.match klass, label
+
+        #
+        # Create new node and pass syncronously
+        # through all matching plugins.
+        # 
+        # This affords each plugin the opportunity
+        # to tailer the node and its behaviour
+        # ahead of the async edge event.
+        # 
 
         @node = new Node label,
 
             callback: callback
             stack:    stack
             class:    klass
+
+
+        Plugins.handle @node
+
 
  
         if callback and callback.fing.args.length > 0

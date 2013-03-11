@@ -61,15 +61,15 @@ describe 'Stack', ->
             done()
 
 
-    it 'locates a plugin from the edge class and label', (done) -> 
+    it 'hands the new node through each registered plugin', (done) -> 
 
         stack.stacker 'parent', (CLASS) ->
 
-            swap = Plugins.match
-            Plugins.match = (klass, label) -> 
-                Plugins.match = swap
-                klass.should.equal 'CLASS'
-                label.should.eql 'LABEL'
+            swap = Plugins.handle
+            Plugins.handle = (node) -> 
+                Plugins.handle = swap
+                node.class.should.equal 'CLASS'
+                node.label.should.eql 'LABEL'
                 done()
 
             CLASS 'LABEL', (next) ->
