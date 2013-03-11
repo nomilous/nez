@@ -3,6 +3,7 @@ Nez        = require './nez' # Doesn't work here. Don't CLEARLY understand why.
 Inflection = require 'inflection'
 fs         = require 'fs'
 wrench     = require 'wrench'
+Exception  = require './exception'
 
 module.exports = Injector = 
 
@@ -204,15 +205,17 @@ module.exports = Injector =
                         if source 
 
                             # console.log "TODO: name: '../' as inject options"
-                            throw "Found more than 1 source for module '#{name}'"
+                            throw Exception.create 'MATCH_ERROR', 
+                                "Found more than 1 source for module '#{name}'"
 
                         else
 
                             source = "#{searchPath}/#{match[1]}"
 
         unless source
-            # console.log "Found no source files for module '#{name}'" 
-            throw "Found no source files for module '#{name}'" 
+            # console.log "Found no source files for module '#{name}'"
+            throw Exception.create 'MATCH_ERROR', 
+                "Found no source files for module '#{name}'" 
 
         return source
 
