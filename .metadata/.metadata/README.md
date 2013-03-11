@@ -9,7 +9,7 @@
 
 
 
-                         agile |noun| ~ a progress centric process paradigm 
+                         agile |noun| ~ an increment centric process paradigm 
 
 
 
