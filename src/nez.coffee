@@ -57,6 +57,15 @@ module.exports = Nez =
         Nez.stack.stacker
 
 
+    #
+    # **Nez.requirements(`name`)
+    #
+
+    requirements: (name) ->
+
+        PluginLoader.load './plugin/requirement', {}
+        Nez.stack.stacker
+
 
     #
     # **Nez.test()**

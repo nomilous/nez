@@ -3,6 +3,7 @@ Change Log
 
 ### 2013-03-10 
 
+* Added Nez.requirements() to link the root of a requirements tree
 * Added linker parse error expansion
 * Added `matches` and `handles` properties to plugin interface
 

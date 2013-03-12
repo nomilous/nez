@@ -1,9 +1,10 @@
-should   = require 'should'
-Nez      = require '../lib/nez'
-Injector = require '../lib/injector'
-Nez.link 'name'
-test     = idea = blueprint = Nez.stack.validator
-nez      = it
+should      = require 'should'
+Nez         = require '../lib/nez'
+Injector    = require '../lib/injector'
+Requirement = require '../lib/plugin/requirement'
+Nez.link     'name'
+test        = idea = blueprint = Nez.stack.validator
+nez         = it
 
 
 describe 'Nez', -> 
@@ -48,6 +49,17 @@ describe 'Nez', ->
 
         Nez.objective.should.equal require('../lib/objective').validate
         done()
+
+
+    it 'defines requirements() which loads the requirement plugin', (wasCalled) ->
+
+        swap = Requirement.configure
+        Requirement.configure = -> 
+            Requirement.configure = swap
+            wasCalled()
+
+        Nez.requirements 'name'
+        
 
 
     it 'defines plugin()', (done) ->
