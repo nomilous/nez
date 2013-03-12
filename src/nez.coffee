@@ -1,13 +1,14 @@
-Stack        = require './stack'
-prototypes   = require './prototypes'
-Injector     = require './injector'
-Objective    = require './objective'
-PluginLoader = require './plugin_loader'
+Stack          = require './stack'
+prototypes     = require './prototypes'
+Injector       = require './injector'
+Objective      = require './objective'
+PluginLoader   = require './plugin_loader'
+PluginRegister = require './plugin_register'
 
 stack        = new Stack()
 
 
-module.exports = Nez = 
+Nez = 
 
 
     # 
@@ -29,6 +30,13 @@ module.exports = Nez =
     # 
 
     plugin: PluginLoader.load
+    
+    #
+    # **Nez.hup()**
+    #
+
+    hup: -> PluginRegister.hup()
+
 
 
     #
@@ -81,5 +89,7 @@ module.exports = Nez =
     stack: stack
 
 
+process.on 'SIGHUP', Nez.hup
 
 
+module.exports = Nez

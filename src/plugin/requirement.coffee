@@ -2,6 +2,7 @@ module.exports = Requirement =
 
     configure: (stacker, config) -> 
     edge: (placeholder, nodes) ->
+    hup: ->
 
     handles: ['requirement']
     requirement: (node) -> 

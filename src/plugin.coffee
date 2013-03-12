@@ -44,6 +44,12 @@ module.exports = Plugin =
 
     edge: (placeholder, nodes) -> 
 
+    #
+    # Nez propagates HUPs into all registered plugins
+    #
+    
+    hup: ->
+
 
     #
     # Plugin should define the list of node classes that it

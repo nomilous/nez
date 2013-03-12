@@ -25,6 +25,12 @@ module.exports = PluginRegister =
 
         return PluginRegister
 
+    hup: -> 
+
+        for plugin in plugins
+
+            plugin.hup()
+
 
     handle: (node) ->
 

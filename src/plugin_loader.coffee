@@ -66,5 +66,9 @@ module.exports = PluginFactory =
 
                 throw Exception.create 'INVALID_PLUGIN', "Undefined Plugin.#{ keyMatch  }() matcher"
 
+        unless typeof plugin.hup == 'function'
+
+            throw Exception.create 'INVALID_PLUGIN', 'Undefined Plugin.hup()'
+
         return plugin
 
