@@ -54,7 +54,9 @@ module.exports = class Stack
             Object.defineProperty @stacker, 'link',
 
                 get: -> 
-                    Link.test = 'moo'
+                    
+
+
                     Link.linker
 
 
