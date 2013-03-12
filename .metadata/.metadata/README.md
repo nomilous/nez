@@ -9,7 +9,7 @@
 
 
 
-                         agile |noun| ~ an increment centric process paradigm 
+                        agile |noun| ~ an increment centric process paradigm 
 
 
 
@@ -20,7 +20,7 @@
                                  an ability to swiftly respond to the 
                                   chaotic whimsey of market pressure 
                                    and 
-                                        Necessity Variability.
+                                        Necessity Variability!
 
 
 
