@@ -151,8 +151,6 @@ module.exports = Injector =
         # returns absolute path to module source
         #
 
-        console.log 'finding:', klass
-
         #
         # Assumptions: 
         # 
@@ -199,7 +197,7 @@ module.exports = Injector =
         if typeof repoRoot == 'undefined'
 
             repoRoot = require('./objective').root
-            
+
 
         for srcDir in ['lib', 'app']
 
