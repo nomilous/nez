@@ -1,9 +1,23 @@
+require 'fing'
 should     = require 'should'
 Objective  = require '../lib/objective'
 Exec       = require '../lib/exec/nez'
+swap       = undefined
 
 
 describe 'Objective', -> 
+
+    it 'knows the repo root', (done) ->
+
+        #
+        # ./objective script should always be placed
+        #             in the repo root
+        #
+
+        Objective.validate 'NameOfThing'
+        Objective.root.should.match /nez\/spec$/
+        done()
+        
 
     it 'returns the dev environment exec() if config was supplied', (wasCalled) ->
 

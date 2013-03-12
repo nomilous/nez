@@ -151,6 +151,8 @@ module.exports = Injector =
         # returns absolute path to module source
         #
 
+        console.log 'finding:', klass
+
         #
         # Assumptions: 
         # 
@@ -189,6 +191,15 @@ module.exports = Injector =
 
                 repoRoot = match[1]
                 depth = match[2].split('/').length
+
+        #
+        # Fall back to Objective.root if not running from spec
+        #
+
+        if typeof repoRoot == 'undefined'
+
+            repoRoot = require('./objective').root
+            
 
         for srcDir in ['lib', 'app']
 

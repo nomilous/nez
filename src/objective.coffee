@@ -1,3 +1,5 @@
+require 'fing'
+
 module.exports = Objective = 
 
     validate: (objective, config, callback) ->
@@ -6,14 +8,12 @@ module.exports = Objective =
         # walk the entire objective tree
         #
 
+        Objective.root = fing.trace()[1].file.match( /(.*)\/.*$/ )[1]
+
         stack = require('./nez').link()
         stack.name = objective
 
-        console.log "objective:", objective
-
         if typeof callback == 'function'
-
-            console.log "calling:", callback.toString()
         
             require('./injector').inject [stack.stacker], callback
 
