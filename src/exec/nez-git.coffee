@@ -148,29 +148,11 @@ context =
 
             path = repo.match(/(.*)\/.git/)[1]
 
-
-            #
-            # assumes the url line always follows the [remote "origin"] entry
-            # in the git config
-            #
-
             origin = exec(
 
-                #
-                # trouble getting this... 
-                # 
-                #   git config --get remote.origin.url
-                # 
-                #  ...to work on a git repo not @ cwd
-                #
+                "git --git-dir=#{repo} config --get remote.origin.url"
 
-                "grep -A1 'remote \"origin\"' #{repo}/config | tail -n1"
-
-            ).match(
-
-                /url = (.*)$/
-
-            )[1]
+            )
 
 
             branch = exec(
@@ -216,12 +198,10 @@ context =
 
             exec = require 'exec-sync'
 
-            status = exec "git status #{path}"
+            status = exec "git --git-dir=#{path}/.git --work-tree=#{path}/ status"
 
-            console.log "\nSTATUS @ #{path}".green 
+            console.log "\nSTATUS @ repo:#{path}".green
             console.log status
-
-
 
     pull: -> 
 
@@ -231,6 +211,9 @@ context =
         # 
         # per context.root()/.git_root
         #
+
+
+
 
 
     push: -> 
