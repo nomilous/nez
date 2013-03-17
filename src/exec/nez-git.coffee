@@ -297,6 +297,26 @@ context =
                 ]
 
 
+            #
+            # git pull all
+            #
+
+            #
+            # git --work-tree=node_modules/nez/ --git-dir=node_modules/nez/.git pull origin develop
+            # fatal: Could not switch to 'node_modules/nez': No such file or directory
+            # fatal: Could not switch to 'node_modules/nez': No such file or directory
+            # fatal: Could not switch to 'node_modules/nez': No such file or directory
+            # fatal: Could not switch to 'node_modules/nez': No such file or directory
+            # fatal: Could not switch to 'node_modules/nez': No such file or directory
+            # fatal: Could not switch to 'node_modules/nez': No such file or directory
+            # 
+            # test -d node_modules/nez && echo $?
+            # 0
+            # 
+            
+            #
+            # how to git pull into a repo that is not the current directory?? 
+            # 
 
     push: -> 
 
