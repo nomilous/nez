@@ -1,11 +1,13 @@
 program = require 'commander'
 colors  = require 'colors'
+fs      = require 'fs'
+
 
 context = 
 
     root: -> 
 
-        program.root || './'
+        program.root || '.'
 
     huh: ->
 
@@ -114,6 +116,86 @@ context =
         # PATH,ORIGIN,BRANCH,REF
         #
 
+        controlFile = "#{context.root()}/.git_root"
+        controlData = ''
+
+        #
+        # In the interests of getting this done as fast as possible
+        # i'm making no attempts at cross platform support to allow
+        # shortcuts as nearly unacceptable as this here following: 
+        # 
+        # In short: this is a goodbye to windows users.
+        # 
+        # 
+        # THIS WILL NEED A REWORK WHEN TIME PERMITS
+        # 
+
+        exec = require 'exec-sync'
+
+        for repo in exec(
+
+            "find #{context.root()} | grep -e \/.git\/ | grep -oe ^.*\/.git | sort | uniq"
+
+            #
+            # find is traversing the entire tree
+            # i strongly suspect it can take its
+            # own regex and eliminate the need 
+            # for the greps 
+            #
+
+        ).split('\n')
+
+
+            path = repo.match(/(.*)\/.git/)[1]
+
+
+            #
+            # assumes the url line always follows the [remote "origin"] entry
+            # in the git config
+            #
+
+            origin = exec(
+
+                #
+                # trouble getting this... 
+                # 
+                #   git config --get remote.origin.url
+                # 
+                #  ...to work on a git repo not @ cwd
+                #
+
+                "grep -A1 'remote \"origin\"' #{repo}/config | tail -n1"
+
+            ).match(
+
+                /url = (.*)$/
+
+            )[1]
+
+
+            branch = exec(
+
+                "cat #{repo}/HEAD"
+
+            ).match(
+
+                /ref: (.*)$/
+
+            )[1]
+
+            
+            ref = exec(
+
+                "cat #{repo}/#{branch}"
+
+            )
+
+            controlData += "#{path},#{origin},#{branch},#{ref}\n"
+
+
+        fs.writeFileSync controlFile, controlData
+        
+
     status: -> 
 
         #
@@ -159,7 +241,7 @@ program
 program
     .command('init')
     .description('Assemble the initial .git_root control file into [root]')
-    .action -> context.pull()
+    .action -> context.init()
 
 program
     .command('status')
