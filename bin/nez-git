@@ -11,4 +11,4 @@ require(
             )
         ), '../lib/exec/nez-git'
     )
-).exec();
+)
