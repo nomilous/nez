@@ -203,7 +203,25 @@ context =
         # per context.root()/.git_root
         #  
 
-        console.log 'running status from root:', context.root()
+        for line in fs.readFileSync("#{context.root()}/.git_root").toString().split '\n'
+
+            continue unless line.length > 0 # empty last line
+
+            parts = line.match /(.*),(.*),(.*),(.*)/
+
+            path   = parts[1]
+            origin = parts[2]
+            branch = parts[3]
+            ref    = parts[4]
+
+            exec = require 'exec-sync'
+
+            status = exec "git status #{path}"
+
+            console.log "\nSTATUS @ #{path}".green 
+            console.log status
+
+
 
     pull: -> 
 
