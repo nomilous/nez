@@ -155,17 +155,8 @@ context =
             )
 
 
-            branch = exec(
+            branch = context.gitGetBranch repo
 
-                "cat #{repo}/HEAD"
-
-            ).match(
-
-                /ref: (.*)$/
-
-            )[1]
-
-            
             ref = exec(
 
                 "cat #{repo}/#{branch}"
@@ -233,30 +224,78 @@ context =
             branch = parts[3]
             ref    = parts[4]
 
-            console.log "SYNC (pull) @ #{path}".green
 
-            exec = require 'exec-sync'
+            if context.root() == '.'
+            
+                workDir = "#{path}"
+
+            else 
+
+                workDir = "#{context.root()}/#{path}"
+
+            console.log "SYNC (pull) @ #{workDir}".green
+
+
+            #
+            # ensure directory present
+            #
 
             try
 
-                fs.lstatSync "#{context.root()}/#{path}"
+                fs.lstatSync workDir
 
             catch error
 
                 if error.code == 'ENOENT'
 
-                    context.shellSync "mkdir -p #{context.root()}/#{path}"
+                    context.shellSync "mkdir -p #{workDir}"
+
+                else 
+
+                    console.log error.red
+                    return
+
+
+            #
+            # ensure git clone present
+            # 
 
             try
 
-                fs.lstatSync "#{context.root()}/#{path}/.git"
-
+                fs.lstatSync "#{workDir}/.git"
 
             catch error
 
                 if error.code == 'ENOENT'
 
-                    context.spawnSync 'git', ['clone', origin, "#{context.root()}/#{path}"]
+                    context.spawnSync 'git', ['clone', origin, "#{workDir}"]
+
+                else
+
+                    console.log error.red
+                    return
+
+
+            #
+            # ensure git clone is on the appropriate branch
+            #
+
+            currentBranch = context.gitGetBranch "#{workDir}/.git"
+
+            if branch != currentBranch 
+
+                #
+                # this may need some tailoring to support custom gitting
+                # paradigms such as git-flow
+                #
+
+                context.spawnSync 'git', [
+                    "--git-dir=#{workDir}/.git",
+                    "--work-tree=#{workDir}",
+                    'checkout', 
+                    branch.replace 'refs/heads/', ''
+                ]
+
 
 
     push: -> 
@@ -269,12 +308,26 @@ context =
         # into context.root()/.git_root
         # 
 
+    gitGetBranch: (gitDir) -> 
+
+        branch = context.shellSync(
+
+            "cat #{gitDir}/HEAD"
+
+        ).match(
+
+            /ref: (.*)$/
+
+        )[1]
+
 
     shellSync: (command) -> 
 
         console.log '(run)'.bold, command
         exec = require 'exec-sync'
         exec command
+
+    
 
     spawnSync: (bin, opts) -> 
 
