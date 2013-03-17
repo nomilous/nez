@@ -111,7 +111,7 @@ context =
         #
         # assemble context.root()/.git_root file with
         # 
-        # PATH,ORIGIN,HEAD
+        # PATH,ORIGIN,BRANCH,REF
         #
 
     status: -> 
@@ -127,7 +127,7 @@ context =
 
         #
         # sync (pull) from ORIGIN for all (repos) at PATH(s) not
-        # found to be at HEAD
+        # found to be at BRANCH,REF
         # 
         # per context.root()/.git_root
         #
@@ -138,7 +138,7 @@ context =
         #
         # sync (push) to ORIGIN for all PATH(s) that
         # are pending commit and update each 
-        # corrensponding HEAD
+        # corrensponding BRANCH,REF
         # 
         # into context.root()/.git_root
         # 
