@@ -198,6 +198,16 @@ context =
 
             exec = require 'exec-sync'
 
+            try
+                
+                fs.lstatSync path
+
+            catch error
+
+                console.log "\nMISSING @ repo:#{path}".red
+                console.log "run: nez-git --root #{context.root()} pull # (from the git_root)"
+                continue
+
             status = exec "git --git-dir=#{path}/.git --work-tree=#{path}/ status"
 
             console.log "\nSTATUS @ repo:#{path}".green
@@ -212,8 +222,41 @@ context =
         # per context.root()/.git_root
         #
 
+        for line in fs.readFileSync("#{context.root()}/.git_root").toString().split '\n'
+
+            continue unless line.length > 0 # empty last line
+
+            parts = line.match /(.*),(.*),(.*),(.*)/
+
+            path   = parts[1]
+            origin = parts[2]
+            branch = parts[3]
+            ref    = parts[4]
+
+            console.log "SYNC (pull) @ #{path}".green
+
+            exec = require 'exec-sync'
+
+            try
+
+                fs.lstatSync "#{context.root()}/#{path}"
+
+            catch error
+
+                if error.code == 'ENOENT'
+
+                    context.shellSync "mkdir -p #{context.root()}/#{path}"
+
+            try
+
+                fs.lstatSync "#{context.root()}/#{path}/.git"
 
 
+            catch error
+
+                if error.code == 'ENOENT'
+
+                    context.spawnSync 'git', ['clone', origin, "#{context.root()}/#{path}"]
 
 
     push: -> 
@@ -225,6 +268,28 @@ context =
         # 
         # into context.root()/.git_root
         # 
+
+
+    shellSync: (command) -> 
+
+        console.log '(run)'.bold, command
+        exec = require 'exec-sync'
+        exec command
+
+    spawnSync: (bin, opts) -> 
+
+        series = require('async').series
+        spawn = require('child_process').spawn
+
+        series [ -> 
+            
+            console.log '(run)'.bold, bin, opts.join ' '
+            child = spawn bin, opts
+            child.stdout.pipe process.stdout
+            child.stderr.pipe process.stderr
+
+        ]
+
 
 
 program.option '-r, --root [root]',  'Specify the root repo. Default ./'
