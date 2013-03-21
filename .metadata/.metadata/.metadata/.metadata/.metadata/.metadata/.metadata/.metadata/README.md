@@ -9,7 +9,7 @@
 
 
 
-                    /bin/being%20%3C%20/dev/imagination%20%7C%20/usr/sbin/culture
+                    /bin/being %3C /dev/imagination %7C /usr/sbin/culture
 
 
 
