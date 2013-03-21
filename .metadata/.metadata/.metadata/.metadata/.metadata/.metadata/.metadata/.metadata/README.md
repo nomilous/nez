@@ -9,7 +9,7 @@
 
 
 
-                      /bin/being &lt; /dev/imagination | /usr/sbin/culture
+                           /bin/being &lt; /dev/imagination | /usr/sbin/culture
 
 
 
@@ -59,4 +59,3 @@
 
                                                                                                              .
 </pre>
-%3c
