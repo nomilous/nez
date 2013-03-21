@@ -9,14 +9,14 @@
 
 
 
-                                ...so
+                             ...so
 
-                                      drop your pebble in the main Stream,
+                                    drop your pebble in the main Stream,
 
-                                               start a Ripple!
+                                              start a Ripple!
 
 
-                                                              - faithless
+                                                         - faithless
 
 
 
