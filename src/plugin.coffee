@@ -25,7 +25,7 @@ module.exports = Plugin =
     #    thread traverses between nodes.
     # 
     # 
-    #    `placeholder` = { 'a pending thing' }
+    #    `placeholder` = { 'a still pending thing' }
     # 
     #    `nodes` = {
     # 

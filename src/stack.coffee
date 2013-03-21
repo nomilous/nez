@@ -135,7 +135,7 @@ module.exports = class Stack
 
         if label
 
-            notifier.emit 'edge', null,
+            notifier.emit 'edge',  null ,
 
                 class: 'Tree.Leafward'
                 from: from
@@ -187,7 +187,7 @@ module.exports = class Stack
                 @node = @stack[@stack.length - 1]
 
 
-            notifier.emit 'edge', null,
+            notifier.emit 'edge',  null ,
 
                 class: 'Tree.Rootward'
                 from: from
