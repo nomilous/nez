@@ -9,7 +9,7 @@
 
 
 
-                           /bin/being &lt; /dev/imagination | /usr/sbin/culture
+                    /usr/local/bin/being &lt; /dev/imagination | /usr/sbin/culture
 
 
 
