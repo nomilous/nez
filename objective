@@ -4,9 +4,9 @@ require('nez').objective 'Nez',
 
     nimbal: 'https://localhost:10101/'
 
-    class: 'Root Module - Realization'
+    class: 'Root Module'
 
-    classification: 'Process'
+    classification: 'Process Scaffold'
 
     description: """
 
