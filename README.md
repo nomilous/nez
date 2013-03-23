@@ -42,4 +42,3 @@ require('nez').realize 'ClassName', (Subject, validate, stacker, should,,, modul
 
 ```
 
-[example](https://github.com/nomilous/nez-kit/blob/d2288e755560f8bac511f68c4b7d7a0e26464bdc/spec/git/git_tree_spec.coffee)
