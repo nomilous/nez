@@ -12,6 +12,7 @@
   "main": "./lib/nez",
   "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
+    "nezkit": "0.0.4",
     "fing": "0.0.4",
     "colors": "~0.6.0-1",
     "commander": "~1.1.1",
