@@ -18,10 +18,7 @@
     "commander": "~1.1.1",
     "hound": "~1.0.4",
     "coffee-script": "~1.4.0",
-    "inflection": "~1.2.5",
-    "wrench": "~1.4.4",
-    "exec-sync": "~0.1.5",
-    "async": "~0.2.6"
+    "inflection": "~1.2.5"
   },
   "devDependencies": {
     "prettyjson": "~0.7.1",

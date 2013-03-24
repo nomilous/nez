@@ -2,7 +2,7 @@ require 'fing'
 
 Node      = require './node'
 Notifyier = require './notifier'
-Injector  = require './injector'
+injector  = require('nezkit').injector
 Hooks     = require './hooks'
 Link      = require './link'
 Plugins   = require './plugin_register'
@@ -149,7 +149,7 @@ module.exports = class Stack
 
 
 
-                Injector.inject [@stacker], callback if callback
+                injector.inject [@stacker], callback if callback
 
             catch error
 
@@ -164,11 +164,13 @@ module.exports = class Stack
                     # console.log error.message.red
 
                     @validate null, error
+                    console.log error.red
+                    console.log error.stack
 
                 else
 
-                    console.log error
-
+                    console.log error.red
+                    console.log error.stack
                     throw error
             
 

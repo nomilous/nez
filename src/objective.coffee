@@ -15,7 +15,7 @@ module.exports = Objective =
 
         if typeof callback == 'function'
         
-            require('./injector').inject [stack.stacker], callback
+            require('nezkit').injector.inject [stack.stacker], callback
 
         #
         # start dev environment WITH objective

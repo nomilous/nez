@@ -3,13 +3,11 @@ Nez         = require '../lib/nez'
 Injector    = require '../lib/injector'
 Requirement = require '../lib/plugin/requirement'
 Nez.link     'name'
-test        = idea = blueprint = Nez.stack.validator
+test        = Nez.stack.validator
 nez         = it
 
 
 describe 'Nez', -> 
-
-
 
 
     nez 'is French for "nose" ', (knows) ->
@@ -18,24 +16,9 @@ describe 'Nez', ->
 
 
 
+    nez 'is Flower for "hello" ', (hello) ->
 
-    nez 'is Flower for "hello" ', (stamen) ->
-
-        idea -> stamen()
-
-
-
-
-    nez 'is Tree for "blueprint" ', (pollinate) ->
-
-        blueprint( ->->-> pollinate() )('A')('I')
-
-
-
-
-    nez is: 'realization', -> 
-
-
+        hello()
 
 
 

@@ -62,7 +62,7 @@ describe 'Specification', ->
         done()
 
 
-    it 'distinguishes between global and local specifications', (done) ->
+    xit 'distinguishes between global and local specifications', (done) ->
 
         object = new Object
         object.expect function: ->
