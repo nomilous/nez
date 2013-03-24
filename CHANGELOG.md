@@ -1,6 +1,10 @@
 Change Log
 ----------
 
+### 2013-03-24
+
+* Removed local injector and integrated nezkit:injector
+
 ### 2013-03-12
 
 * Added HUP propagation into plugins
