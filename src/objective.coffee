@@ -1,4 +1,4 @@
-require 'fing'
+require 'fing' if typeof fing == 'undefined'
 
 module.exports = Objective = 
 

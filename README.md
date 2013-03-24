@@ -4,10 +4,11 @@
 
 ### Current Version
 
-0.0.4 (pre-release)
+0.0.5 (pre-release)
 
 ### Pending Features
 
+* **fix** fing
 * function and property expections
 * before and after hooks
 * expanded linking capabilities

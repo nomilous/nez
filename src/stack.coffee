@@ -1,4 +1,4 @@
-require 'fing'
+require 'fing' if typeof fing == 'undefined'
 
 Node      = require './node'
 Notifyier = require './notifier'
