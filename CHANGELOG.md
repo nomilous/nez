@@ -1,6 +1,10 @@
 Change Log
 ----------
 
+### 2013-03-24 (0.0.4)
+
+* Released with a broken dependancy (grumbles..) 
+
 ### 2013-03-24 (0.0.3)
 
 * Removed local injector and integrated nezkit:injector

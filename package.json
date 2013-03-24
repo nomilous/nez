@@ -1,7 +1,7 @@
 {
   "name": "nez",
   "description": "Realization Framework",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "nomilous <nomilous@gmail.com>",
   "contributors": [
     {
@@ -12,7 +12,7 @@
   "main": "./lib/nez",
   "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
-    "nezkit": "0.0.4",
+    "nezkit": "0.0.5",
     "fing": "0.0.4",
     "colors": "~0.6.0-1",
     "commander": "~1.1.1",
