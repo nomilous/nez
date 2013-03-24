@@ -3,3 +3,4 @@ require 'fing'
 
 injector.inject (Node) -> 
 
+    console.log Node == require './node'
