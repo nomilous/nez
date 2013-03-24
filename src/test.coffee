@@ -1,6 +1,7 @@
 injector = require('nezkit').injector
 require 'fing'
 
-injector.inject (Node) -> 
+injector.inject (Node, Link:fixPath, should) -> 
 
-    console.log Node == require './node'
+    Node.should.equal require './node'
+    fixPath('moo').should.equal 'moo.coffee'
