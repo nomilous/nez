@@ -2,7 +2,7 @@ require 'fing' if typeof fing == 'undefined'
 
 Node      = require './node'
 Notifyier = require './notifier'
-injector  = require('nezkit').injector
+injector  = require('nezcore').injector
 Hooks     = require './hooks'
 Link      = require './link'
 Plugins   = require './plugin_register'

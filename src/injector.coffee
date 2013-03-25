@@ -1,4 +1,4 @@
-injector = require('nezkit').injector
+injector = require('nezcore').injector
 
 module.exports = 
 

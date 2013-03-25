@@ -1,6 +1,10 @@
 Change Log
 ----------
 
+### 2013-03-25
+
+* Moved injector into nezcore and removed nezkit as dependancy
+
 ### 2013-03-24 (0.0.5)
 
 * Released with a broken dependancy (grumbles..) 
