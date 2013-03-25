@@ -4,7 +4,7 @@
 
 ### Current Version
 
-0.0.6 (pre-release)
+0.0.7 (pre-release)
 
 ### Pending Features
 

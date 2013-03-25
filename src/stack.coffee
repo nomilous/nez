@@ -55,8 +55,6 @@ module.exports = class Stack
 
                 get: -> 
                     
-
-
                     Link.linker
 
 
@@ -164,8 +162,6 @@ module.exports = class Stack
                     # console.log error.message.red
 
                     @validate null, error
-                    console.log error.red
-                    console.log error.stack
 
                 else
 
@@ -220,7 +216,9 @@ module.exports = class Stack
             if error
 
                 console.log 'FAILED:'.red, testString
-                console.log error.message.red
+                console.log error.red
+                console.log error.stack
+                # console.log error.message.red
 
             else
 
