@@ -1,6 +1,6 @@
 {
   "name": "nez",
-  "description": "Realization Framework",
+  "description": "Process Scaffold",
   "version": "0.0.6",
   "author": "nomilous <nomilous@gmail.com>",
   "contributors": [
@@ -23,7 +23,7 @@
   "devDependencies": {
     "prettyjson": "~0.7.1",
     "docco": "~0.4.0",
-    "should": "~1.2.2",
-    "mocha": "~1.8.1"
+    "mocha": "~1.8.1",
+    "should": "~1.2.2"
   }
 }
