@@ -31,7 +31,7 @@ This may (Still) change:
 
 
 ```coffee
-require('nez').realize 'ClassName', (Subject, validate, stacker, should,,, moduleN ) ->
+require('nez').realize 'ClassName', (Subject, validate, stacker, should) ->
 
     stacker 'push labeled node into tree', (that) ->
 
