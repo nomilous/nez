@@ -13,6 +13,7 @@
   "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
     "nezcore": "0.0.1",
+		"ipso":"0.0.1",
     "fing": "0.0.4",
     "colors": "~0.6.0-1",
     "commander": "~1.1.1",
