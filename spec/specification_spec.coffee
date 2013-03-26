@@ -26,7 +26,7 @@ describe 'Specification', ->
     describe 'creates confirmations', ->
     
 
-        it 'inserts confirmation interfaces/objects and a confirmations stack into the hash', (done) ->
+        xit 'inserts confirmation interfaces/objects and a confirmations stack into the hash', (done) ->
 
             object = new Object
 

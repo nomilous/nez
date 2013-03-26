@@ -1,5 +1,5 @@
 AssertionError = require('assert').AssertionError
-require 'fing' if typeof fing == 'undefined'
+require 'fing'
 
 class Realizer
 

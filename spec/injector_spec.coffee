@@ -42,10 +42,10 @@ describe 'Injector', ->
 
     it 'injects all further args (if downcased) as third party modules/services', (done) -> 
 
-       Injector.realize 'Node', (Node, validate, context, hound, fing) -> 
+       Injector.realize 'Node', (Node, validate, context, hound:watch, docco) -> 
 
-            hound.should.equal  require 'hound'
-            fing.should.equal   require 'fing'
+            watch.should.equal require('hound').watch
+            docco.should.equal require 'docco'
             done()
 
     it 'injects all further args (if CamelCase) as local modules', (done) ->
