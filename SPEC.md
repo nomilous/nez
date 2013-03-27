@@ -16,9 +16,16 @@ require('nez').realize 'Periscope', (Periscope, test, it, should) ->
         # 1. Create expectations
         #
 
-        periscope.expect riseToSurface: with: 'distance', returning: true
-        periscope.expect openLens: returning: true
-        periscope.exepct "Admiral's Allseeing Eyeball"
+        periscope.must receive
+
+            riseToSurface: (distance) ->
+
+                distance.should.be.an.instanceof Number
+                return true
+
+            openLens: ->  
+
+                return true
 
 
         #
