@@ -4,7 +4,7 @@ module.exports = Objective =
 
     load: ( opts ) -> 
 
-        objectiveModule = process.env.NEZ_OBJECTIVE_TYPE || 'eo'
+        objectiveModule = process.env.NEZ_PLUGIN_OBJECTIVE || 'eo'
         PluginLoader.load objectiveModule, opts
 
         

@@ -27,9 +27,9 @@ describe 'Objective', ->
         Objective.load 'config'
 
 
-    it 'can override objective plugin with env.NEZ_OBJECTIVE', (done) -> 
+    it 'can override objective plugin with env.NEZ_PLUGIN_OBJECTIVE', (done) -> 
 
-        process.env.NEZ_OBJECTIVE_TYPE = 'objective-type'
+        process.env.NEZ_PLUGIN_OBJECTIVE = 'objective-type'
         loader = PluginLoader.load 
 
         PluginLoader.load = (module, config) -> 
