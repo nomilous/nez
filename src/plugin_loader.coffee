@@ -6,7 +6,7 @@ module.exports = PluginFactory =
 
     load: (pluginName, config) -> 
 
-        plugin = PluginFactory.validate require pluginName
+        plugin = PluginFactory.validate pluginName, require pluginName
 
         #
         # pass the stacker through the plugin configurer
@@ -36,11 +36,11 @@ module.exports = PluginFactory =
 
         return stack.stacker
 
-    validate: (plugin) ->
+    validate: (pluginName, plugin) ->
 
         unless typeof plugin.configure == 'function'
 
-            throw Exception.create 'INVALID_PLUGIN', 'Undefined Plugin.configure()'
+            throw Exception.create 'INVALID_PLUGIN', "Undefined #{pluginName}.configure() in module: '#{pluginName}'"
 
         unless typeof plugin.edge == 'function'
 

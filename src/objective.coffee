@@ -1,24 +1,31 @@
-require 'fing'
+PluginLoader = require './plugin_loader'
 
 module.exports = Objective = 
 
-    validate: (objective, config, callback) ->
+    load: ( opts ) -> 
 
-        #
-        # walk the entire objective tree
-        #
+        objectiveModule = process.env.NEZ_OBJECTIVE_TYPE || 'eo'
+        PluginLoader.load objectiveModule, opts
 
-        Objective.root = fing.trace()[1].file.match( /(.*)\/.*$/ )[1]
-
-        stack = require('./nez').link()
-        stack.name = objective
-
-        if typeof callback == 'function'
         
-            require('nezcore').injector.inject [stack.stacker], callback
 
-        #
-        # start dev environment WITH objective
-        #
+    # validate: (objective, config, callback) ->
 
-        require('./exec/nez').exec objective, config
+    #     #
+    #     # walk the entire objective tree
+    #     #
+
+    #     Objective.root = fing.trace()[1].file.match( /(.*)\/.*$/ )[1]
+
+    #     stack = require('./nez').link()
+    #     stack.name = objective
+
+    #     if typeof callback == 'function'
+        
+    #         require('nezcore').injector.inject [stack.stacker], callback
+
+    #     #
+    #     # start dev environment WITH objective
+    #     #
+
+    #     require('./exec/nez').exec objective, config

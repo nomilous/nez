@@ -21,8 +21,11 @@ Nez =
     #
     # **Nez.objective(`config`)**
     # 
+    # Default [objective implementation](https://github.com/nomilous/eo)
+    # 
+    # 
 
-    objective: Objective.validate
+    objective: Objective.load
 
 
     #

@@ -21,7 +21,7 @@ describe 'PluginLoader', ->
         swap = PluginLoader.validate
         validated = false
 
-        PluginLoader.validate = (potentialPlugin) -> 
+        PluginLoader.validate = (name, potentialPlugin) -> 
             potentialPlugin.should.equal require '../lib/plugin'
             validated = true
             potentialPlugin
@@ -36,7 +36,7 @@ describe 'PluginLoader', ->
 
         try
         
-            PluginLoader.validate {}
+            PluginLoader.validate 'name', {}
 
         catch error
 
@@ -46,7 +46,7 @@ describe 'PluginLoader', ->
     it 'ensures the plugin supplies a list of node class handlers', (done) ->
 
         try
-            PluginLoader.validate 
+            PluginLoader.validate 'name',
                 configure: ->
                 edge: ->
                 handles: ['RedLorry','YellowLorry']
@@ -71,7 +71,7 @@ describe 'PluginLoader', ->
                     if value == 'NOISEY'
                         return plugin.AnnoyedOyster
 
-            PluginLoader.validate plugin
+            PluginLoader.validate 'name', plugin
 
         catch error
 
