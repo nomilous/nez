@@ -9,7 +9,8 @@ describe 'PluginLoader', ->
 
         try
 
-            PluginLoader.load 'test'
+            PluginLoader.load 
+                _module: 'test'
 
         catch error
 
@@ -21,12 +22,14 @@ describe 'PluginLoader', ->
         swap = PluginLoader.validate
         validated = false
 
-        PluginLoader.validate = (name, potentialPlugin) -> 
+        PluginLoader.validate = (potentialPlugin) -> 
             potentialPlugin.should.equal require '../lib/plugin'
             validated = true
             potentialPlugin
 
-        PluginLoader.load '../lib/plugin'
+        PluginLoader.load 
+            _module: '../lib/plugin'
+
         PluginLoader.validate = swap
         validated.should.equal true
         done()
@@ -46,7 +49,7 @@ describe 'PluginLoader', ->
     it 'ensures the plugin supplies a list of node class handlers', (done) ->
 
         try
-            PluginLoader.validate 'name',
+            PluginLoader.validate
                 configure: ->
                 edge: ->
                 handles: ['RedLorry','YellowLorry']
@@ -55,7 +58,7 @@ describe 'PluginLoader', ->
 
         catch error
 
-            error.message.should.match /Undefined Plugin.YellowLorry/
+            error.message.should.match /INVALID_PLUGIN - Undefined Plugin.YellowLorry/
             done()
 
     it 'ensures the plugin supplies a list of node metafield key matchers', (done) ->
@@ -71,7 +74,7 @@ describe 'PluginLoader', ->
                     if value == 'NOISEY'
                         return plugin.AnnoyedOyster
 
-            PluginLoader.validate 'name', plugin
+            PluginLoader.validate plugin
 
         catch error
 
@@ -87,7 +90,7 @@ describe 'PluginLoader', ->
             PluginRegister.register = swap
             wasRegistered() if plugin == Plugin
 
-        PluginLoader.load '../lib/plugin'
+        PluginLoader.load _module: '../lib/plugin'
 
 
     it 'load() passes the stacker to Plugin.configure() and returs it', (done) ->
@@ -96,6 +99,6 @@ describe 'PluginLoader', ->
         Plugin.configure = (arg1, arg2) ->
             stacker = arg1
 
-        PluginLoader.load('../lib/plugin').should.equal stacker
+        PluginLoader.load( _module: '../lib/plugin' ).should.equal stacker
         done()
 

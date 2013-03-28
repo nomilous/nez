@@ -74,7 +74,7 @@ Nez =
 
     requirements: (name) ->
 
-        PluginLoader.load './plugin/requirement', {}
+        PluginLoader.load _module: './plugin/requirement', {}
         Nez.stack.stacker
 
 

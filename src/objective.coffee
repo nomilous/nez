@@ -4,19 +4,18 @@ PluginLoader = require './plugin_loader'
 
 module.exports = Objective = 
 
-    load: ( opts ) -> 
+    load: (label, config, injectable) -> 
 
-        objectiveConfig = Config.get 'objective'
+        defaults = Config.get 'objective'
+        
+        defaults.label      = label
+        defaults.injectable = injectable
 
-        for key of objectiveConfig
+        for key of config
 
-            #
-            # override default config with supplied
-            #
+            defaults[key] = config[key]
 
-            opts[key] = objectiveConfig[key]
-
-        PluginLoader.load objectiveConfig.module, opts
+        PluginLoader.load defaults
 
 
 

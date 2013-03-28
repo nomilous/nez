@@ -26,29 +26,30 @@ describe 'Objective', ->
             swap key
 
         loader = PluginLoader.load
-        PluginLoader.load = (module, config) -> 
+        PluginLoader.load = (config) -> 
 
             PluginLoader.load = loader
-            module.should.equal 'eo'
-            config.should.equal 'config'
+            config._module.should.equal 'eo'
+            config.label.should.equal 'LABEL'
             calledConfig.should.equal true
             done()  
 
-        Objective.load 'config'
+        Objective.load 'LABEL'
 
 
     it 'overrides default config with supplied config', (done) -> 
 
         loader = PluginLoader.load
-        PluginLoader.load = (module, config) -> 
+        PluginLoader.load = (config) -> 
 
             PluginLoader.load = loader
-            config.should.eql 
-                override: 'value'
-                module: 'eo'
+            config._module.should.equal 'eo'
+            config._class.should.equal 'dev'
+            config.label.should.equal 'LABEL'
+            config.override.should.equal 'EXTENDED CONFIG'
             done() 
 
-        Objective.load override: 'value'
+        Objective.load 'LABEL', override: 'EXTENDED CONFIG'
 
 
     # it 'knows the repo root', (done) ->
