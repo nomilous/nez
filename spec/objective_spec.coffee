@@ -1,4 +1,5 @@
 should       = require 'should'
+Config       = require('nezcore').config
 PluginLoader = require '../lib/plugin_loader'
 Objective    = require '../lib/objective'
 Exec         = require '../lib/exec/nez'
@@ -13,33 +14,42 @@ describe 'Objective', ->
         Objective.load.should.be.an.instanceof Function
         done()
 
-    it 'defaults eo as objective plugin', (done) -> 
+    it 'loads the Config specified objective plugin', (done) -> 
 
-        loader = PluginLoader.load 
+        
+        calledConfig = false
 
+        swap = Config.get
+        Config.get = (key) -> 
+            calledConfig = true
+            Config.get = swap
+            swap key
+
+        loader = PluginLoader.load
         PluginLoader.load = (module, config) -> 
 
             PluginLoader.load = loader
             module.should.equal 'eo'
             config.should.equal 'config'
+            calledConfig.should.equal true
             done()  
 
         Objective.load 'config'
 
 
-    it 'can override objective plugin with env.NEZ_PLUGIN_OBJECTIVE', (done) -> 
+    it 'overrides default config with supplied config', (done) -> 
 
-        process.env.NEZ_PLUGIN_OBJECTIVE = 'objective-type'
-        loader = PluginLoader.load 
-
+        loader = PluginLoader.load
         PluginLoader.load = (module, config) -> 
 
             PluginLoader.load = loader
-            module.should.equal 'objective-type'
-            config.should.equal 'config'
-            done()
+            config.should.eql 
+                override: 'value'
+                module: 'eo'
+            done() 
 
-        Objective.load 'config'
+        Objective.load override: 'value'
+
 
     # it 'knows the repo root', (done) ->
 

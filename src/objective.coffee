@@ -1,13 +1,24 @@
+Config       = require('nezcore').config
 PluginLoader = require './plugin_loader'
+
 
 module.exports = Objective = 
 
     load: ( opts ) -> 
 
-        objectiveModule = process.env.NEZ_PLUGIN_OBJECTIVE || 'eo'
-        PluginLoader.load objectiveModule, opts
+        objectiveConfig = Config.get 'objective'
 
-        
+        for key of objectiveConfig
+
+            #
+            # override default config with supplied
+            #
+
+            opts[key] = objectiveConfig[key]
+
+        PluginLoader.load objectiveConfig.module, opts
+
+
 
     # validate: (objective, config, callback) ->
 
