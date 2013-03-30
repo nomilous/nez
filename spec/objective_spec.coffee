@@ -44,7 +44,7 @@ describe 'Objective', ->
 
             PluginLoader.load = loader
             config._module.should.equal 'eo'
-            config._class.should.equal 'dev'
+            config._class.should.equal 'Develop'
             config.label.should.equal 'LABEL'
             config.override.should.equal 'EXTENDED CONFIG'
             done() 

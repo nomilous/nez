@@ -1,10 +1,16 @@
 Config       = require('nezcore').config
+Injector     = require('nezcore').injector
+Runtime      = require('./exec/nez').exec  
 PluginLoader = require './plugin_loader'
 
 
 module.exports = Objective = 
 
     load: (label, config, injectable) -> 
+
+        #
+        # Start the objective plugin
+        #
 
         defaults = Config.get 'objective'
         
@@ -18,24 +24,24 @@ module.exports = Objective =
         PluginLoader.load defaults
 
 
+        #
+        # start nez
+        #
 
-    # validate: (objective, config, callback) ->
+        # 
+        # TODO: This is the developer runtime...
+        # 
+        #       It only belongs here for as long
+        #       as oe.Develop is the only kind 
+        #       of objective
+        # 
 
-    #     #
-    #     # walk the entire objective tree
-    #     #
+        stack = require('./nez').link()
+        stack.name = label
 
-    #     Objective.root = fing.trace()[1].file.match( /(.*)\/.*$/ )[1]
+        if typeof injectable == 'function'
 
-    #     stack = require('./nez').link()
-    #     stack.name = objective
+            Injector.inject [stack.stacker], injectable
 
-    #     if typeof callback == 'function'
-        
-    #         require('nezcore').injector.inject [stack.stacker], callback
+        Runtime label, defaults
 
-    #     #
-    #     # start dev environment WITH objective
-    #     #
-
-    #     require('./exec/nez').exec objective, config
