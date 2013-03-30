@@ -1,7 +1,7 @@
 {
   "name": "nez",
   "description": "Process Scaffold",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "nomilous <nomilous@gmail.com>",
   "contributors": [
     {
@@ -12,9 +12,8 @@
   "main": "./lib/nez",
   "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
+    "eo": "0.0.1",
     "nezcore": "0.0.2",
-    "eo":"0.0.1",
-		"ipso":"0.0.1",
     "fing": "0.0.5",
     "colors": "~0.6.0-1",
     "commander": "~1.1.1",

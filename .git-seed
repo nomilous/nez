@@ -1,0 +1,26 @@
+[
+  {
+    "root": true,
+    "path": ".",
+    "origin": "git@github.com:nomilous/nez.git",
+    "branch": "refs/heads/develop",
+    "ref": "ROOT_REPO_REF",
+    "manager": "npm"
+  },
+  {
+    "root": false,
+    "path": "./node_modules/eo",
+    "origin": "git@github.com:nomilous/eo.git",
+    "branch": "refs/heads/master",
+    "ref": "cd034f359a3ae610b53268fb1f4f50a9d56d59c5",
+    "manager": "npm"
+  },
+  {
+    "root": false,
+    "path": "./node_modules/nezcore",
+    "origin": "git@github.com:nomilous/nezcore.git",
+    "branch": "refs/heads/master",
+    "ref": "0b203f11d3c0a9b114321e055541c47ab0723892",
+    "manager": "npm"
+  }
+]
