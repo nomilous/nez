@@ -181,12 +181,17 @@ module.exports = class Coffee
 
             @mkdirMinusP parts.path
 
+
+        #
+        # TODO: (perhaps) - a snippet system
+        #
+
         fs.writeFile parts.path + parts.specname, """
         require('nez').realize '#{parts.classname}', (#{parts.classname}, test, context) -> 
 
-            context 'in CONTEXT', (does) ->
+            context 'in CONTEXT', (it) ->
 
-                does 'an EXPECTATION', (done) ->
+                it 'does an EXPECTATION', (done) ->
 
                     test done
 
