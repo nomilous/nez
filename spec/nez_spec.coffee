@@ -22,16 +22,17 @@ describe 'Nez', ->
 
 
 
-    it 'defines realize()', (done) -> 
-
-        Nez.realize.should.equal require('../lib/injector').realize
-        done()
-
 
     it 'defines objective()', (done) ->
 
-        Nez.objective.should.equal require('../lib/objective').validate
+        Nez.objective.should.equal require('../lib/objective').load
         done()
+
+    it 'defines realize()', (done) -> 
+
+        Nez.realize.should.equal require('../lib/realization').load
+        done()
+
 
 
     it 'defines requirements() which loads the requirement plugin', (wasCalled) ->

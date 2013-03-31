@@ -1,7 +1,8 @@
 Stack          = require './stack'
-prototypes     = require './prototypes'
-Injector       = require './injector'
+prototypes     = require './prototypes' # eligable? DELETE
+Injector       = require './injector' # eligable? DELETE
 Objective      = require './objective'
+Realization    = require './realization'
 PluginLoader   = require './plugin_loader'
 PluginRegister = require './plugin_register'
 
@@ -10,22 +11,26 @@ stack        = new Stack()
 
 Nez = 
 
-
-    # 
-    # **Nez.realize(`ObjectiveClass`, `options`, `testFunction`)**
-    # 
-
-    realize: Injector.realize
-
-
     #
-    # **Nez.objective(`config`)**
+    # **Nez.objective(`label`, `config`, `injectable`)**
     # 
     # Default [objective implementation](https://github.com/nomilous/eo)
     # 
     # 
 
     objective: Objective.load
+
+
+    # 
+    # **Nez.realize(`label`, `config`, `injectable`)**
+    # 
+    # Default [realizer implementation](https://github.com/nomilous/ipso)
+    # 
+
+    realize: Realization.load
+
+    # realize: Injector.realize
+
 
 
     #
