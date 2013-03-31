@@ -15,6 +15,22 @@ module.exports = class Stack
     
     constructor: (@name) -> 
 
+        console.log 'TODO: move to nezcore as NodeStack'
+
+                    #
+                    # and create/approximate an InjectionStack 
+                    # with push and pop evets to enable: 
+                    #
+                    #   eg. 
+                    # 
+                    #   spec_run injector (push) 
+                    #       needs to define .must() on injected objects 
+                    #       to create expectations / validators
+                    # 
+                    #   spec_run injector (pop)
+                    #       needs to validate those expectations
+                    #
+
         @stack   = []
         @classes = []
         @root    = new Node 'root', stack: this
