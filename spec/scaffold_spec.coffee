@@ -24,19 +24,19 @@ describe 'Scaffold', ->
                 error.should.match /Scaffold requires config hash as arg2/
                 done()
 
-        it 'requires type definition in config.as', (done) -> 
+        it 'requires behaviour definition in config._as', (done) -> 
 
             try
                 new Scaffold 'LABEL', {}
             catch error
-                error.should.match /Scaffold requires type definition in config.as/
+                error.should.match /Scaffold requires behaviour definition in config._as/
                 done()
 
 
         it 'requires injectable as arg3 function', (done) -> 
 
             try
-                new Scaffold 'LABEL', as: 'Thing'
+                new Scaffold 'LABEL', as: 'Develop'
             catch error
                 error.should.match /Scaffold requires injectable function arg3/
                 done()

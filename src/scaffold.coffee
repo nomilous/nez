@@ -1,4 +1,5 @@
-Plex = require 'plex'
+Defaults = require './defaults'
+Plex     = require 'plex'
 
 module.exports = class Scaffold
 
@@ -19,7 +20,20 @@ module.exports = class Scaffold
 
         if typeof @config.as == 'undefined'
 
-            throw new Error "Scaffold requires type definition in config.as"  
+            #
+            # no config factory defined
+            #
+
+            if typeof @config._as != 'function'
+
+                throw new Error "Scaffold requires behaviour definition in config._as"
+
+        else 
+
+            if typeof Defaults[ @config.as ] == 'undefined'
+
+                throw new Error "Scaffold as '#{@config.as}' is not defined"
+
 
         unless typeof @injectable == 'function'
 
