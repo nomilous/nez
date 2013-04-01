@@ -7,10 +7,10 @@ module.exports = class Scaffold
 
         @outerValidate()
 
-        nodeID    = process.env.NODE_ID
-        abilities = process.env.NODE_ABILITIES || ''
+        nodeID = process.env.NODE_ID
+        tags   = process.env.NODE_TAGS || ''
 
-        @config._as nodeID, abilities.split(' '), (activeConfig) => 
+        @config._as nodeID, tags.split(' '), (activeConfig) => 
 
             #
             # TODO: timeout awaiting activeConfig
@@ -18,11 +18,14 @@ module.exports = class Scaffold
 
             @innerValidate activeConfig
 
-            #
-            # start
-            #
+            @start activeConfig
 
-            console.log 'START:', JSON.stringify activeConfig, null, 2
+
+    start: (activeConfig) -> 
+
+        console.log 'START:', JSON.stringify activeConfig, null, 2
+
+
 
     innerValidate: (config) -> 
 

@@ -7,15 +7,26 @@ describe 'Scaffold', ->
 
         it 'enables an ENV based config lookup', (done) -> 
 
-            process.env.NODE_ID        = 'ID'
-            process.env.NODE_ABILITIES = 'sing juggle'
+            process.env.NODE_ID   = 'ID'
+            process.env.NODE_TAGS = 'for extended role matching nodes in a system'
 
             new Scaffold 'LABEL'
 
                 _as: (id, abilities, callback) -> 
 
                     id.should.equal 'ID'
-                    abilities.should.eql ['sing','juggle']
+                    abilities.should.eql [
+
+                        'for' 
+                        'extended' 
+                        'role' 
+                        'matching' 
+                        'nodes' 
+                        'in' 
+                        'a' 
+                        'system'
+
+                    ]
                     done()
 
                 -> 
@@ -35,7 +46,7 @@ describe 'Scaffold', ->
             new Scaffold 'LABEL' 
 
                 _as: (id, abilities, callback) -> callback 'EXTERNAL CONFIG'
-                
+
                 ->
 
 
