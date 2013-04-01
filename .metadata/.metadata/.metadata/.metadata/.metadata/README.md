@@ -9,7 +9,7 @@
 
 
 
-                            "Whoever reaches his ideal transcends it eo ipso."
+                            Whoever reaches his ideal transcends it eo ipso.
 
 
                                                                  - Nietzsche

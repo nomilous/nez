@@ -2,3 +2,16 @@ Plex = require 'plex'
 
 module.exports = class Scaffold
 
+    constructor: (@label, @config, @injectable) ->
+
+        unless typeof @label == 'string'
+        
+            throw new Error "Scaffold requires 'label' string as arg1"
+
+        unless typeof @config == 'object'
+
+            throw new Error "Scaffold requires config hash as arg2"
+
+        unless typeof @injectable == 'function'
+
+            throw new Error "Scaffold requires injectable function arg3"
