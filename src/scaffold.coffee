@@ -10,15 +10,25 @@ module.exports = class Scaffold
         nodeID    = process.env.NODE_ID
         abilities = process.env.NODE_ABILITIES || ''
 
-        @config._as nodeID, abilities.split(' '), (config) -> 
+        @config._as nodeID, abilities.split(' '), (activeConfig) => 
 
             #
-            # config ok
+            # TODO: timeout awaiting activeConfig
             #
+
+            @innerValidate activeConfig
 
             #
             # start
             #
+
+            console.log 'START:', JSON.stringify activeConfig, null, 2
+
+    innerValidate: (config) -> 
+
+        #
+        # TODO: validate inner config
+        #
 
     outerValidate: ->
 

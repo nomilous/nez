@@ -10,7 +10,7 @@ describe 'Scaffold', ->
             process.env.NODE_ID        = 'ID'
             process.env.NODE_ABILITIES = 'sing juggle'
 
-            new Scaffold 'LABEL', 
+            new Scaffold 'LABEL'
 
                 _as: (id, abilities, callback) -> 
 
@@ -20,8 +20,26 @@ describe 'Scaffold', ->
 
                 -> 
 
+    context 'innerValidate()', -> 
 
-    context 'validate()', ->  
+        it 'validates the lookupd config', (done) -> 
+
+            swap = Scaffold.prototype.innerValidate
+            Scaffold.prototype.innerValidate = (config) -> 
+                Scaffold.prototype.innerValidate = swap
+
+                config.should.equal 'EXTERNAL CONFIG'
+                done()
+
+
+            new Scaffold 'LABEL' 
+
+                _as: (id, abilities, callback) -> callback 'EXTERNAL CONFIG'
+                
+                ->
+
+
+    context 'outerValidate()', ->  
 
         it 'requires label as arg1 string', (done) -> 
 

@@ -15,7 +15,7 @@ module.exports = class Stack
     
     constructor: (@name) -> 
 
-        console.log 'TODO: move to nezcore as NodeStack'
+        # console.log 'TODO: move to nezcore as NodeStack'
 
                     #
                     # and create/approximate an InjectionStack 
