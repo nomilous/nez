@@ -1,47 +1,59 @@
-Config       = require('nezcore').config
-Injector     = require('nezcore').injector
-Runtime      = require('./exec/nez').exec  
-PluginLoader = require './plugin_loader'
+colors = require 'colors'
+# Config       = require('nezcore').config
+# Injector     = require('nezcore').injector
+# Runtime      = require('./exec/nez').exec  
+# PluginLoader = require './plugin_loader'
+
+Scaffold = require './scaffold'
+
+module.exports = Objective = (label, config, injectable) -> 
+
+    try
+    
+        new Scaffold label, config, injectable
+
+    catch error
+
+        console.log error.message.red
+        process.exit 1
 
 
-module.exports = Objective = 
+    # load: (label, config, injectable) -> 
 
-    load: (label, config, injectable) -> 
+    #     #
+    #     # Start the objective plugin
+    #     #
 
-        #
-        # Start the objective plugin
-        #
-
-        defaults = Config.get 'objective'
+    #     defaults = Config.get 'objective'
         
-        defaults.label      = label
-        defaults.injectable = injectable
+    #     defaults.label      = label
+    #     defaults.injectable = injectable
 
-        for key of config
+    #     for key of config
 
-            defaults[key] = config[key]
+    #         defaults[key] = config[key]
 
-        PluginLoader.load defaults
+    #     PluginLoader.load defaults
 
 
-        #
-        # start nez
-        #
+    #     #
+    #     # start nez
+    #     #
 
-        # 
-        # TODO: This is the developer runtime...
-        # 
-        #       It only belongs here for as long
-        #       as oe.Develop is the only kind 
-        #       of objective
-        # 
+    #     # 
+    #     # TODO: This is the developer runtime...
+    #     # 
+    #     #       It only belongs here for as long
+    #     #       as oe.Develop is the only kind 
+    #     #       of objective
+    #     # 
 
-        stack = require('./nez').link()
-        stack.name = label
+    #     stack = require('./nez').link()
+    #     stack.name = label
 
-        if typeof injectable == 'function'
+    #     if typeof injectable == 'function'
 
-            Injector.inject [stack.stacker], injectable
+    #         Injector.inject [stack.stacker], injectable
 
-        Runtime label, defaults
+    #     Runtime label, defaults
 

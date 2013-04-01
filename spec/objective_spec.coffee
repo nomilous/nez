@@ -1,20 +1,36 @@
 should       = require 'should'
-Config       = require('nezcore').config
-PluginLoader = require '../lib/plugin_loader'
-Objective    = require '../lib/objective'
-Exec         = require '../lib/exec/nez'
-swap         = undefined
+# Config       = require('nezcore').config
+# PluginLoader = require '../lib/plugin_loader'
+Objective = require '../lib/objective'
+Scaffold  = require '../lib/scaffold' 
+# Exec         = require '../lib/exec/nez'
+# swap         = undefined
 
 
 
 describe 'Objective', -> 
 
-    it 'defines load()', (done) -> 
+    it 'is a function', (done) -> 
 
-        Objective.load.should.be.an.instanceof Function
+        Objective.should.be.an.instanceof Function
         done()
 
-    it 'loads the Config specified objective plugin', (done) -> 
+
+    it 'starts a Scaffold node', (done) ->
+
+        Scaffold.prototype.validate = -> 
+
+            @label.should.equal      'LABEL'
+            @config.should.equal     'CONFIG'
+            @injectable.should.equal 'INJECTABLE' 
+            done()
+
+        Objective 'LABEL', 'CONFIG', 'INJECTABLE'
+
+
+
+
+    xit 'loads the Config specified objective plugin', (done) -> 
 
         
         calledConfig = false
@@ -37,7 +53,7 @@ describe 'Objective', ->
         Objective.load 'LABEL'
 
 
-    it 'overrides default config with supplied config', (done) -> 
+    xit 'overrides default config with supplied config', (done) -> 
 
         loader = PluginLoader.load
         PluginLoader.load = (config) -> 

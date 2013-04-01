@@ -32,6 +32,10 @@ module.exports = class Scaffold
 
             if typeof Defaults[ @config.as ] == 'undefined'
 
+                #
+                # defined config factory does not exist
+                #
+
                 throw new Error "Scaffold as '#{@config.as}' is not defined"
 
 

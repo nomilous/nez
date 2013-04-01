@@ -18,7 +18,7 @@ Nez =
     # 
     # 
 
-    objective: Objective.load
+    objective: Objective
 
 
     # 

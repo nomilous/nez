@@ -32,6 +32,13 @@ describe 'Scaffold', ->
                 error.should.match /Scaffold requires behaviour definition in config._as/
                 done()
 
+        it 'requires specified default factory to exist', (done) -> 
+
+            try
+                new Scaffold 'LABEL', as: 'Thing' 
+            catch error
+                error.should.match /Scaffold as 'Thing' is not defined/
+                done()
 
         it 'requires injectable as arg3 function', (done) -> 
 

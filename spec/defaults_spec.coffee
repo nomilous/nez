@@ -3,7 +3,7 @@ should   = require 'should'
 
 describe 'Defaults', -> 
 
-    context 'has a default scaffold configs for', -> 
+    context 'has a default scaffold config for', -> 
 
         it 'Develop', (done) ->
 
