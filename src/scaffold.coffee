@@ -17,9 +17,9 @@ module.exports = class Scaffold
 
             throw new Error "Scaffold requires config hash as arg2"
 
-        unless typeof @config.as != 'undefined'
+        if typeof @config.as == 'undefined'
 
-            throw new Error "Scaffold require type definition in config.as"  
+            throw new Error "Scaffold requires type definition in config.as"  
 
         unless typeof @injectable == 'function'
 

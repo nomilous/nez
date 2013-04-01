@@ -29,7 +29,7 @@ describe 'Scaffold', ->
             try
                 new Scaffold 'LABEL', {}
             catch error
-                error.should.match /Scaffold require type definition in config.as/
+                error.should.match /Scaffold requires type definition in config.as/
                 done()
 
 
