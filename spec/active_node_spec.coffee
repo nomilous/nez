@@ -1,7 +1,7 @@
-should   = require 'should'
-Scaffold = require '../lib/scaffold'
+should     = require 'should'
+ActiveNode = require '../lib/active_node'
 
-describe 'Scaffold', ->
+describe 'ActiveNode', ->
 
     context 'async config lookup', -> 
 
@@ -10,12 +10,12 @@ describe 'Scaffold', ->
             process.env.NODE_ID   = 'ID'
             process.env.NODE_TAGS = 'for extended role matching nodes in a system'
 
-            new Scaffold 'LABEL'
+            new ActiveNode 'LABEL'
 
-                _as: (id, abilities, callback) -> 
+                _as: (id, tags, callback) -> 
 
                     id.should.equal 'ID'
-                    abilities.should.eql [
+                    tags.should.eql [
 
                         'for' 
                         'extended' 
@@ -35,17 +35,17 @@ describe 'Scaffold', ->
 
         it 'validates the lookupd config', (done) -> 
 
-            swap = Scaffold.prototype.innerValidate
-            Scaffold.prototype.innerValidate = (config) -> 
-                Scaffold.prototype.innerValidate = swap
+            swap = ActiveNode.prototype.innerValidate
+            ActiveNode.prototype.innerValidate = (config) -> 
+                ActiveNode.prototype.innerValidate = swap
 
                 config.should.equal 'EXTERNAL CONFIG'
                 done()
 
 
-            new Scaffold 'LABEL' 
+            new ActiveNode 'LABEL' 
 
-                _as: (id, abilities, callback) -> callback 'EXTERNAL CONFIG'
+                _as: (id, tags, callback) -> callback 'EXTERNAL CONFIG'
 
                 ->
 
@@ -55,39 +55,39 @@ describe 'Scaffold', ->
         it 'requires label as arg1 string', (done) -> 
 
             try  
-                new Scaffold
+                new ActiveNode
             catch error
-                error.should.match /Scaffold requires 'label' string as arg1/
+                error.should.match /ActiveNode requires 'label' string as arg1/
                 done()
 
         it 'requires config as arg2 object', (done) -> 
 
             try
-                new Scaffold 'LABEL'
+                new ActiveNode 'LABEL'
             catch error
-                error.should.match /Scaffold requires config hash as arg2/
+                error.should.match /ActiveNode requires config hash as arg2/
                 done()
 
         it 'requires behaviour definition in config._as', (done) -> 
 
             try
-                new Scaffold 'LABEL', {}
+                new ActiveNode 'LABEL', {}
             catch error
-                error.should.match /Scaffold requires behaviour definition in config._as/
+                error.should.match /ActiveNode requires behaviour definition in config._as/
                 done()
 
         it 'requires specified default factory to exist', (done) -> 
 
             try
-                new Scaffold 'LABEL', as: 'Thing' 
+                new ActiveNode 'LABEL', as: 'Thing' 
             catch error
-                error.should.match /Scaffold as 'Thing' is not defined/
+                error.should.match /ActiveNode as 'Thing' is not defined/
                 done()
 
         it 'requires injectable as arg3 function', (done) -> 
 
             try
-                new Scaffold 'LABEL', as: 'Develop'
+                new ActiveNode 'LABEL', as: 'Develop'
             catch error
-                error.should.match /Scaffold requires injectable function arg3/
+                error.should.match /ActiveNode requires injectable function arg3/
                 done()

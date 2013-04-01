@@ -1,7 +1,7 @@
 Defaults = require './defaults'
 Plex     = require 'plex'
 
-module.exports = class Scaffold
+module.exports = class ActiveNode
 
     constructor: (@label, @config, @injectable) ->
 
@@ -37,11 +37,11 @@ module.exports = class Scaffold
 
         unless typeof @label == 'string'
         
-            throw new Error "Scaffold requires 'label' string as arg1"
+            throw new Error "ActiveNode requires 'label' string as arg1"
 
         unless typeof @config == 'object'
 
-            throw new Error "Scaffold requires config hash as arg2"
+            throw new Error "ActiveNode requires config hash as arg2"
 
         if typeof @config.as == 'undefined'
 
@@ -51,7 +51,7 @@ module.exports = class Scaffold
 
             if typeof @config._as != 'function'
 
-                throw new Error "Scaffold requires behaviour definition in config._as"
+                throw new Error "ActiveNode requires behaviour definition in config._as"
 
         else 
 
@@ -61,11 +61,11 @@ module.exports = class Scaffold
                 # defined config factory does not exist
                 #
 
-                throw new Error "Scaffold as '#{@config.as}' is not defined"
+                throw new Error "ActiveNode as '#{@config.as}' is not defined"
 
             @config._as = Defaults[ @config.as ]
 
 
         unless typeof @injectable == 'function'
 
-            throw new Error "Scaffold requires injectable function arg3"
+            throw new Error "ActiveNode requires injectable function arg3"
