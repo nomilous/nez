@@ -1,11 +1,13 @@
 Config       = require('nezcore').config
+Injector     = require('nezcore').injector
 PluginLoader = require './plugin_loader'
+
 
 module.exports = 
 
-    load: (label, config, injectable) -> 
+    load: (label, injectable) -> 
 
-        console.log '\n\nrun realize with:\n', arguments, '\n\n'
+        # console.log '\n\nrun realize with:\n', arguments, '\n\n'
 
         #
         # Load default realizer config
@@ -21,9 +23,21 @@ module.exports =
         # register plugin
         #
 
-        for key of config
+        # for key of config
 
-            defaults[key] = config[key]
+        #     defaults[key] = config[key]
 
         PluginLoader.load defaults
 
+
+        #
+        # TODO: move those of this specifically SpecRun related to ipso
+        #
+
+        subject    = Injector.support.findModule module: label
+        stack      = require('./nez').link()
+        stack.name = label
+        validator  = stack.validator
+        scaffold   = stack.stacker
+
+        Injector.inject [subject, validator, scaffold], injectable
