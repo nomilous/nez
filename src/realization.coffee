@@ -2,6 +2,9 @@ Config       = require('nezcore').config
 Injector     = require('nezcore').injector
 PluginLoader = require './plugin_loader'
 
+#
+# TODO: Realizer plugin as ActiveNode (leaf)
+#
 
 module.exports = 
 
@@ -13,7 +16,7 @@ module.exports =
         # Load default realizer config
         #
 
-        defaults            = Config.get 'realizer'
+        defaults            = _class: 'ipso:SpecRun'
         defaults.label      = label
         defaults.injectable = injectable
 
