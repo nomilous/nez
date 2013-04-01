@@ -1,10 +1,20 @@
+nez
+===
+
+Distributed Process Scaffold
+
+
 ### Due Homage
 
 [RSpec](http://rspec.info/)
+[Node.js](http://nodejs.org)
+[Coffee Script](http://coffeescript.org/)
+
 
 ### Current Version
 
 0.0.7 (pre-release)
+
 
 ### Pending Features
 
@@ -20,10 +30,6 @@
 ```bash
 npm install nez --save-dev
 ```
-
-### Recommends
-
-[Coffee Script](http://coffeescript.org/) - For a symantically ideal experience.
 
 ### General Usage
 
