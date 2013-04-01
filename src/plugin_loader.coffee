@@ -6,11 +6,26 @@ module.exports = PluginFactory =
 
     load: (config) -> 
 
-        plugin = module = require config._module
+        if typeof config._module == 'undefined'
 
-        unless typeof config.class == 'undefined'
+            if module = config._class.match(/^(.*):(.*)/)[1..2]
 
-            plugin = module[config._class]
+                #
+                # _class was defined as 'module:Class'
+                #
+
+                console.log 'loading module:%s, class:%s', module[0], module[1]
+            
+                plugin = require(module[0])[module[1]]
+
+        else
+
+            #
+            # _module was defined
+            #
+
+            plugin = require config._module
+
 
         plugin = PluginFactory.validate plugin
 

@@ -5,16 +5,26 @@ Plugin         = require '../lib/plugin'
 
 describe 'PluginLoader', ->
 
-    it 'loads plugin modules', (done) ->
+    it 'loads plugin _module', (done) ->
 
         try
 
-            PluginLoader.load 
-                _module: 'test'
+            PluginLoader.load _module: 'test'
 
         catch error
 
             error.code.should.equal 'MODULE_NOT_FOUND'
+            done()
+
+    it 'load plugin _class', (done) -> 
+
+        try
+
+            PluginLoader.load _class: 'nodule:Glass'
+
+        catch error
+
+            error.should.match /Cannot find module 'nodule'/
             done()
 
     it 'validates the plugin', (done) ->
