@@ -9,12 +9,12 @@
 
 
 
-                                     "After your first bite of Apple,
-
-                                   Everything looks like Newton's Head"
+                            "Whoever reaches his ideal transcends it eo ipso."
 
 
-                                                         - Eve
+                                                                 - Nietzsche
+
+
 
 
 
