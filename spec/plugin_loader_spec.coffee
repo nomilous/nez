@@ -109,6 +109,6 @@ describe 'PluginLoader', ->
         Plugin.configure = (arg1, arg2) ->
             stacker = arg1
 
-        PluginLoader.load( _module: '../lib/plugin' ).should.equal stacker
+        PluginLoader.load( _module: '../lib/plugin' ).should.equal require '../lib/plugin'
         done()
 

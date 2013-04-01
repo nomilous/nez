@@ -14,7 +14,7 @@ module.exports = PluginFactory =
                 # _class was defined as 'module:Class'
                 #
 
-                console.log 'loading module:%s, class:%s', module[0], module[1]
+                console.log '[PluginLoader] - module:%s, class:%s', module[0], module[1]
             
                 plugin = require(module[0])[module[1]]
 
@@ -54,9 +54,8 @@ module.exports = PluginFactory =
 
         stack.on 'edge', plugin.edge
 
+        return plugin
 
-
-        return stack.stacker
 
     validate: (plugin) ->
 

@@ -14,6 +14,8 @@ Nez =
     #
     # **Nez.objective(`label`, `config`, `injectable`)**
     # 
+    # Spawns an [ActiveNode](active_node.html)
+    # 
     # Default [objective implementation](https://github.com/nomilous/eo)
     # 
     # 
