@@ -6,9 +6,9 @@ Distributed Process Scaffold
 
 ### Due Homage
 
-[RSpec](http://rspec.info/)
-[Node.js](http://nodejs.org)
-[Coffee Script](http://coffeescript.org/)
+[RSpec](http://rspec.info/)<br />
+[Node.js](http://nodejs.org)<br />
+[Coffee Script](http://coffeescript.org/)<br />
 
 
 ### Current Version
@@ -37,15 +37,10 @@ This may (Still) change:
 
 
 ```coffee
-require('nez').realize 'ClassName', (Subject, validate, stacker, should) ->
 
-    stacker 'push labeled node into tree', (that) ->
-
-        that 'is a heirarchy of tests', (done) ->
-
-            should.should.should.exist 'tests (here)'
-            validate done
-
+#
+# jumpty dumpty
+#
 
 ```
 
