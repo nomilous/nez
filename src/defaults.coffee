@@ -2,7 +2,7 @@ config = require('nezcore').config
 
 module.exports = 
 
-    Develop: (id, abilities, callback) -> 
+    Develop: (id, tags, callback) -> 
 
         #
         # Develop Objective (default config factory)

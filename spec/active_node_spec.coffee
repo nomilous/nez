@@ -38,16 +38,20 @@ describe 'ActiveNode', ->
             swap = ActiveNode.prototype.innerValidate
             ActiveNode.prototype.innerValidate = (config) -> 
                 ActiveNode.prototype.innerValidate = swap
-
                 config.should.equal 'EXTERNAL CONFIG'
+
+                throw '古老的中国谚语'
+                
+
+            try
+                new ActiveNode 'LABEL' 
+                    _as: (id, tags, callback) -> callback 'EXTERNAL CONFIG'
+                    ->
+
+            catch corrective
+            
+                corrective.should.match /古老的中国谚语/
                 done()
-
-
-            new ActiveNode 'LABEL' 
-
-                _as: (id, tags, callback) -> callback 'EXTERNAL CONFIG'
-
-                ->
 
 
     context 'outerValidate()', ->  

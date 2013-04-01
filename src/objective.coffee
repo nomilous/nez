@@ -3,13 +3,13 @@
 # Runtime      = require('./exec/nez').exec  
 # PluginLoader = require './plugin_loader'
 
-Scaffold = require './scaffold'
+ActiveNode = require './active_node'
 
 module.exports = Objective = (label, config, injectable) -> 
 
     try
     
-        new Scaffold label, config, injectable
+        new ActiveNode label, config, injectable
 
     catch error
 

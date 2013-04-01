@@ -1,4 +1,5 @@
 Defaults = require './defaults'
+Http     = require 'http'
 Plex     = require 'plex'
 
 module.exports = class ActiveNode
@@ -25,6 +26,20 @@ module.exports = class ActiveNode
 
         console.log 'START:', JSON.stringify activeConfig, null, 2
 
+        #
+        # TODO: use https if config.cert: path: is defined
+        #
+
+        server = Http.createServer()
+        server.listen 20202, 'localhost', => 
+
+            console.log '[ActiveNode] - listening @ %s:%s'
+                server.address().address
+                server.address().port
+
+        activeConfig._objective.proxy.listen.server = server
+
+        @context = Plex.start activeConfig._objective.proxy
 
 
     innerValidate: (config) -> 

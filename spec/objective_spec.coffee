@@ -1,8 +1,8 @@
 should       = require 'should'
 # Config       = require('nezcore').config
 # PluginLoader = require '../lib/plugin_loader'
-Objective = require '../lib/objective'
-Scaffold  = require '../lib/scaffold' 
+Objective  = require '../lib/objective'
+ActiveNode = require '../lib/active_node' 
 # Exec         = require '../lib/exec/nez'
 # swap         = undefined
 
@@ -16,9 +16,9 @@ describe 'Objective', ->
         done()
 
 
-    it 'starts a Scaffold node', (done) ->
+    it 'starts an ActiveNode node', (done) ->
 
-        Scaffold.prototype.outerValidate = -> 
+        ActiveNode.prototype.outerValidate = -> 
 
             @label.should.equal        'LABEL'
             @config._as().should.equal 'CONFIG'
@@ -26,11 +26,6 @@ describe 'Objective', ->
             done()
 
         Objective 'LABEL', ( _as: -> 'CONFIG' ), 'INJECTABLE'
-
-
-
-
-
 
 
 
