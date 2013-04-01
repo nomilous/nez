@@ -4,6 +4,11 @@ module.exports = class Scaffold
 
     constructor: (@label, @config, @injectable) ->
 
+        @validate()
+
+
+    validate: ->
+
         unless typeof @label == 'string'
         
             throw new Error "Scaffold requires 'label' string as arg1"
@@ -11,6 +16,10 @@ module.exports = class Scaffold
         unless typeof @config == 'object'
 
             throw new Error "Scaffold requires config hash as arg2"
+
+        unless typeof @config.as != 'undefined'
+
+            throw new Error "Scaffold require type definition in config.as"  
 
         unless typeof @injectable == 'function'
 
