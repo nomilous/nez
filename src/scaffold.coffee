@@ -7,6 +7,10 @@ module.exports = class Scaffold
 
         @validate()
 
+        @config._as 'GLOBAL_ID', (config) -> 
+
+            console.log 'Got config:', config
+
 
     validate: ->
 
@@ -37,6 +41,8 @@ module.exports = class Scaffold
                 #
 
                 throw new Error "Scaffold as '#{@config.as}' is not defined"
+
+            @config._as = Defaults[ @config.as ]
 
 
         unless typeof @injectable == 'function'

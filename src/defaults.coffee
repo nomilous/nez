@@ -1,5 +1,7 @@
 module.exports = 
 
-    Develop: -> 
+    Develop: (nodeID, callback) -> 
 
-        console.log 'Load default config for Develop' 
+        callback 
+
+            pending: 'config'

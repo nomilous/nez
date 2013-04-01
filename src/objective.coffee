@@ -1,4 +1,3 @@
-colors = require 'colors'
 # Config       = require('nezcore').config
 # Injector     = require('nezcore').injector
 # Runtime      = require('./exec/nez').exec  
@@ -14,7 +13,7 @@ module.exports = Objective = (label, config, injectable) ->
 
     catch error
 
-        console.log error.message.red
+        process.stderr.write 'ERROR:' + error.message
         process.exit 1
 
 
