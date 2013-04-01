@@ -5,14 +5,22 @@ module.exports = class Scaffold
 
     constructor: (@label, @config, @injectable) ->
 
-        @validate()
+        @outerValidate()
 
-        @config._as 'GLOBAL_ID', (config) -> 
+        nodeID    = process.env.NODE_ID
+        abilities = process.env.NODE_ABILITIES || ''
 
-            console.log 'Got config:', config
+        @config._as nodeID, abilities.split(' '), (config) -> 
 
+            #
+            # config ok
+            #
 
-    validate: ->
+            #
+            # start
+            #
+
+    outerValidate: ->
 
         unless typeof @label == 'string'
         

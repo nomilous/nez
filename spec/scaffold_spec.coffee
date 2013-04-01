@@ -3,7 +3,22 @@ Scaffold = require '../lib/scaffold'
 
 describe 'Scaffold', ->
 
-    
+    context 'async config lookup', -> 
+
+        it 'enables an ENV based config lookup', (done) -> 
+
+            process.env.NODE_ID        = 'ID'
+            process.env.NODE_ABILITIES = 'sing juggle'
+
+            new Scaffold 'LABEL', 
+
+                _as: (id, abilities, callback) -> 
+
+                    id.should.equal 'ID'
+                    abilities.should.eql ['sing','juggle']
+                    done()
+
+                -> 
 
 
     context 'validate()', ->  

@@ -1,6 +1,6 @@
 module.exports = 
 
-    Develop: (nodeID, callback) -> 
+    Develop: (id, abilities, callback) -> 
 
         callback 
 

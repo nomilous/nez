@@ -18,14 +18,21 @@ describe 'Objective', ->
 
     it 'starts a Scaffold node', (done) ->
 
-        Scaffold.prototype.validate = -> 
+        Scaffold.prototype.outerValidate = -> 
 
-            @label.should.equal      'LABEL'
-            @config.should.equal     'CONFIG'
-            @injectable.should.equal 'INJECTABLE' 
+            @label.should.equal        'LABEL'
+            @config._as().should.equal 'CONFIG'
+            @injectable.should.equal   'INJECTABLE'
             done()
 
-        Objective 'LABEL', 'CONFIG', 'INJECTABLE'
+        Objective 'LABEL', ( _as: -> 'CONFIG' ), 'INJECTABLE'
+
+
+
+
+
+
+
 
 
 
