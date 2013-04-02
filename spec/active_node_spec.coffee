@@ -1,11 +1,13 @@
 should     = require 'should'
 ActiveNode = require '../lib/active_node'
 Defaults   = require '../lib/defaults'
+Plex       = require 'plex'
 Eo         = require 'eo'
 
 describe 'ActiveNode', ->
     
-    ActiveNode.prototype.start = (config) -> 'stop from starting'
+    start = ActiveNode.prototype.start
+    #ActiveNode.prototype.start = (config) -> 'stop from starting'
 
     context 'async config lookup', -> 
 
@@ -41,7 +43,7 @@ describe 'ActiveNode', ->
 
             ActiveNode.prototype.start = (config) -> 
 
-                ActiveNode.prototype.start = (config) -> 'stop from starting'
+                ActiveNode.prototype.start = start
                 delete process.env.NODE_AS
                 config.should.equal 'CONFIG'
                 done()
@@ -49,6 +51,54 @@ describe 'ActiveNode', ->
             process.env.NODE_AS = 'eo:fakeConfigure'
 
             new ActiveNode 'LABEL', {}, ->
+
+
+    it 'allows specified services to be injected', (done) ->
+
+        ActiveNode.prototype.start = start
+
+        new ActiveNode 'LABEL'
+
+            description: ''
+
+            as: (id, tags, configCallback) -> 
+
+                configCallback _objective: class: 'eo:Develop'
+            
+            with: [
+
+                #
+                # inject done() as fun()
+                #
+
+                done
+
+                #
+                # inject 'should' as could
+                #
+
+                'should'
+
+                #
+                # inject Objective
+                #
+
+                'eo:Objective'
+
+                #
+                # inject a function
+                #
+
+                -> 
+
+
+            ], (fun, could, Be, had) -> 
+
+                fun.should.equal done 
+                could.should.equal should
+                Be.should.equal require('eo').Objective
+                could.not.exist had()
+                fun()
 
 
     context 'innerValidate()', -> 

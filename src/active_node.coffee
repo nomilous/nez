@@ -1,9 +1,9 @@
-Defaults     = require './defaults'
-PluginLoader = require './plugin_loader'
-Injector     = require('nezcore').injector
-Runtime      = require('./exec/nez').exec  
-Http         = require 'http'
-Plex         = require 'plex'
+Defaults        = require './defaults'
+PluginLoader    = require './plugin_loader'
+Injector        = require('nezcore').injector
+Runtime         = require('./exec/nez').exec  
+Http            = require 'http'
+Plex            = require 'plex'
 
 module.exports = class ActiveNode
 
@@ -43,16 +43,17 @@ module.exports = class ActiveNode
             # Objectives proxy realizers into the system
             #
 
-            server = Http.createServer()
-            server.listen 20202, 'localhost', => 
+            unless typeof activeConfig[type].plex == 'undefined' 
 
-                console.log '[ActiveNode] - listening @ %s:%s',
-                    server.address().address
-                    server.address().port
+                server = Http.createServer()
 
-            activeConfig[type].plex.listen.server = server
+                server.listen 20202, 'localhost', => 
 
-            
+                    console.log '[ActiveNode] - listening @ %s:%s',
+                        server.address().address
+                        server.address().port
+
+                activeConfig[type].plex.listen.server = server 
 
         else if typeof activeConfig._realizer != 'undefined'
 
@@ -72,13 +73,6 @@ module.exports = class ActiveNode
 
 
         #
-        # bind method for assigning protocol on connect
-        #
-
-        activeConfig[type].plex.protocol = @plugin.bind
-
-
-        #
         # create the local stack
         #
 
@@ -90,7 +84,10 @@ module.exports = class ActiveNode
         # start transport
         #
 
-        @context = Plex.start activeConfig[type].plex
+        unless typeof activeConfig[type].plex == 'undefined' 
+
+            activeConfig[type].plex.protocol = @plugin.bind
+            @context = Plex.start activeConfig[type].plex
 
 
         #
@@ -106,12 +103,53 @@ module.exports = class ActiveNode
 
 
         #
-        # Injector walks into the tree 
+        # Load service and walk into the tree 
         #
+
+        services = []
+
+        unless typeof @config.with == 'undefined'
+
+            for service in @config.with
+
+                unless typeof service == 'string'
+
+                    services.push service
+                    continue
+
+                try
+
+                    if match = service.match /^(.*):(.*)$/
+
+                        services.push Injector.support.findModule( 
+
+                            module: match[1] 
+
+                        )[match[2]]
+
+                    else
+
+                        services.push Injector.support.findModule 
+
+                            module: service
+
+                catch error
+
+                    console.log "[ActiveNode] - Error loading service '#{service}'"
+
+                    #
+                    # TODO: perhaps this should process.exit()
+                    #
+
+                    services.push undefined # keeps the places
+
+
+
+        services.push stack.stacker
 
         if typeof @injectable == 'function'
 
-            Injector.inject [stack.stacker], @injectable
+            Injector.inject services, @injectable
 
 
     innerValidate: (config) -> 
@@ -149,6 +187,7 @@ module.exports = class ActiveNode
 
                 try
 
+                    # REPEAT
                     if match = @config.as.match /^(.*):(.*)$/
 
                         #
