@@ -14,7 +14,32 @@ module.exports = class ActiveNode
         nodeID = process.env.NODE_ID
         tags   = process.env.NODE_TAGS || ''
 
-        @config._as nodeID, tags.split(' '), (activeConfig) => 
+        if typeof @config.as == 'string'
+
+            try
+
+                if match = @config.as.match /^(.*):(.*)$/
+
+                    #
+                    # config loader as module:function
+                    #
+
+                    @config.as = require(match[1])[match[2]]
+
+                else
+
+                    #
+                    # config loader as module
+                    #
+
+                    @config.as = require @config.as
+
+            catch error
+
+                console.log "[ActiveNode] - FAILED to configure as '#{@config.as}'"
+                throw error
+
+        @config.as nodeID, tags.split(' '), (activeConfig) => 
 
             #
             # TODO: timeout awaiting activeConfig
@@ -115,24 +140,28 @@ module.exports = class ActiveNode
         if typeof @config.as == 'undefined'
 
             #
-            # no config factory defined
+            # Default objective plugin to 'Develop'
             #
 
-            if typeof @config._as != 'function'
+            @config.as = Defaults['Develop']
 
-                throw new Error "ActiveNode requires behaviour definition in config._as"
+        # else if 
 
-        else 
+        #     if typeof @config._as != 'function'
 
-            if typeof Defaults[ @config.as ] == 'undefined'
+        #         throw new Error "ActiveNode requires behaviour definition in config._as"
 
-                #
-                # defined config factory does not exist
-                #
+        # else 
 
-                throw new Error "ActiveNode as '#{@config.as}' is not defined"
+        #     if typeof Defaults[ @config.as ] == 'undefined'
 
-            @config._as = Defaults[ @config.as ]
+        #         #
+        #         # defined config factory does not exist
+        #         #
+
+        #         throw new Error "ActiveNode as '#{@config.as}' is not defined"
+
+        #     @config._as = Defaults[ @config.as ]
 
 
         unless typeof @injectable == 'function'

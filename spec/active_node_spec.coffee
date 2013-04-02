@@ -1,7 +1,14 @@
 should     = require 'should'
 ActiveNode = require '../lib/active_node'
+Defaults   = require '../lib/defaults'
 
 describe 'ActiveNode', ->
+    
+    #
+    # stop from startings
+    #
+
+    ActiveNode.prototype.start = (config) ->
 
     context 'async config lookup', -> 
 
@@ -12,7 +19,7 @@ describe 'ActiveNode', ->
 
             new ActiveNode 'LABEL'
 
-                _as: (id, tags, callback) -> 
+                as: (id, tags, callback) -> 
 
                     id.should.equal 'ID'
                     tags.should.eql [
@@ -45,7 +52,7 @@ describe 'ActiveNode', ->
 
             try
                 new ActiveNode 'LABEL' 
-                    _as: (id, tags, callback) -> callback 'EXTERNAL CONFIG'
+                    as: (id, tags, callback) -> callback 'EXTERNAL CONFIG'
                     ->
 
             catch corrective
@@ -72,23 +79,35 @@ describe 'ActiveNode', ->
                 error.should.match /ActiveNode requires config hash as arg2/
                 done()
 
-        it 'requires behaviour definition in config._as', (done) -> 
+        it 'defaults objective plugin to "Develop"', (done) -> 
 
-            try
-                new ActiveNode 'LABEL', {}
-            catch error
-                error.should.match /ActiveNode requires behaviour definition in config._as/
+            Defaults['Develop'] = (id, tags, callback) -> callback 'Develop'
+
+            ActiveNode.prototype.start = (config) -> 
+
+                config.should.equal 'Develop'
                 done()
 
-        it 'requires specified default factory to exist', (done) -> 
+            new ActiveNode 'LABEL', {}, -> 
+            
+
+        it 'attempts to load objective plugin configure from module', (done) -> 
 
             try
-                new ActiveNode 'LABEL', as: 'Thing' 
+                new ActiveNode 'LABEL', as: 'thing', ->
             catch error
-                error.should.match /ActiveNode as 'Thing' is not defined/
+                error.should.match /Cannot find module 'thing'/
                 done()
 
-        it 'requires injectable as arg3 function', (done) -> 
+        it 'can load objective plugin configure from "module:object"', (done) -> 
+
+            try
+                new ActiveNode 'LABEL', as: 'thing:function', ->
+            catch error
+                error.should.match /Cannot find module 'thing'/
+                done()
+
+        xit 'requires injectable as arg3 function', (done) -> 
 
             try
                 new ActiveNode 'LABEL', as: 'Develop'
