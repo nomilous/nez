@@ -5,11 +5,7 @@ Eo         = require 'eo'
 
 describe 'ActiveNode', ->
     
-    #
-    # stop from startings
-    #
-
-    ActiveNode.prototype.start = (config) ->
+    ActiveNode.prototype.start = (config) -> 'stop from starting'
 
     context 'async config lookup', -> 
 
@@ -45,7 +41,7 @@ describe 'ActiveNode', ->
 
             ActiveNode.prototype.start = (config) -> 
 
-                ActiveNode.prototype.start = (config) ->
+                ActiveNode.prototype.start = (config) -> 'stop from starting'
                 delete process.env.NODE_AS
                 config.should.equal 'CONFIG'
                 done()
@@ -108,7 +104,7 @@ describe 'ActiveNode', ->
             new ActiveNode 'LABEL', {}, -> 
             
 
-        it 'attempts to load objective plugin configure from module', (done) -> 
+        it 'attempts to load objective plugin configurer from module', (done) -> 
 
             try
                 new ActiveNode 'LABEL', as: 'thing', ->
@@ -116,7 +112,7 @@ describe 'ActiveNode', ->
                 error.should.match /Cannot find module 'thing'/
                 done()
 
-        it 'can load objective plugin configure from "module:object"', (done) -> 
+        it 'can load objective plugin configurer from "module:object"', (done) -> 
 
             try
                 new ActiveNode 'LABEL', as: 'thing:function', ->
@@ -124,7 +120,7 @@ describe 'ActiveNode', ->
                 error.should.match /Cannot find module 'thing'/
                 done()
 
-        xit 'requires injectable as arg3 function', (done) -> 
+        it 'requires injectable as arg3 function', (done) -> 
 
             try
                 new ActiveNode 'LABEL', as: 'Develop'
