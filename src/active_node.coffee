@@ -30,26 +30,44 @@ module.exports = class ActiveNode
         console.log 'START:', JSON.stringify activeConfig, null, 2
 
         #
-        # Initialize proxy transport layer
+        # Initialize transport
         # 
         # TODO: use https if config.cert: path: is defined
         #
 
-        server = Http.createServer()
-        server.listen 20202, 'localhost', => 
+        if typeof activeConfig._objective != 'undefined' 
 
-            console.log '[ActiveNode] - listening @ %s:%s',
-                server.address().address
-                server.address().port
+            type = '_objective'
 
-        activeConfig._objective.proxy.listen.server = server
+            #
+            # Objectives proxy realizers into the system
+            #
+
+            server = Http.createServer()
+            server.listen 20202, 'localhost', => 
+
+                console.log '[ActiveNode] - listening @ %s:%s',
+                    server.address().address
+                    server.address().port
+
+            activeConfig[type].plex.listen.server = server
+
+            
+
+        else if typeof activeConfig._realizer != 'undefined'
+
+            type = '_realizer'
+
+        else 
+
+            throw new Error "ActiveNode should be an Objective or a Realizer"
 
 
         #
-        # load objective plugin
+        # load plugin
         #
 
-        @config._class = activeConfig._objective.class
+        @config._class = activeConfig[type].class
         @plugin = PluginLoader.load @config
 
 
@@ -57,7 +75,7 @@ module.exports = class ActiveNode
         # bind method for assigning protocol on connect
         #
 
-        activeConfig._objective.proxy.protocol = @plugin.bind
+        activeConfig[type].plex.protocol = @plugin.bind
 
 
         #
@@ -67,23 +85,24 @@ module.exports = class ActiveNode
         stack      = require('./nez').link()
         stack.name = @label
 
-        #
-        # start proxy
-        #
-
-        @context = Plex.start activeConfig._objective.proxy
-
 
         #
-        # Runtime
+        # start transport
+        #
+
+        @context = Plex.start activeConfig[type].plex
+
+
+        #
+        # Objective spawns a Runtime
         # 
-        # TODO: These need more thought...
+        # TODO: Make this configurable
         # 
         #       - Runtime is specifically a Dev ENV (née. CakeFile)
         #         and shouldn't be so specific
         # 
 
-        Runtime @label, @config
+        Runtime @label, @config if type == '_objective'
 
 
         #
@@ -93,7 +112,6 @@ module.exports = class ActiveNode
         if typeof @injectable == 'function'
 
             Injector.inject [stack.stacker], @injectable
-
 
 
     innerValidate: (config) -> 

@@ -18,7 +18,7 @@ module.exports =
             _objective:
 
                 class: 'eo:Develop'
-                proxy: 
+                plex: 
 
                     secret: config.get 'secret'
 
@@ -46,10 +46,10 @@ module.exports =
 
         callback
 
-            _objective:
+            _realizer:
 
                 class: 'ipso:SpecRun'
-                proxy: 
+                plex: 
 
                     #
                     # uplink to eo:Develop

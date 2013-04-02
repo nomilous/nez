@@ -5,14 +5,23 @@ describe 'Defaults', ->
 
     context 'has a default scaffold config for', -> 
 
-        it 'Develop', (done) ->
+        it 'Develop as an objective', (done) ->
 
             Defaults.Develop.should.be.an.instanceof Function
-            done()
+
+            Defaults.Develop null, null, (config) -> 
+
+                should.exist config._objective
+                done() 
+                
 
 
-        it 'SpecRun', (done) ->
+        it 'SpecRun as a realizer', (done) ->
 
             Defaults.SpecRun.should.be.an.instanceof Function
-            done()
+
+            Defaults.SpecRun null, null, (config) -> 
+
+                should.exist config._realizer
+                done()
 
