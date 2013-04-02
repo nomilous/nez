@@ -55,7 +55,7 @@ describe 'ActiveNode', ->
 
     it 'allows specified services to be injected', (done) ->
 
-        ActiveNode.prototype.start = start
+        #ActiveNode.prototype.start = start
 
         new ActiveNode 'LABEL'
 
@@ -86,19 +86,20 @@ describe 'ActiveNode', ->
                 'eo:Objective'
 
                 #
-                # inject a function
+                # inject a function as such()
                 #
 
-                -> 
+                -> '' 
 
 
-            ], (fun, could, Be, had) -> 
+            ], (stacks, fun, could, Be, such) -> 
 
-                fun.should.equal done 
-                could.should.equal should
-                Be.should.equal require('eo').Objective
-                could.not.exist had()
-                fun()
+                stacks 'of', -> 
+
+                    fun.should.equal done 
+                    could.should.equal should
+                    Be.should.equal require('eo').Objective
+                    could.exist such fun()
 
 
     context 'innerValidate()', -> 

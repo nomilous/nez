@@ -108,6 +108,23 @@ module.exports = class ActiveNode
 
         services = []
 
+        #
+        # primary injectables
+        # 
+        # * the stacker()
+        # * the validator() (if present in the plugin)
+        # 
+
+        services.push stack.stacker
+        services.push @plugin.validate unless typeof @plugin.validate == 'undefined'
+
+        #
+        # secondary injectables from Array config.with (if supplied) 
+        # 
+        # * this allows injection of modules with names incompatible as function args
+        #   eg. with '-'es or '.'ots in the module names
+        #  
+
         unless typeof @config.with == 'undefined'
 
             for service in @config.with
@@ -144,9 +161,6 @@ module.exports = class ActiveNode
                     services.push undefined # keeps the places
 
 
-
-        services.push stack.stacker
-
         if typeof @injectable == 'function'
 
             Injector.inject services, @injectable
@@ -164,15 +178,13 @@ module.exports = class ActiveNode
         
             throw new Error "ActiveNode requires 'label' string as arg1"
 
+
         unless typeof @config == 'object'
 
             throw new Error "ActiveNode requires config hash as arg2"
 
-        if typeof @config.as == 'undefined'
 
-            #
-            # Default objective plugin to 'Develop'
-            #
+        if typeof @config.as == 'undefined'
 
             @config.as = process.env.NODE_AS
 
@@ -208,24 +220,6 @@ module.exports = class ActiveNode
 
                     console.log "[ActiveNode] - FAILED to configure as '#{@config.as}'"
                     throw error
-
-        # else if 
-
-        #     if typeof @config._as != 'function'
-
-        #         throw new Error "ActiveNode requires behaviour definition in config._as"
-
-        # else 
-
-        #     if typeof Defaults[ @config.as ] == 'undefined'
-
-        #         #
-        #         # defined config factory does not exist
-        #         #
-
-        #         throw new Error "ActiveNode as '#{@config.as}' is not defined"
-
-        #     @config._as = Defaults[ @config.as ]
 
 
         unless typeof @injectable == 'function'
