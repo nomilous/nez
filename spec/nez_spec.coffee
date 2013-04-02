@@ -22,16 +22,22 @@ describe 'Nez', ->
 
 
 
-
     it 'exports objective()', (done) ->
 
         Nez.objective.should.equal require '../lib/objective' 
         done()
 
-    it 'defines realize()', (done) -> 
 
-        Nez.realize.should.equal require('../lib/realization').load
+
+    it 'exports realize()', (done) -> 
+
+        Nez.realize.should.equal require '../lib/realization'
         done()
+
+
+
+
+
 
 
 

@@ -14,31 +14,6 @@ module.exports = class ActiveNode
         nodeID = process.env.NODE_ID
         tags   = process.env.NODE_TAGS || ''
 
-        if typeof @config.as == 'string'
-
-            try
-
-                if match = @config.as.match /^(.*):(.*)$/
-
-                    #
-                    # config loader as module:function
-                    #
-
-                    @config.as = require(match[1])[match[2]]
-
-                else
-
-                    #
-                    # config loader as module
-                    #
-
-                    @config.as = require @config.as
-
-            catch error
-
-                console.log "[ActiveNode] - FAILED to configure as '#{@config.as}'"
-                throw error
-
         @config.as nodeID, tags.split(' '), (activeConfig) => 
 
             #
@@ -143,7 +118,39 @@ module.exports = class ActiveNode
             # Default objective plugin to 'Develop'
             #
 
-            @config.as = process.env.NODE_AS || Defaults['Develop']
+            @config.as = process.env.NODE_AS
+
+
+        if typeof @config.as == 'string'
+
+            if typeof Defaults[@config.as] != 'undefined'
+
+                @config.as = Defaults[@config.as]
+
+            else
+
+                try
+
+                    if match = @config.as.match /^(.*):(.*)$/
+
+                        #
+                        # config loader as module:function
+                        #
+
+                        @config.as = require(match[1])[match[2]]
+
+                    else
+
+                        #
+                        # config loader as module
+                        #
+
+                        @config.as = require @config.as
+
+                catch error
+
+                    console.log "[ActiveNode] - FAILED to configure as '#{@config.as}'"
+                    throw error
 
         # else if 
 

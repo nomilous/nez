@@ -9,3 +9,10 @@ describe 'Defaults', ->
 
             Defaults.Develop.should.be.an.instanceof Function
             done()
+
+
+        it 'SpecRun', (done) ->
+
+            Defaults.SpecRun.should.be.an.instanceof Function
+            done()
+

@@ -91,17 +91,6 @@ describe 'ActiveNode', ->
             catch error
                 error.should.match /ActiveNode requires config hash as arg2/
                 done()
-
-        it 'defaults objective plugin to "Develop"', (done) -> 
-
-            Defaults['Develop'] = (id, tags, callback) -> callback 'Develop'
-
-            ActiveNode.prototype.start = (config) -> 
-
-                config.should.equal 'Develop'
-                done()
-
-            new ActiveNode 'LABEL', {}, -> 
             
 
         it 'attempts to load objective plugin configurer from module', (done) -> 

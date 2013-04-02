@@ -29,7 +29,7 @@ Nez =
     # Default [realizer implementation](https://github.com/nomilous/ipso)
     # 
 
-    realize: Realization.load
+    realize: Realization
 
     # realize: Injector.realize
 

@@ -1,46 +1,76 @@
-Config       = require('nezcore').config
-Injector     = require('nezcore').injector
-PluginLoader = require './plugin_loader'
+ActiveNode     = require './active_node'
 
-#
-# TODO: Realizer plugin as ActiveNode (leaf)
-#
+module.exports = () -> 
 
-module.exports = 
+    label      = arguments[0]
+    config     = arguments[1]
+    injectable = arguments[2]
 
-    load: (label, injectable) -> 
+    #
+    # config is optional
+    #
 
-        # console.log '\n\nrun realize with:\n', arguments, '\n\n'
+    if typeof injectable == 'undefined'
 
-        #
-        # Load default realizer config
-        #
-
-        defaults            = _class: 'ipso:SpecRun'
-        defaults.label      = label
-        defaults.injectable = injectable
-
+        injectable = arguments[1]
 
         #
-        # Override with local config and 
-        # register plugin
+        # default as 'SpecRun'
         #
 
-        # for key of config
+        config = as: 'SpecRun'
 
-        #     defaults[key] = config[key]
+    try
+    
+        new ActiveNode label, config, injectable
 
-        PluginLoader.load defaults
+    catch error
+
+        process.stderr.write 'ERROR:' + error.message
+        process.exit 1
 
 
-        #
-        # TODO: move those of this specifically SpecRun related to ipso
-        #
 
-        subject    = Injector.support.findModule module: label
-        stack      = require('./nez').link()
-        stack.name = label
-        validator  = stack.validator
-        scaffold   = stack.stacker
 
-        Injector.inject [subject, validator, scaffold], injectable
+
+
+
+
+
+
+    # load: (label, injectable) -> 
+
+    #     # console.log '\n\nrun realize with:\n', arguments, '\n\n'
+
+    #     #
+    #     # Load default realizer config
+    #     #
+
+    #     defaults            = _class: 'ipso:SpecRun'
+    #     defaults.label      = label
+    #     defaults.injectable = injectable
+
+
+    #     #
+    #     # Override with local config and 
+    #     # register plugin
+    #     #
+
+    #     # for key of config
+
+    #     #     defaults[key] = config[key]
+
+    #     PluginLoader.load defaults
+
+
+    #     #
+    #     # TODO: move those of this specifically SpecRun related to ipso
+    #     #
+
+    #     subject    = Injector.support.findModule module: label
+    #     stack      = require('./nez').link()
+    #     stack.name = label
+    #     validator  = stack.validator
+    #     scaffold   = stack.stacker
+
+    #     Injector.inject [subject, validator, scaffold], injectable
