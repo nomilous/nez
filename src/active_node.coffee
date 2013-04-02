@@ -143,7 +143,7 @@ module.exports = class ActiveNode
             # Default objective plugin to 'Develop'
             #
 
-            @config.as = Defaults['Develop']
+            @config.as = process.env.NODE_AS || Defaults['Develop']
 
         # else if 
 

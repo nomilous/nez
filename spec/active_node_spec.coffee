@@ -1,6 +1,7 @@
 should     = require 'should'
 ActiveNode = require '../lib/active_node'
 Defaults   = require '../lib/defaults'
+Eo         = require 'eo'
 
 describe 'ActiveNode', ->
     
@@ -37,6 +38,22 @@ describe 'ActiveNode', ->
                     done()
 
                 -> 
+
+        it 'enables an ENV based configurer', (done) -> 
+
+            Eo.fakeConfigure = (id, tags, callback) -> callback 'CONFIG'
+
+            ActiveNode.prototype.start = (config) -> 
+
+                ActiveNode.prototype.start = (config) ->
+                delete process.env.NODE_AS
+                config.should.equal 'CONFIG'
+                done()
+
+            process.env.NODE_AS = 'eo:fakeConfigure'
+
+            new ActiveNode 'LABEL', {}, ->
+
 
     context 'innerValidate()', -> 
 
