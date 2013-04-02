@@ -187,7 +187,7 @@ module.exports = class Coffee
         #
 
         fs.writeFile parts.path + parts.specname, """
-        require('nez').realize '#{parts.classname}', (#{parts.classname}, test, context) -> 
+        require('nez').realize '#{parts.classname}', (context, test, #{parts.classname}) -> 
 
             context 'in CONTEXT', (it) ->
 

@@ -1,4 +1,4 @@
-require('nez').realize 'GeoStay', (GeoStay, test, context,   should) -> 
+require('nez').realize 'GeoStay', (context, test, GeoStay, should) -> 
 
     #
     # - injected npm module 'should'

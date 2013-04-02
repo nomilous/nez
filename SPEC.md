@@ -5,7 +5,7 @@ This may change:
 
 ```coffee
 
-require('nez').realize 'Periscope', (Periscope, test, it, should) ->
+require('nez').realize 'Periscope Class', (it, tests, Periscope, should) ->
 
     it 'keeps your head above water', (done) -> 
 
@@ -82,7 +82,7 @@ require('nez').realize 'Periscope', (Periscope, test, it, should) ->
         #    THIS BIT STILL UNDER DEVELOPMENT
         #
 
-        test done
+        tests done
 
 
 ```

@@ -1,8 +1,7 @@
-require('nez').realize 'BurnPackage', (BurnPackage, test, context) -> 
+require('nez').realize 'BurnPackage', (context, test, BurnPackage) -> 
 
     context 'in CONTEXT', (does) ->
 
         does 'an EXPECTATION', (done) ->
-
 
             test done

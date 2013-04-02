@@ -1,6 +1,10 @@
 Change Log
 ----------
 
+### 2013-04-03
+
+* `Nez.realize 'label', (stacker, validator, InjectLocalClassToTest) ->` non backward compatable change.  
+
 ### 2013-03-28
 
 * Start migrating objective to eo

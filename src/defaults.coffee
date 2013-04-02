@@ -51,6 +51,8 @@ module.exports =
                 class: 'ipso:SpecRun'
                 plex: 
 
+                    secret: config.get 'secret'
+
                     #
                     # uplink to eo:Develop
                     #
