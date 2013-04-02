@@ -6,7 +6,7 @@ Realization    = require './realization'
 PluginLoader   = require './plugin_loader'
 PluginRegister = require './plugin_register'
 
-stack        = new Stack()
+stack          = new Stack()
 
 
 Nez = 
@@ -14,7 +14,7 @@ Nez =
     #
     # **Nez.objective(`label`, `config`, `injectable`)**
     # 
-    # Spawns an [ActiveNode](active_node.html)
+    # Spawns an [ActiveNode](active_node.html) as an `Objective`
     # 
     # Default [objective implementation](https://github.com/nomilous/eo)
     # 
