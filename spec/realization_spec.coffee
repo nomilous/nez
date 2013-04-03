@@ -5,6 +5,8 @@ Plex        = require 'plex'
 
 describe 'Realization', -> 
 
+    Plex.start = -> 'dont start link to objective'
+
     it 'starts an ActiveNode as "SpecRun"', (done) -> 
 
         swap = ActiveNode.prototype.start
@@ -19,21 +21,28 @@ describe 'Realization', ->
 
     it 'works on a clean run with no failures/exceptions', (done) -> 
 
-        Plex.start = -> 'dont start link to objective'
-
-
-
+        
         Realization 'Realization Label'
 
             with: [ -> done ]
 
             (Context, Validate, getTestDoneFn) -> 
 
-                Context 'Some Context', (it) -> 
+                Context 'Some Context', (It) -> 
 
-                    it 'is', (ok) -> 
+                    It 'is', (ok) -> 
 
                         Validate ok
 
                         getTestDoneFn()()
 
+
+    it 'works on a failing test', (done) -> 
+
+
+        Realization '3', (This, test) -> 
+
+            This 'test', (fails) -> 
+
+                This.should.not.equal fails
+                done()
