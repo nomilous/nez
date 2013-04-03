@@ -44,12 +44,28 @@ module.exports = class Stack
                     #
 
 
-        @name    = @activeNode.label
-        @stack   = []
-        @classes = []
-        @root    = new Node 'root', stack: this
-        @node    = @root
-        @end     = false
+        @name = @activeNode.label
+
+        try
+        
+            @validate = @activeNode.plugin.validate
+
+        catch error
+
+            #
+            # TODO: handle no validator on realizer
+            #
+            # ! assume then all valid for now !
+            # 
+
+            @validate = (done) -> done()
+
+
+        @stack    = []
+        @classes  = []
+        @root     = new Node 'root', stack: this
+        @node     = @root
+        @end      = false
 
         notifier = Notifyier.create @name,
 

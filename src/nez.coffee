@@ -18,8 +18,24 @@ module.exports =
     # 
     # **Nez.realize(`label`, `config`, `injectable`)**
     # 
+    # Spawns an [ActiveNode](active_node.html) as an `Objective`
+    # 
     # Default [realizer implementation](https://github.com/nomilous/ipso)
     # 
 
     realize: require './realization'
+
+
+
+
+
+
+
+    # 
+    # **Nez.linked(`injectable`)**
+    # 
+    # Walker was sent across a file link
+    # 
+
+    linked: (injectable) -> console.log 'link not implemented'
 

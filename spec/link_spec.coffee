@@ -6,7 +6,17 @@ describe 'Link', ->
 
     it 'enables the tree walker to span files', (linkWasTraversed) ->
 
-        stack = new Stack label: 'LABEL'
+        #
+        # mock an already initialized ActiveNode
+        #
+
+        anode = 
+            label: 'LABEL'
+            plugin: 
+                validate: -> 
+
+        stack = new Stack anode
+
             
 
         #
