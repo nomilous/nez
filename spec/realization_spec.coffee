@@ -25,9 +25,9 @@ describe 'Realization', ->
 
         new Realization 'Realization Label'
 
-            with: [done]
+            with: [ -> done ]
 
-            (Context, Validate, InjectedDone) -> 
+            (Context, Validate, getTestDoneFn) -> 
 
                 Context 'Some Context', (it) -> 
 
@@ -35,4 +35,5 @@ describe 'Realization', ->
 
                         Validate ok
 
-                        DoneFromMocha()
+                        getTestDoneFn()()
+
