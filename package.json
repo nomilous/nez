@@ -21,7 +21,7 @@
     "hound": "~1.0.4",
     "coffee-script": "~1.4.0",
     "inflection": "~1.2.5",
-    "plex": "0.0.7"
+    "plex": "0.0.8"
   },
   "devDependencies": {
     "prettyjson": "~0.7.1",

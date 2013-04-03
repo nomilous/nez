@@ -20,6 +20,8 @@ module.exports =
                 class: 'eo:Develop'
                 plex: 
 
+                    logLevel: 0
+
                     secret: config.get 'secret'
 
                     #
