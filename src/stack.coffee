@@ -7,7 +7,15 @@ Hooks     = require './hooks'
 Link      = require './link'
 Plugins   = require './plugin_register'
 
-stack     = undefined
+stack     = undefined  #
+                       #  I dont like this... 
+                       #  And how it's used below... 
+                       # 
+                       #  It limits things to only 1 running stack...
+                       #  
+                       #  TODO: Why the above and can it be corrected?
+                       # 
+
 notifier  = undefined
 
 
@@ -74,7 +82,7 @@ module.exports = class Stack
                     Link.linker
 
 
-    stacker: (label, callback) -> 
+    stacker: (label, callback) => 
 
         stack.push arguments
 
@@ -161,8 +169,6 @@ module.exports = class Stack
 
             try
 
-
-
                 injector.inject [@stacker], callback if callback
 
             catch error
@@ -210,37 +216,37 @@ module.exports = class Stack
             @pendingClass = @classes.pop()
 
 
-    validator: (done) ->
+    # validator: (done) ->
 
-        stack.validate done
+    #     stack.validate done
 
 
-    validate: (done, error) ->
+    # validate: (done, error) ->
 
-        # return if done == 'end'
+    #     # return if done == 'end'
 
-        testString = ''
-        leafNode   = undefined
+    #     testString = ''
+    #     leafNode   = undefined
 
-        if @stack
+    #     if @stack
 
-            for node in @stack
+    #         for node in @stack
 
-                testString += "#{node.class} #{node.label.bold} "
-                leafNode = node
+    #             testString += "#{node.class} #{node.label.bold} "
+    #             leafNode = node
             
-            if error
+    #         if error
 
-                console.log 'FAILED:'.red, testString
-                console.log error.red
-                console.log error.stack
-                # console.log error.message.red
+    #             console.log 'FAILED:'.red, testString
+    #             console.log error.red
+    #             console.log error.stack
+    #             # console.log error.message.red
 
-            else
+    #         else
 
-                console.log 'PASSED:'.green, testString
+    #             console.log 'PASSED:'.green, testString
 
-            # leafNode.callback 'end'
+    #         # leafNode.callback 'end'
         
-        done() if done
+    #     done() if done
 

@@ -1,3 +1,4 @@
+should      = require 'should'
 Realization = require '../lib/realization'
 ActiveNode  = require '../lib/active_node' 
 
@@ -7,7 +8,7 @@ describe 'Realization', ->
 
         ActiveNode.prototype.start = (config) -> 
 
-            config._objective.class = 'ipso:SpecRun'
+            config._realizer.class.should.equal 'ipso:SpecRun'
             done() 
 
         Realization 'LABEL', ->

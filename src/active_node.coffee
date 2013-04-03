@@ -112,12 +112,16 @@ module.exports = class ActiveNode
         # primary injectables
         # 
         # * the stacker()
-        # * the validator() (if present in the plugin)
+        # * the validator() (if _realizer and present in the plugin)
         # 
 
         services.push stack.stacker
-        services.push @plugin.validate unless typeof @plugin.validate == 'undefined'
 
+        if type == '_realizer' and typeof @plugin.validate != 'undefined'
+
+            services.push @plugin.validate
+
+            
         #
         # secondary injectables from Array config.with (if supplied) 
         # 

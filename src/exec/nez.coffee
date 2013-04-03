@@ -34,14 +34,14 @@ module.exports = ExecNez =
 
         ExecNez.config = config
 
-        for meta of config
+        # for meta of config
 
-            continue if meta == 'nimbal'
-            continue if meta == 'description'
+        #     continue if meta == 'nimbal'
+        #     continue if meta == 'description'
 
-            console.log "(#{meta}) " + ExecNez.config[meta].bold 
+        #     console.log "(#{meta}) " + ExecNez.config[meta].bold 
 
-        console.log config['description'].bold
+        console.log config['description'].bold if config['description']
 
 
         #
