@@ -2,6 +2,7 @@ Defaults        = require './defaults'
 PluginLoader    = require './plugin_loader'
 Injector        = require('nezcore').injector
 Runtime         = require('./exec/nez').exec  
+Stack           = require './stack'
 Http            = require 'http'
 Plex            = require 'plex'
 
@@ -65,19 +66,22 @@ module.exports = class ActiveNode
 
 
         #
+        # create the local stack
+        #
+
+        @stack = new Stack this
+
+
+        #
         # load plugin
         #
 
         @config._class = activeConfig[type].class
-        @plugin = PluginLoader.load @config
+        @plugin = PluginLoader.load @stack, @config
 
 
-        #
-        # create the local stack
-        #
-
-        stack      = require('./nez').link()
-        stack.name = @label
+    
+        
 
 
         #
@@ -115,7 +119,7 @@ module.exports = class ActiveNode
         # * the validator() (if _realizer and present in the plugin)
         # 
 
-        services.push stack.stacker
+        services.push @stack.stacker
 
         if type == '_realizer' and typeof @plugin.validate != 'undefined'
 

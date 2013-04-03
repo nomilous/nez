@@ -6,7 +6,7 @@ Realization    = require './realization'
 PluginLoader   = require './plugin_loader'
 PluginRegister = require './plugin_register'
 
-stack          = new Stack()
+# stack          = new Stack()
 
 
 Nez = 
@@ -31,75 +31,73 @@ Nez =
 
     realize: Realization
 
-    # realize: Injector.realize
 
 
 
-    #
-    # **Nez.plugin(`config`)**
-    # 
 
-    plugin: PluginLoader.load
+
+
+
+    # #
+    # # **Nez.plugin(`config`)**
+    # # 
+
+    # plugin: PluginLoader.load
     
-    #
-    # **Nez.hup()**
-    #
 
-    hup: -> PluginRegister.hup()
+    # #
+    # # **Nez.hup()**
+    # #
 
-
-
-    #
-    # **Nez.link(`name`)
-    #
-
-    link: (name) -> Nez.stack
-
-        # (name) ->   
-        #     stack = new Stack(name)
-        #     prototypes.object.set.expect()
-        #     prototypes.object.set.mock()
-        #     return stack
+    # hup: -> PluginRegister.hup()
 
 
-    #
-    # **Nez.linked(`name`)
-    #
 
-    linked: (name) -> 
+    # #
+    # # **Nez.link(`activeNode`)
+    # #
 
-        #
-        # TODO: ensure classname in current node
-        #
-
-        Nez.stack.stacker
+    # link: (activeNode) -> new Stack activeNode
 
 
-    #
-    # **Nez.requirements(`name`)
-    #
 
-    requirements: (name) ->
+    # #
+    # # **Nez.linked(`name`)
+    # #
 
-        PluginLoader.load _module: './plugin/requirement', {}
-        Nez.stack.stacker
+    # linked: (name) -> 
 
+    #     #
+    #     # TODO: ensure classname in current node
+    #     #
 
-    #
-    # **Nez.test()**
-    #
-
-    test: -> 
-
-        prototypes.object.set.expect()
-        prototypes.object.set.mock()
-        return Nez.stack
+    #     Nez.stack.stacker
 
 
-    stack: stack
+    # #
+    # # **Nez.requirements(`name`)
+    # #
+
+    # requirements: (name) ->
+
+    #     PluginLoader.load _module: './plugin/requirement', {}
+    #     Nez.stack.stacker
 
 
-process.on 'SIGHUP', Nez.hup
+    # #
+    # # **Nez.test()**
+    # #
 
+    # test: -> 
+
+    #     prototypes.object.set.expect()
+    #     prototypes.object.set.mock()
+    #     return Nez.stack
+
+
+    # stack: stack
+
+
+process.on 'SIGHUP', PluginRegister.hup()
 
 module.exports = Nez

@@ -1,13 +1,13 @@
 should = require 'should'
-Link   = require '../lib/link'
-Nez    = require '../lib/nez'
+Stack  = require '../lib/stack'
 fs     = require 'fs'
 
 describe 'Link', -> 
 
     it 'enables the tree walker to span files', (linkWasTraversed) ->
 
-        stack = Nez.link()
+        stack = new Stack label: 'LABEL'
+            
 
         #
         # a fake linked file

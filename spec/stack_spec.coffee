@@ -1,14 +1,11 @@
 should  = require 'should'
 print   = require('prettyjson').render
-stack   = require('../lib/nez').link()
+Stack   = require '../lib/stack'
 Plugins = require '../lib//plugin_register'
 
 describe 'Stack', -> 
 
-    describe 'is a eventEmitter', ->
-
-        it 'allows assembling the tree in parallel'
-
+    stack = new Stack label: 'LABEL'
 
     it 'has a root node with backref to the stack', (done) ->
 

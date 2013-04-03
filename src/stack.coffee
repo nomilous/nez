@@ -15,13 +15,17 @@ stack     = undefined  #
                        #  
                        #  TODO: Why the above and can it be corrected?
                        # 
+                       #        Bit closer to fixing this
+                       # 
 
 notifier  = undefined
 
 
 module.exports = class Stack
     
-    constructor: (@name) -> 
+    constructor: (@activeNode) -> 
+
+
 
         # console.log 'TODO: move to nezcore as NodeStack'
 
@@ -39,6 +43,8 @@ module.exports = class Stack
                     #       needs to validate those expectations
                     #
 
+
+        @name    = @activeNode.label
         @stack   = []
         @classes = []
         @root    = new Node 'root', stack: this

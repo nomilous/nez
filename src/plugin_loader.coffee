@@ -4,7 +4,7 @@ PluginRegister = require './plugin_register'
 
 module.exports = PluginFactory = 
 
-    load: (config) -> 
+    load: (stack, config) -> 
 
         if typeof config._module == 'undefined'
 
@@ -28,15 +28,6 @@ module.exports = PluginFactory =
 
 
         plugin = PluginFactory.validate plugin
-
-
-        #
-        # pass the stacker through the plugin configurer
-        # for 3rd party extensions
-        #
-
-        stack = require('./nez').stack
-        stack.name = '___OBJECTIVE___NAME___'
 
 
         plugin.configure stack.stacker, config
