@@ -23,7 +23,7 @@ describe 'Realization', ->
 
 
 
-        new Realization 'Realization Label'
+        Realization 'Realization Label'
 
             with: [ -> done ]
 
