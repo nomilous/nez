@@ -45,19 +45,6 @@ module.exports = class Stack
 
         @name = @activeNode.label
 
-        try
-        
-            @validate = @activeNode.plugin.validate
-
-        catch error
-
-            #
-            # TODO: handle no validator on realizer
-            #
-            # ! assume then all valid for now !
-            # 
-
-
         @stack    = []
         @classes  = []
         @root     = new Node 'root', stack: this
@@ -85,7 +72,7 @@ module.exports = class Stack
         # fire before and after hooks
         #
 
-        @hooks = Hooks.getFor stack
+        # @hooks = Hooks.getFor stack
 
 
         #
@@ -105,13 +92,13 @@ module.exports = class Stack
 
         stack.push arguments
 
-    ancestorsOf: (node) ->
+    # ancestorsOf: (node) ->
 
-        ancestors = []
-        for ancestor in @stack
-            break if node == ancestor
-            ancestors.push ancestor
-        return ancestors
+    #     ancestors = []
+    #     for ancestor in stack
+    #         break if node == ancestor
+    #         ancestors.push ancestor
+    #     return ancestors
 
 
     on: (event, callback) -> 
@@ -221,6 +208,11 @@ module.exports = class Stack
                 to: @node
 
             @pendingClass = @classes.pop()
+
+
+    validate: (done, error) ->
+
+        console.log 'validate!!', arguments
 
 
     # validator: (done) ->

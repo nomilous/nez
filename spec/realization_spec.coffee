@@ -1,8 +1,8 @@
-should         = require 'should'
-Realization    = require '../lib/realization'
-ActiveNode     = require '../lib/active_node'
-PluginRegister = require '../lib/plugin_register'
-Plex           = require 'plex'
+should      = require 'should'
+Realization = require '../lib/realization'
+ActiveNode  = require '../lib/active_node'
+Stack       = require '../lib/stack'
+Plex        = require 'plex'
 
 describe 'Realization', -> 
 
@@ -20,13 +20,17 @@ describe 'Realization', ->
 
     
 
-    it 'works on a clean run with no failures/exceptions', (done) -> 
+    it 'validates on an "all passing" run', (done) ->
 
-        Realization 'Realization Label'
+        Stack.prototype.validate = (stacker, error) ->
 
-            with: [ -> done ]
+            stacker.should.be.an.instanceof Function
+            should.not.exist error
+            done() 
 
-            (Context, Validate, getTestDoneFn) -> 
+        Realization 'Realization Label',
+
+            (Context, Validate) -> 
 
                 Context 'Some Context', (It) -> 
 
@@ -34,15 +38,17 @@ describe 'Realization', ->
 
                         Validate ok
 
-                        getTestDoneFn()()
 
+    it 'validates on a "failing" run', (done) -> 
 
-    it 'works on a failing test', (done) -> 
+        Stack.prototype.validate = (stacker, error) ->
+
+            error.should.match /expected true to equal false/
+            done() 
 
         Realization '3', (This, test) -> 
 
             This 'test', (fails) -> 
 
-                done()
                 true.should.equal false
                 

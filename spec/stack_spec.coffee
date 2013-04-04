@@ -72,7 +72,7 @@ describe 'Stack', ->
             CLASS 'LABEL', (next) ->
         
 
-    describe 'ancestorsOf()', ->
+    xdescribe 'ancestorsOf()', ->
 
         it 'get all ancestors of a node', (done) -> 
 

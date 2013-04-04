@@ -52,7 +52,7 @@ class Hooks
 
         switch nodes.class
 
-            when 'Tree.Leafward'
+            when 'Tree:Leafward'
 
                 #
                 # Going 'deeper' into the tree.
@@ -66,7 +66,7 @@ class Hooks
                 allHook  = 'beforeAll'
 
 
-            when 'Tree.Rootward'
+            when 'Tree:Rootward'
 
                 #
                 # Returning from 'deeper'

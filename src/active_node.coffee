@@ -119,14 +119,7 @@ module.exports = class ActiveNode
 
         if type == '_realizer' 
 
-            if typeof @plugin.validate != 'undefined'
-
-                services.push @plugin.validate
-                @stack.validate = @plugin.validate
-
-            else 
-
-                throw new Error 'ActiveNode as realizer require Plugin.validate()'
+            services.push @stack.validate
 
             
         #
