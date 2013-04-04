@@ -43,7 +43,6 @@ module.exports = class Stack
                     #       needs to validate those expectations
                     #
 
-
         @name = @activeNode.label
 
         try
@@ -57,8 +56,6 @@ module.exports = class Stack
             #
             # ! assume then all valid for now !
             # 
-
-            @validate = (done) -> done()
 
 
         @stack    = []
@@ -170,8 +167,6 @@ module.exports = class Stack
 
         Plugins.handle @node
 
-
- 
         if callback and callback.fing.args.length > 0
 
             @pendingClass = callback.fing.args[0].name 
@@ -197,14 +192,6 @@ module.exports = class Stack
 
                 if error.name = 'AssertionError'
 
-                    #
-                    # assumes that no AssertionError will
-                    # be thrown enywhere but at a leaf node
-                    # on the test tree
-                    # 
-
-                    # console.log error.message.red
-
                     @validate null, error
 
                 else
@@ -212,8 +199,6 @@ module.exports = class Stack
                     console.log error.red
                     console.log error.stack
                     throw error
-            
-
 
             
             from = @stack.pop()

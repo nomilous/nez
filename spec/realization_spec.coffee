@@ -1,7 +1,8 @@
-should      = require 'should'
-Realization = require '../lib/realization'
-ActiveNode  = require '../lib/active_node' 
-Plex        = require 'plex'
+should         = require 'should'
+Realization    = require '../lib/realization'
+ActiveNode     = require '../lib/active_node'
+PluginRegister = require '../lib/plugin_register'
+Plex           = require 'plex'
 
 describe 'Realization', -> 
 
@@ -21,7 +22,6 @@ describe 'Realization', ->
 
     it 'works on a clean run with no failures/exceptions', (done) -> 
 
-        
         Realization 'Realization Label'
 
             with: [ -> done ]
@@ -39,10 +39,10 @@ describe 'Realization', ->
 
     it 'works on a failing test', (done) -> 
 
-
         Realization '3', (This, test) -> 
 
             This 'test', (fails) -> 
 
-                This.should.not.equal fails
                 done()
+                true.should.equal false
+                

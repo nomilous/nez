@@ -77,11 +77,7 @@ module.exports = class ActiveNode
         #
 
         @config._class = activeConfig[type].class
-        @plugin = PluginLoader.load @stack, @config
-
-
-    
-        
+        @plugin = PluginLoader.load @stack, @config        
 
 
         #
@@ -121,9 +117,16 @@ module.exports = class ActiveNode
 
         services.push @stack.stacker
 
-        if type == '_realizer' and typeof @plugin.validate != 'undefined'
+        if type == '_realizer' 
 
-            services.push @plugin.validate
+            if typeof @plugin.validate != 'undefined'
+
+                services.push @plugin.validate
+                @stack.validate = @plugin.validate
+
+            else 
+
+                throw new Error 'ActiveNode as realizer require Plugin.validate()'
 
             
         #
