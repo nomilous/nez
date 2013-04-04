@@ -113,14 +113,22 @@ module.exports = class ActiveNode
         # 
         # * the stacker()
         # * the validator() (if _realizer and present in the plugin)
+        #
+        # both these service functions are ensured to run on the original stack 
+        # instance context
+        #
         # 
 
-        services.push @stack.stacker
+        stacker      = => @stack.stacker.apply @stack, arguments
+        stacker.link = @stack.stacker.link # preserve link property
+        services.push stacker
+
 
         if type == '_realizer' 
 
-            services.push @stack.validate
-
+            validate = => @stack.validate.apply @stack, arguments
+            services.push validate
+       
             
         #
         # secondary injectables from Array config.with (if supplied) 

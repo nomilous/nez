@@ -88,9 +88,9 @@ module.exports = class Stack
                     Link.linker
 
 
-    stacker: (label, callback) => 
+    stacker: (label, callback) =># <= this concerns me! 
 
-        stack.push arguments
+        @push arguments
 
     # ancestorsOf: (node) ->
 
@@ -212,7 +212,9 @@ module.exports = class Stack
 
     validate: (done, error) ->
 
-        console.log 'validate!!', arguments
+        console.log 'validate with args:', arguments
+        console.log 'and self as', @.fing.ref
+
 
 
     # validator: (done) ->
