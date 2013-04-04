@@ -216,12 +216,19 @@ module.exports = class Stack
         #
         # pass to _realizer Plugin.validate 
         # 
+        # Validation is an async step, realizations will 
+        # often be interactions to a remote process
+        # 
 
         if @activeNode.plugin and @activeNode.plugin.validate
 
-            @activeNode.plugin.validate @stack, error
+            #
+            # TODO: timeout for validate
+            # 
 
-        done() if done
+            @activeNode.plugin.validate @stack, error, -> 
+
+                done() if done
 
 
 
