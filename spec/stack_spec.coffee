@@ -115,7 +115,7 @@ describe 'Stack', ->
 
 
 
-        it 'attaches refence to the stack onto the node', (done) ->
+        xit 'attaches refence to the stack onto the node', (done) ->
 
             stack = new Stack label: 'LABEL'
 

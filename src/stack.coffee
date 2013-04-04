@@ -1,4 +1,4 @@
-require 'fing' if typeof fing == 'undefined'
+require 'fing'
 
 Node      = require './node'
 Notifyier = require './notifier'
@@ -7,25 +7,12 @@ Hooks     = require './hooks'
 Link      = require './link'
 Plugins   = require './plugin_register'
 
-stack     = undefined  #
-                       #  I dont like this... 
-                       #  And how it's used below... 
-                       # 
-                       #  It limits things to only 1 running stack...
-                       #  
-                       #  TODO: Why the above and can it be corrected?
-                       # 
-                       #        Bit closer to fixing this
-                       # 
-
 notifier  = undefined
 
 
 module.exports = class Stack
     
     constructor: (@activeNode) -> 
-
-
 
         # console.log 'TODO: move to nezcore as NodeStack'
 
@@ -58,13 +45,7 @@ module.exports = class Stack
             # Events:
             # 
 
-            begin: description: 'Enters root node'
-            push:  description: 'Enters a node'
-            pop:   description: 'Exits a node'
-            end:   description: 'Exits root node'
             edge:  description: 'Edge traversal'
-
-        stack = @
 
 
         #
@@ -149,7 +130,6 @@ module.exports = class Stack
         @node = new Node label,
 
             function: fn
-            stack:    stack
             class:    klass
 
 
@@ -229,40 +209,3 @@ module.exports = class Stack
             @activeNode.plugin.validate @stack, error, -> 
 
                 done() if done
-
-
-
-    # validator: (done) ->
-
-    #     stack.validate done
-
-
-    # validate: (done, error) ->
-
-    #     # return if done == 'end'
-
-    #     testString = ''
-    #     leafNode   = undefined
-
-    #     if @stack
-
-    #         for node in @stack
-
-    #             testString += "#{node.class} #{node.label.bold} "
-    #             leafNode = node
-            
-    #         if error
-
-    #             console.log 'FAILED:'.red, testString
-    #             console.log error.red
-    #             console.log error.stack
-    #             # console.log error.message.red
-
-    #         else
-
-    #             console.log 'PASSED:'.green, testString
-
-    #         # leafNode.callback 'end'
-        
-    #     done() if done
-
