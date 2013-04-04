@@ -212,8 +212,13 @@ module.exports = class Stack
 
     validate: (done, error) ->
 
-        console.log 'validate with args:', arguments
-        console.log 'and self as', @.fing.ref
+        #
+        # pass to _realizer Plugin.validate 
+        # 
+
+        @activeNode.plugin.validate @stack, error
+
+        done() if done
 
 
 

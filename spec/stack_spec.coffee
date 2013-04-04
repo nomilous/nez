@@ -87,6 +87,27 @@ describe 'Stack', ->
                         ]
                         done()
 
+    describe 'validate()', -> 
+
+        it 'calls onward to ActiveNode.plugin.validate supplying entire stack', (done) -> 
+
+            finalCall = (Done) -> stacker.validate Done
+
+            stack.activeNode.plugin = 
+
+                validate: (STACK, error) ->
+
+                    STACK[0].label.should.equal 'LABEL'
+                    STACK[1].label.should.equal 'Sub LABEL'
+                    STACK[1].class.should.equal 'Class'
+                    STACK[1].callback.should.equal finalCall
+                    done()
+
+            stack.stacker 'LABEL', (Class) -> 
+
+                Class 'Sub LABEL', finalCall
+
+
 
     describe 'push()', -> 
 
