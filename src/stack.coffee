@@ -90,7 +90,7 @@ module.exports = class Stack
 
     stacker: (label, callback) =># <= this concerns me! 
 
-        @push arguments
+        @push label, callback
 
     # ancestorsOf: (node) ->
 
@@ -110,13 +110,14 @@ module.exports = class Stack
         notifier.once event, callback
         
 
-    push: (args) -> 
+
+    push: (label, fn) -> 
 
         
         from     = @node
 
-        label    = args[0]
-        callback = args[1]  # TODO: as last arg
+        # label    = args[0]
+        # callback = args[1]  # TODO: as last arg
         klass    = @pendingClass || @name
 
 
@@ -129,10 +130,10 @@ module.exports = class Stack
         unless typeof label == 'string'
 
             return if @hooks.set from, label
-            #
-            # proceeed no further if label was a before 
-            # or after hook config
-            #
+        #     #
+        #     # proceeed no further if label was a before 
+        #     # or after hook config
+        #     #
 
 
 
@@ -147,16 +148,16 @@ module.exports = class Stack
 
         @node = new Node label,
 
-            callback: callback
+            function: fn
             stack:    stack
             class:    klass
 
 
         Plugins.handle @node
 
-        if callback and callback.fing.args.length > 0
+        if fn and fn.fing.args.length > 0
 
-            @pendingClass = callback.fing.args[0].name 
+            @pendingClass = fn.fing.args[0].name 
 
 
         if label
@@ -173,7 +174,7 @@ module.exports = class Stack
 
             try
 
-                injector.inject [@stacker], callback if callback
+                injector.inject [@stacker], fn if fn
 
             catch error
 
@@ -216,7 +217,9 @@ module.exports = class Stack
         # pass to _realizer Plugin.validate 
         # 
 
-        @activeNode.plugin.validate @stack, error
+        if @activeNode.plugin and @activeNode.plugin.validate
+
+            @activeNode.plugin.validate @stack, error
 
         done() if done
 

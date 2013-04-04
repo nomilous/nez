@@ -91,19 +91,21 @@ describe 'Stack', ->
 
         it 'calls onward to ActiveNode.plugin.validate supplying entire stack', (done) -> 
 
-            finalCall = (Done) -> stacker.validate Done
+            test = new Stack label: 'LABEL'
 
-            stack.activeNode.plugin = 
+            finalCall = (Done) -> test.validate Done
+
+            test.activeNode.plugin = 
 
                 validate: (STACK, error) ->
 
                     STACK[0].label.should.equal 'LABEL'
                     STACK[1].label.should.equal 'Sub LABEL'
                     STACK[1].class.should.equal 'Class'
-                    STACK[1].callback.should.equal finalCall
+                    STACK[1].function.should.equal finalCall
                     done()
 
-            stack.stacker 'LABEL', (Class) -> 
+            test.stacker 'LABEL', (Class) -> 
 
                 Class 'Sub LABEL', finalCall
 
@@ -111,7 +113,11 @@ describe 'Stack', ->
 
     describe 'push()', -> 
 
+
+
         it 'attaches refence to the stack onto the node', (done) ->
+
+            stack = new Stack label: 'LABEL'
 
             stack.stacker 'into child node', ->
                 node = stack.stack[0]
@@ -131,10 +137,8 @@ describe 'Stack', ->
 
             it 'stores the function on the new node pushed into the stack', (done) -> 
 
-                
-
                 callback = -> 
-                    stack.stack[0].callback.should.equal callback
+                    stack.stack[0].function.should.equal callback
                     done()
 
                 stack.stacker 'A thing', callback
