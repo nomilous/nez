@@ -45,7 +45,9 @@ module.exports = class Stack
             # Events:
             # 
 
-            edge:  description: 'Edge traversal'
+            edge:   description: 'Edge traversal'
+            begin:  description: 'Walker enters the branch'
+            end:    description: 'Walker exits the branch or Exception'
 
 
         #
@@ -93,6 +95,10 @@ module.exports = class Stack
 
 
     push: (label, fn) -> 
+
+        if @stack.length == 0
+
+            notifier.emit 'begin', null, @
 
         
         from     = @node
@@ -158,24 +164,25 @@ module.exports = class Stack
 
             catch error
 
-                if error.name = 'AssertionError'
+                console.log 'raising error', @stack.length
 
-                    @validate null, error
+                @validate null, error
+                notifier.emit 'end', error, @
 
-                else
+                #
+                # NB:doc
+                #
 
-                    console.log error.red
-                    console.log error.stack
-                    throw error
+                return
 
             
             from = @stack.pop()
             
 
-
             if @stack.length == 0
 
-                @node = @root                
+                @node = @root
+
 
             else
 
@@ -189,6 +196,10 @@ module.exports = class Stack
                 to: @node
 
             @pendingClass = @classes.pop()
+
+            if @stack.length == 0
+
+                notifier.emit 'end', null, @
 
 
     validate: (done, error) ->

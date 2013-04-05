@@ -164,7 +164,11 @@ module.exports = class Coffee
             test_runner = child_process.spawn @getCompiler(), [file]
             test_runner.stdout.pipe process.stdout
             test_runner.stderr.pipe process.stderr
-            test_runner.on 'exit', -> after()
+            test_runner.on 'exit', -> 
+
+                console.log 'TEST DONE'
+
+                after()
 
 
     noSpecFile: (file, after) ->
