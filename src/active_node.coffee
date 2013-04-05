@@ -93,11 +93,13 @@ module.exports = class ActiveNode
             # realizer stops plex at the end of the run
             #
 
-            if type == '_realizer'
-
-                @stack.on 'end', (error, stack) => 
-
-                    @plex.stop()
+            # plex is stopped at the end of this function
+            # will be fine until edge traversals go async
+            # 
+            # if type == '_realizer'
+            #     @stack.on 'end', (error, stack) => 
+            #         @plex.stop()
+            #
 
 
         #
@@ -186,6 +188,12 @@ module.exports = class ActiveNode
         if typeof @injectable == 'function'
 
             Injector.inject services, @injectable
+
+            if type == '_realizer'
+
+                @plex.stop()
+
+
 
 
     innerValidate: (config) -> 

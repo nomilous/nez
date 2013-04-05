@@ -8,13 +8,20 @@ describe 'Realization', ->
 
     it 'starts and stops plex', (done) -> 
 
-        started = false
+        Plex.start = -> stop: -> done()
+
+        Realization 'LABEL', (context, test) -> 
+
+
+    it 'stops plex after exception', (done) -> 
 
         Plex.start = -> stop: -> done()
 
         Realization 'LABEL', (context, test) -> 
 
-            context 'label', (ok) ->
+            context 'label', (ok) -> 
+
+                throw 'THROW'
 
 
     it 'starts an ActiveNode as "SpecRun"', (done) -> 
