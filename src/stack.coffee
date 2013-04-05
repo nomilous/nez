@@ -164,9 +164,8 @@ module.exports = class Stack
 
             catch error
 
-                console.log 'raising error', @stack.length
-
                 @validate null, error
+
                 notifier.emit 'end', error, @
 
                 #

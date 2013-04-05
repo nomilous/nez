@@ -87,7 +87,17 @@ module.exports = class ActiveNode
         unless typeof activeConfig[type].plex == 'undefined' 
 
             activeConfig[type].plex.protocol = @plugin.bind
-            @context = Plex.start activeConfig[type].plex
+            @plex = Plex.start activeConfig[type].plex
+
+            #
+            # realizer stops plex at the end of the run
+            #
+
+            if type == '_realizer'
+
+                @stack.on 'end', (error, stack) => 
+
+                    @plex.stop()
 
 
         #

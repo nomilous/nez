@@ -6,7 +6,16 @@ Plex        = require 'plex'
 
 describe 'Realization', -> 
 
-    Plex.start = -> 'dont start link to objective'
+    it 'starts and stops plex', (done) -> 
+
+        started = false
+
+        Plex.start = -> stop: -> done()
+
+        Realization 'LABEL', (context, test) -> 
+
+            context 'label', (ok) ->
+
 
     it 'starts an ActiveNode as "SpecRun"', (done) -> 
 
@@ -22,6 +31,7 @@ describe 'Realization', ->
 
     it 'validates on an "all passing" run', (done) ->
 
+        Plex.start = -> stop: -> 
         Stack.prototype.validate = (stacker, error) ->
 
             stacker.should.be.an.instanceof Function
@@ -41,6 +51,7 @@ describe 'Realization', ->
 
     it 'validates on a "failing" run', (done) -> 
 
+        Plex.start = -> stop: -> 
         Stack.prototype.validate = (stacker, error) ->
 
             error.should.match /expected true to equal false/
@@ -52,3 +63,5 @@ describe 'Realization', ->
 
                 true.should.equal false
                 
+
+

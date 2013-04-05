@@ -56,11 +56,7 @@ describe 'Stack', ->
                 begun = false
                 test = new Stack label: 'STACK3'
                 test.on 'end', (error, stack) -> 
-
-                    #console.log stack.stack, '\n\n'
-
-                    console.log error
-                    stack.name.should.equal 'STACK3'
+                    error.should.match /ERROR/
                     stack.stack.length.should.equal 2
                     done()
 
