@@ -18,30 +18,10 @@ module.exports =
             _objective:
 
                 class: 'eo:Develop'
-                plex: 
 
-                    logLevel: 0
+            _plex: 
 
-                    secret: config.get 'secret'
-
-                    #
-                    # Uplink to Home Application
-                    # 
-                    # [nimbal](https://github.com/nomilous/nimbal)
-                    # 
-
-                    connect:
-
-                        adaptor: config.get 'adaptor'
-                        uri: config.get 'home'
-
-                    #
-                    # Downlink to realizers 
-                    #
-
-                    listen: 
-
-                        adaptor: config.get 'adaptor'
+                secret: 'SEEKRIT'
 
 
     SpecRun: (id, tags, callback) -> 
@@ -51,20 +31,8 @@ module.exports =
             _realizer:
 
                 class: 'ipso:SpecRun'
-                plex: 
 
-                    secret: config.get 'secret'
+            _plex: 
 
-                    #
-                    # uplink to eo:Develop
-                    #
-
-                    connect:
-
-                        adaptor: config.get 'adaptor'
-                        uri: 'http://localhost:20202' 
-
-                    #
-                    # no listen (specrun is leaf)
-                    # 
+                secret: 'SEEKRIT'
 

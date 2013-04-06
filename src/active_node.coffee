@@ -36,7 +36,9 @@ module.exports = class ActiveNode
             # TODO: timeout awaiting activeConfig
             #
 
-            @logger.verbose => 'received active config': activeConfig
+            @logger.verbose => 'received active config': 
+
+                config: activeConfig
 
             @innerValidate activeConfig
 
@@ -50,8 +52,6 @@ module.exports = class ActiveNode
         # 
         # TODO: use https if config.cert: path: is defined
         #
-
-        
 
         if typeof activeConfig._objective != 'undefined' 
 
@@ -77,18 +77,35 @@ module.exports = class ActiveNode
             # Objectives proxy realizers into the system
             #
 
-            unless typeof activeConfig[type].plex == 'undefined' 
+            unless typeof activeConfig._plex == 'undefined' 
+
+                #
+                # activeConfig CANNOT set plex listen parameters 
+                #
 
                 server = Http.createServer()
+                listen = @config._runtime.listen
 
-                server.listen 20202, 'localhost',  => 
+                server.listen listen.port, listen.iface,  => 
 
                     iface = server.address().address
                     port  = server.address().port
 
-                    @logger.info => "listening for realizers @ #{iface}:#{port}"
+                    @logger.info => 'listening for realizers': 
 
-                activeConfig[type].plex.listen.server = server 
+                        iface: iface
+                        port: port
+
+                activeConfig._plex.listen =
+
+                    #
+                    # override from commandline / defaults
+                    #
+
+                    adaptor: listen.adaptor
+                    server: server
+
+                activeConfig._plex.logger = @logger
 
 
         #
@@ -110,15 +127,25 @@ module.exports = class ActiveNode
         # start transport
         #
 
-        unless typeof activeConfig[type].plex == 'undefined' 
+        unless typeof activeConfig._plex == 'undefined' 
 
-            activeConfig[type].plex.protocol = @plugin.bind
-            @plex = Plex.start activeConfig[type].plex
+            plexConfig = activeConfig._plex
+            
+            plexConfig.prototcol = @plugin.bind
+
+            #
+            # activeConfig CANNOT set plex connect parameters 
+            #
+
+            plexConfig.connect = @config._runtime.connect
+
+            @plex = Plex.start plexConfig
+
+
 
             #
             # realizer stops plex at the end of the run
             #
-
             # plex is stopped at the end of this function
             # will be fine until edge traversals go async
             # 
