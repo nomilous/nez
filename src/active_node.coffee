@@ -20,11 +20,13 @@ module.exports = class ActiveNode
         tags   = process.env.NODE_TAGS || ''
         @tags  = tags.split(' ')
 
-        @logger.info 'active config lookup'
+        @logger.log
+            info: => 'active config lookup'
+            verbose: => 'active config lookup':
+                as: @config.as || process.env.NODE_AS
+                nodeID: @nodeID
+                tags: @tags
 
-            as: @config.as || process.env.NODE_AS
-            nodeID: @nodeID
-            tags: @tags
 
         @outerValidate()
 
@@ -34,7 +36,7 @@ module.exports = class ActiveNode
             # TODO: timeout awaiting activeConfig
             #
 
-            @logger.verbose 'received active config', activeConfig
+            @logger.verbose => 'received active config': activeConfig
 
             @innerValidate activeConfig
 
@@ -64,7 +66,7 @@ module.exports = class ActiveNode
             throw new Error "ActiveNode should be an Objective or a Realizer"
 
 
-        @logger.verbose 'starting'
+        @logger.verbose => 'starting':
 
             label: @label
             category: @config.category
@@ -84,7 +86,7 @@ module.exports = class ActiveNode
                     iface = server.address().address
                     port  = server.address().port
 
-                    @logger.info "listening for realizers @ #{iface}:#{port}"
+                    @logger.info => "listening for realizers @ #{iface}:#{port}"
 
                 activeConfig[type].plex.listen.server = server 
 
@@ -187,7 +189,7 @@ module.exports = class ActiveNode
 
                 catch error
 
-                    @logger.error "error loading service '#{service}'"
+                    @logger.error => "error loading service '#{service}'"
 
                     #
                     # TODO: perhaps this should process.exit()
@@ -253,5 +255,5 @@ module.exports = class ActiveNode
                         @config.as = require @config.as
 
                 catch error
-                    @logger.error "active config lookup failed for '#{@config.as}'"
+                    @logger.error => "active config lookup failed for '#{@config.as}'"
                     throw error
