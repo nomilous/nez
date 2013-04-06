@@ -66,10 +66,26 @@ module.exports = class ActiveNode
             throw new Error "ActiveNode should be an Objective or a Realizer"
 
 
-        @logger.verbose => 'starting':
+        @logger.verbose => 'active node starting':
 
             label: @label
             category: @config.category
+
+
+        #
+        # create the local stack
+        #
+
+        @stack = new Stack this
+
+
+        #
+        # load plugin
+        #
+
+        @config._class   = activeConfig[type].class
+        @plugin = PluginLoader.load @config._runtime, @stack, @config      
+
 
         if type == '_objective' 
 
@@ -88,13 +104,20 @@ module.exports = class ActiveNode
 
                 server.listen listen.port, listen.iface,  => 
 
-                    iface = server.address().address
-                    port  = server.address().port
+                    @logger.info => 'started listening for realizers': 
 
-                    @logger.info => 'listening for realizers': 
+                        iface: server.address().address
+                        port: server.address().port
 
-                        iface: iface
-                        port: port
+                    #
+                    # start the objective monitor loop
+                    #
+
+                    @plugin.monitor (error, payload) => 
+
+
+
+
 
                 activeConfig._plex.listen =
 
@@ -105,22 +128,7 @@ module.exports = class ActiveNode
                     adaptor: listen.adaptor
                     server: server
 
-                activeConfig._plex.logger = @logger
-
-
-        #
-        # create the local stack
-        #
-
-        @stack = new Stack this
-
-
-        #
-        # load plugin
-        #
-
-        @config._class   = activeConfig[type].class
-        @plugin = PluginLoader.load @config._runtime, @stack, @config        
+                activeConfig._plex.logger = @logger  
 
 
         #

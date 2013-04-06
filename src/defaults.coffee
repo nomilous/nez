@@ -1,17 +1,6 @@
-
-#
-# TODO: config to load from file
-#
-
-config = require('nezcore').config
-
 module.exports = 
 
     Develop: (id, tags, callback) -> 
-
-        #
-        # Develop Objective (default config factory)
-        #
 
         callback null,
 
@@ -35,4 +24,3 @@ module.exports =
             _plex: 
 
                 secret: 'SEEKRIT'
-
