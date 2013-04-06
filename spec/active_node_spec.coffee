@@ -52,7 +52,22 @@ describe 'ActiveNode', ->
 
             new ActiveNode 'LABEL', {}, ->
 
+    describe 'has a runtime', -> 
 
+        it 'with a logger', (done) -> 
+
+            ActiveNode.prototype.start = (config) -> 
+
+                ActiveNode.prototype.start = start
+                done()
+
+            should.exist new ActiveNode( 
+
+                'LABEL', as: 'Develop', ->
+
+            ).config._runtime.logger
+    
+    
     it 'allows specified services to be injected', (done) ->
 
         #ActiveNode.prototype.start = start
@@ -134,14 +149,6 @@ describe 'ActiveNode', ->
             catch error
                 error.should.match /ActiveNode requires 'label' string as arg1/
                 done()
-
-        it 'requires config as arg2 object', (done) -> 
-
-            try
-                new ActiveNode 'LABEL'
-            catch error
-                error.should.match /ActiveNode requires config hash as arg2/
-                done()
             
 
         it 'attempts to load objective plugin configurer from module', (done) -> 
@@ -158,12 +165,4 @@ describe 'ActiveNode', ->
                 new ActiveNode 'LABEL', as: 'thing:function', ->
             catch error
                 error.should.match /Cannot find module 'thing'/
-                done()
-
-        it 'requires injectable as arg3 function', (done) -> 
-
-            try
-                new ActiveNode 'LABEL', as: 'Develop'
-            catch error
-                error.should.match /ActiveNode requires injectable function arg3/
                 done()

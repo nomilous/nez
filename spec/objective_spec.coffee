@@ -4,6 +4,7 @@ should       = require 'should'
 Objective  = require '../lib/objective'
 ActiveNode = require '../lib/active_node'
 Defaults   = require '../lib/defaults' 
+Plex       = require 'plex'
 # Exec         = require '../lib/exec/nez'
 # swap         = undefined
 
@@ -21,8 +22,8 @@ describe 'Objective', ->
 
         Defaults['Develop'] = (id, tags, callback) -> callback 'Develop'
 
-        ActiveNode.prototype.start = (config) -> 
-
+        ActiveNode.prototype.start = (config) ->      
+            
             config.should.equal 'Develop'
             done()
 

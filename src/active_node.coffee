@@ -1,25 +1,40 @@
 Defaults        = require './defaults'
 PluginLoader    = require './plugin_loader'
 Injector        = require('nezcore').injector
-Runtime         = require('./exec/nez').exec  
+Runtime         = require('nezcore').runtime
+#Runtime         = require('./exec/nez').exec  
 Stack           = require './stack'
 Http            = require 'http'
 Plex            = require 'plex'
 
 module.exports = class ActiveNode
 
-    constructor: (@label, @config, @injectable) ->
+    constructor: (@label, @config = {}, @injectable = ->) ->
+
+        @config._runtime = new Runtime()
+        @logger  = @config._runtime.logger
+
+        
+
+        @nodeID = process.env.NODE_ID
+        tags   = process.env.NODE_TAGS || ''
+        @tags  = tags.split(' ')
+
+        @logger.info 'active config lookup'
+
+            as: @config.as || process.env.NODE_AS
+            nodeID: @nodeID
+            tags: @tags
 
         @outerValidate()
 
-        nodeID = process.env.NODE_ID
-        tags   = process.env.NODE_TAGS || ''
-
-        @config.as nodeID, tags.split(' '), (activeConfig) => 
+        @config.as @nodeID, @tags, (activeConfig) => 
 
             #
             # TODO: timeout awaiting activeConfig
             #
+
+            @logger.verbose 'received active config', activeConfig
 
             @innerValidate activeConfig
 
@@ -28,17 +43,33 @@ module.exports = class ActiveNode
 
     start: (activeConfig) -> 
 
-        console.log 'START:', JSON.stringify activeConfig, null, 2
-
         #
         # Initialize transport
         # 
         # TODO: use https if config.cert: path: is defined
         #
 
+        
+
         if typeof activeConfig._objective != 'undefined' 
 
             type = '_objective'
+
+        else if typeof activeConfig._realizer != 'undefined'
+
+            type = '_realizer'
+
+        else 
+
+            throw new Error "ActiveNode should be an Objective or a Realizer"
+
+
+        @logger.verbose 'starting'
+
+            label: @label
+            category: @config.category
+
+        if type == '_objective' 
 
             #
             # Objectives proxy realizers into the system
@@ -48,21 +79,14 @@ module.exports = class ActiveNode
 
                 server = Http.createServer()
 
-                server.listen 20202, 'localhost', => 
+                server.listen 20202, 'localhost',  => 
 
-                    console.log '[ActiveNode] - listening @ %s:%s',
-                        server.address().address
-                        server.address().port
+                    iface = server.address().address
+                    port  = server.address().port
+
+                    @logger.info "listening for realizers @ #{iface}:#{port}"
 
                 activeConfig[type].plex.listen.server = server 
-
-        else if typeof activeConfig._realizer != 'undefined'
-
-            type = '_realizer'
-
-        else 
-
-            throw new Error "ActiveNode should be an Objective or a Realizer"
 
 
         #
@@ -76,7 +100,7 @@ module.exports = class ActiveNode
         # load plugin
         #
 
-        @config._class = activeConfig[type].class
+        @config._class   = activeConfig[type].class
         @plugin = PluginLoader.load @stack, @config        
 
 
@@ -100,19 +124,6 @@ module.exports = class ActiveNode
             #     @stack.on 'end', (error, stack) => 
             #         @plex.stop()
             #
-
-
-        #
-        # Objective spawns a Runtime
-        # 
-        # TODO: Make this configurable
-        # 
-        #       - Runtime is specifically a Dev ENV (née. CakeFile)
-        #         and shouldn't be so specific
-        # 
-
-        Runtime @label, @config if type == '_objective'
-
 
         #
         # Load service and walk into the tree 
@@ -176,7 +187,7 @@ module.exports = class ActiveNode
 
                 catch error
 
-                    console.log "[ActiveNode] - Error loading service '#{service}'"
+                    @logger.error "error loading service '#{service}'"
 
                     #
                     # TODO: perhaps this should process.exit()
@@ -207,11 +218,6 @@ module.exports = class ActiveNode
         unless typeof @label == 'string'
         
             throw new Error "ActiveNode requires 'label' string as arg1"
-
-
-        unless typeof @config == 'object'
-
-            throw new Error "ActiveNode requires config hash as arg2"
 
 
         if typeof @config.as == 'undefined'
@@ -247,11 +253,5 @@ module.exports = class ActiveNode
                         @config.as = require @config.as
 
                 catch error
-
-                    console.log "[ActiveNode] - FAILED to configure as '#{@config.as}'"
+                    @logger.error "active config lookup failed for '#{@config.as}'"
                     throw error
-
-
-        unless typeof @injectable == 'function'
-
-            throw new Error "ActiveNode requires injectable function arg3"

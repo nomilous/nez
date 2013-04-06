@@ -5,8 +5,6 @@ module.exports = link =
 
     linker: (opts) -> 
 
-        console.log 'link:', opts
-
         if typeof opts == 'string'
 
             return link.fileLink opts
