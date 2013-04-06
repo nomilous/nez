@@ -39,7 +39,7 @@ describe 'ActiveNode', ->
 
         it 'enables an ENV based configurer', (done) -> 
 
-            Eo.fakeConfigure = (id, tags, callback) -> callback 'CONFIG'
+            Eo.fakeConfigure = (id, tags, callback) -> callback null, 'CONFIG'
 
             ActiveNode.prototype.start = (config) -> 
 
@@ -78,7 +78,7 @@ describe 'ActiveNode', ->
 
             as: (id, tags, configCallback) -> 
 
-                configCallback _objective: class: 'eo:Develop'
+                configCallback null, _objective: class: 'eo:Develop'
             
             with: [
 
@@ -131,7 +131,7 @@ describe 'ActiveNode', ->
 
             try
                 new ActiveNode 'LABEL' 
-                    as: (id, tags, callback) -> callback 'EXTERNAL CONFIG'
+                    as: (id, tags, callback) -> callback null, 'EXTERNAL CONFIG'
                     ->
 
             catch corrective

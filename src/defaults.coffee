@@ -13,7 +13,7 @@ module.exports =
         # Develop Objective (default config factory)
         #
 
-        callback 
+        callback null,
 
             _objective:
 
@@ -46,7 +46,7 @@ module.exports =
 
     SpecRun: (id, tags, callback) -> 
 
-        callback
+        callback null,
 
             _realizer:
 

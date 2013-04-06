@@ -28,7 +28,7 @@ module.exports = class ActiveNode
 
         @outerValidate()
 
-        @config.as @nodeID, @tags, (activeConfig) => 
+        @config.as @nodeID, @tags, (error, activeConfig) => 
 
             #
             # TODO: timeout awaiting activeConfig
