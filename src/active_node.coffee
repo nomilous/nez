@@ -120,7 +120,7 @@ module.exports = class ActiveNode
         #
 
         @config._class   = activeConfig[type].class
-        @plugin = PluginLoader.load @stack, @config        
+        @plugin = PluginLoader.load @config._runtime, @stack, @config        
 
 
         #

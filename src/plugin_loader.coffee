@@ -4,7 +4,7 @@ PluginRegister = require './plugin_register'
 
 module.exports = PluginFactory = 
 
-    load: (stack, config) -> 
+    load: (runtime, stack, config) -> 
 
         if typeof config._module == 'undefined'
 
@@ -28,7 +28,7 @@ module.exports = PluginFactory =
         plugin = PluginFactory.validate plugin
 
 
-        plugin.configure stack.stacker, config
+        plugin.configure runtime, stack.stacker, config
 
         #
         # register the plugin

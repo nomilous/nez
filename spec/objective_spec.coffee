@@ -20,7 +20,7 @@ describe 'Objective', ->
 
     it 'starts an ActiveNode node default objective plugin', (done) -> 
 
-        Defaults['Develop'] = (id, tags, callback) -> callback 'Develop'
+        Defaults['Develop'] = (id, tags, callback) -> callback null, 'Develop'
 
         ActiveNode.prototype.start = (config) ->      
             

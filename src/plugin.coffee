@@ -8,13 +8,15 @@ module.exports = Plugin =
     #
     # Plugin should define `configure()`
     # 
+    #  - To accept the runtime
+    # 
     #  - To optionally extend the stacker 
     #    with additional functionality.
     # 
     #  - To receive its configuration.
     #
 
-    configure: (stacker, config) -> 
+    configure: (@runtime, stacker, config) -> 
 
 
 

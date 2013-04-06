@@ -5,11 +5,15 @@ Plugin         = require '../lib/plugin'
 
 describe 'PluginLoader', ->
 
+    runtime = 
+
+        logger: log: ->
+
     it 'loads plugin _module', (done) ->
 
         try
 
-            PluginLoader.load {}, _module: 'test'
+            PluginLoader.load runtime, {}, _module: 'test'
 
         catch error
 
@@ -20,7 +24,7 @@ describe 'PluginLoader', ->
 
         try
 
-            PluginLoader.load {}, _class: 'nodule:Glass'
+            PluginLoader.load runtime, {}, _class: 'nodule:Glass'
 
         catch error
 
@@ -37,7 +41,7 @@ describe 'PluginLoader', ->
             validated = true
             potentialPlugin
 
-        PluginLoader.load ( on: -> ),
+        PluginLoader.load runtime, ( on: -> ),
             _module: '../lib/plugin'
 
         PluginLoader.validate = swap
@@ -100,7 +104,7 @@ describe 'PluginLoader', ->
             PluginRegister.register = swap
             wasRegistered() if plugin == Plugin
 
-        PluginLoader.load ( on: -> ), _module: '../lib/plugin'
+        PluginLoader.load runtime, ( on: -> ), _module: '../lib/plugin'
 
 
     it 'load() passes the stacker to Plugin.configure() and returs it', (done) ->
@@ -109,6 +113,6 @@ describe 'PluginLoader', ->
         Plugin.configure = (arg1, arg2) ->
             stacker = arg1
 
-        PluginLoader.load( ( on: -> ), _module: '../lib/plugin' ).should.equal require '../lib/plugin'
+        PluginLoader.load( runtime, ( on: -> ), _module: '../lib/plugin' ).should.equal require '../lib/plugin'
         done()
 
