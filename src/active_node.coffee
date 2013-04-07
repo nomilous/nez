@@ -14,15 +14,14 @@ module.exports = class ActiveNode
         @config._runtime = new Runtime()
         @logger  = @config._runtime.logger
 
-        
-
         @nodeID = process.env.NODE_ID
-        tags   = process.env.NODE_TAGS || ''
-        @tags  = tags.split(' ')
+        tags    = process.env.NODE_TAGS || ''
+        @tags   = tags.split(' ')
 
         @logger.log
-            info: => 'active config lookup'
-            verbose: => 'active config lookup':
+
+            verbose: => 'active config query':
+
                 as: @config.as || process.env.NODE_AS
                 path: @config.path
                 nodeID: @nodeID
@@ -37,9 +36,11 @@ module.exports = class ActiveNode
             # TODO: timeout awaiting activeConfig
             #
 
-            @logger.verbose => 'received active config': 
+            @logger.log
 
-                config: activeConfig
+                verbose: => 'active config result': 
+
+                    config: activeConfig
 
             @innerValidate activeConfig
 
@@ -67,8 +68,9 @@ module.exports = class ActiveNode
             throw new Error "ActiveNode should be an Objective or a Realizer"
 
 
-        @logger.verbose => 'active node starting':
+        @logger.info => 'starting active node':
 
+            class: activeConfig[type].class
             label: @label
             category: @config.category
 
@@ -105,7 +107,7 @@ module.exports = class ActiveNode
 
                 server.listen listen.port, listen.iface,  => 
 
-                    @logger.info => 'started listening for realizers': 
+                    @logger.info => 'listening for realizers': 
 
                         iface: server.address().address
                         port: server.address().port
