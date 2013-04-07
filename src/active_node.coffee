@@ -24,6 +24,7 @@ module.exports = class ActiveNode
             info: => 'active config lookup'
             verbose: => 'active config lookup':
                 as: @config.as || process.env.NODE_AS
+                path: @config.path
                 nodeID: @nodeID
                 tags: @tags
 
