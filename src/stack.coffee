@@ -1,16 +1,13 @@
 require 'fing'
 
 Node      = require './node'
-Notifyier = require './notifier'
 injector  = require('nezcore').injector
 Hooks     = require './hooks'
 Link      = require './link'
 Plugins   = require './plugin_register'
+Emitter   = require('events').EventEmitter
 
-notifier  = undefined
-
-
-module.exports = class Stack
+module.exports = class Stack extends Emitter
     
     constructor: (@activeNode) -> 
 
@@ -38,16 +35,16 @@ module.exports = class Stack
         @node     = @root
         @end      = false
 
-        notifier = Notifyier.create @label,
+        # notifier = Notifyier.create @label,
 
-            #
-            # Stack is an EventEmitter
-            # Events:
-            # 
+        #     #
+        #     # Stack is an EventEmitter
+        #     # Events:
+        #     # 
 
-            edge:   description: 'Edge traversal'
-            begin:  description: 'Walker enters the branch'
-            end:    description: 'Walker exits the branch or Exception'
+        #     edge:   description: 'Edge traversal'
+        #     begin:  description: 'Walker enters the branch'
+        #     end:    description: 'Walker exits the branch or Exception'
 
 
         #
@@ -84,13 +81,13 @@ module.exports = class Stack
     #     return ancestors
 
 
-    on: (event, callback) -> 
+    # on: (event, callback) -> 
 
-        notifier.on event, callback
+    #     notifier.on event, callback
 
-    once: (event, callback) ->
+    # once: (event, callback) ->
 
-        notifier.once event, callback
+    #     notifier.once event, callback
         
 
 
@@ -98,7 +95,7 @@ module.exports = class Stack
 
         if @stack.length == 0
 
-            notifier.emit 'begin', null, @
+            @emit 'begin', null, @
 
         
         from     = @node
@@ -148,7 +145,7 @@ module.exports = class Stack
 
         if label
 
-            notifier.emit 'edge',  null ,
+            @emit 'edge',  null ,
 
                 class: 'Tree.Leafward'
                 from: from
@@ -166,7 +163,7 @@ module.exports = class Stack
 
                 @validate null, error
 
-                notifier.emit 'end', error, @
+                @emit 'end', error, @
 
                 #
                 # NB:doc
@@ -188,7 +185,7 @@ module.exports = class Stack
                 @node = @stack[@stack.length - 1]
 
 
-            notifier.emit 'edge',  null ,
+            @emit 'edge',  null ,
 
                 class: 'Tree.Rootward'
                 from: from
@@ -198,7 +195,7 @@ module.exports = class Stack
 
             if @stack.length == 0
 
-                notifier.emit 'end', null, @
+                @emit 'end', null, @
 
 
     validate: (done, error) ->
