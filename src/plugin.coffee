@@ -19,33 +19,6 @@ module.exports = Plugin =
     configure: (@runtime, stacker, config) -> 
 
 
-
-    #
-    # Plugin should define `edge()`
-    #
-    #  - To receive edge events when the
-    #    thread traverses between nodes.
-    # 
-    # 
-    #    `placeholder` = { 'a still pending thing' }
-    # 
-    #    `nodes` = {
-    # 
-    #        from: { 'the node that this edge departs from' }
-    #        to:   { 'the node this this edge arrives at'   }
-    #       
-    #        #
-    #        # and furthar classification of the 
-    #        # edge traversal as follows
-    #        #
-    #       
-    #        class: 'Tree.Rootward' # or 'Tree.Leafward'
-    #     
-    #    }
-    #
-
-    edge: (placeholder, nodes) -> 
-
     #
     # Nez propagates HUPs into all registered plugins
     #

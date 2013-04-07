@@ -8,6 +8,46 @@ Plugins   = require './plugin_register'
 Emitter   = require('events').EventEmitter
 
 module.exports = class Stack extends Emitter
+
+
+    # 
+    # Emits Events
+    # ------------
+    #
+    # ### tree:traverse
+    # 
+    # Walker traverses an edge in a tree. 
+    # 
+    # `stack.on 'tree:traverse', (traversal) -> 
+    # 
+    # string - `traversal.as` is 'Leafward' or 'Rootward'
+    # object - `traversal.from` is the Node instance just departed
+    # object - `traversal.to` is the Node instance just arrived at
+    # [LATER probably] object - `traversal.branch` is the Branch identity
+    # [LATER probably] function - `traversal.callback`
+    # 
+    # 
+    # ### enter
+    # 
+    # Walker traverses into a grouped set of nodes (usually a branch) 
+    # 
+    # `stack.on 'enter', (error, stack) -> 
+    # 
+    # `error` - null 
+    # `stack` - the NodeStack or (later.. NodeGroup) begin entered
+    # 
+    # 
+    # ### exit
+    # 
+    # Walker departs a grouped set of nodes
+    # 
+    # `stack.on 'exit', (error, stack) -> 
+    # 
+    # `error` - null, or populated with the exception that cased the walker to exit
+    # `stack` - the NodeStack or (later.. NodeGroup) begin exited
+    # 
+
+
     
     constructor: (@activeNode) -> 
 
@@ -34,17 +74,6 @@ module.exports = class Stack extends Emitter
         @root     = new Node 'root', stack: this
         @node     = @root
         @end      = false
-
-        # notifier = Notifyier.create @label,
-
-        #     #
-        #     # Stack is an EventEmitter
-        #     # Events:
-        #     # 
-
-        #     edge:   description: 'Edge traversal'
-        #     begin:  description: 'Walker enters the branch'
-        #     end:    description: 'Walker exits the branch or Exception'
 
 
         #
@@ -80,22 +109,11 @@ module.exports = class Stack extends Emitter
     #         ancestors.push ancestor
     #     return ancestors
 
-
-    # on: (event, callback) -> 
-
-    #     notifier.on event, callback
-
-    # once: (event, callback) ->
-
-    #     notifier.once event, callback
-        
-
-
     push: (label, fn) -> 
 
         if @stack.length == 0
 
-            @emit 'begin', null, @
+            @emit 'enter', null, @
 
         
         from     = @node
@@ -145,9 +163,9 @@ module.exports = class Stack extends Emitter
 
         if label
 
-            @emit 'edge',  null ,
+            @emit 'tree:traversal',
 
-                class: 'Tree.Leafward'
+                as: 'Leafward'
                 from: from
                 to: @node
 
@@ -163,7 +181,7 @@ module.exports = class Stack extends Emitter
 
                 @validate null, error
 
-                @emit 'end', error, @
+                @emit 'exit', error, @
 
                 #
                 # NB:doc
@@ -185,9 +203,9 @@ module.exports = class Stack extends Emitter
                 @node = @stack[@stack.length - 1]
 
 
-            @emit 'edge',  null ,
+            @emit 'tree:traversal'
 
-                class: 'Tree.Rootward'
+                as: 'Rootward'
                 from: from
                 to: @node
 
@@ -195,7 +213,7 @@ module.exports = class Stack extends Emitter
 
             if @stack.length == 0
 
-                @emit 'end', null, @
+                @emit 'exit', null, @
 
 
     validate: (done, error) ->

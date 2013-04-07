@@ -23,7 +23,7 @@ describe 'Stack', ->
 
                 begun = false
                 test = new Stack label: 'STACK1'
-                test.on 'begin', (error, stack) -> 
+                test.on 'enter', (error, stack) -> 
                     should.not.exist error
                     begun.should.equal false
                     stack.label.should.equal 'STACK1'
@@ -40,7 +40,7 @@ describe 'Stack', ->
 
                 begun = false
                 test = new Stack label: 'STACK2'
-                test.on 'end', (error, stack) -> 
+                test.on 'exit', (error, stack) -> 
                     should.not.exist error
                     begun.should.equal true
                     stack.label.should.equal 'STACK2'
@@ -55,7 +55,7 @@ describe 'Stack', ->
 
                 begun = false
                 test = new Stack label: 'STACK3'
-                test.on 'end', (error, stack) -> 
+                test.on 'exit', (error, stack) -> 
                     error.should.match /ERROR/
                     stack.stack.length.should.equal 2
                     done()
@@ -70,16 +70,16 @@ describe 'Stack', ->
 
                 stack = new Stack label: 'LABEL2'
                 STACK = stack
-                stack.on 'edge', (placeholder, nodes) ->
+                stack.on 'tree:traversal', (traversal) ->
                     #
                     # exiting THREE?
                     #
-                    if nodes.from.label == 'THREE'
+                    if traversal.from.label == 'THREE'
                         #
                         # GOT thing in it?
                         #
-                        nodes.from.stick.this.into.should.equal 'IT'
-                        done()
+                        traversal.from.stick.this.into.should.equal 'IT'
+                        done()     
 
 
                 stack.stacker 'ONE', (Parent) -> 

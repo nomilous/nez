@@ -114,7 +114,7 @@ describe 'PluginLoader', ->
         Plugin.configure = (_runtime, scaffold, config) ->
             _runtime.should.equal runtime
             scaffold.stack.should.eql []
-            scaffold.pusher.should.equal stack.stacker
+            scaffold.emitter.on.should.equal stack.on
             scaffold.label.should.equal 'LABEL'
             config._module.should.equal '../lib/plugin'
             done()

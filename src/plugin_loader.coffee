@@ -42,10 +42,12 @@ module.exports = PluginFactory =
             stack: stack.stack
 
             #
-            # plugin receives referrence to the stack pusher
+            # plugin receives reference to the stack event subscriber
             #
 
-            pusher: stack.stacker
+            emitter: 
+
+                on: stack.on
 
 
         plugin.configure runtime, scaffold, config
@@ -56,13 +58,6 @@ module.exports = PluginFactory =
 
         PluginRegister.register plugin
 
-
-        #
-        # subscribe to edge events
-        #
-
-        stack.on 'edge', plugin.edge
-
         return plugin
 
 
@@ -71,10 +66,6 @@ module.exports = PluginFactory =
         unless typeof plugin.configure == 'function'
 
             throw Exception.create 'INVALID_PLUGIN', "INVALID_PLUGIN - Undefined Plugin.configure()"
-
-        unless typeof plugin.edge == 'function'
-
-            throw Exception.create 'INVALID_PLUGIN', 'INVALID_PLUGIN - Undefined Plugin.edge()'
 
         unless plugin.handles instanceof Array
 
