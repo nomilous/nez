@@ -47,7 +47,9 @@ module.exports = PluginFactory =
 
             emitter: 
 
-                on: stack.on
+                on: -> 
+
+                    stack.on.apply stack, arguments
 
 
         plugin.configure runtime, scaffold, config

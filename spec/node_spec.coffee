@@ -23,17 +23,3 @@ describe 'Node', ->
         node.clan.should.equal 'Baswenaazhi'
         done()
 
-
-    it 'has edges', (done) -> 
-
-        node = new Node 'label'
-        node.edges.should.be.instanceof Array
-        done()
-
-    it 'has hooks', (done) ->
-
-        node = new Node 'label'
-        node.hooks.should.be.instanceof Object
-        done()
-
-

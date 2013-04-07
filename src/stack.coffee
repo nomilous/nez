@@ -71,7 +71,7 @@ module.exports = class Stack extends Emitter
 
         @stack    = []
         @classes  = []
-        @root     = new Node 'root', stack: this
+        @root     = new Node 'root', as: 'root'
         @node     = @root
         @end      = false
 
@@ -97,9 +97,9 @@ module.exports = class Stack extends Emitter
                     Link.linker
 
 
-    stacker: (label, callback) =># <= this concerns me! 
+    stacker: (label, fn) =># <= this concerns me! 
 
-        @push label, callback
+        @push label, fn
 
     # ancestorsOf: (node) ->
 
@@ -151,7 +151,7 @@ module.exports = class Stack extends Emitter
         @node = new Node label,
 
             function: fn
-            class:    klass
+            as:    klass
 
 
         Plugins.handle @node
@@ -163,7 +163,7 @@ module.exports = class Stack extends Emitter
 
         if label
 
-            @emit 'tree:traversal',
+            @emit 'tree:traverse',
 
                 as: 'Leafward'
                 from: from
@@ -203,7 +203,7 @@ module.exports = class Stack extends Emitter
                 @node = @stack[@stack.length - 1]
 
 
-            @emit 'tree:traversal'
+            @emit 'tree:traverse'
 
                 as: 'Rootward'
                 from: from

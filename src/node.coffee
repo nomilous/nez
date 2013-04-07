@@ -1,13 +1,9 @@
 module.exports = class Node
 
-    constructor: (label, opts = {}) ->
+    constructor: (label, properties = {}) ->
 
-        for property of opts
+        for property of properties
 
-            this[property] = opts[property]
+            this[property] = properties[property]
 
         @label = label
-
-        @hooks = {}
-
-        @edges = []

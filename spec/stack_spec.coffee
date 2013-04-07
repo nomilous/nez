@@ -7,11 +7,10 @@ describe 'Stack', ->
 
     
 
-    it 'has a root node with backref to the stack', (done) ->
+    it 'has a root node', (done) ->
 
         stack = new Stack label: 'LABEL1'
         stack.node.label.should.equal 'root'
-        stack.node.stack.should.equal stack
         done()
 
 
@@ -70,7 +69,7 @@ describe 'Stack', ->
 
                 stack = new Stack label: 'LABEL2'
                 STACK = stack
-                stack.on 'tree:traversal', (traversal) ->
+                stack.on 'tree:traverse', (traversal) ->
                     #
                     # exiting THREE?
                     #
