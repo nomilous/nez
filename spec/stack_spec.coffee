@@ -26,7 +26,7 @@ describe 'Stack', ->
                 test.on 'begin', (error, stack) -> 
                     should.not.exist error
                     begun.should.equal false
-                    stack.name.should.equal 'STACK1'
+                    stack.label.should.equal 'STACK1'
                     stack.stack.length.should.equal 0
                     done()
 
@@ -43,7 +43,7 @@ describe 'Stack', ->
                 test.on 'end', (error, stack) -> 
                     should.not.exist error
                     begun.should.equal true
-                    stack.name.should.equal 'STACK2'
+                    stack.label.should.equal 'STACK2'
                     stack.stack.length.should.equal 0
                     done()
 

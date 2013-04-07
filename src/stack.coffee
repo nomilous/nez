@@ -30,7 +30,7 @@ module.exports = class Stack
                     #       needs to validate those expectations
                     #
 
-        @name = @activeNode.label
+        @label    = @activeNode.label
 
         @stack    = []
         @classes  = []
@@ -38,7 +38,7 @@ module.exports = class Stack
         @node     = @root
         @end      = false
 
-        notifier = Notifyier.create @name,
+        notifier = Notifyier.create @label,
 
             #
             # Stack is an EventEmitter
@@ -105,7 +105,7 @@ module.exports = class Stack
 
         # label    = args[0]
         # callback = args[1]  # TODO: as last arg
-        klass    = @pendingClass || @name
+        klass    = @pendingClass || @label
 
 
         return if typeof label == 'undefined'

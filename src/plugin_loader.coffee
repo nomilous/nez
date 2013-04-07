@@ -27,8 +27,28 @@ module.exports = PluginFactory =
 
         plugin = PluginFactory.validate plugin
 
+        scaffold = 
 
-        plugin.configure runtime, stack.stacker, config
+            #
+            # plugin receives reference to stack label
+            #
+
+            label: stack.label
+
+            #
+            # plugin receives reference to the stack array
+            #
+
+            stack: stack.stack
+
+            #
+            # plugin receives referrence to the stack pusher
+            #
+
+            pusher: stack.stacker
+
+
+        plugin.configure runtime, scaffold, config
 
         #
         # register the plugin

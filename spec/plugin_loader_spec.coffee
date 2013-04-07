@@ -1,6 +1,7 @@
 should         = require 'should'
 PluginLoader   = require '../lib/plugin_loader'
 PluginRegister = require '../lib/plugin_register'
+Stack          = require '../lib/stack'
 Plugin         = require '../lib/plugin'
 
 describe 'PluginLoader', ->
@@ -107,12 +108,17 @@ describe 'PluginLoader', ->
         PluginLoader.load runtime, ( on: -> ), _module: '../lib/plugin'
 
 
-    it 'load() passes the stacker to Plugin.configure() and returs it', (done) ->
+    it 'load() passes the runtime, scaffold and config to Plugin.configure() and returs the plugin', (done) ->
 
-        stacker = null
-        Plugin.configure = (arg1, arg2) ->
-            stacker = arg1
+        stack = new Stack label: 'LABEL'
+        Plugin.configure = (_runtime, scaffold, config) ->
+            _runtime.should.equal runtime
+            scaffold.stack.should.eql []
+            scaffold.pusher.should.equal stack.stacker
+            scaffold.label.should.equal 'LABEL'
+            config._module.should.equal '../lib/plugin'
+            done()
 
-        PluginLoader.load( runtime, ( on: -> ), _module: '../lib/plugin' ).should.equal require '../lib/plugin'
-        done()
+        PluginLoader.load( runtime, stack, _module: '../lib/plugin' ).should.equal require '../lib/plugin'
+        
 
