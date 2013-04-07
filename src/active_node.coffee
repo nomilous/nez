@@ -150,19 +150,6 @@ module.exports = class ActiveNode
 
             @plex = Plex.start plexConfig
 
-
-
-            #
-            # realizer stops plex at the end of the run
-            #
-            # plex is stopped at the end of this function
-            # will be fine until edge traversals go async
-            # 
-            # if type == '_realizer'
-            #     @stack.on 'end', (error, stack) => 
-            #         @plex.stop()
-            #
-
         #
         # Load service and walk into the tree 
         #
