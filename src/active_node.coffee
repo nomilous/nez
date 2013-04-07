@@ -127,9 +127,7 @@ module.exports = class ActiveNode
                     #
 
                     adaptor: listen.adaptor
-                    server: server
-
-                activeConfig._plex.logger = @logger  
+                    server: server 
 
 
         #
@@ -139,8 +137,10 @@ module.exports = class ActiveNode
         unless typeof activeConfig._plex == 'undefined' 
 
             plexConfig = activeConfig._plex
+
+            plexConfig.logger = @logger unless plexConfig.logger
             
-            plexConfig.prototcol = @plugin.bind
+            plexConfig.protocol = @plugin.bind
 
             #
             # activeConfig CANNOT set plex connect parameters 
