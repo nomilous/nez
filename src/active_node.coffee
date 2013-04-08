@@ -116,10 +116,19 @@ module.exports = class ActiveNode
                     # start the objective monitor loop
                     #
 
-                    @plugin.monitor (error, payload) => 
+                    @plugin.monitor (error, action) => 
 
+                        if error
 
+                            @logger.error -> 'objective monitor error': 
 
+                                error: error
+
+                        if action 
+
+                            @logger.info -> 'call action': 
+
+                                action: action
 
 
                 activeConfig._plex.listen =
