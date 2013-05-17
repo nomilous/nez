@@ -19,6 +19,7 @@ Distributed Process Scaffold
 ### Pending Features
 
 * fix loss of context (blank test 'names')
+* interspercable injection spec
 * **fix** fing
 * function and property expections
 * before and after hooks
