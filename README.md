@@ -8,6 +8,7 @@
 
 ### Pending Features
 
+* fix loss of context (blank test 'names')
 * **fix** fing
 * function and property expections
 * before and after hooks
