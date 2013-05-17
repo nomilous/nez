@@ -19,6 +19,8 @@ Distributed Process Scaffold
 ### Pending Features
 
 * fix loss of context (blank test 'names')
+* nez.provide (serves modules into a worker farm)
+* nez.consume (uses nez.provide as injection source)
 * interspercable injection spec
 * **fix** fing
 * function and property expections
