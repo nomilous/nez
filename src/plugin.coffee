@@ -8,41 +8,16 @@ module.exports = Plugin =
     #
     # Plugin should define `configure()`
     # 
+    #  - To accept the runtime
+    # 
     #  - To optionally extend the stacker 
     #    with additional functionality.
     # 
     #  - To receive its configuration.
     #
 
-    configure: (stacker, config) -> 
+    configure: (@runtime, stacker, config) -> 
 
-
-
-    #
-    # Plugin should define `edge()`
-    #
-    #  - To receive edge events when the
-    #    thread traverses between nodes.
-    # 
-    # 
-    #    `placeholder` = { 'a still pending thing' }
-    # 
-    #    `nodes` = {
-    # 
-    #        from: { 'the node that this edge departs from' }
-    #        to:   { 'the node this this edge arrives at'   }
-    #       
-    #        #
-    #        # and furthar classification of the 
-    #        # edge traversal as follows
-    #        #
-    #       
-    #        class: 'Tree.Rootward' # or 'Tree.Leafward'
-    #     
-    #    }
-    #
-
-    edge: (placeholder, nodes) -> 
 
     #
     # Nez propagates HUPs into all registered plugins

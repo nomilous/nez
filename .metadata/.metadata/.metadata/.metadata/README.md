@@ -17,7 +17,7 @@
                                                   ipso:
 
                                     It takes supreme marksmanship and 
-                                    a patience nearly cosmological...
+                                     a patience near cosmological...
 
                                        To hit a Newton on the head.
 
@@ -27,11 +27,11 @@
 
 
 
-                                                 facto:
-                                
-                                        He should have ducked...
 
-                                                       - William Tell 
+
+
+
+
 
 
 

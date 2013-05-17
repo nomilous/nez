@@ -164,7 +164,11 @@ module.exports = class Coffee
             test_runner = child_process.spawn @getCompiler(), [file]
             test_runner.stdout.pipe process.stdout
             test_runner.stderr.pipe process.stderr
-            test_runner.on 'exit', -> after()
+            test_runner.on 'exit', -> 
+
+                console.log 'TEST DONE'
+
+                after()
 
 
     noSpecFile: (file, after) ->
@@ -181,12 +185,17 @@ module.exports = class Coffee
 
             @mkdirMinusP parts.path
 
+
+        #
+        # TODO: (perhaps) - a snippet system
+        #
+
         fs.writeFile parts.path + parts.specname, """
-        require('nez').realize '#{parts.classname}', (#{parts.classname}, test, context) -> 
+        require('nez').realize '#{parts.classname}', (context, test, #{parts.classname}) -> 
 
-            context 'in CONTEXT', (does) ->
+            context 'in CONTEXT', (it) ->
 
-                does 'an EXPECTATION', (done) ->
+                it 'does an EXPECTATION', (done) ->
 
                     test done
 

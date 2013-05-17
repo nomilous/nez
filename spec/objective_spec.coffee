@@ -1,36 +1,75 @@
-require 'fing'
-should     = require 'should'
+should       = require 'should'
+# Config       = require('nezcore').config
+# PluginLoader = require '../lib/plugin_loader'
 Objective  = require '../lib/objective'
-Exec       = require '../lib/exec/nez'
-swap       = undefined
+ActiveNode = require '../lib/active_node'
+Defaults   = require '../lib/defaults' 
+Plex       = require 'plex'
+Develop    = require('eo').Develop
+
+# Exec         = require '../lib/exec/nez'
+# swap         = undefined
+
 
 
 describe 'Objective', -> 
 
-    it 'knows the repo root', (done) ->
+    it 'is a function', (done) -> 
 
-        #
-        # ./objective script should always be placed
-        #             in the repo root
-        #
-
-        Objective.validate 'NameOfThing'
-        Objective.root.should.match /nez\/spec$/
+        Objective.should.be.an.instanceof Function
         done()
+
+
+    it 'starts an ActiveNode node default objective plugin', (done) -> 
+
+        swap1 = Defaults.Develop
+        Defaults.Develop = (id, tags, callback) -> callback null, 'Develop'
+
+        swap2 = ActiveNode.prototype.start
+        ActiveNode.prototype.start = (config) -> 
+            Defaults.Develop = swap1
+            ActiveNode.prototype.start = swap2  
+            config.should.equal 'Develop'
+            done()
+
+        Objective 'LABEL', {}, -> 
+
+
+    it 'starts the Objective plugin monitor', (done) -> 
+
+        Plex.start = -> stop: ->
+        Develop.monitor = -> done()
+
+        Objective 'LABEL', {}, -> 
         
 
-    it 'returns the dev environment exec() if config was supplied', (wasCalled) ->
+    it 'knows the objective origin path', (done) -> 
 
-        old = Exec.exec 
-        Exec.exec = -> 
-            Exec.exec = old
-            wasCalled()
+        #
+        # For now it is assumed the ./objective file...
+        # 
+        #  ie. the script that calls nez:Objective
+        #
+        # ...is in the root of it's supporting module
+        #
 
-        Objective.validate 'NameOfThing', {'config'}
+        ActiveNode.prototype.outerValidate = -> 
+
+            @config.path.should.match /nimbal\/node_modules\/nez\/spec/
+            done()
+
+        Objective 'LABEL', as: ->
 
 
-    it 'returns the dev environment start()er if no config was passed', (done) ->
+    it 'can specify path', (done) -> 
 
-        loader = Objective.validate 'NameOfThing'
-        loader.should.equal Exec.start
-        done()
+        ActiveNode.prototype.outerValidate = -> 
+
+            @config.path.should.match /\/path/
+            done()
+
+        Objective 'LABEL', 
+            as: -> 
+            path: '/path'
+
+

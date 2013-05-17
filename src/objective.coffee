@@ -1,24 +1,29 @@
-require 'fing' if typeof fing == 'undefined'
+ActiveNode     = require './active_node'
 
-module.exports = Objective = 
+module.exports = Objective = (label, config, injectable) -> 
 
-    validate: (objective, config, callback) ->
-
-        #
-        # walk the entire objective tree
-        #
-
-        Objective.root = fing.trace()[1].file.match( /(.*)\/.*$/ )[1]
-
-        stack = require('./nez').link()
-        stack.name = objective
-
-        if typeof callback == 'function'
-        
-            require('nezcore').injector.inject [stack.stacker], callback
+    try
 
         #
-        # start dev environment WITH objective
+        # ASSUMPTION: 
+        # 
+        # Objective file will be in the root of its module.
+        # Will expend for further posibilities later.
         #
 
-        require('./exec/nez').exec objective, config
+        if typeof config.path == 'undefined'
+
+            objectiveFile = Error.apply(this).stack.split('\n')[3].match(/\((.*):\d*:\d*/)[1]
+            path = require('path').dirname objectiveFile
+            config.path = path
+
+        if typeof config.as == 'undefined'
+
+            config.as = 'Develop'
+    
+        new ActiveNode label, config, injectable
+
+    catch error
+
+        process.stderr.write 'ERROR:' + error.message
+        process.exit 1

@@ -1,95 +1,41 @@
-Stack          = require './stack'
-prototypes     = require './prototypes'
-Injector       = require './injector'
-Objective      = require './objective'
-PluginLoader   = require './plugin_loader'
-PluginRegister = require './plugin_register'
 
-stack        = new Stack()
+process.on 'SIGHUP', require('./plugin_register').hup
 
+module.exports = 
 
-Nez = 
+    #
+    # **Nez.objective(`label`, `config`, `injectable`)**
+    # 
+    # Spawns an [ActiveNode](active_node.html) as an `Objective`
+    # 
+    # Default [objective implementation](https://github.com/nomilous/eo)
+    # 
+    # 
+
+    objective: require './objective'
 
 
     # 
-    # **Nez.realize(`ObjectiveClass`, `options`, `testFunction`)**
+    # **Nez.realize(`label`, `config`, `injectable`)**
+    # 
+    # Spawns an [ActiveNode](active_node.html) as an `Objective`
+    # 
+    # Default [realizer implementation](https://github.com/nomilous/ipso)
     # 
 
-    realize: Injector.realize
+    realize: require './realization'
 
 
-    #
-    # **Nez.objective(`config`)**
+
+
+
+
+
+    # 
+    # **Nez.linked(`injectable`)**
+    # 
+    # Walker was sent across a file link
     # 
 
-    objective: Objective.validate
+    linked: (injectable) -> console.log 'link not implemented'
 
-
-    #
-    # **Nez.plugin(`config`)**
-    # 
-
-    plugin: PluginLoader.load
-    
-    #
-    # **Nez.hup()**
-    #
-
-    hup: -> PluginRegister.hup()
-
-
-
-    #
-    # **Nez.link(`name`)
-    #
-
-    link: (name) -> Nez.stack
-
-        # (name) ->   
-        #     stack = new Stack(name)
-        #     prototypes.object.set.expect()
-        #     prototypes.object.set.mock()
-        #     return stack
-
-
-    #
-    # **Nez.linked(`name`)
-    #
-
-    linked: (name) -> 
-
-        #
-        # TODO: ensure classname in current node
-        #
-
-        Nez.stack.stacker
-
-
-    #
-    # **Nez.requirements(`name`)
-    #
-
-    requirements: (name) ->
-
-        PluginLoader.load './plugin/requirement', {}
-        Nez.stack.stacker
-
-
-    #
-    # **Nez.test()**
-    #
-
-    test: -> 
-
-        prototypes.object.set.expect()
-        prototypes.object.set.mock()
-        return Nez.stack
-
-
-    stack: stack
-
-
-process.on 'SIGHUP', Nez.hup
-
-
-module.exports = Nez

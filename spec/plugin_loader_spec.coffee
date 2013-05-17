@@ -1,19 +1,35 @@
 should         = require 'should'
 PluginLoader   = require '../lib/plugin_loader'
 PluginRegister = require '../lib/plugin_register'
+Stack          = require '../lib/stack'
 Plugin         = require '../lib/plugin'
 
 describe 'PluginLoader', ->
 
-    it 'loads plugin modules', (done) ->
+    runtime = 
+
+        logger: log: ->
+
+    it 'loads plugin _module', (done) ->
 
         try
 
-            PluginLoader.load 'test'
+            PluginLoader.load runtime, {}, _module: 'test'
 
         catch error
 
             error.code.should.equal 'MODULE_NOT_FOUND'
+            done()
+
+    it 'load plugin _class', (done) -> 
+
+        try
+
+            PluginLoader.load runtime, {}, _class: 'nodule:Glass'
+
+        catch error
+
+            error.should.match /Cannot find module 'nodule'/
             done()
 
     it 'validates the plugin', (done) ->
@@ -26,7 +42,9 @@ describe 'PluginLoader', ->
             validated = true
             potentialPlugin
 
-        PluginLoader.load '../lib/plugin'
+        PluginLoader.load runtime, ( on: -> ),
+            _module: '../lib/plugin'
+
         PluginLoader.validate = swap
         validated.should.equal true
         done()
@@ -36,7 +54,7 @@ describe 'PluginLoader', ->
 
         try
         
-            PluginLoader.validate {}
+            PluginLoader.validate 'name', {}
 
         catch error
 
@@ -46,7 +64,7 @@ describe 'PluginLoader', ->
     it 'ensures the plugin supplies a list of node class handlers', (done) ->
 
         try
-            PluginLoader.validate 
+            PluginLoader.validate
                 configure: ->
                 edge: ->
                 handles: ['RedLorry','YellowLorry']
@@ -55,7 +73,7 @@ describe 'PluginLoader', ->
 
         catch error
 
-            error.message.should.match /Undefined Plugin.YellowLorry/
+            error.message.should.match /INVALID_PLUGIN - Undefined Plugin.YellowLorry/
             done()
 
     it 'ensures the plugin supplies a list of node metafield key matchers', (done) ->
@@ -87,15 +105,20 @@ describe 'PluginLoader', ->
             PluginRegister.register = swap
             wasRegistered() if plugin == Plugin
 
-        PluginLoader.load '../lib/plugin'
+        PluginLoader.load runtime, ( on: -> ), _module: '../lib/plugin'
 
 
-    it 'load() passes the stacker to Plugin.configure() and returs it', (done) ->
+    it 'load() passes the runtime, scaffold and config to Plugin.configure() and returs the plugin', (done) ->
 
-        stacker = null
-        Plugin.configure = (arg1, arg2) ->
-            stacker = arg1
+        stack = new Stack label: 'LABEL'
+        Plugin.configure = (_runtime, scaffold, config) ->
+            _runtime.should.equal runtime
+            scaffold.stack.should.eql []
+            scaffold.emitter.on.should.equal stack.on
+            scaffold.label.should.equal 'LABEL'
+            config._module.should.equal '../lib/plugin'
+            done()
 
-        PluginLoader.load('../lib/plugin').should.equal stacker
-        done()
+        PluginLoader.load( runtime, stack, _module: '../lib/plugin' ).should.equal require '../lib/plugin'
+        
 

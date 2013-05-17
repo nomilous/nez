@@ -3,7 +3,7 @@
 # pending Confirmations.
 #  --------------
 
-require 'fing' if typeof fing == 'undefined'
+require 'fing'
 Confirmation = require './confirmation'
 
 class Specification

@@ -1,5 +1,5 @@
 should   = require 'should'
-Realizer = require '../lib/realizer'
+Realizer = require '../lib/REFACTOR_realizer'
 
 describe 'Realizer', ->
 

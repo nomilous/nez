@@ -5,7 +5,7 @@ This may change:
 
 ```coffee
 
-require('nez').realize 'Periscope', (Periscope, test, it, should) ->
+require('nez').realize 'Periscope Class', (it, tests, Periscope, should) ->
 
     it 'keeps your head above water', (done) -> 
 
@@ -16,9 +16,16 @@ require('nez').realize 'Periscope', (Periscope, test, it, should) ->
         # 1. Create expectations
         #
 
-        periscope.expect riseToSurface: with: 'distance', returning: true
-        periscope.expect openLens: returning: true
-        periscope.exepct "Admiral's Allseeing Eyeball"
+        periscope.must receive
+
+            riseToSurface: (distance) ->
+
+                distance.should.be.an.instanceof Number
+                return true
+
+            openLens: ->  
+
+                return true
 
 
         #
@@ -75,7 +82,7 @@ require('nez').realize 'Periscope', (Periscope, test, it, should) ->
         #    THIS BIT STILL UNDER DEVELOPMENT
         #
 
-        test done
+        tests done
 
 
 ```

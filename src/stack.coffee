@@ -1,40 +1,79 @@
-require 'fing' if typeof fing == 'undefined'
+require 'fing'
 
 Node      = require './node'
-Notifyier = require './notifier'
 injector  = require('nezcore').injector
 Hooks     = require './hooks'
 Link      = require './link'
 Plugins   = require './plugin_register'
+Emitter   = require('events').EventEmitter
 
-stack     = undefined
-notifier  = undefined
+module.exports = class Stack extends Emitter
 
 
-module.exports = class Stack
+    # 
+    # Emits Events
+    # ------------
+    #
+    # ### tree:traverse
+    # 
+    # Walker traverses an edge in a tree. 
+    # 
+    # `stack.on 'tree:traverse', (traversal) -> 
+    # 
+    # string - `traversal.as` is 'Leafward' or 'Rootward'
+    # object - `traversal.from` is the Node instance just departed
+    # object - `traversal.to` is the Node instance just arrived at
+    # [LATER probably] object - `traversal.branch` is the Branch identity
+    # [LATER probably] function - `traversal.callback`
+    # 
+    # 
+    # ### enter
+    # 
+    # Walker traverses into a grouped set of nodes (usually a branch) 
+    # 
+    # `stack.on 'enter', (error, stack) -> 
+    # 
+    # `error` - null 
+    # `stack` - the NodeStack or (later.. NodeGroup) begin entered
+    # 
+    # 
+    # ### exit
+    # 
+    # Walker departs a grouped set of nodes
+    # 
+    # `stack.on 'exit', (error, stack) -> 
+    # 
+    # `error` - null, or populated with the exception that cased the walker to exit
+    # `stack` - the NodeStack or (later.. NodeGroup) begin exited
+    # 
+
+
     
-    constructor: (@name) -> 
+    constructor: (@activeNode) -> 
 
-        @stack   = []
-        @classes = []
-        @root    = new Node 'root', stack: this
-        @node    = @root
-        @end     = false
+        # console.log 'TODO: move to nezcore as NodeStack'
 
-        notifier = Notifyier.create @name,
+                    #
+                    # and create/approximate an InjectionStack 
+                    # with push and pop evets to enable: 
+                    #
+                    #   eg. 
+                    # 
+                    #   spec_run injector (push) 
+                    #       needs to define .must() on injected objects 
+                    #       to create expectations / validators
+                    # 
+                    #   spec_run injector (pop)
+                    #       needs to validate those expectations
+                    #
 
-            #
-            # Stack is an EventEmitter
-            # Events:
-            # 
+        @label    = @activeNode.label
 
-            begin: description: 'Enters root node'
-            push:  description: 'Enters a node'
-            pop:   description: 'Exits a node'
-            end:   description: 'Exits root node'
-            edge:  description: 'Edge traversal'
-
-        stack = @
+        @stack    = []
+        @classes  = []
+        @root     = new Node 'root', as: 'root'
+        @node     = @root
+        @end      = false
 
 
         #
@@ -42,7 +81,7 @@ module.exports = class Stack
         # fire before and after hooks
         #
 
-        @hooks = Hooks.getFor stack
+        # @hooks = Hooks.getFor stack
 
 
         #
@@ -58,36 +97,30 @@ module.exports = class Stack
                     Link.linker
 
 
-    stacker: (label, callback) -> 
+    stacker: (label, fn) =># <= this concerns me! 
 
-        stack.push arguments
+        @push label, fn
 
-    ancestorsOf: (node) ->
+    # ancestorsOf: (node) ->
 
-        ancestors = []
-        for ancestor in @stack
-            break if node == ancestor
-            ancestors.push ancestor
-        return ancestors
+    #     ancestors = []
+    #     for ancestor in stack
+    #         break if node == ancestor
+    #         ancestors.push ancestor
+    #     return ancestors
 
+    push: (label, fn) -> 
 
-    on: (event, callback) -> 
+        if @stack.length == 0
 
-        notifier.on event, callback
-
-    once: (event, callback) ->
-
-        notifier.once event, callback
-        
-
-    push: (args) -> 
+            @emit 'enter', null, @
 
         
         from     = @node
 
-        label    = args[0]
-        callback = args[1]  # TODO: as last arg
-        klass    = @pendingClass || @name
+        # label    = args[0]
+        # callback = args[1]  # TODO: as last arg
+        klass    = @pendingClass || @label
 
 
         return if typeof label == 'undefined'
@@ -99,10 +132,10 @@ module.exports = class Stack
         unless typeof label == 'string'
 
             return if @hooks.set from, label
-            #
-            # proceeed no further if label was a before 
-            # or after hook config
-            #
+        #     #
+        #     # proceeed no further if label was a before 
+        #     # or after hook config
+        #     #
 
 
 
@@ -117,25 +150,22 @@ module.exports = class Stack
 
         @node = new Node label,
 
-            callback: callback
-            stack:    stack
-            class:    klass
+            function: fn
+            as:    klass
 
 
         Plugins.handle @node
 
+        if fn and fn.fing.args.length > 0
 
- 
-        if callback and callback.fing.args.length > 0
-
-            @pendingClass = callback.fing.args[0].name 
+            @pendingClass = fn.fing.args[0].name 
 
 
         if label
 
-            notifier.emit 'edge',  null ,
+            @emit 'tree:traverse',
 
-                class: 'Tree.Leafward'
+                as: 'Leafward'
                 from: from
                 to: @node
 
@@ -145,86 +175,62 @@ module.exports = class Stack
 
             try
 
-
-
-                injector.inject [@stacker], callback if callback
+                injector.inject [@stacker], fn if fn
 
             catch error
 
-                if error.name = 'AssertionError'
+                @validate null, error
 
-                    #
-                    # assumes that no AssertionError will
-                    # be thrown enywhere but at a leaf node
-                    # on the test tree
-                    # 
+                @emit 'exit', error, @
 
-                    # console.log error.message.red
+                #
+                # NB:doc
+                #
 
-                    @validate null, error
-
-                else
-
-                    console.log error.red
-                    console.log error.stack
-                    throw error
-            
-
+                return
 
             
             from = @stack.pop()
             
 
-
             if @stack.length == 0
 
-                @node = @root                
+                @node = @root
+
 
             else
 
                 @node = @stack[@stack.length - 1]
 
 
-            notifier.emit 'edge',  null ,
+            @emit 'tree:traverse'
 
-                class: 'Tree.Rootward'
+                as: 'Rootward'
                 from: from
                 to: @node
 
             @pendingClass = @classes.pop()
 
+            if @stack.length == 0
 
-    validator: (done) ->
-
-        stack.validate done
+                @emit 'exit', null, @
 
 
     validate: (done, error) ->
 
-        # return if done == 'end'
+        #
+        # pass to _realizer Plugin.validate 
+        # 
+        # Validation is an async step, realizations will 
+        # often be interactions to a remote process
+        # 
 
-        testString = ''
-        leafNode   = undefined
+        if @activeNode.plugin and @activeNode.plugin.validate
 
-        if @stack
+            #
+            # TODO: timeout for validate
+            # 
 
-            for node in @stack
+            @activeNode.plugin.validate @stack, error, -> 
 
-                testString += "#{node.class} #{node.label.bold} "
-                leafNode = node
-            
-            if error
-
-                console.log 'FAILED:'.red, testString
-                console.log error.red
-                console.log error.stack
-                # console.log error.message.red
-
-            else
-
-                console.log 'PASSED:'.green, testString
-
-            # leafNode.callback 'end'
-        
-        done() if done
-
+                done() if done

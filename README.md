@@ -1,10 +1,20 @@
+nez
+===
+
+Distributed Process Scaffold
+
+
 ### Due Homage
 
-[RSpec](http://rspec.info/)
+[RSpec](http://rspec.info/)<br />
+[Node.js](http://nodejs.org)<br />
+[Coffee Script](http://coffeescript.org/)<br />
+
 
 ### Current Version
 
 0.0.7 (pre-release)
+
 
 ### Pending Features
 
@@ -22,25 +32,16 @@
 npm install nez --save-dev
 ```
 
-### Recommends
-
-[Coffee Script](http://coffeescript.org/) - For a symantically ideal experience.
-
 ### General Usage
 
 This may (Still) change:
 
 
 ```coffee
-require('nez').realize 'ClassName', (Subject, validate, stacker, should) ->
 
-    stacker 'push labeled node into tree', (that) ->
-
-        that 'is a heirarchy of tests', (done) ->
-
-            should.should.should.exist 'tests (here)'
-            validate done
-
+#
+# jumpty dumpty
+#
 
 ```
 

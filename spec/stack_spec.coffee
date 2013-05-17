@@ -1,39 +1,84 @@
 should  = require 'should'
 print   = require('prettyjson').render
-stack   = require('../lib/nez').link()
+Stack   = require '../lib/stack'
 Plugins = require '../lib//plugin_register'
 
 describe 'Stack', -> 
 
-    describe 'is a eventEmitter', ->
+    
 
-        it 'allows assembling the tree in parallel'
+    it 'has a root node', (done) ->
 
-
-    it 'has a root node with backref to the stack', (done) ->
-
+        stack = new Stack label: 'LABEL1'
         stack.node.label.should.equal 'root'
-        stack.node.stack.should.equal stack
         done()
 
 
     describe 'has an event emitter', ->
 
+        describe 'start event', -> 
+
+            it 'is emitted once as the walker enters the branch', (done) ->
+
+                begun = false
+                test = new Stack label: 'STACK1'
+                test.on 'enter', (error, stack) -> 
+                    should.not.exist error
+                    begun.should.equal false
+                    stack.label.should.equal 'STACK1'
+                    stack.stack.length.should.equal 0
+                    done()
+
+                test.stacker 'one', (two) -> 
+                    begun = true
+                    two 'two', (three) ->
+
+        describe 'end event', -> 
+
+            it 'is emitted once as the walker exits the stack', (done) -> 
+
+                begun = false
+                test = new Stack label: 'STACK2'
+                test.on 'exit', (error, stack) -> 
+                    should.not.exist error
+                    begun.should.equal true
+                    stack.label.should.equal 'STACK2'
+                    stack.stack.length.should.equal 0
+                    done()
+
+                test.stacker 'one', (two) -> 
+                    two 'two', (three) ->
+                    begun = true
+
+            it 'is emitted once if an exception is raised in the stack', (done) -> 
+
+                begun = false
+                test = new Stack label: 'STACK3'
+                test.on 'exit', (error, stack) -> 
+                    error.should.match /ERROR/
+                    stack.stack.length.should.equal 2
+                    done()
+
+                test.stacker 'one', (two) -> 
+                    two 'two', (three) ->
+                        throw new Error 'ERROR'
+
         describe 'edge event', ->
 
             it 'is emitted with each traversal from one node to another', (done) ->
 
+                stack = new Stack label: 'LABEL2'
                 STACK = stack
-                stack.on 'edge', (placeholder, nodes) ->
+                stack.on 'tree:traverse', (traversal) ->
                     #
                     # exiting THREE?
                     #
-                    if nodes.from.label == 'THREE'
+                    if traversal.from.label == 'THREE'
                         #
                         # GOT thing in it?
                         #
-                        nodes.from.stick.this.into.should.equal 'IT'
-                        done()
+                        traversal.from.stick.this.into.should.equal 'IT'
+                        done()     
 
 
                 stack.stacker 'ONE', (Parent) -> 
@@ -47,7 +92,7 @@ describe 'Stack', ->
                 
 
 
-    describe 'stacker()', -> 
+    xdescribe 'stacker()', -> 
 
         it 'calls push() if received args', (done) -> 
 
@@ -61,7 +106,7 @@ describe 'Stack', ->
             done()
 
 
-    it 'hands the new node through each registered plugin', (done) -> 
+    xit 'hands the new node through each registered plugin', (done) -> 
 
         stack.stacker 'parent', (CLASS) ->
 
@@ -75,7 +120,7 @@ describe 'Stack', ->
             CLASS 'LABEL', (next) ->
         
 
-    describe 'ancestorsOf()', ->
+    xdescribe 'ancestorsOf()', ->
 
         it 'get all ancestors of a node', (done) -> 
 
@@ -90,10 +135,37 @@ describe 'Stack', ->
                         ]
                         done()
 
+    xdescribe 'validate()', -> 
 
-    describe 'push()', -> 
+        it 'calls onward to ActiveNode.plugin.validate supplying entire stack', (done) -> 
 
-        it 'attaches refence to the stack onto the node', (done) ->
+            test = new Stack label: 'LABEL'
+
+            finalCall = (Done) -> test.validate Done
+
+            test.activeNode.plugin = 
+
+                validate: (STACK, error) ->
+
+                    STACK[0].label.should.equal 'LABEL'
+                    STACK[1].label.should.equal 'Sub LABEL'
+                    STACK[1].class.should.equal 'Class'
+                    STACK[1].function.should.equal finalCall
+                    done()
+
+            test.stacker 'LABEL', (Class) -> 
+
+                Class 'Sub LABEL', finalCall
+
+
+
+    xdescribe 'push()', -> 
+
+
+
+        xit 'attaches refence to the stack onto the node', (done) ->
+
+            stack = new Stack label: 'LABEL'
 
             stack.stacker 'into child node', ->
                 node = stack.stack[0]
@@ -113,10 +185,8 @@ describe 'Stack', ->
 
             it 'stores the function on the new node pushed into the stack', (done) -> 
 
-                
-
                 callback = -> 
-                    stack.stack[0].callback.should.equal callback
+                    stack.stack[0].function.should.equal callback
                     done()
 
                 stack.stacker 'A thing', callback
