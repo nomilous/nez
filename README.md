@@ -19,6 +19,8 @@ Distributed Process Scaffold
 ### Pending Features
 
 * fix loss of context (blank test 'names')
+* skip test
+* skip all but test
 * nez.provide (serves modules into a worker farm)
 * nez.consume (uses nez.provide as injection source)
 * objective map (eo compile matching)
