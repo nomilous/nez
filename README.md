@@ -21,10 +21,12 @@ Distributed Process Scaffold
 * fix loss of context (blank test 'names')
 * skip test
 * skip all but test
+* run all
 * nez.provide (serves modules into a worker farm)
 * nez.consume (uses nez.provide as injection source)
 * inter-objective communications
 * objective map (eo compile matching)
+* display objective after test run
 * interspercable injection spec
 * **fix** fing
 * function and property expections
