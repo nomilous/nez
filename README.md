@@ -23,6 +23,7 @@ Distributed Process Scaffold
 * skip all but test
 * nez.provide (serves modules into a worker farm)
 * nez.consume (uses nez.provide as injection source)
+* inter-objective communications
 * objective map (eo compile matching)
 * interspercable injection spec
 * **fix** fing
