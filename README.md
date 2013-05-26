@@ -18,6 +18,7 @@ Distributed Process Scaffold
 
 ### Pending Features
 
+* pending tests - without `(done) ->` 
 * fix loss of context (blank test 'names')
 * skip test
 * skip all but test
