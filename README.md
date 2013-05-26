@@ -13,7 +13,7 @@ Distributed Process Scaffold
 
 ### Current Version
 
-0.0.7 (pre-release)
+0.0.7 (PRE RELEASE) 
 
 
 ### Pending Features
