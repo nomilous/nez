@@ -21,6 +21,7 @@ Distributed Process Scaffold
 * pending tests - without `(done) ->` 
 * fix loss of context (blank test 'names')
 * support `.coffee.md`
+* what can be done with this: `X-SourceMap: /path/to/file.js.map`
 * skip test
 * skip all but test
 * run all
