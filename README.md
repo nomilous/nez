@@ -22,6 +22,7 @@ Distributed Process Scaffold
 * fix loss of context (blank test 'names')
 * support `.coffee.md`
 * what can be done with this: `X-SourceMap: /path/to/file.js.map`
+* display surrounding context test failure / exception
 * skip test
 * skip all but test
 * run all
