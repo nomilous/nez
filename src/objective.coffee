@@ -2,21 +2,31 @@ notice         = require 'notice'
 module.exports = (title, opts...) ->
 
     unless typeof title == 'string'
-
         throw new Error 'objective(title, opts...) requires title as string'
 
-    options = opts[0] unless typeof opts[0] == 'function'
-    fn      = opts[opts.length - 1]
-
+    fn  = opts[opts.length - 1]
     unless typeof fn == 'function'
-
         throw new Error 'objective(title, opts...) requires function as last argument'
 
-    notice = notice.create title, (msg, next) -> 
 
+    #
+    # create messenger source
+    #
+
+    notice = notice.create title, (msg, next) -> 
         console.log msg.content
         next()
 
-    notice.event 'start', options || {}
+
+    #
+    # pending eo
+    #
+
+    options = title: title
+    unless typeof opts[0] == 'function'
+        options[key] = opts[0][key] for key of opts[0]
+
+    
+    notice.event 'objective::start', objective: options
 
     fn()
