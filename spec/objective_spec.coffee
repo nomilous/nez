@@ -7,14 +7,14 @@ describe 'objective', ->
 
         try objective()
         catch error
-            error.should.match /objective\(title, opts...\) requires title as string/
+            error.should.match /objective\(title, opts, fn\) requires title as string/
             done()
 
     it 'expects a function as last arg', (done) -> 
 
         try objective 'title'
         catch error
-            error.should.match /objective\(title, opts...\) requires function as last argument/
+            error.should.match /objective\(title, opts, fn\) requires function as last argument/
             done()
 
     it 'accepts options object as second arg', (done) -> 

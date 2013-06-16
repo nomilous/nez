@@ -1,32 +1,30 @@
 notice         = require 'notice'
-module.exports = (title, opts...) ->
+eo             = require 'eo'
+module.exports = (title, opts, fn) ->
 
     unless typeof title == 'string'
-        throw new Error 'objective(title, opts...) requires title as string'
+        throw new Error 'objective(title, opts, fn) requires title as string'
 
-    fn  = opts[opts.length - 1]
+    if typeof opts == 'function'
+        fn   = opts
+        opts = {}
+
     unless typeof fn == 'function'
-        throw new Error 'objective(title, opts...) requires function as last argument'
-
+        throw new Error 'objective(title, opts, fn) requires function as last argument'
 
     #
     # create messenger source
     #
 
-    notice = notice.create title, (msg, next) -> 
-        console.log msg.content
-        next()
+    notice = notice.create title, (msg, next) -> next()
 
 
     #
-    # pending eo
+    # start objective
     #
 
     options = title: title
-    unless typeof opts[0] == 'function'
-        options[key] = opts[0][key] for key of opts[0]
+    options[key] = opts[key] for key of opts
+    eo notice, options, fn
 
     
-    notice.event 'objective::start', objective: options
-
-    fn()
