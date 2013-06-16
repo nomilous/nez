@@ -1,4 +1,3 @@
-notice         = require 'notice'
 eo             = require 'eo'
 module.exports = (title, opts, fn) ->
 
@@ -12,12 +11,6 @@ module.exports = (title, opts, fn) ->
     unless typeof fn == 'function'
         throw new Error 'objective(title, opts, fn) requires function as last argument'
 
-    #
-    # create messenger source
-    #
-
-    notice = notice.create title, (msg, next) -> next()
-
 
     #
     # start objective
@@ -25,6 +18,6 @@ module.exports = (title, opts, fn) ->
 
     options = title: title
     options[key] = opts[key] for key of opts
-    eo notice, options, fn
+    eo options, fn
 
     
