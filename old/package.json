@@ -1,0 +1,32 @@
+{
+  "name": "nez",
+  "description": "Process Scaffold",
+  "version": "0.0.8",
+  "author": "nomilous <nomilous@gmail.com>",
+  "contributors": [
+    {
+      "name": "nomilous",
+      "email": "nomilous@gmail.com"
+    }
+  ],
+  "main": "./lib/nez",
+  "repository": "git@github.com:nomilous/nez.git",
+  "dependencies": {
+    "eo": "0.0.1",
+    "ipso": "0.0.1",
+    "nezcore": "0.0.3",
+    "fing": "0.0.5",
+    "colors": "~0.6.0-1",
+    "commander": "~1.1.1",
+    "hound": "~1.0.4",
+    "coffee-script": "~1.4.0",
+    "inflection": "~1.2.5",
+    "plex": "0.0.8"
+  },
+  "devDependencies": {
+    "prettyjson": "~0.7.1",
+    "docco": "~0.4.0",
+    "mocha": "~1.8.1",
+    "should": "~1.2.2"
+  }
+}
