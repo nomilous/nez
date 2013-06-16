@@ -19,5 +19,3 @@ module.exports = (title, opts, fn) ->
     options = title: title
     options[key] = opts[key] for key of opts
     eo options, fn
-
-    
