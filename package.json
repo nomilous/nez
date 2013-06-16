@@ -11,7 +11,9 @@
   ],
   "main": "./lib/nez",
   "repository": "git@github.com:nomilous/nez.git",
-  "dependencies": {},
+  "dependencies": {
+    "notice": "0.0.5"
+  },
   "devDependencies": {
     "hound": "~1.0.4",
     "should": "~1.2.2",
