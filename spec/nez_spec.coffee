@@ -23,6 +23,6 @@ describe 'nez', ->
 
     it 'exports realize()', (done) -> 
 
-        Nez.realize.should.equal require '../lib/realization'
+        Nez.realize.should.equal require '../lib/realize'
         done()
 
