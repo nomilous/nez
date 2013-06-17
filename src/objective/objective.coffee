@@ -21,6 +21,16 @@ module.exports = (title, opts, objectiveFn) ->
 
     options      = title: title
     options[key] = opts[key] for key of opts
+
+                          #
+                          # TODO: switch to inject.async (pending implement)
+                          # 
+                          #       - To await uplink (system presence)
+                          #         before spawn.
+                          #       
+                          #       - To allow injection of purpose 
+                          #         into a drone node.
+                          #
     objective    = inject.sync
 
         #

@@ -70,3 +70,12 @@ require('nez').objective 'Title of the Objective',
 
 
 ```
+
+
+How do you use it in a system?
+------------------------------
+
+
+### The Objective Tree
+
+...
