@@ -13,7 +13,8 @@
   "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
     "eo": "0.0.1",
-    "notice": "0.0.5"
+    "notice": "0.0.5",
+    "also": "0.0.2"
   },
   "devDependencies": {
     "hound": "~1.0.4",
