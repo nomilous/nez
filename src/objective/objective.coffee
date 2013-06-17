@@ -24,12 +24,6 @@ module.exports = (title, opts, objectiveFn) ->
     objective    = inject.sync
 
         #
-        # assign user defined beforeEach or default 
-        #
-
-        beforeEach: opts.beforeEach || (context) ->
-
-        #
         # beforeAll injects context (opts hash) and
         # the notifier as the first 2 args
         #
@@ -38,18 +32,8 @@ module.exports = (title, opts, objectiveFn) ->
 
             context.first.push options
             context.first.push notice.create 'objective', opts.messenger || eo.messenger
-
-            #
-            # run userdefined beforeAll() if present
-            #
-
-            if typeof opts.beforeAll == 'function'
-
-                opts.beforeAll.apply null, arguments
         
 
         (context, notifier, fn) -> eo options, notifier, fn
 
-
     objective objectiveFn
-    

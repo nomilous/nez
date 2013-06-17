@@ -14,7 +14,7 @@
   "dependencies": {
     "eo": "0.0.1",
     "notice": "0.0.5",
-    "also": "0.0.2"
+    "also": "0.0.1"
   },
   "devDependencies": {
     "hound": "~1.0.4",
