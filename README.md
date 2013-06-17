@@ -10,8 +10,8 @@ nez
 
 A Distributed Process Scaffold
 
-* [objective](https://github.com/nomilous/nez/tree/develop/spec/objective)
-* [realization](https://github.com/nomilous/nez/tree/develop/spec/realization)
+* [objective](https://github.com/nomilous/nez/tree/develop/src/objective)
+* [realization](https://github.com/nomilous/nez/tree/develop/src/realization)
 * TODO: move these to master after 
 
 
