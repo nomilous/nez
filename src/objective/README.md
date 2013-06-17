@@ -1,9 +1,18 @@
 Objective
 =========
 
-### Usage
+What is it?
+-----------
 
-`nez.objective( title, opts, objectiveFn )`
+Each component of a system has a particular purpose or **function** to perform in order to achieve whatever outcome the system was assembled to achieve. <br />
+
+`Objective` is a formalization of that notion of a component's purpose in order to enable its **declaration**, and more specifically, the **instrumentation** and **maintenance** of that purpose. <br />
+
+
+How do you use it?
+------------------
+
+### nez.objective( title, opts, objectiveFn )
 
 ```coffee
 
