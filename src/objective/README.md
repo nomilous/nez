@@ -12,9 +12,11 @@ Each component of a system has a particular purpose or **function** to perform i
 How do you use it?
 ------------------
 
-### nez.objective( title, opts, objectiveFn )
-
 ```coffee
+
+#
+# nez.objective( title, opts, objectiveFn )
+#
 
 require('nez').objective 'Title of the Objective', 
 
