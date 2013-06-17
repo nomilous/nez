@@ -1,3 +1,4 @@
+notice         = require 'notice'
 eo             = require 'eo'
 module.exports = (title, opts, fn) ->
 
@@ -12,10 +13,13 @@ module.exports = (title, opts, fn) ->
         throw new Error 'objective(title, opts, fn) requires function as last argument'
 
 
+    notifier = notice.create 'objective', opts.messenger || eo.messenger
+
+
     #
     # start objective
     #
 
     options = title: title
     options[key] = opts[key] for key of opts
-    eo options, fn
+    eo options, notifier, fn
