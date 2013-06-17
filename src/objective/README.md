@@ -9,8 +9,8 @@ Each component of a system has a particular purpose or **function** to perform i
 `Objective` is a formalization of that notion of a component's purpose in order to enable its **declaration**, and more specifically, the **instrumentation** and **maintenance** of that purpose. <br />
 
 
-How do you use it?
-------------------
+How do I use it?
+----------------
 
 ```coffee
 
@@ -50,6 +50,17 @@ require('nez').objective 'Title of the Objective',
         next()
 
     #
+    # opts.error (optional)
+    # ---------------------
+    # 
+    # * Errors that terminate the objective are sent here
+    # 
+
+    error: (error) -> 
+
+        console.log 'ERROR!!', error.stack
+
+    #
     # opts.otherConfig
     # ----------------
     #
@@ -72,8 +83,8 @@ require('nez').objective 'Title of the Objective',
 ```
 
 
-How do you use it in a system?
-------------------------------
+How do I use it in a system?
+----------------------------
 
 
 ### The Objective Tree

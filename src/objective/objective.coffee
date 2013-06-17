@@ -34,6 +34,17 @@ module.exports = (title, opts, objectiveFn) ->
             context.first.push options
             context.first.push notice.create 'objective', opts.messenger || eo.messenger
             done()
+
+        #
+        # assign a default error handler if none was configured
+        #
+
+        error: options.error || (
+
+            console.log 'WARNING', 'objective without error handler'
+            (error) -> console.log 'ERROR', error
+
+        )
         
 
         (context, notifier, fn) -> 

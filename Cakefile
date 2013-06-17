@@ -40,6 +40,7 @@ watchSrcDir = ->
     console.log 'Watching ./src'
     watcher = hound.watch './src'
     watcher.on 'change', (file, stats) ->
+        return unless file.match /\.coffee$/
         build -> changed file
 
 watchSpecDir = ->
