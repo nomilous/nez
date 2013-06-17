@@ -1,14 +1,18 @@
-nez
-===
-
-Distributed Process Scaffold
-
-
 ### Due Homage
 
 [RSpec](http://rspec.info/)<br />
 [Node.js](http://nodejs.org)<br />
 [Coffee Script](http://coffeescript.org/)<br />
+
+
+nez
+===
+
+A Distributed Process Scaffold
+
+* [objective](https://github.com/nomilous/nez/tree/develop/src/objective)
+* [realization](https://github.com/nomilous/nez/tree/develop/src/realization)
+* TODO: move these to master after 
 
 
 ### Current Version
