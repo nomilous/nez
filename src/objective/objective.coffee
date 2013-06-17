@@ -22,28 +22,34 @@ module.exports = (title, opts, objectiveFn) ->
     options      = title: title
     options[key] = opts[key] for key of opts
 
-                          #
-                          # TODO: switch to inject.async (pending implement)
-                          # 
-                          #       - To await uplink (system presence)
-                          #         before spawn.
-                          #       
-                          #       - To allow injection of purpose 
-                          #         into a drone node.
-                          #
-    objective    = inject.sync
+    objective    = inject.async
 
         #
         # beforeAll injects context (opts hash) and
         # the notifier as the first 2 args
         #
 
-        beforeAll: (context) -> 
+        beforeAll: (done, context) -> 
 
             context.first.push options
             context.first.push notice.create 'objective', opts.messenger || eo.messenger
+            done()
         
 
-        (context, notifier, fn) -> eo options, notifier, fn
+        (context, notifier, fn) -> 
+
+            #
+            # handoff to eo to start whichever 
+            # objective module (plugin) was configured
+            #
+
+            eo context, notifier, fn
+
+
+    #
+    # start the objective
+    #
 
     objective objectiveFn
+
+
