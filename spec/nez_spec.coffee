@@ -16,13 +16,13 @@ describe 'nez', ->
 
     it 'exports objective()', (done) ->
 
-        Nez.objective.should.equal require '../lib/objective' 
+        Nez.objective.should.equal require '../lib/objective/objective' 
         done()
 
 
 
     it 'exports realize()', (done) -> 
 
-        Nez.realize.should.equal require '../lib/realize'
+        Nez.realize.should.equal require '../lib/realization/realize'
         done()
 

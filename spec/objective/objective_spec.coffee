@@ -1,5 +1,5 @@
 should    = require 'should'
-objective = require '../lib/objective'
+objective = require '../../lib/objective/objective'
 
 describe 'objective', -> 
 

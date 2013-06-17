@@ -1,5 +1,5 @@
 should  = require 'should'
-realize = require '../lib/realize'
+realize = require '../../lib/realization/realize'
  
 describe 'realize', -> 
 
