@@ -29,11 +29,11 @@ module.exports = (title, opts, objectiveFn) ->
         # the notifier as the first 2 args
         #
 
-        beforeAll: (done, context) -> 
+        beforeAll: (done, inject) -> 
 
-            context.first.push options
-            context.first.push notice.create 'objective', opts.messenger || eo.messenger
-            options.hub =      notice.listen 'realizers', (error, address) -> 
+            inject.first[1] = notice.create 'objective', opts.messenger || eo.messenger
+            inject.first[0] = notice.listen 'realizers', options, (error, address) -> 
+                
                 options.address = address
                 done error
 
