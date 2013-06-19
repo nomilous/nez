@@ -24,14 +24,14 @@ require('nez').objective 'Nez',
 
     """
 
-    possibility: """ 
+    possability: """ 
 
         Imagine a framework capable of houseing a graph of nodes, each 
         representing a component of a complex system, and a set edges 
         along which a configured 'consciousness' can traverse as it 
         endeavours to complete its assigned task.
 
-    """ 
+    """ # https://github.com/nomilous/notice/commit/2d1ab627f778441f224f96f95759f35c0c15b591
 
 
     ALSO: 'what the door mouse said'
