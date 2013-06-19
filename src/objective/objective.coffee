@@ -33,7 +33,9 @@ module.exports = (title, opts, objectiveFn) ->
 
             context.first.push options
             context.first.push notice.create 'objective', opts.messenger || eo.messenger
-            done()
+            options.hub =      notice.listen 'realizers', (error, address) -> 
+                options.address = address
+                done error
 
         #
         # assign a default error handler if none was configured
