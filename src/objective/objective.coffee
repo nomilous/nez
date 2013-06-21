@@ -31,11 +31,8 @@ module.exports = (title, opts, objectiveFn) ->
 
         beforeAll: (done, inject) -> 
 
+            inject.first[0] = notice.listen 'realizers', options, (error) -> done error 
             inject.first[1] = notice.create 'objective', opts.messenger || eo.messenger
-            inject.first[0] = notice.listen 'realizers', options, (error, address) -> 
-                
-                options.address = address
-                done error
 
         #
         # assign a default error handler if none was configured
@@ -48,15 +45,11 @@ module.exports = (title, opts, objectiveFn) ->
 
         )
         
+        #
+        # inject into eo
+        #
 
-        (context, notifier, fn) -> 
-
-            #
-            # handoff to eo to start whichever 
-            # objective module (plugin) was configured
-            #
-
-            eo context, notifier, fn
+        eo
 
 
     #
