@@ -1,6 +1,7 @@
 should    = require 'should'
 objective = require '../../lib/objective/objective'
 notice    = require 'notice'
+eo        = require 'eo'
 
 notice.listen = (hubName, opts, cb) -> cb()
 
@@ -30,5 +31,17 @@ describe 'objective', ->
 
         notice.listen = (hubName, opts, cb) -> done()
         objective 'title', key: 'value', ->
+
+
+    it 'attaches tools onto the context', (done) -> 
+
+        notice.listen = (hubName, opts, cb) -> 
+            opts.tools.should.equal require '../../lib/tools'
+            done()
+
+        objective 'title', key: 'value', -> 
+
+
+
 
 

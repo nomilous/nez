@@ -19,10 +19,10 @@ module.exports = (title, opts, objectiveFn) ->
     # configure the objective
     #
 
-    options      = title: title
-    options[key] = opts[key] for key of opts
-
-    objective    = inject.async
+    options        = title: title
+    options.tools  = require '../tools'
+    options[key]   = opts[key] for key of opts
+    objective      = inject.async
 
         #
         # beforeAll injects context (opts hash) and
