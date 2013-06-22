@@ -22,4 +22,9 @@ describe 'realizers', ->
                 done()
 
 
-        
+        it 'spawns the realizer if flag is set', (done) -> 
+
+            realizers.allowSpawn = true
+            realizers.spawn = -> done()
+            realizers.get id: 'ID', (error, realizer) -> 
+

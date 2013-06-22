@@ -3,8 +3,9 @@
 #
 
 collection = {}
+allowSpawn = false
 
-module.exports = 
+realizers = 
 
     get: (opts, callback) -> 
 
@@ -17,5 +18,19 @@ module.exports =
 
         unless collection[opts.id]?
 
-            return callback new Error 'missing realizer'
+            unless allowSpawn
 
+                return callback new Error 'missing realizer'
+
+
+            realizers.spawn opts
+
+
+
+Object.defineProperty realizers, 'allowSpawn', 
+    
+    set: (value) -> allowSpawn = value if typeof value == 'boolean'
+
+
+
+module.exports = realizers
