@@ -1,7 +1,9 @@
 should    = require 'should'
-realizers = require '../lib/realizers'
+Realizers = require '../lib/realizers'
 
 describe 'realizers', -> 
+
+    realizers = Realizers()
 
     context 'get( opts )', -> 
 

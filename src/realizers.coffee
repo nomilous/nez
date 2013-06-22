@@ -5,32 +5,35 @@
 collection = {}
 allowSpawn = false
 
-realizers = 
+factory = (context, notice) -> 
 
-    get: (opts, callback) -> 
+    realizers = 
 
-        opts ||= {}
+        get: (opts, callback) -> 
 
-        unless opts.id? 
+            opts ||= {}
 
-            throw new Error 'realizers.get(opts, callback) opts.id as the realizer id'
+            unless opts.id? 
 
-
-        unless collection[opts.id]?
-
-            unless allowSpawn
-
-                return callback new Error 'missing realizer'
+                throw new Error 'realizers.get(opts, callback) opts.id as the realizer id'
 
 
-            realizers.spawn opts
+            unless collection[opts.id]?
+
+                unless allowSpawn
+
+                    return callback new Error 'missing realizer'
 
 
-
-Object.defineProperty realizers, 'allowSpawn', 
-    
-    set: (value) -> allowSpawn = value if typeof value == 'boolean'
+                realizers.spawn opts
 
 
+    Object.defineProperty realizers, 'allowSpawn', 
+        
+        set: (value) -> allowSpawn = value if typeof value == 'boolean'
 
-module.exports = realizers
+
+    return realizers
+
+
+module.exports = factory
