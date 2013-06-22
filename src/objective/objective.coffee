@@ -9,7 +9,7 @@ module.exports = (title, opts, objectiveFn) ->
     objective  = async
 
         #
-        # asynchronous config assembles injection args for eo
+        # asynchronous config assembly for args injection into eo
         # 
 
         beforeAll: (done, inject) -> 
