@@ -21,7 +21,3 @@ describe 'objective', ->
 
         objective 'title', description: 'd', -> 
 
-
-
-
-

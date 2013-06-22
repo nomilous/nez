@@ -2,30 +2,48 @@
 # attached realizers collection
 #
 
+Notice     = require 'notice'
 collection = {}
 
-factory = (context, notice) -> 
+factory    = (context, notice, callback) -> 
 
-    spawn = (opts, callback) -> callback()
+    Notice.listen 'realizers', context, (error) -> 
+
+        #
+        # async factory class, it callsback with the
+        # realizers collection object once the Notice 
+        # hub is up and listening for realizers
+        # 
+
+        return callback error if error?
+
+        return callback null, 
+
+            #
+            # realizers.get( opts, callback ) 
+            # 
+            # calls back with a reference to the
+            # realizer specified in opts.id
+            # 
 
 
-    get: (opts, callback) -> 
+            get: (opts, callback) -> 
 
-        opts ||= {}
+                opts ||= {}
 
-        unless opts.id? 
+                unless opts.id? 
 
-            throw new Error 'realizers.get(opts, callback) requires opts.id as the realizer id'
-
-
-        unless collection[opts.id]?
-
-            unless opts.script?
-
-                return callback new Error 'missing realizer'
+                    throw new Error 'realizers.get(opts, callback) requires opts.id as the realizer id'
 
 
-            spawn opts, callback
+                unless collection[opts.id]?
+
+                    unless opts.script?
+
+                        return callback new Error 'missing realizer'
+
+
+                    context.tools.spawn opts, callback
 
 
 module.exports = factory

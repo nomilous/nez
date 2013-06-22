@@ -1,11 +1,30 @@
 should    = require 'should'
 Realizers = require '../lib/realizers'
+core      = require 'nezcore'
+Notice    = require 'notice'
 
 describe 'realizers', -> 
 
-    realizers = Realizers()
+    Notice.listen = (title, opts, callback) -> callback null, opts
+    CONTEXT       = tools: spawn: ->
+    realizers     = undefined
+
+    before (done) -> 
+
+        #
+        # Realizers is an async factory class, it calls back with
+        # the assembled realizers collection
+        #
+
+        Realizers CONTEXT, {}, (err, result) -> 
+
+            realizers = result
+            done()        
+
+
 
     context 'get( opts )', -> 
+
 
         it 'requires a realizer id', (done) -> 
 
@@ -32,10 +51,11 @@ describe 'realizers', ->
                 # only coffee
                 #
 
+                CONTEXT.tools.spawn = -> done()
+
                 realizers.get 
 
                     id: 'ID'
                     script: 'SCRIPT'
-                    (error, realizer) -> done()
+                    (error, realizer) -> 
 
-                
