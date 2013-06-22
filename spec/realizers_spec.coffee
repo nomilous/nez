@@ -54,7 +54,10 @@ describe 'realizers', ->
                 realizers.get = spy
                 callback null, task: -> done()
 
-            realizers.task 'get more minerals', id: 'miners/group3/*'
+            realizers.task 'get more minerals', 
+
+                match: 'miners/group3/*'
+                fromHere: 'CL!CK'
             
             
 

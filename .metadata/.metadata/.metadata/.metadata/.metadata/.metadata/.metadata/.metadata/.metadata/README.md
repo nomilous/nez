@@ -34,7 +34,7 @@
 
 
 
-                                         we need 'more minerals'
+                                         we need more minerals
 
 
                                                        - starcraft
