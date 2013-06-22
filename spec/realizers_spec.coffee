@@ -19,19 +19,46 @@ describe 'realizers', ->
         Realizers CONTEXT, {}, (err, result) -> 
 
             realizers = result
-            done()        
+            done()
 
 
+    context 'task(title, ref)', -> 
 
-    context 'get( opts )', -> 
+        it 'emits a task to a realizer', (done) -> 
 
+            spy = realizers.get
+            realizers.get = (ref, callback) -> 
+                realizers.get = spy
+
+                #
+                # mock the getting of the realizer
+                # by returning a realize with spy
+                # on the call to task
+                #
+
+                callback null, 
+
+                    task: (title) -> 
+
+                        title.should.equal 'The Frabjous Day'
+                        done()
+
+
+            realizers.task 'The Frabjous Day'
+            
+
+    context 'get( ref, callback )', -> 
+
+        #
+        # gets reference to an attached realizer
+        #
 
         it 'requires a realizer id', (done) -> 
 
             try realizers.get()
             catch error 
 
-                error.should.match /realizers.get\(opts, callback\) requires opts.id as the realizer id/
+                error.should.match /realizers.get\(ref, callback\) requires ref.id as the realizer id/
                 done()
 
 
@@ -71,4 +98,6 @@ describe 'realizers', ->
 
                         error.should.match /nez supports only coffee-script realizers/
                         done()
+
+
 
