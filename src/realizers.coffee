@@ -3,37 +3,29 @@
 #
 
 collection = {}
-allowSpawn = false
 
 factory = (context, notice) -> 
 
-    realizers = 
-
-        get: (opts, callback) -> 
-
-            opts ||= {}
-
-            unless opts.id? 
-
-                throw new Error 'realizers.get(opts, callback) opts.id as the realizer id'
+    spawn = (opts, callback) -> callback()
 
 
-            unless collection[opts.id]?
+    get: (opts, callback) -> 
 
-                unless allowSpawn
+        opts ||= {}
 
-                    return callback new Error 'missing realizer'
+        unless opts.id? 
 
-
-                realizers.spawn opts
-
-
-    Object.defineProperty realizers, 'allowSpawn', 
-        
-        set: (value) -> allowSpawn = value if typeof value == 'boolean'
+            throw new Error 'realizers.get(opts, callback) requires opts.id as the realizer id'
 
 
-    return realizers
+        unless collection[opts.id]?
+
+            unless opts.script?
+
+                return callback new Error 'missing realizer'
+
+
+            spawn opts, callback
 
 
 module.exports = factory

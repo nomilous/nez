@@ -12,7 +12,7 @@ describe 'realizers', ->
             try realizers.get()
             catch error 
 
-                error.should.match /realizers.get\(opts, callback\) opts.id as the realizer id/
+                error.should.match /realizers.get\(opts, callback\) requires opts.id as the realizer id/
                 done()
 
 
@@ -24,9 +24,18 @@ describe 'realizers', ->
                 done()
 
 
-        it 'spawns the realizer if flag is set', (done) -> 
+        context 'can spawn the realizer', -> 
 
-            realizers.allowSpawn = true
-            realizers.spawn = -> done()
-            realizers.get id: 'ID', (error, realizer) -> 
+            it 'if opts.script is specified', (done) -> 
 
+                #
+                # only coffee
+                #
+
+                realizers.get 
+
+                    id: 'ID'
+                    script: 'SCRIPT'
+                    (error, realizer) -> done()
+
+                
