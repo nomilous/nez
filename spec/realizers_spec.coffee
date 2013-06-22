@@ -45,6 +45,17 @@ describe 'realizers', ->
 
 
             realizers.task 'The Frabjous Day'
+
+
+        it 'can get more minerals', (done) -> 
+
+            spy = realizers.get
+            realizers.get = (ref, callback) -> 
+                realizers.get = spy
+                callback null, task: -> done()
+
+            realizers.task 'get more minerals', id: 'miners/group3/*'
+            
             
 
     context 'get( ref, callback )', -> 
