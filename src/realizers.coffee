@@ -42,6 +42,10 @@ factory    = (context, notice, callback) ->
 
                         return callback new Error 'missing realizer'
 
+                    unless opts.script.match( /\.(lit)*coffee$/ )?
+
+                        return callback new Error 'nez supports only coffee-script realizers' # for now
+
 
                     context.tools.spawn opts, callback
 

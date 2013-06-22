@@ -51,11 +51,24 @@ describe 'realizers', ->
                 # only coffee
                 #
 
-                CONTEXT.tools.spawn = -> done()
+                CONTEXT.tools.spawn = -> 
+                    CONTEXT.tools.spawn = ->
+                    done()
 
                 realizers.get 
 
                     id: 'ID'
-                    script: 'SCRIPT'
+                    script: 'SCRIPT.coffee'
                     (error, realizer) -> 
+
+            it 'if opts.script is coffee-script', (done) -> 
+
+                realizers.get 
+
+                    id: 'ID'
+                    script: 'SCRIPT.js'
+                    (error, realizer) -> 
+
+                        error.should.match /nez supports only coffee-script realizers/
+                        done()
 
