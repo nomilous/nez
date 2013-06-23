@@ -26,5 +26,5 @@ describe 'realize', ->
             done()
 
 
-        realize 'title', ->
+        realize 'this', ->
 

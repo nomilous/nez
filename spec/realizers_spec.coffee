@@ -57,8 +57,10 @@ describe 'realizers', ->
             realizers.task 'get more minerals', 
 
                 match: 'miners/group3/*'
-                fromHere: 'CL!CK'
-            
+                scroll: 'to corner of map'
+                location: 'CL!CK'
+                'huh?': 'https://github.com/nomilous/nez/tree/develop/.metadata/.metadata/.metadata/.metadata/.metadata/.metadata/.metadata/.metadata/.metadata'
+
             
 
     context 'get( ref, callback )', -> 
@@ -99,6 +101,7 @@ describe 'realizers', ->
                     id: 'ID'
                     script: 'SCRIPT.coffee'
                     (error, realizer) -> 
+
 
             it 'if opts.script is coffee-script', (done) -> 
 

@@ -9,12 +9,8 @@
 
 
 
-                                         TYPES: BEGIN OF MORE
-                                                AMOUNT(5), 
-                                                END OF MORE
-
-                                                BEGIN OF MINERALS
-                                                AMOUNT(MORE),
+                                         TYPES: BEGIN OF MINERALS
+                                                AMOUNT(5),
                                                 END OF MINERALS
 
                                          CALL FUNCTION 'ACCRUE_IF'
@@ -34,10 +30,14 @@
 
 
 
-                                         we need more minerals
+                                         you need more minerals
 
 
                                                        - starcraft
+
+
+
+
 
 
 
