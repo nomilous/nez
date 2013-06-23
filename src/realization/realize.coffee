@@ -1,23 +1,28 @@
-ipso = require 'ipso'
+Notice = require 'notice'
+async  = require('also').inject.async
+tools  = require '../tools'
+ipso   = require 'ipso'
 
-module.exports = (title, fn) -> 
+module.exports = (title, optionalOpts, realizerFn) -> 
 
-    console.log 'START REALIZER'
+    context = ipso.validate.apply this, arguments
 
-    console.log JSON.stringify
+    console.log 'START REALIZER', context
 
-        realize:
+    # console.log JSON.stringify
 
-            #
-            # got all the bits?
-            # 
+    #     realize:
 
-            transport: process.env['OBJECTIVE_transport']
-            address: process.env['OBJECTIVE_address']
-            port: process.env['OBJECTIVE_port']
-            title: title
+    #         #
+    #         # got all the bits?
+    #         # 
 
-        null
-        2
+    #         transport: process.env['OBJECTIVE_transport']
+    #         address: process.env['OBJECTIVE_address']
+    #         port: process.env['OBJECTIVE_port']
+    #         title: title
+
+    #     null
+    #     2
 
 
