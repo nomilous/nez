@@ -5,9 +5,11 @@ ipso   = require 'ipso'
 
 module.exports = (title, optionalOpts, realizerFn) -> 
 
-    context = ipso.validate.apply this, arguments
+    {context, realizerFn} = ipso.validate.apply this, arguments
 
-    console.log 'START REALIZER', context
+    console.log 'START REALIZER', 
+        context:  context
+        realizer: realizerFn.toString()
 
     # console.log JSON.stringify
 
