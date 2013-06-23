@@ -24,11 +24,11 @@ module.exports = (title, optionalOpts, realizerFn) ->
 
                     #
                     # some libs generate errors that are not
-                    # instances of Error, make the so
+                    # instances of Error ....
                     #
 
-                    unless error instanceof Error 
-                        return done new Error error
+                    
+                    return done new Error error unless error instanceof Error # .... spank them!
                     return done error
 
 
