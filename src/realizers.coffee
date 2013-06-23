@@ -81,7 +81,7 @@ factory    = (context, notice, callback) ->
                     process.env['UPLINK_address'] = context.hub.listening.address
                     process.env['UPLINK_port'] = context.hub.listening.port
 
-                    context.tools.spawn 
+                    context.tools.spawn notice,
 
                         arguments: [ref.script]
                         
