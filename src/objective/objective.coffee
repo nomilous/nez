@@ -2,7 +2,7 @@ Notice    = require 'notice'
 async     = require('also').inject.async
 tools     = require '../tools'
 Realizers = require '../realizers'
-eo     = require 'eo'
+eo        = require 'eo'
 
 module.exports = (title, opts, objectiveFn) ->
 
