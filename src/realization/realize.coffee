@@ -20,9 +20,23 @@ module.exports = (title, optionalOpts, realizerFn) ->
 
             Notice.connect 'realizer', context, (error, notice) -> 
 
+                if error? 
+
+                    #
+                    # some libs generate errors that are not
+                    # instances of Error, make the so
+                    #
+
+                    unless error instanceof Error 
+                        return done new Error error
+                    return done error
+
+
                 inject.first[0] = context
                 inject.first[1] = notice
                 done()
+
+        error: (error) -> console.log 'Realizer error!', error
 
         ipso
 
