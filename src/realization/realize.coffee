@@ -6,6 +6,7 @@ ipso   = require 'ipso'
 module.exports = (title, optionalOpts, realizerFn) -> 
 
     {context, realizerFn} = ipso.validate.apply this, arguments
+    context.tools = tools
 
     #
     # asynchronous config assembly of args for injection:
@@ -17,7 +18,7 @@ module.exports = (title, optionalOpts, realizerFn) ->
 
         beforeAll: (done, inject) -> 
 
-            Notice.connect (error, notice) -> 
+            Notice.connect 'realizer', context, (error, notice) -> 
 
                 inject.first[0] = context
                 inject.first[1] = notice
@@ -27,30 +28,3 @@ module.exports = (title, optionalOpts, realizerFn) ->
 
 
     realizer realizerFn
-
-
-
-
-
-
-    # console.log 'START REALIZER', 
-    #     context:  context
-    #     realizer: realizerFn.toString()
-
-    # console.log JSON.stringify
-
-    #     realize:
-
-    #         #
-    #         # got all the bits?
-    #         # 
-
-    #         transport: process.env['OBJECTIVE_transport']
-    #         address: process.env['OBJECTIVE_address']
-    #         port: process.env['OBJECTIVE_port']
-    #         title: title
-
-    #     null
-    #     2
-
-

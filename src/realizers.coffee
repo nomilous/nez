@@ -77,9 +77,9 @@ factory    = (context, notice, callback) ->
                     # spawning local realizer requires connection address
                     #
 
-                    process.env['OBJECTIVE_transport'] = context.hub.listening.transport
-                    process.env['OBJECTIVE_address'] = context.hub.listening.address
-                    process.env['OBJECTIVE_port'] = context.hub.listening.port
+                    process.env['UPLINK_transport'] = context.hub.listening.transport
+                    process.env['UPLINK_address'] = context.hub.listening.address
+                    process.env['UPLINK_port'] = context.hub.listening.port
 
                     context.tools.spawn 
 

@@ -88,13 +88,11 @@ describe 'realizers', ->
 
             it 'if opts.script is specified', (done) -> 
 
-                #
-                # only coffee
-                #
-
                 CONTEXT.tools.spawn = -> 
                     CONTEXT.tools.spawn = ->
                     done()
+
+                CONTEXT.hub = listening: {}
 
                 realizers.get 
 
