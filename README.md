@@ -1,8 +1,12 @@
+### Version 0.0.7 (PRE RELEASE) 
+
+`npm install nez`
+
 ### Due Homage
 
 [RSpec](http://rspec.info/)<br />
-[Node.js](http://nodejs.org)<br />
 [Coffee Script](http://coffeescript.org/)<br />
+[Node.js](http://nodejs.org)<br />
 
 
 nez
@@ -15,9 +19,6 @@ A Distributed Process Scaffold
 * TODO: move these to master after 
 
 
-### Current Version
-
-0.0.7 (PRE RELEASE) 
 
 
 ### Pending Features
