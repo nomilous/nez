@@ -30,6 +30,7 @@ A Distributed Process Scaffold
 * skip test
 * skip all but test
 * run all
+* detailed flag true amplifies notification for excessive detail (for metrix-o-philes, see notice middleware)
 * nez.provide (serves modules into a worker farm)
 * nez.consume (uses nez.provide as injection source)
 * inter-objective communications
