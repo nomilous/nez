@@ -7,9 +7,35 @@ module.exports = (title, optionalOpts, realizerFn) ->
 
     {context, realizerFn} = ipso.validate.apply this, arguments
 
-    console.log 'START REALIZER', 
-        context:  context
-        realizer: realizerFn.toString()
+    #
+    # asynchronous config assembly of args for injection:
+    # 
+    #        ipso( context, notice, realizerFn )
+    #
+
+    realizer = async
+
+        beforeAll: (done, inject) -> 
+
+            Notice.connect (error, notice) -> 
+
+                inject.first[0] = context
+                inject.first[1] = notice
+                done()
+
+        ipso
+
+
+    realizer realizerFn
+
+
+
+
+
+
+    # console.log 'START REALIZER', 
+    #     context:  context
+    #     realizer: realizerFn.toString()
 
     # console.log JSON.stringify
 
