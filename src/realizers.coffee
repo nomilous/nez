@@ -7,7 +7,7 @@ collection = {}
 
 factory    = (context, notice, callback) -> 
 
-    Notice.listen 'realizers', context, (error) -> 
+    Notice.listen 'realizers', context, (error) ->
 
         #
         # async factory class, it callsback with the
@@ -73,7 +73,23 @@ factory    = (context, notice, callback) ->
                         return callback new Error 'nez supports only coffee-script realizers' # for now
 
 
-                    context.tools.spawn ref, callback
+                    #
+                    # spawning local realizer requires connection address
+                    #
+
+                    process.env['OBJECTIVE_transport'] = context.hub.listening.transport
+                    process.env['OBJECTIVE_address'] = context.hub.listening.address
+                    process.env['OBJECTIVE_port'] = context.hub.listening.port
+
+                    context.tools.spawn 
+
+                        arguments: [ref.script]
+                        
+                        (error, child) -> 
+
+                            child.stdout.on 'data', (data) -> 
+
+                                console.log data.toString()
 
 
         return callback null, realizers
