@@ -31,6 +31,10 @@ module.exports = (title, optionalOpts, realizerFn) ->
                     return done new Error error unless error instanceof Error # .... spank them!
                     return done error
 
+                #
+                # notice has an established connection to the objective
+                # assign arguments and proceed the injection into ipso
+                #
 
                 inject.first[0] = context
                 inject.first[1] = notice
