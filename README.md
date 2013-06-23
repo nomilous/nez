@@ -45,21 +45,3 @@ A Distributed Process Scaffold
 * expanded plugin capabilities
 * tree integration
 
-### Install
-
-```bash
-npm install nez --save-dev
-```
-
-### General Usage
-
-This may (Still) change:
-
-
-```coffee
-#
-# jumpty dumpty
-#
-
-```
-
