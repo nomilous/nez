@@ -7,12 +7,34 @@ describe 'realizers', ->
 
     LISTENING     = {}
     Notice.listen = (title, opts, callback) -> 
+
         LISTENING['listen'] = opts
-        callback null, opts
+
+                                  #
+                                  # pending integrations
+                                  #
+
+
+                                  #
+                                  #  
+                                  # Notice attaches ref to listening address once
+        opts.listening =   {}     # the hub is up, this stub needs to mimic that
+                                  # behaviour
+                                  # 
+                                  # 
+
+                                  # 
+                                  # 
+                                  # Notice calls back with middleware pipeline
+        callback null,     {}     # attached to the remote notifiers
+                                  # 
+                                  # 
+                                  # 
 
     CONTEXT       = 
         listen: 'LISTENSPEC'
         tools: spawn: ->
+
     realizers     = undefined
 
     before (done) -> 

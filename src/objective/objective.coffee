@@ -25,8 +25,28 @@ module.exports = (title, opts, objectiveFn) ->
             #
 
             notice = Notice.create 'objective', context.messenger || eo.messenger
-            
-
+                 # 
+                 # 
+                 # 
+                 #
+                 #         DECISION POINT
+                 #         ==============
+                 # 
+                 #         Separate notifiers in the objective?
+                 # 
+                 #         * one attached to remote realizers
+                 #           and the other for local notifications
+                 # 
+                 #         * or both on the same pipeline
+                 # 
+                 # 
+                 #         UM
+                 #         
+                 # 
+                 ###################################
+                                                   #
+                                                   # 
+                                                   #
             Realizers context, notice, (error, realizers) -> 
 
                 return done error if error?

@@ -7,7 +7,13 @@ collection = {}
 
 factory    = (context, notice, callback) -> 
 
-    Notice.listen 'realizers', context, (error) ->
+
+    Notice.listen 'realizers', context, (error, Realizers) ->
+                                                    #
+                                                    # middleware pipeline carrying
+                                                    # messages from remote realizers
+                                                    # 
+
 
         #
         # async factory class, it callsback with the
@@ -17,7 +23,7 @@ factory    = (context, notice, callback) ->
 
         return callback error if error?
 
-        realizers = 
+        integrations = 
 
             #
             # realizers.task( title, ref )
@@ -39,7 +45,7 @@ factory    = (context, notice, callback) ->
 
             task: (title, ref) -> 
 
-                realizers.get ref, (err, realizer) -> 
+                integrations.get ref, (err, realizer) -> 
 
                     realizer.task title
 
@@ -77,9 +83,9 @@ factory    = (context, notice, callback) ->
                     # spawning local realizer requires connection address
                     #
 
-                    process.env['UPLINK_transport'] = context.hub.listening.transport
-                    process.env['UPLINK_address'] = context.hub.listening.address
-                    process.env['UPLINK_port'] = context.hub.listening.port
+                    process.env['UPLINK_transport'] = context.listening.transport
+                    process.env['UPLINK_address'] = context.listening.address
+                    process.env['UPLINK_port'] = context.listening.port
 
                     context.tools.spawn notice,
 
@@ -90,14 +96,14 @@ factory    = (context, notice, callback) ->
                             child.stdout.on 'data', (data) -> 
 
                                 #
-                                # temporary (distinguish child)
+                                # temporary (distinguish child output)
                                 #
                                 
                                 lines = data.toString().split '\n'
                                 console.log '---------->', line for line in lines
 
 
-        return callback null, realizers
+        return callback null, integrations
 
 
 module.exports = factory
