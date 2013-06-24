@@ -21,10 +21,10 @@ describe 'realize', ->
     it 'connects to an objective', (done) -> 
 
         spy = Notice.connect
-        Notice.connect = -> 
+        Notice.connect = (title, opts, callback) -> 
             Notice.connect = spy
+            opts.connect.should.equal 'CONNECTSPEC'
             done()
 
-
-        realize 'this', ->
+        realize 'this', connect: 'CONNECTSPEC', ->
 

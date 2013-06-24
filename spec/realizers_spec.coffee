@@ -3,10 +3,16 @@ Realizers = require '../lib/realizers'
 core      = require 'nezcore'
 Notice    = require 'notice'
 
-describe 'realizers', -> 
+describe 'realizers', ->
 
-    Notice.listen = (title, opts, callback) -> callback null, opts
-    CONTEXT       = tools: spawn: ->
+    LISTENING     = {}
+    Notice.listen = (title, opts, callback) -> 
+        LISTENING['listen'] = opts
+        callback null, opts
+
+    CONTEXT       = 
+        listen: 'LISTENSPEC'
+        tools: spawn: ->
     realizers     = undefined
 
     before (done) -> 
@@ -19,6 +25,14 @@ describe 'realizers', ->
         Realizers CONTEXT, {}, (err, result) -> 
 
             realizers = result
+            done()
+
+
+    context 'listens', -> 
+
+        it 'for realizers', (done) -> 
+
+            LISTENING.listen.should.equal 'LISTENSPEC'
             done()
 
 
