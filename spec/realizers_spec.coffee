@@ -32,7 +32,7 @@ describe 'realizers', ->
 
         it 'for realizers', (done) -> 
 
-            LISTENING.listen.should.equal 'LISTENSPEC'
+            LISTENING.listen.listen.should.equal 'LISTENSPEC'
             done()
 
 

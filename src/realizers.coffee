@@ -89,7 +89,12 @@ factory    = (context, notice, callback) ->
 
                             child.stdout.on 'data', (data) -> 
 
-                                console.log data.toString()
+                                #
+                                # temporary (distinguish child)
+                                #
+                                
+                                lines = data.toString().split '\n'
+                                console.log '---------->', line for line in lines
 
 
         return callback null, realizers
