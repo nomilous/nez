@@ -15,7 +15,7 @@
     "eo": "0.0.1",
     "ipso": "0.0.1",
     "notice": "0.0.7",
-    "also": "0.0.3",
+    "also": "0.0.4",
     "nezcore": "0.0.3"
   },
   "devDependencies": {

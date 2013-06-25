@@ -3,16 +3,38 @@
 #
 
 Notice     = require 'notice'
-collection = {}
+wait       = require('also').schedule.wait
+
 
 factory    = (context, notice, callback) -> 
 
+    collection = {}
 
     Notice.listen 'realizers', context, (error, Realizers) ->
                                                     #
                                                     # middleware pipeline carrying
                                                     # messages from remote realizers
                                                     # 
+
+        Realizers.use (msg, next) -> 
+
+            switch msg.context.title
+
+                when 'realizer::start'
+
+                    # 
+                    # remote realizer has established connection
+                    # 
+                    # * store reference to the message pipeline in the collection
+                    # * key on script name (good enough for now, but may soon collide)
+                    # 
+
+                    script = msg.payload.properties.script
+                    reply  = msg.reply
+                    collection[script] = reply
+                    
+
+            next()
 
 
         #
@@ -47,9 +69,11 @@ factory    = (context, notice, callback) ->
 
                 integrations.get ref, (err, realizer) -> 
 
-                    realizer.task title
+                    console.log '\n\n\nGOT REALIZER!', realizer
 
-
+                    #
+                    # realizer.task title
+                    # 
 
 
 
@@ -93,12 +117,43 @@ factory    = (context, notice, callback) ->
                         
                         (error, child) -> 
 
+                            #
+                            # TODO: handle this error 
+                            # 
+                            #
+
+                            # 
+                            # spawned a realizer, do not callback until its 
+                            # notifier has completed the handshake and sent 
+                            # the 'realizer::start' event
+                            #
+
+                            unless error? wait(
+
+                                until: -> 
+
+                                    collection[ref.script]?
+
+                                -> callback null, collection[ref.script]
+
+
+                            ).apply null
+
+                            #
+                            # TODO: terminate this wait if child exits
+                            #       
+                            #       * if it existed before the notifier
+                            #         accept (eg, failed secret), this
+                            #         would wait for ever
+                            # 
+
+
+                            #
+                            # temporary (distinguish child output on parent console)
+                            #
+                            
                             child.stdout.on 'data', (data) -> 
 
-                                #
-                                # temporary (distinguish child output)
-                                #
-                                
                                 lines = data.toString().split '\n'
                                 console.log '---------->', line for line in lines
 
