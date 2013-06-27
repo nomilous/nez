@@ -12,12 +12,12 @@ factory    = (context, notice, callback) ->
     pids       = {}
 
     Notice.listen 'realizers', context, (error, Realizers) ->
-                                                    #
-                                                    # middleware pipeline carrying
-                                                    # messages from remote realizers
-                                                    # 
 
         Realizers.use (msg, next) -> 
+
+            #
+            # message pipeline middleware, inbound from realizers
+            #
 
             switch msg.context.title
 
@@ -25,14 +25,21 @@ factory    = (context, notice, callback) ->
 
                     # 
                     # remote realizer has established connection
+                    # ------------------------------------------
                     # 
-                    # * store reference to the message pipeline in the collection
-                    # * key on script name (good enough for now, but may soon collide)
+                    # * store reference the message 'reply' pipeline in 
+                    #   the collection
                     # 
 
-                    script = msg.payload.properties.script
+                    # 
+                    # TODO: remove '.payload.' from this
+                    #       (in notice hub)
+                    #  
+                    properties = msg.payload.properties
+
+                    id = properties.id || properties.script
                     reply  = msg.reply
-                    collection[script] = reply
+                    collection[id] = reply
                     
 
             next()
@@ -61,7 +68,14 @@ factory    = (context, notice, callback) ->
 
             task: (title, ref) -> 
 
-                integrations.get ref, (err, realizer) -> 
+                integrations.get ref, (error, realizer) -> 
+
+                    if error? 
+
+                        return notice.event.bad 'missing or broken realizer',
+
+                            description: ref.id
+                            error: error
 
                     #
                     # start task at realizer
@@ -122,13 +136,19 @@ factory    = (context, notice, callback) ->
                 process.env['UPLINK_address'] = context.listening.address
                 process.env['UPLINK_port'] = context.listening.port
 
+
+                #
+                # callback waits for the realizer to 
+                #
+
+
+
+
                 context.tools.spawn notice,
 
                     arguments: [ref.script]
 
                     exit: (pid) -> 
-
-                        console.log 'exit', pid, pids[pid], arguments
 
                         #
                         # realizer exited - remove ref from collection
@@ -144,6 +164,7 @@ factory    = (context, notice, callback) ->
                         # 
                         # spawned the realizer as child
                         # pid maps kid to id/(script)
+                        #
 
                         pids[child.pid] = ref.script
 
@@ -160,7 +181,7 @@ factory    = (context, notice, callback) ->
                                 until: -> 
 
                                     #
-                                    # is the realizr connected yet?
+                                    # is the realizer connected yet?
                                     #
 
                                     collection[ref.script]? or
@@ -177,6 +198,10 @@ factory    = (context, notice, callback) ->
                                     #
                                     # okgood, got it!
                                     # 
+
+                                    unless collection[ref.script]?
+
+                                        return callback new Error 'realizer exited before connecting'
 
                                     callback null, collection[ref.script]
 
