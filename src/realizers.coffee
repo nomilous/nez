@@ -128,16 +128,16 @@ factory    = (context, notice, callback) ->
                             # the 'realizer::start' event
                             #
 
-                            unless error? wait(
+                            unless error?
 
-                                until: -> 
+                                wait(
 
-                                    collection[ref.script]?
+                                    until: -> collection[ref.script]?
 
-                                -> callback null, collection[ref.script]
+                                    -> callback null, collection[ref.script]
 
 
-                            ).apply null
+                                ).apply null
 
                             #
                             # TODO: terminate this wait if child exits

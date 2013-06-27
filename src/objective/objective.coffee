@@ -24,7 +24,7 @@ module.exports = (title, opts, objectiveFn) ->
             #  see: https://github.com/nomilous/notice/tree/develop
             #
 
-            notice = Notice.create 'objective', context.messenger || eo.messenger
+            notice = Notice.create 'objective', context.messenger || eo.messenger context
                  # 
                  # 
                  # 
