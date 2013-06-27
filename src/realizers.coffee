@@ -45,7 +45,7 @@ factory    = (context, notice, callback) ->
 
         return callback error if error?
 
-        integrations = 
+        return callback null, integrations = 
 
             #
             # realizers.task( title, ref )
@@ -69,14 +69,12 @@ factory    = (context, notice, callback) ->
 
                 integrations.get ref, (err, realizer) -> 
 
-                    console.log '\n\n\nGOT REALIZER!', realizer
-
                     #
-                    # realizer.task title
-                    # 
+                    # start task at realizer
+                    #
 
-
-
+                    realizer.task title, ref
+                    
 
             #
             # realizers.get( ref, callback ) 
@@ -91,74 +89,79 @@ factory    = (context, notice, callback) ->
 
                     throw new Error 'realizers.get(ref, callback) requires ref.id as the realizer id'
 
+                #
+                # realizer already present
+                #
 
-                unless collection[ref.id]?
+                if collection[ref.id]?
 
-                    unless ref.script?
-
-                        return callback new Error 'missing realizer'
-
-                    unless ref.script.match( /\.(lit)*coffee$/ )?
-
-                        return callback new Error 'nez supports only coffee-script realizers' # for now
+                    return callback null, collection[ref.script]
 
 
-                    #
-                    # spawning local realizer requires connection address
-                    #
+            
 
-                    process.env['UPLINK_transport'] = context.listening.transport
-                    process.env['UPLINK_address'] = context.listening.address
-                    process.env['UPLINK_port'] = context.listening.port
+                unless ref.script?
 
-                    context.tools.spawn notice,
+                    return callback new Error 'missing realizer'
 
-                        arguments: [ref.script]
+                unless ref.script.match( /\.(lit)*coffee$/ )?
+
+                    return callback new Error 'nez supports only coffee-script realizers' # for now
+
+
+                #
+                # spawning local realizer requires connection address
+                #
+
+                process.env['UPLINK_transport'] = context.listening.transport
+                process.env['UPLINK_address'] = context.listening.address
+                process.env['UPLINK_port'] = context.listening.port
+
+                context.tools.spawn notice,
+
+                    arguments: [ref.script]
+                    
+                    (error, child) -> 
+
+                        #
+                        # TODO: handle this error 
+                        # 
+                        #
+
+                        # 
+                        # spawned a realizer, do not callback until its 
+                        # notifier has completed the handshake and sent 
+                        # the 'realizer::start' event
+                        #
+
+                        unless error?
+
+                            wait(
+
+                                until: -> collection[ref.script]?
+
+                                -> callback null, collection[ref.script]
+
+
+                            ).apply null
+
+                        #
+                        # TODO: terminate this wait if child exits
+                        #       
+                        #       * if it existed before the notifier
+                        #         accept (eg, failed secret), this
+                        #         would wait for ever
+                        # 
+
+
+                        #
+                        # temporary (distinguish child output on parent console)
+                        #
                         
-                        (error, child) -> 
+                        child.stdout.on 'data', (data) -> 
 
-                            #
-                            # TODO: handle this error 
-                            # 
-                            #
-
-                            # 
-                            # spawned a realizer, do not callback until its 
-                            # notifier has completed the handshake and sent 
-                            # the 'realizer::start' event
-                            #
-
-                            unless error?
-
-                                wait(
-
-                                    until: -> collection[ref.script]?
-
-                                    -> callback null, collection[ref.script]
-
-
-                                ).apply null
-
-                            #
-                            # TODO: terminate this wait if child exits
-                            #       
-                            #       * if it existed before the notifier
-                            #         accept (eg, failed secret), this
-                            #         would wait for ever
-                            # 
-
-
-                            #
-                            # temporary (distinguish child output on parent console)
-                            #
-                            
-                            child.stdout.on 'data', (data) -> 
-
-                                lines = data.toString().split '\n'
-                                console.log '---------->', line for line in lines
-
-
-        return callback null, integrations
+                            lines = data.toString().split '\n'
+                            console.log '---------->', line for line in lines
 
 
 module.exports = factory
