@@ -9,6 +9,7 @@ wait       = require('also').schedule.wait
 factory    = (context, notice, callback) -> 
 
     collection = {}
+    pids       = {}
 
     Notice.listen 'realizers', context, (error, Realizers) ->
                                                     #
@@ -35,13 +36,6 @@ factory    = (context, notice, callback) ->
                     
 
             next()
-
-
-        #
-        # async factory class, it callsback with the
-        # realizers collection object once the Notice 
-        # hub is up and listening for realizers
-        # 
 
         return callback error if error?
 
@@ -89,16 +83,28 @@ factory    = (context, notice, callback) ->
 
                     throw new Error 'realizers.get(ref, callback) requires ref.id as the realizer id'
 
-                #
-                # realizer already present
-                #
 
                 if collection[ref.id]?
+
+                    #
+                    # realizer already present
+                    #
 
                     return callback null, collection[ref.script]
 
 
-            
+                
+                #
+                # SPECIAL CASE
+                # ------------
+                # 
+                # A local realizer can be spawned if ref defines the script to run
+                # 
+                # * script name is used as reference id in the collection
+                # * map from pid to id is kept in pids
+                # 
+                # TODO: PROPERLY TEST THIS!!
+                # 
 
                 unless ref.script?
 
@@ -108,8 +114,7 @@ factory    = (context, notice, callback) ->
 
                     return callback new Error 'nez supports only coffee-script realizers' # for now
 
-
-                #
+                # 
                 # spawning local realizer requires connection address
                 #
 
@@ -120,16 +125,30 @@ factory    = (context, notice, callback) ->
                 context.tools.spawn notice,
 
                     arguments: [ref.script]
-                    
-                    (error, child) -> 
+
+                    exit: (pid) -> 
+
+                        console.log 'exit', pid, pids[pid], arguments
 
                         #
-                        # TODO: handle this error 
-                        # 
+                        # realizer exited - remove ref from collection
                         #
 
+                        id = pids[pid]
+                        delete collection[id]
+                        delete pids[pid]
+
+        
+                    (error, child) ->    
+
                         # 
-                        # spawned a realizer, do not callback until its 
+                        # spawned the realizer as child
+                        # pid maps kid to id/(script)
+
+                        pids[child.pid] = ref.script
+
+                        #
+                        # do not callback until its 
                         # notifier has completed the handshake and sent 
                         # the 'realizer::start' event
                         #
@@ -138,20 +157,31 @@ factory    = (context, notice, callback) ->
 
                             wait(
 
-                                until: -> collection[ref.script]?
+                                until: -> 
 
-                                -> callback null, collection[ref.script]
+                                    #
+                                    # is the realizr connected yet?
+                                    #
+
+                                    collection[ref.script]? or
+
+                                    #
+                                    # did it already exit (before connecting)
+                                    #
+
+                                    not pids[child.pid]?
+
+
+                                -> 
+
+                                    #
+                                    # okgood, got it!
+                                    # 
+
+                                    callback null, collection[ref.script]
 
 
                             ).apply null
-
-                        #
-                        # TODO: terminate this wait if child exits
-                        #       
-                        #       * if it existed before the notifier
-                        #         accept (eg, failed secret), this
-                        #         would wait for ever
-                        # 
 
 
                         #
