@@ -31,12 +31,7 @@ factory    = (context, notice, callback) ->
                     #   the collection
                     # 
 
-                    # 
-                    # TODO: remove '.payload.' from this
-                    #       (in notice hub)
-                    #  
-                    properties = msg.payload.properties
-
+                    properties = msg.properties
                     id = properties.id || properties.script
                     reply  = msg.reply
                     collection[id] = reply
@@ -135,13 +130,6 @@ factory    = (context, notice, callback) ->
                 process.env['UPLINK_transport'] = context.listening.transport
                 process.env['UPLINK_address'] = context.listening.address
                 process.env['UPLINK_port'] = context.listening.port
-
-
-                #
-                # callback waits for the realizer to 
-                #
-
-
 
 
                 context.tools.spawn notice,
