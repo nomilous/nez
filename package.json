@@ -14,7 +14,7 @@
   "dependencies": {
     "eo": "0.0.1",
     "ipso": "0.0.1",
-    "notice": "0.0.7",
+    "notice": "0.0.8",
     "also": "0.0.4",
     "nezcore": "0.0.3"
   },
