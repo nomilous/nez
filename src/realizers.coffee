@@ -99,7 +99,7 @@ factory    = (context, notice, callback) ->
                     # realizer already present
                     #
 
-                    return callback null, collection[ref.script]
+                    return callback null, collection[ref.id]
 
 
                 

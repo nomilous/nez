@@ -5,8 +5,26 @@ Notice    = require 'notice'
 
 describe 'realizers', ->
 
-    LISTENING     = {}
-    Notice.listen = (title, opts, callback) -> 
+    LISTENING      = {}
+    HUB_MIDDLEWARE = undefined
+    
+    #
+    # mock notice hub
+    #
+
+    REMOTE_NOTIFIERS = 
+
+        use: (fn) -> 
+
+            #
+            # keep ref to the middleware being registered 
+            # to handle inbound messages from realizers
+            #
+
+            HUB_MIDDLEWARE = fn
+
+
+    Notice.listen  = (title, opts, callback) -> 
 
         LISTENING['listen'] = opts
 
@@ -26,10 +44,41 @@ describe 'realizers', ->
                                   # 
                                   # 
                                   # Notice calls back with middleware pipeline
-        callback null,     {}     # attached to the remote notifiers
+                                  # attached to the remote notifiers, 
                                   # 
+
+        callback null, REMOTE_NOTIFIERS  
+
                                   # 
+                                  # callback with mock notice hub
                                   # 
+
+    #
+    # mock realizer start message (as sent by realizer after handshake)
+    #
+
+    INBOUND_REALIZER_START_MESSAGE = 
+
+        context:
+            title: 'realizer::start'
+        properties:
+            id: '___REALIZER_ID___'
+
+    #
+    # mock realizer reply pipeline (as used to send message back to realizers)
+    #
+
+    REPLY_TO_REALIZER_MESSENGER = -> 
+
+    #
+    # mock reply property on the realizer start message
+    #
+
+    REPLY_PROPERTY_SPY = -> return REPLY_TO_REALIZER_MESSENGER
+
+    Object.defineProperty INBOUND_REALIZER_START_MESSAGE, 'reply', get: -> REPLY_PROPERTY_SPY()
+
+
 
     CONTEXT       = 
         listen: 'LISTENSPEC'
@@ -56,6 +105,17 @@ describe 'realizers', ->
 
             LISTENING.listen.listen.should.equal 'LISTENSPEC'
             done()
+
+
+        it 'get the reply pipeline from attaching realizers', (done) -> 
+            
+            spy = REPLY_PROPERTY_SPY
+            REPLY_PROPERTY_SPY = -> 
+                REPLY_PROPERTY_SPY = spy
+                done()
+
+            HUB_MIDDLEWARE INBOUND_REALIZER_START_MESSAGE, ->
+            
 
 
     context 'task(title, ref)', -> 
@@ -120,6 +180,25 @@ describe 'realizers', ->
 
                 error.should.match /missing realizer/
                 done()
+
+
+        it 'returns the realizer reply object if the realizer is already connected', (done) -> 
+
+            #
+            # mock attaching realizer
+            #
+
+            HUB_MIDDLEWARE INBOUND_REALIZER_START_MESSAGE, ->
+
+            #
+            # get it
+            #
+
+            realizers.get id: '___REALIZER_ID___', (error, realizer) -> 
+
+                realizer.should.equal REPLY_TO_REALIZER_MESSENGER
+                done()
+
 
 
         context 'can spawn the realizer', -> 
