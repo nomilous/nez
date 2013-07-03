@@ -205,7 +205,12 @@ describe 'realizers', ->
 
             it 'if opts.script is specified', (done) -> 
 
-                CONTEXT.tools.spawn = -> 
+                CONTEXT.tools.spawn = (notice, opts, cb) -> 
+                    opts.arguments.should.eql ['SCRIPT.coffee']
+
+                    #
+                    # reset spawn to noop
+                    #
                     CONTEXT.tools.spawn = ->
                     done()
 
@@ -218,7 +223,7 @@ describe 'realizers', ->
                     (error, realizer) -> 
 
 
-            it 'if opts.script is coffee-script', (done) -> 
+            it 'only spawns coffeescript realizers', (done) -> 
 
                 realizers.get 
 
@@ -229,5 +234,42 @@ describe 'realizers', ->
                         error.should.match /nez supports only coffee-script realizers/
                         done()
 
+
+            it 'exiting spawned realizer generates error if it never sent the realizer::start event', (done) -> 
+
+                CONTEXT.tools.spawn = (notice, opts, cb) -> 
+
+                    setTimeout (->
+
+                        #
+                        # spawning child fails after 10 miliseconds
+                        #
+
+                        opts.exit '__PID__'
+
+                    ), 10
+
+                    cb null,
+
+                        #
+                        # mock child
+                        # 
+
+                        pid: '__PID__'
+                        stdout: on: ->
+
+
+                realizers.get 
+
+                    id: 'SCRIPT.coffee'
+                    script: 'SCRIPT.coffee'
+                    (error, realizer) -> 
+
+                        error.should.match /realizer exited before connecting/
+                        done()
+
+
+
+            it 'subsequent calls to spawn a realizer that is already buzy spawning generate an error'
 
 
