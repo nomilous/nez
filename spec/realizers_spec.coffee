@@ -272,4 +272,6 @@ describe 'realizers', ->
 
             it 'subsequent calls to spawn a realizer that is already buzy spawning generate an error'
 
+            it 'an exiting realizer which succeeded to send the realizer::start event generates no error'
 
+            it 'a spawned realizer is respawned on get() if the script checksum changed'
