@@ -5,6 +5,9 @@ Notice    = require 'notice'
 
 describe 'realizers', ->
 
+    NOTIFIED       = {}
+    NOTIFIER       = info: -> NOTIFIED.info = arguments
+
     LISTENING      = {}
     HUB_MIDDLEWARE = undefined
     
@@ -93,7 +96,7 @@ describe 'realizers', ->
         # the assembled realizers collection
         #
 
-        Realizers CONTEXT, {}, (err, result) -> 
+        Realizers CONTEXT, NOTIFIER, (err, result) -> 
 
             realizers = result
             done()
@@ -206,13 +209,27 @@ describe 'realizers', ->
             it 'if opts.script is specified', (done) -> 
 
                 CONTEXT.tools.spawn = (notice, opts, cb) -> 
-                    opts.arguments.should.eql ['SCRIPT.coffee']
 
-                    #
-                    # reset spawn to noop
-                    #
-                    CONTEXT.tools.spawn = ->
-                    done()
+                    opts.arguments.should.eql ['SCRIPT.coffee']
+                    
+                    setTimeout (->
+
+                        #
+                        # spawning child fails after 10 miliseconds
+                        #
+
+                        opts.exit '__PID__'
+
+                    ), 10
+                    
+                    cb null,
+
+                        #
+                        # mock child
+                        # 
+
+                        pid: '__PID__'
+                        stdout: on: ->
 
                 CONTEXT.hub = listening: {}
 
@@ -220,7 +237,7 @@ describe 'realizers', ->
 
                     id: 'ID'
                     script: 'SCRIPT.coffee'
-                    (error, realizer) -> 
+                    (error, realizer) -> done()
 
 
             it 'only spawns coffeescript realizers', (done) -> 
@@ -241,23 +258,14 @@ describe 'realizers', ->
 
                     setTimeout (->
 
-                        #
-                        # spawning child fails after 10 miliseconds
-                        #
-
                         opts.exit '__PID__'
 
                     ), 10
 
                     cb null,
 
-                        #
-                        # mock child
-                        # 
-
                         pid: '__PID__'
                         stdout: on: ->
-
 
                 realizers.get 
 
@@ -270,7 +278,45 @@ describe 'realizers', ->
 
 
 
-            it 'subsequent calls to spawn a realizer that is already buzy spawning generate an error'
+            it 'subsequent calls to spawn a realizer that is already buzy spawning notified and ignored', (done) -> 
+
+                CONTEXT.tools.spawn = (notice, opts, cb) -> 
+
+                    setTimeout (->
+
+                        opts.exit '__PID__'
+
+                    ), 100
+
+                    cb null,
+
+                        pid: '__PID__'
+                        stdout: on: ->
+
+                realizers.get 
+
+                    id: 'SCRIPT.coffee'
+                    script: 'SCRIPT.coffee'
+                    (error, realizer) -> 
+
+                realizers.get 
+
+                    id: 'SCRIPT.coffee'
+                    script: 'SCRIPT.coffee'
+                    (error, realizer) -> 
+
+                
+                NOTIFIED.info.should.eql 
+
+                    0: 'already waiting for realizer'
+                    1: description: 'pid:__PID__, script:SCRIPT.coffee'
+
+                done()
+
+
+
+                
+                
 
             it 'an exiting realizer which succeeded to send the realizer::start event generates no error'
 

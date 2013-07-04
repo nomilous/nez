@@ -8,8 +8,13 @@ wait       = require('also').schedule.wait
 
 factory    = (context, notice, callback) -> 
 
-    collection = {}
-    pids       = {}
+    collection  = {}
+    startedAt   = {}
+
+    children    = {}
+    spawnedAt   = {}
+    startedLag  = {}
+    pids        = {}
 
     Notice.listen 'realizers', context, (error, Realizers) ->
 
@@ -35,6 +40,10 @@ factory    = (context, notice, callback) ->
                     id = properties.id || properties.script
                     reply  = msg.reply
                     collection[id] = reply
+
+                    startedAt[id]  = Date.now()
+                    startedLag[id] = startedAt[id] - spawnedAt[id]
+                    delete spawnedAt[id]
                     
 
             next()
@@ -132,6 +141,18 @@ factory    = (context, notice, callback) ->
                 process.env['UPLINK_port'] = context.listening.port
 
 
+                #
+                # error if spawned but not yet connected
+                #
+
+                if spawnedAt[ref.script]?
+
+                    return notice.info 'already waiting for realizer', 
+                        description: "pid:#{children[ref.script].pid}, script:#{ref.script}"
+                    
+
+
+                spawnedAt[ref.script] = Date.now()
                 context.tools.spawn notice,
 
                     arguments: [ref.script]
@@ -144,17 +165,21 @@ factory    = (context, notice, callback) ->
 
                         id = pids[pid]
                         delete collection[id]
+                        delete spawnedAt[id]
                         delete pids[pid]
+                        
 
         
-                    (error, child) ->    
+                    (error, child) -> 
 
                         # 
                         # spawned the realizer as child
                         # pid maps kid to id/(script)
                         #
 
+
                         pids[child.pid] = ref.script
+                        children[ref.script] = child
 
                         #
                         # do not callback until its 
