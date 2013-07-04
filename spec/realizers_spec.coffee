@@ -315,9 +315,41 @@ describe 'realizers', ->
 
 
 
-                
-                
+            it 'an exiting realizer which succeeded to send the realizer::start event generates no error', (done) -> 
 
-            it 'an exiting realizer which succeeded to send the realizer::start event generates no error'
+                ERROR = undefined
+                CONTEXT.tools.spawn = (notice, opts, cb) -> 
+
+                    setTimeout (->
+
+                        opts.exit '__PID__'
+
+                    ), 100
+
+                    cb null,
+
+                        pid: '__PID__'
+                        stdout: on: ->
+
+                realizers.get 
+
+                    id: 'SCRIPT.coffee'
+                    script: 'SCRIPT.coffee'
+
+                    (error, realizer) -> 
+
+                        should.exist realizer
+                        ERROR = error
+
+
+                INBOUND_REALIZER_START_MESSAGE.properties.id = 'SCRIPT.coffee'
+                
+                HUB_MIDDLEWARE INBOUND_REALIZER_START_MESSAGE, ->
+
+                setTimeout (->
+                    should.not.exist ERROR
+                    done()
+                ), 200
+
 
             it 'a spawned realizer is respawned on get() if the script checksum changed'
