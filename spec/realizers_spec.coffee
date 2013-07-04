@@ -85,7 +85,9 @@ describe 'realizers', ->
 
     CONTEXT       = 
         listen: 'LISTENSPEC'
-        tools: spawn: ->
+        tools: 
+            spawn: ->          
+            checksum: file: -> '................................'
 
     realizers     = undefined
 
@@ -343,7 +345,7 @@ describe 'realizers', ->
 
 
                 INBOUND_REALIZER_START_MESSAGE.properties.id = 'SCRIPT.coffee'
-                
+
                 HUB_MIDDLEWARE INBOUND_REALIZER_START_MESSAGE, ->
 
                 setTimeout (->
@@ -352,4 +354,6 @@ describe 'realizers', ->
                 ), 200
 
 
-            it 'a spawned realizer is respawned on get() if the script checksum changed'
+            it 'a spawned realizer is respawned on get() if the script checksum changed', (done) -> 
+
+                throw new Error()

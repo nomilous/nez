@@ -12,6 +12,7 @@ factory    = (context, notice, callback) ->
     startedAt   = {}
 
     children    = {}
+    checksum    = {}
     spawnedAt   = {}
     startedLag  = {}
     pids        = {}
@@ -42,7 +43,7 @@ factory    = (context, notice, callback) ->
                     collection[id] = reply
 
                     startedAt[id]  = Date.now()
-                    startedLag[id] = startedAt[id] - spawnedAt[id]
+                    startedLag[id] = startedAt[id] - spawnedAt[id] if spawnedAt[id]?
                     delete spawnedAt[id]
                     
 
@@ -101,12 +102,23 @@ factory    = (context, notice, callback) ->
 
                     throw new Error 'realizers.get(ref, callback) requires ref.id as the realizer id'
 
+                #
+                # realizer already present
+                # 
 
                 if collection[ref.id]?
 
                     #
-                    # realizer already present
+                    # if it was spawned locally, respawn if the 
+                    # script checksum changed
                     #
+
+                    if children[ref.id]?
+
+                        unless checksum[ref.script] == newsum = context.tools.checksum.file ref.script
+
+                            console.log 'TODO: respawn', ref
+
 
                     return callback null, collection[ref.id]
 
@@ -152,7 +164,6 @@ factory    = (context, notice, callback) ->
                     
 
 
-                spawnedAt[ref.script] = Date.now()
                 context.tools.spawn notice,
 
                     arguments: [ref.script]
@@ -165,6 +176,7 @@ factory    = (context, notice, callback) ->
 
                         id = pids[pid]
                         delete collection[id]
+                        delete children[id]
                         delete spawnedAt[id]
                         delete pids[pid]
                         
@@ -181,13 +193,16 @@ factory    = (context, notice, callback) ->
                         pids[child.pid] = ref.script
                         children[ref.script] = child
 
-                        #
-                        # do not callback until its 
-                        # notifier has completed the handshake and sent 
-                        # the 'realizer::start' event
-                        #
-
                         unless error?
+
+                            spawnedAt[ref.script] = Date.now()
+                            checksum[ref.script]  = newsum || context.tools.checksum.file ref.script
+
+                            #
+                            # do not callback until its 
+                            # notifier has completed the handshake and sent 
+                            # the 'realizer::start' event
+                            #
 
                             wait(
 
