@@ -410,14 +410,6 @@ describe 'realizers', ->
                         # successfully spawned realizer
                         #
 
-                        CONTEXT.tools.spawn = -> 
-
-                            #
-                            # it was spawned again
-                            #
-
-                            done()
-
                         realizers.get 
 
                             id: 'SCRIPT.coffee'
