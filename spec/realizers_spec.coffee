@@ -356,4 +356,82 @@ describe 'realizers', ->
 
             it 'a spawned realizer is respawned on get() if the script checksum changed', (done) -> 
 
-                throw new Error()
+                CONTEXT.tools.spawn = (notice, opts, cb) -> cb null,
+
+                    pid: '__PID__'
+                    stdout: on: ->
+                    kill: -> 
+
+                realizers.get 
+
+                    id: 'SCRIPT.coffee'
+                    script: 'SCRIPT.coffee'
+                    (error, realizer) -> 
+
+                        #
+                        # successfully spawned realizer
+                        #
+
+                        CONTEXT.tools.checksum.file = -> '__NEW_CHECKSUM__'
+
+                        CONTEXT.tools.spawn = -> 
+
+                            #
+                            # it was spawned again
+                            #
+
+                            done()
+
+                        realizers.get 
+
+                            id: 'SCRIPT.coffee'
+                            script: 'SCRIPT.coffee'
+                            (error, realizer) -> 
+
+
+                INBOUND_REALIZER_START_MESSAGE.properties.id = 'SCRIPT.coffee'
+                HUB_MIDDLEWARE INBOUND_REALIZER_START_MESSAGE, ->
+ 
+
+            it 'a spawned realizer is not respawned on get() if the script checksum did not change', (done) -> 
+
+                CONTEXT.tools.spawn = (notice, opts, cb) -> cb null,
+
+                    pid: '__PID__'
+                    stdout: on: ->
+
+                realizers.get 
+
+                    id: 'SCRIPT.coffee'
+                    script: 'SCRIPT.coffee'
+                    (error, realizer1) -> 
+
+                        #
+                        # successfully spawned realizer
+                        #
+
+                        CONTEXT.tools.spawn = -> 
+
+                            #
+                            # it was spawned again
+                            #
+
+                            done()
+
+                        realizers.get 
+
+                            id: 'SCRIPT.coffee'
+                            script: 'SCRIPT.coffee'
+                            (error, realizer2) -> 
+
+                                realizer1.should.equal realizer2
+                                done()
+
+
+                INBOUND_REALIZER_START_MESSAGE.properties.id = 'SCRIPT.coffee'
+                HUB_MIDDLEWARE INBOUND_REALIZER_START_MESSAGE, ->
+
+              
+
+
+

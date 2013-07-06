@@ -108,20 +108,24 @@ factory    = (context, notice, callback) ->
 
                 if collection[ref.id]?
 
+                    return callback null, collection[ref.id] unless (
+
+                        children[ref.id]? and checksum[ref.script] != newsum = context.tools.checksum.file ref.script
+
+                    )
+
                     #
                     # if it was spawned locally, respawn if the 
                     # script checksum changed
                     #
 
-                    if children[ref.id]?
+                    child = children[ref.id]
+                    child.kill()
 
-                        unless checksum[ref.script] == newsum = context.tools.checksum.file ref.script
-
-                            console.log 'TODO: respawn', ref
-
-
-                    return callback null, collection[ref.id]
-
+                    delete collection[ref.id]
+                    delete children[ref.id]
+                    delete spawnedAt[ref.id]
+                    delete pids[ref.pid]
 
                 
                 #
