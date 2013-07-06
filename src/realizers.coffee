@@ -140,9 +140,7 @@ factory    = (context, notice, callback) ->
                 # 
                 # * script name is used as reference id in the collection
                 # * map from pid to id is kept in pids
-                # 
-                # TODO: PROPERLY TEST THIS!!
-                # 
+                #
 
                 unless ref.script?
 
