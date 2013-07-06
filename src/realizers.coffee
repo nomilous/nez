@@ -51,7 +51,7 @@ factory    = (context, notice, callback) ->
 
         return callback error if error?
 
-        return callback null, integrations = 
+        return callback null, interface = 
 
             #
             # realizers.task( title, ref )
@@ -73,7 +73,7 @@ factory    = (context, notice, callback) ->
 
             task: (title, ref) -> 
 
-                integrations.get ref, (error, realizer) -> 
+                interface.get ref, (error, realizer) -> 
 
                     if error? 
 
