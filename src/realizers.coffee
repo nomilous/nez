@@ -110,7 +110,7 @@ factory    = (context, notice, callback) ->
 
                     return callback null, collection[ref.id] unless (
 
-                        children[ref.id]? and checksum[ref.script] != newsum = context.tools.checksum.file ref.script
+                        children[ref.id]? and checksum[ref.id] != context.tools.checksum.file ref.id
 
                     )
 
@@ -124,12 +124,14 @@ factory    = (context, notice, callback) ->
                     #
 
                     child = children[ref.id]
+                    pid   = child.pid
                     child.kill()
 
                     delete collection[ref.id]
                     delete children[ref.id]
                     delete spawnedAt[ref.id]
-                    delete pids[ref.pid]
+                    delete pids[pid]
+                    
 
                 
                 #
@@ -202,7 +204,7 @@ factory    = (context, notice, callback) ->
                         unless error?
 
                             spawnedAt[ref.script] = Date.now()
-                            checksum[ref.script]  = newsum || context.tools.checksum.file ref.script
+                            checksum[ref.script]  = context.tools.checksum.file ref.script
 
                             #
                             # do not callback until its 
