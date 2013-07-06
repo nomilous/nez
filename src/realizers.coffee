@@ -119,6 +119,10 @@ factory    = (context, notice, callback) ->
                     # script checksum changed
                     #
 
+                    #
+                    # TODO: make this an event, for deployment switching, later.
+                    #
+
                     child = children[ref.id]
                     child.kill()
 
