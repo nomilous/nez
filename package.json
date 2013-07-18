@@ -16,7 +16,8 @@
     "ipso": "0.0.1",
     "notice": "0.0.8",
     "also": "0.0.4",
-    "nezcore": "0.0.3"
+    "nezcore": "0.0.3",
+    "when": "~2.2.1"
   },
   "devDependencies": {
     "hound": "~1.0.4",

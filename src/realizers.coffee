@@ -4,6 +4,7 @@
 
 Notice     = require 'notice'
 wait       = require('also').schedule.wait
+defer      = require('when').defer
 
 
 factory    = (context, notice, callback) -> 
@@ -44,8 +45,7 @@ factory    = (context, notice, callback) ->
 
                     startedAt[id]  = Date.now()
                     startedLag[id] = startedAt[id] - spawnedAt[id] if spawnedAt[id]?
-                    delete spawnedAt[id]
-                    
+                    delete spawnedAt[id]      
 
             next()
 
@@ -62,8 +62,6 @@ factory    = (context, notice, callback) ->
             # ref.id - id of the realizer to run the task 
             # 
 
-            #
-            # TODO: task returns a promise
             # 
             #       pending: 
             # 
@@ -73,9 +71,17 @@ factory    = (context, notice, callback) ->
 
             task: (title, ref) -> 
 
+                #
+                # deferral for realizer task
+                #
+
+                taskDeferral = defer()
+
                 api.get ref, (error, realizer) -> 
 
                     if error? 
+
+                        taskDeferral.reject error
 
                         return notice.event.bad 'missing or broken realizer',
 
@@ -83,11 +89,23 @@ factory    = (context, notice, callback) ->
                             error: error
 
                     #
-                    # start task at realizer
+                    # start task at realizer and defer
                     #
 
-                    realizer.task title, ref
+                    realizer.task( title, ref ).then(
+
+                        taskDeferral.resolve
+                        taskDeferral.reject
+                        taskDeferral.notify
+
+                    )
+
+                #
+                # a promise to the task caller
+                #
                     
+                return taskDeferral.promise
+
 
             #
             # realizers.get( ref, callback ) 

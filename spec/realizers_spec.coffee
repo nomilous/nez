@@ -142,7 +142,12 @@ describe 'realizers', ->
                     task: (title) -> 
 
                         title.should.equal 'The Frabjous Day'
-                        done()
+
+                        #
+                        # and handles the returned promise
+                        #
+
+                        then: -> done()
 
 
             realizers.task 'The Frabjous Day'
@@ -153,7 +158,7 @@ describe 'realizers', ->
             spy = realizers.get
             realizers.get = (ref, callback) -> 
                 realizers.get = spy
-                callback null, task: -> done()
+                callback null, task: -> then: -> done()
 
             realizers.task 'get more minerals', 
 
