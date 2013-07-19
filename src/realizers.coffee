@@ -28,7 +28,7 @@ factory    = (context, notice, callback) ->
 
             switch msg.context.title
 
-                when 'realizer::start'
+                when 'realizer::register'
 
                     # 
                     # remote realizer has established connection
