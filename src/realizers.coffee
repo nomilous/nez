@@ -92,13 +92,15 @@ factory    = (context, notice, callback) ->
                     # start task at realizer and defer
                     #
 
-                    realizer.task( title, ref ).then(
+                    console.log 'START_TASK', title, ref
 
-                        taskDeferral.resolve
-                        taskDeferral.reject
-                        taskDeferral.notify
+                    # realizer.task( title, ref ).then(
 
-                    )
+                    #     taskDeferral.resolve
+                    #     taskDeferral.reject
+                    #     taskDeferral.notify
+
+                    # )
 
                 #
                 # a promise to the task caller
