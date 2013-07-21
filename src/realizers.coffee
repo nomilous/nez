@@ -5,26 +5,25 @@
 Notice     = require 'notice'
 wait       = require('also').schedule.wait
 defer      = require('when').defer
-
+tasks      = require('does').tasks
 
 factory    = (context, notice, callback) -> 
 
     collection  = {}
     startedAt   = {}
-
     children    = {}
     checksum    = {}
     spawnedAt   = {}
     startedLag  = {}
     pids        = {}
 
-    Notice.listen 'realizers', context, (error, Realizers) ->
+    Notice.listen 'realizers', context, (error, Realizer) -> 
 
-        Realizers.use (msg, next) -> 
+        #
+        # handle attaching realizer
+        # 
 
-            #
-            # message pipeline middleware, inbound from realizers
-            #
+        Realizer.use (msg, next) -> 
 
             switch msg.context.title
 
@@ -34,18 +33,23 @@ factory    = (context, notice, callback) ->
                     # remote realizer has established connection
                     # ------------------------------------------
                     # 
-                    # * store reference the message 'reply' pipeline in 
-                    #   the collection
+                    # * create instance of task to encapsulate the realizer
                     # 
 
-                    properties = msg.properties
-                    uuid = properties.uuid || properties.script
-                    reply  = msg.reply
-                    collection[uuid] = reply
+                    opts        = msg.properties
+                    uuid        = opts.uuid
+                    opts.notice = msg.reply
 
-                    startedAt[uuid]  = Date.now()
-                    startedLag[uuid] = startedAt[uuid] - spawnedAt[uuid] if spawnedAt[uuid]?
-                    delete spawnedAt[uuid]      
+                    tasks.task opts, (error, task) -> 
+
+                            #
+                            # ignoring error (task collection is not yet persistable)
+                            #
+
+                            collection[uuid] = task
+                            startedAt[uuid]  = Date.now()
+                            startedLag[uuid] = startedAt[uuid] - spawnedAt[uuid] if spawnedAt[uuid]?
+                            delete spawnedAt[uuid]
 
             next()
 
@@ -54,59 +58,33 @@ factory    = (context, notice, callback) ->
         return callback null, api = 
 
             #
-            # realizers.task( title, ref )
+            # realizers.start( ref )
             # 
-            # emits a task to the specified realizer
-            # 
-            # title  - title of the task to run
-            # ref.id - id of the realizer to run the task 
+            # ref.uuid - uuid of the realizer to start
             # 
 
-            # 
-            #       pending: 
-            # 
-            #       - Notice.task() for the task
-            #       - Notice persistor plugin for tasks to span restarts / scale 
-            #
+            start: (ref) -> 
 
-            task: (title, ref) -> 
-
-                #
-                # deferral for realizer task
-                #
-
-                taskDeferral = defer()
+                running = defer()
 
                 api.get ref, (error, realizer) -> 
 
+                    console.log REALIZER: realizer
+
                     if error? 
 
-                        taskDeferral.reject error
+                        running.reject error
 
                         return notice.event.bad 'missing or broken realizer',
 
-                            description: ref.id
+                            realizer: ref.uuid
+                            script: ref.script
                             error: error
 
-                    #
-                    # start task at realizer and defer
-                    #
+                
+                    #realizer.event 'realizer::start', ref
 
-                    console.log 'START_TASK', title, ref
-
-                    # realizer.task( title, ref ).then(
-
-                    #     taskDeferral.resolve
-                    #     taskDeferral.reject
-                    #     taskDeferral.notify
-
-                    # )
-
-                #
-                # a promise to the task caller
-                #
-                    
-                return taskDeferral.promise
+                return running.promise
 
 
             #
