@@ -65,7 +65,7 @@ describe 'realizers', ->
         context:
             title: 'realizer::start'
         properties:
-            id: '___REALIZER_ID___'
+            uuid: '___REALIZER_ID___'
 
     #
     # mock realizer reply pipeline (as used to send message back to realizers)
@@ -175,18 +175,18 @@ describe 'realizers', ->
         # gets reference to an attached realizer
         #
 
-        it 'requires a realizer id', (done) -> 
+        it 'requires a realizer uuid', (done) -> 
 
             try realizers.get()
             catch error 
 
-                error.should.match /realizers.get\(ref, callback\) requires ref.id as the realizer id/
+                error.should.match /realizers.get\(ref, callback\) requires ref.uuid as the realizer uuid/
                 done()
 
 
         it 'callback missing realizer if not present', (done) -> 
 
-            realizers.get id: 'ID', (error, realizer) -> 
+            realizers.get uuid: 'ID', (error, realizer) -> 
 
                 error.should.match /missing realizer/
                 done()

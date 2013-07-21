@@ -39,13 +39,13 @@ factory    = (context, notice, callback) ->
                     # 
 
                     properties = msg.properties
-                    id = properties.id || properties.script
+                    uuid = properties.uuid || properties.script
                     reply  = msg.reply
-                    collection[id] = reply
+                    collection[uuid] = reply
 
-                    startedAt[id]  = Date.now()
-                    startedLag[id] = startedAt[id] - spawnedAt[id] if spawnedAt[id]?
-                    delete spawnedAt[id]      
+                    startedAt[uuid]  = Date.now()
+                    startedLag[uuid] = startedAt[uuid] - spawnedAt[uuid] if spawnedAt[uuid]?
+                    delete spawnedAt[uuid]      
 
             next()
 
@@ -118,19 +118,19 @@ factory    = (context, notice, callback) ->
 
             get: (ref, callback) -> 
 
-                unless ref? and ref.id? 
+                unless ref? and ref.uuid? 
 
-                    throw new Error 'realizers.get(ref, callback) requires ref.id as the realizer id'
+                    throw new Error 'realizers.get(ref, callback) requires ref.uuid as the realizer uuid'
 
                 #
                 # realizer already present
                 # 
 
-                if collection[ref.id]?
+                if collection[ref.uuid]?
 
-                    return callback null, collection[ref.id] unless (
+                    return callback null, collection[ref.uuid] unless (
 
-                        children[ref.id]? and checksum[ref.id] != context.tools.checksum.file ref.id
+                        children[ref.uuid]? and checksum[ref.uuid] != context.tools.checksum.file ref.uuid
 
                     )
 
@@ -143,13 +143,13 @@ factory    = (context, notice, callback) ->
                     # TODO: make this an event, for deployment switching, later.
                     #
 
-                    child = children[ref.id]
+                    child = children[ref.uuid]
                     pid   = child.pid
                     child.kill()
 
-                    delete collection[ref.id]
-                    delete children[ref.id]
-                    delete spawnedAt[ref.id]
+                    delete collection[ref.uuid]
+                    delete children[ref.uuid]
+                    delete spawnedAt[ref.uuid]
                     delete pids[pid]
                     
 
@@ -185,7 +185,7 @@ factory    = (context, notice, callback) ->
                 # error if spawned but not yet connected
                 #
 
-                if spawnedAt[ref.script]?
+                if spawnedAt[ref.uuid]?
 
                     return notice.info 'already waiting for realizer', 
                         description: "pid:#{children[ref.script].pid}, script:#{ref.script}"
@@ -202,10 +202,10 @@ factory    = (context, notice, callback) ->
                         # realizer exited - remove ref from collection
                         #
 
-                        id = pids[pid]
-                        delete collection[id]
-                        delete children[id]
-                        delete spawnedAt[id]
+                        uuid = pids[pid]
+                        delete collection[uuid]
+                        delete children[uuid]
+                        delete spawnedAt[uuid]
                         delete pids[pid]
                         
 
@@ -219,17 +219,17 @@ factory    = (context, notice, callback) ->
 
 
                         pids[child.pid] = ref.script
-                        children[ref.script] = child
+                        children[ref.uuid] = child
 
                         unless error?
 
-                            spawnedAt[ref.script] = Date.now()
-                            checksum[ref.script]  = context.tools.checksum.file ref.script
+                            spawnedAt[ref.uuid] = Date.now()
+                            checksum[ref.uuid]  = context.tools.checksum.file ref.script
 
                             #
                             # do not callback until its 
                             # notifier has completed the handshake and sent 
-                            # the 'realizer::start' event
+                            # the 'realizer::register' event
                             #
 
                             wait(
@@ -240,7 +240,7 @@ factory    = (context, notice, callback) ->
                                     # is the realizer connected yet?
                                     #
 
-                                    collection[ref.script]? or
+                                    collection[ref.uuid]? or
 
                                     #
                                     # did it already exit (before connecting)
@@ -255,11 +255,11 @@ factory    = (context, notice, callback) ->
                                     # okgood, got it!
                                     # 
 
-                                    unless collection[ref.script]?
+                                    unless collection[ref.uuid]?
 
                                         return callback new Error 'realizer exited before connecting'
 
-                                    callback null, collection[ref.script]
+                                    callback null, collection[ref.uuid]
 
 
                             ).apply null
