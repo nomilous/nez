@@ -60,16 +60,16 @@ factory    = (context, notice, callback) ->
         return callback null, api = 
 
             #
-            # realizers.start( ref )
+            # realizers.start( opts )
             # 
-            # ref.uuid - uuid of the realizer to start
+            # opts.uuid - uuid of the realizer to start
             # 
 
-            start: (ref) -> 
+            start: (opts) -> 
 
                 running = defer()
 
-                api.get ref, (error, realizer) -> 
+                api.get opts, (error, realizer) -> 
 
                     console.log REALIZER: realizer
 
@@ -79,12 +79,12 @@ factory    = (context, notice, callback) ->
 
                         return notice.event.bad 'missing or broken realizer',
 
-                            realizer: ref.uuid
-                            script: ref.script
+                            realizer: opts.uuid
+                            script: opts.script
                             error: error
 
                 
-                    realizer.start().then running.resolve, running.reject, running.notify
+                    realizer.start( opts ).then running.resolve, running.reject, running.notify
 
                 return running.promise
 

@@ -306,6 +306,21 @@ describe 'realizers', ->
                 )
 
 
+            it 'passes opts to the realizer.start()', (done) -> 
+
+                spy = @api.get
+                @api.get = (opts, callback) => 
+                    @api.get = spy
+                    callback null, start: (opts) -> 
+                        opts.key.should.equal 'VALUE' 
+                        done()
+                        return then: ->
+
+                @api.start 
+                    uuid: 'REALIZER_UUID'
+                    key: 'VALUE' 
+
+
             it 'calls realizer.start() and binds the resulting promise', (done) -> 
 
                 spy = @api.get
@@ -338,6 +353,7 @@ describe 'realizers', ->
                         done()
 
                 )
+
 
 
             it 'handles the calling of start() when already running'
