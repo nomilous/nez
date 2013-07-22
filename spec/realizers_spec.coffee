@@ -7,8 +7,11 @@ tasks     = require('does').tasks
 describe 'realizers', ->
 
 
-    CONTEXT       = {} 
-    NOTICE        = {}
+    CONTEXT  = {} 
+    INFO     = undefined
+    NOTICE   = 
+        info: -> INFO = arguments
+
     MIDDLEWARE    = undefined
     Notice.listen = (title, opts, callback) -> 
 
@@ -50,13 +53,21 @@ describe 'realizers', ->
 
         it 'creates a task to encapsulate the remote realizer', (done) -> 
 
+            REPLY_FUNCTION = -> 
+
             mock = tasks.task
             tasks.task = (opts) -> 
                 tasks.task = mock
 
                 opts.uuid.should.equal 'REALIZER_UUID'
                 opts.otherProperty.should.equal 'VALUE'
-                opts.notice.should.equal 'REPLY FUNCTION'
+
+                #
+                # task is created with the messenger pipeline
+                # attached to the remote realizer process
+                #
+
+                opts.notice.should.equal REPLY_FUNCTION
                 done()
 
             Realizers CONTEXT, NOTICE, (error, api) -> 
@@ -72,7 +83,7 @@ describe 'realizers', ->
                     properties: 
                         uuid: 'REALIZER_UUID'
                         otherProperty: 'VALUE'
-                    reply: 'REPLY FUNCTION'
+                    reply: REPLY_FUNCTION
                     ->
 
     context 'api', -> 
@@ -80,10 +91,13 @@ describe 'realizers', ->
         beforeEach (done) -> 
 
             @SPAWNED = []
+            @REPLY_FUNCTION = ->
+            @CHECKSUM = 'cc'
+            @KILLED = undefined
             CONTEXT  = 
 
                 #
-                # objective runs a notice hub and pipulates context with 
+                # objective runs a notice hub and populates context with 
                 # the listening port, fake it
                 #
 
@@ -102,6 +116,25 @@ describe 'realizers', ->
                     spawn: (notice, args, callback) => 
                         @SPAWNED = arguments
 
+                        #
+                        # callback a fake child process
+                        #
+
+                        callback null, 
+                            pid: 'SPAWNED_PID'
+                            kill: => @KILLED = args.arguments[0]
+                            stdout: 
+                                on: ->
+
+                    #
+                    # get(opts) that refers to a spawned realizer 
+                    # will respawn the realizer if the script checksum
+                    # changed
+                    #
+
+                    checksum: 
+                        file: => @CHECKSUM
+
 
             Realizers CONTEXT, NOTICE, (error, @api) => 
 
@@ -111,7 +144,7 @@ describe 'realizers', ->
                     properties: 
                         uuid: 'REGISTERED_REALIZER_UUID'
                         otherProperty: 'VALUE'
-                    reply: 'REPLY FUNCTION'
+                    reply: @REPLY_FUNCTION
                     ->
                 
                 done()
@@ -150,10 +183,75 @@ describe 'realizers', ->
                     (err, realizer) -> 
 
 
-            it 'does not spawn a second instace if still waiting for the first to register'
+            it 'does not spawn a second instance if still waiting for the first to register', (done) -> 
 
-            it 'respawns if the script checksum changed'
+                @api.get 
 
+                    uuid: 'SPAWN_THIS_REALIZER'
+                    script: 'FILENAME.coffee'
+
+                    (err, realizer) -> 
+
+                process.nextTick =>
+
+                    @api.get 
+
+                        uuid: 'SPAWN_THIS_REALIZER'
+                        script: 'FILENAME.coffee'
+
+                        (err, realizer) -> 
+
+                process.nextTick -> 
+
+                    INFO.should.eql 
+
+                        '0': 'already waiting for realizer'
+                        '1': description: "pid:SPAWNED_PID, script:FILENAME.coffee"
+
+                    done()
+
+
+
+            it 'respawns if the script checksum changed', (done) ->
+
+                @api.get 
+
+                    uuid: 'SPAWN_ANOTHER_REALIZER'
+                    script: 'FILENAME.coffee'
+
+                    (err, realizer) -> 
+
+                #
+                # fake the remote realizer refistering
+                #
+
+                MIDDLEWARE 
+                    context:
+                        title: 'realizer::register'
+                    properties: 
+                        uuid: 'SPAWN_ANOTHER_REALIZER'
+                        otherProperty: 'VALUE'
+                    reply: @REPLY_FUNCTION
+                    ->
+
+                process.nextTick => 
+
+                    @SPAWNED  = undefined
+                    @CHECKSUM = 'dd'
+
+                    @api.get 
+
+                        uuid: 'SPAWN_ANOTHER_REALIZER'
+                        script: 'FILENAME.coffee'
+                        (err, realizer) -> 
+
+                process.nextTick => 
+
+                    @KILLED.should.equal 'FILENAME.coffee'
+                    @SPAWNED[1].arguments[0].should.equal 'FILENAME.coffee'
+                    done()
+                    
+            it 'kills changed script a more gracefully - perhaps via notifier'
 
 
         context 'start()', -> 

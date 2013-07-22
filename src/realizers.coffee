@@ -164,9 +164,7 @@ factory    = (context, notice, callback) ->
                 if spawnedAt[ref.uuid]?
 
                     return notice.info 'already waiting for realizer', 
-                        description: "pid:#{children[ref.script].pid}, script:#{ref.script}"
-                    
-
+                        description: "pid:#{children[ref.uuid].pid}, script:#{ref.script}"
 
                 context.tools.spawn notice,
 
@@ -192,7 +190,6 @@ factory    = (context, notice, callback) ->
                         # spawned the realizer as child
                         # pid maps kid to id/(script)
                         #
-
 
                         pids[child.pid] = ref.script
                         children[ref.uuid] = child
