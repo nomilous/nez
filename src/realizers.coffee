@@ -8,9 +8,11 @@ defer      = require('when').defer
 tasks      = require('does').tasks
 
 factory    = (context, notice, callback) -> 
-
+    
     collection  = {}
     startedAt   = {}
+
+
     children    = {}
     checksum    = {}
     spawnedAt   = {}
@@ -108,18 +110,14 @@ factory    = (context, notice, callback) ->
 
                     return callback null, collection[ref.uuid] unless (
 
-                        children[ref.uuid]? and checksum[ref.uuid] != context.tools.checksum.file ref.uuid
+                        #
+                        # if it was spawned locally, respawn if the 
+                        # script checksum changed
+                        #
+
+                        children[ref.uuid]? and checksum[ref.uuid] != context.tools.checksum.file ref.script
 
                     )
-
-                    #
-                    # if it was spawned locally, respawn if the 
-                    # script checksum changed
-                    #
-
-                    #
-                    # TODO: make this an event, for deployment switching, later.
-                    #
 
                     child = children[ref.uuid]
                     pid   = child.pid

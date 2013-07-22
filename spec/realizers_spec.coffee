@@ -6,7 +6,8 @@ tasks     = require('does').tasks
 
 describe 'realizers', ->
 
-    CONTEXT       = {}
+
+    CONTEXT       = {} 
     NOTICE        = {}
     MIDDLEWARE    = undefined
     Notice.listen = (title, opts, callback) -> 
@@ -49,13 +50,14 @@ describe 'realizers', ->
 
         it 'creates a task to encapsulate the remote realizer', (done) -> 
 
+            mock = tasks.task
             tasks.task = (opts) -> 
+                tasks.task = mock
 
                 opts.uuid.should.equal 'REALIZER_UUID'
                 opts.otherProperty.should.equal 'VALUE'
                 opts.notice.should.equal 'REPLY FUNCTION'
                 done()
-
 
             Realizers CONTEXT, NOTICE, (error, api) -> 
 
@@ -72,6 +74,91 @@ describe 'realizers', ->
                         otherProperty: 'VALUE'
                     reply: 'REPLY FUNCTION'
                     ->
+
+    context 'api', -> 
+
+        beforeEach (done) -> 
+
+            @SPAWNED = []
+            CONTEXT  = 
+
+                #
+                # objective runs a notice hub and pipulates context with 
+                # the listening port, fake it
+                #
+
+                listening: 
+                    transport: 'http'
+                    address: '127.0.0.1'
+                    port: 64653
+
+                tools: 
+
+                    #
+                    # get(opts) can spawn the realizer script if 
+                    # not registered and opts.script is defined
+                    #
+
+                    spawn: (notice, args, callback) => 
+                        @SPAWNED = arguments
+
+
+            Realizers CONTEXT, NOTICE, (error, @api) => 
+
+                MIDDLEWARE 
+                    context:
+                        title: 'realizer::register'
+                    properties: 
+                        uuid: 'REGISTERED_REALIZER_UUID'
+                        otherProperty: 'VALUE'
+                    reply: 'REPLY FUNCTION'
+                    ->
+                
+                done()
+
+
+        context 'get()', -> 
+
+            it 'callsback with if the realizer is not present (has not registered)', (done) -> 
+
+                    @api.get uuid: 'MISSING_REALIZER_UUID', (err, realizer) -> 
+
+                        err.should.match /missing realizer/
+                        done()
+
+            it 'calls back with the realizer', (done) -> 
+
+                @api.get uuid: 'REGISTERED_REALIZER_UUID', (err, realizer) -> 
+
+                    realizer.uuid.should.equal 'REGISTERED_REALIZER_UUID'
+                    should.exist realizer.running
+                    done()
+
+
+            it 'spawns the realizer if opts.script is specified', (done) -> 
+
+                process.nextTick =>
+
+                    @SPAWNED[1].arguments.should.eql ['FILENAME.coffee']
+                    done()
+
+                @api.get 
+
+                    uuid: 'SPAWN_THIS_REALIZER'
+                    script: 'FILENAME.coffee'
+
+                    (err, realizer) -> 
+
+
+            it 'does not spawn a second instace if still waiting for the first to register'
+
+            it 'respawns if the script checksum changed'
+
+
+
+        context 'start()', -> 
+
+            it 'starts the remote realizer loop'
 
 
 
