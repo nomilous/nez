@@ -71,8 +71,6 @@ factory    = (context, notice, callback) ->
 
                 api.get opts, (error, realizer) -> 
 
-                    console.log REALIZER: realizer
-
                     if error? 
 
                         running.reject error
