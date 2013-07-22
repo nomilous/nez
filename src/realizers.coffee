@@ -84,7 +84,7 @@ factory    = (context, notice, callback) ->
                             error: error
 
                 
-                    #realizer.event 'realizer::start', ref
+                    realizer.start().then running.resolve, running.reject, running.notify
 
                 return running.promise
 

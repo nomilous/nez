@@ -9,8 +9,11 @@ describe 'realizers', ->
 
     CONTEXT  = {} 
     INFO     = undefined
+    BADEVENT = undefined
     NOTICE   = 
         info: -> INFO = arguments
+        event: 
+            bad:-> BADEVENT = arguments
 
     MIDDLEWARE    = undefined
     Notice.listen = (title, opts, callback) -> 
@@ -256,12 +259,88 @@ describe 'realizers', ->
 
         context 'start()', -> 
 
-            it 'starts the remote realizer loop'
+            it 'calls to get() the realizer from the collection', (done) -> 
+
+                spy = @api.get
+                @api.get = => 
+                    @api.get = spy
+                    done()
+
+                @api.start uuid: 'REALIZER_UUID'
+
+            it 'returns a promise', (done) -> 
+
+                spy = @api.get
+                @api.get = => 
+                    @api.get = spy
+
+                @api.start( uuid: 'REALIZER_UUID' ).then.should.be.an.instanceof Function
+                done()
 
 
+            it 'the promise is rejected if the realizer could not be gotten', (done) -> 
+
+                spy = @api.get
+                @api.get = (opts, callback) => 
+                    @api.get = spy
+                    process.nextTick -> 
+
+                        callback new Error 'a problem'
+
+                @api.start( uuid: 'REALIZER_UUID', script: 'SCRIPT.coffee' ).then(
+
+                    (result) ->
+                    (error)  => 
+                        error.should.match /a problem/
+                        
+                        #
+                        # and notifies
+                        #
+
+                        BADEVENT[0].should.equal 'missing or broken realizer'
+                        BADEVENT[1].realizer.should.equal 'REALIZER_UUID'
+                        BADEVENT[1].script.should.equal 'SCRIPT.coffee'
+                        BADEVENT[1].error.should.match /a problem/
+                        done()
+
+                )
 
 
+            it 'calls realizer.start() and binds the resulting promise', (done) -> 
 
+                spy = @api.get
+                @api.get = (opts, callback) => 
+                    @api.get = spy
+                    callback null, 
+
+                        #
+                        # realizer is a task, calling start returns a promise
+                        #
+
+                        start: -> 
+
+                            then: (onResolve, onError, onStatus) -> 
+
+                                #
+                                # fake a status update from the realizer
+                                #
+
+                                onStatus 'UPDATE'
+
+
+                @api.start( uuid: 'REALIZER_UUID' ).then(
+
+                    (resolve) -> 
+                    (error)   -> 
+                    (status)  -> 
+
+                        status.should.equal 'UPDATE'
+                        done()
+
+                )
+
+
+            it 'handles the calling of start() when already running'
 
 
 
