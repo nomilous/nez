@@ -40,6 +40,7 @@ factory    = (context, notice, callback) ->
 
                     opts        = msg.properties
                     uuid        = opts.uuid
+
                     opts.notice = msg.reply
 
                     tasks.task opts, (error, task) -> 
@@ -53,7 +54,24 @@ factory    = (context, notice, callback) ->
                             startedLag[uuid] = startedAt[uuid] - spawnedAt[uuid] if spawnedAt[uuid]?
                             delete spawnedAt[uuid]
 
-            next()
+                    next()
+
+                else 
+
+                    if msg.uuid? and collection[msg.uuid]?
+
+                        #
+                        # TODO: enable middleware registrar on msg.reply notifier
+                        #       (so this is not necessary)
+
+                        task = collection[msg.uuid]
+                        task.message msg, next
+
+                    else 
+
+                        next()
+
+            
 
         return callback error if error?
 
