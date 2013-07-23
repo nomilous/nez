@@ -135,8 +135,11 @@ factory    = (context, notice, callback) ->
 
                     )
 
+                    task  = collection[ref.uuid]
                     child = children[ref.uuid]
                     pid   = child.pid
+
+                    task.terminate()
                     child.kill()
 
                     delete collection[ref.uuid]
