@@ -26,3 +26,19 @@ describe 'nez', ->
         Nez.realize.should.equal require '../lib/realization/realize'
         done()
 
+
+    context 'lacrimi de St Lawrence', ->
+    
+        context 'ca și zaharoză', -> 
+
+            before (α) -> 
+
+                @rendezvous = (Ω) -> 'ele să fie': Ω()
+                α()
+
+            it 'pollenates', (orthagonally) -> 
+  
+                @rendezvous orthagonally
+
+
+
