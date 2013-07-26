@@ -78,6 +78,20 @@ module.exports = (title, opts, objectiveFn) ->
                 done()
 
 
+        beforeEach: (done, inject) -> 
+
+            #
+            # activate alternative resolver injection
+            # to prevent `done` being injected into eo 
+            # as arg1
+            # 
+            # TODO: resolve this deferral somewhere
+            # 
+
+            inject.defer
+            done()
+
+
         #
         # assign a default error handler if none was configured
         #

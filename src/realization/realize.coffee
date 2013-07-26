@@ -40,6 +40,19 @@ module.exports = (title, optionalOpts, realizerFn) ->
                 inject.first[1] = notice
                 done()
 
+        beforeEach: (done, inject) -> 
+
+            #
+            # activate alternative resolver injection
+            # to prevent `done` being injected into eo 
+            # as arg1
+            # 
+            # TODO: resolve this deferral somewhere
+            # 
+
+            inject.defer
+            done()
+
         error: (error) -> console.log 'Realizer error!', error
 
         ipso
