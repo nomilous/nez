@@ -25,6 +25,8 @@ A Distributed Process Scaffold
 
 * pending tests - without `(done) ->` 
 * fix loss of context (blank test 'names')
+* ancestor phrase calls
+* injectorless phrase calls
 * support `.coffee.md`
 * what can be done with this: `X-SourceMap: /path/to/file.js.map`
 * display surrounding context test failure / exception
