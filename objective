@@ -23,21 +23,3 @@ require('nez').objective 'Nez',
         garnishable from the development process itself (the test runs).
 
     """
-
-    possibility: """ 
-
-        Imagine a framework capable of houseing a graph of nodes, each 
-        representing a component of a complex system, and a set edges 
-        along which a configured 'consciousness' can traverse as it 
-        endeavours to complete its assigned task.
-
-    """ 
-
-
-    ALSO: 'what the door mouse said'
-
-          #
-          # https://github.com/nomilous/nez/commit/eeb5b031e32c6fe9f4245b8632aa913735c639c8
-          #
-
-
