@@ -43,6 +43,8 @@ factory    = (context, notice, callback) ->
 
                     opts.notice = msg.reply
 
+                    console.log REALIZER_CONNECTED: msg.content
+
                     tasks.task opts, (error, task) -> 
 
                             #
@@ -57,6 +59,8 @@ factory    = (context, notice, callback) ->
                     next()
 
                 else 
+
+                    console.log MEALIZER_MESSAGE: msg.content
 
                     if msg.uuid? and collection[msg.uuid]?
 
@@ -98,7 +102,6 @@ factory    = (context, notice, callback) ->
                             realizer: opts.uuid
                             script: opts.script
                             error: error
-
                 
                     realizer.start( opts ).then running.resolve, running.reject, running.notify
 
