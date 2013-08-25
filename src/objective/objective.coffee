@@ -1,7 +1,11 @@
 Notice = require 'notice'
 Phrase = require 'phrase'
 
-module.exports = (opts, objectiveFn) -> 
+module.exports = ( opts, objectiveFn = (end) -> ) ->
+
+                                #
+                                # default the objectiveFn as PhraseLeaf
+                                #
     
     opts       ||= {}
     opts.title ||= 'untitled' 
@@ -26,8 +30,6 @@ module.exports = (opts, objectiveFn) ->
     #               port:     10001
     #               cert:     './cert/develop-cert.pem'
     #               key:      './cert/develop-key.pem'
-    # 
-    #           (end) ->  
     #
 
     Notice.listen "objective/#{ opts.uuid }",
@@ -47,8 +49,13 @@ module.exports = (opts, objectiveFn) ->
             # hub up and listening
             # --------------------
             # 
-            # * `opts.lintening` now contains details (transport, address, port)
+            # * `opts.listening` now contains details (transport, address, port)
             #
+            # 
+            # Initialize PhraseTree with the objectiveFn
+            # ------------------------------------------
+            # 
+            # * 
 
             Phrase.createRoot( 
 
@@ -61,7 +68,6 @@ module.exports = (opts, objectiveFn) ->
                         console.log data
 
             ) objectiveFn
-
 
 
 
