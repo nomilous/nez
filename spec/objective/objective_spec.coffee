@@ -1,22 +1,43 @@
 should    = require 'should'
 objective = require '../../lib/objective/objective'
-phrase    = require 'phrase'
+Phrase    = require 'phrase'
+Notice    = require 'notice'
 
 describe 'objective', -> 
 
     beforeEach -> 
 
-        @swap = phrase.createRoot
+        @swap1 = Notice.listen
+        @swap2 = Phrase.createRoot
 
     afterEach -> 
 
-        phrase.createRoot = @swap
+        Notice.listen     = @swap1 
+        Phrase.createRoot = @swap2
 
-    context 'phrase', ->
+
+    context 'message bus', ->
+
+        it 'starts a notice hub named "objective/{uuid}"', (done) -> 
+
+            Notice.listen = (hubname, opts, linkFn) ->
+
+                hubname.should.equal 'objective/2'
+                done()
+                throw 'go no further'
+
+            try objective
+
+                uuid: '2'
+
+                
+
+
+    xcontext 'phrase tress', ->
 
         it 'creates a phrase tree', (done) -> 
 
-            phrase.createRoot = (opts) -> 
+            Phrase.createRoot = (opts) -> 
 
                 opts.should.eql 
                     title: 'untitled'
@@ -30,7 +51,7 @@ describe 'objective', ->
 
         it 'initializes the phrase tree with the objectiveFn', (done) -> 
 
-            phrase.createRoot = -> 
+            Phrase.createRoot = -> 
 
                 #
                 # mock rootRegistrar

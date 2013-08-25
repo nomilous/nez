@@ -1,8 +1,16 @@
+Notice = require 'notice'
+
 module.exports = (opts, objectiveFn) -> 
     
     opts       ||= {}
     opts.title ||= 'untitled' 
     opts.uuid  ||= '0'
+
+    #
+    # 
+    #
+
+    return Notice.listen "objective/#{ opts.uuid }"
 
     require('phrase').createRoot(
 
