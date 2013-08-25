@@ -44,7 +44,7 @@ describe 'objective', ->
 
 
 
-    xit '...what lies down this road', (done) -> 
+    it '...what lies down this road', (done) -> 
 
 
         objective 
@@ -75,8 +75,8 @@ describe 'objective', ->
 
                     (need) -> 
                         
-                        need 'a login form'
-                        need 'other things that have understandable meaning to customers'
+                        need 'a login form', (specs) -> 
+                        need 'other things that have understandable meaning to customers', (specs) ->
                         need '...', (specs) -> 
 
                             #
@@ -95,6 +95,9 @@ describe 'objective', ->
                             # 
                             #               (to keep customers happy)
                             # 
+
+
+                        done()
 
                 #
                 # or something like that...
