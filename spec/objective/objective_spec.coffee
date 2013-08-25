@@ -15,7 +15,6 @@ describe 'objective', ->
         Notice.listen     = @noticeListen
         Phrase.createRoot = @swap2
 
-
     context 'message bus', ->
 
         it 'starts a notice hub named "objective/{uuid}"', (done) -> 
@@ -27,15 +26,17 @@ describe 'objective', ->
                 throw 'go no further'
 
             try objective
-
-                uuid: '2'
+                title:       'title'
+                uuid:        '2'
+                description: 'description'
 
 
         it 'allows the hub to default the listen parameters', (done) -> 
 
             objectiveOpts = 
-                title: 'title'
-                uuid:  '2'
+                title:       'title'
+                uuid:        '2'
+                description: 'description'
 
             #
             # restore Notice.listen to un-stubbed
@@ -69,8 +70,9 @@ describe 'objective', ->
 
             objectiveOpts = 
 
-                title: 'title'
-                uuid:  '2'
+                title:       'title'
+                uuid:        '2'
+                description: 'description'
                 listen: 
                     port:    10101
                     address: '0.0.0.0'
@@ -107,12 +109,17 @@ describe 'objective', ->
             Phrase.createRoot = (opts) -> 
 
                 opts.should.eql 
-                    title: 'untitled'
-                    uuid:  '0'
+                    title:       'untitled'
+                    uuid:        '0'
+                    description: 'description'
 
                 done()
                 
-            try objective {}, ->
+            try objective 
+
+                title:       'untitled'
+                uuid:        '0'
+                description: 'description'
 
 
         it 'initializes the phrase tree with the objectiveFn', (done) -> 
@@ -125,21 +132,31 @@ describe 'objective', ->
 
                 (phraseFn) -> 
 
-                    phraseFn.toString().should.match /theObjective/
+                    phraseFn.toString().should.match /the Objective phrase tree/
                     done()
-
-
-            objective {}, (requirement) -> 'theObjective'
-
-
-
-        xit '...what lies down this road', (done) -> 
 
 
             objective 
 
-                title:    'Some App or New Feature'
-                uuid:     'uniqueness, for state / metric persistance'
+                title:       'untitled'
+                uuid:        '0'
+                description: 'description'
+
+                (requirement) -> 
+
+                    'the Objective phrase tree'
+
+
+
+        it '...what lies down this road', (done) -> 
+
+
+            objective 
+
+                title:       'Some App or New Feature'
+                uuid:        'uniqueness, for state / metric persistance'
+                description: 'description'
+
                 edge:     ['specs']
 
                 (requirement) -> 

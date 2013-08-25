@@ -22,15 +22,31 @@ How do I use it?
 
 require('nez').objective 
 
-    title: 'Title of the Objective'
-    uuid:  
-
     #
     # Opts / Configuration
     # ====================
     # 
     # As a hash of key value pairs
     # 
+
+    #
+    # opts.title (required) 
+    # ---------------------
+    #
+    # * Give it a name
+    # 
+
+    title: 'Title of the Objective'
+
+    # 
+    # opts.uuid (required)
+    # --------------------
+    # 
+    # * Make it persistable (with a certainly unique reference)
+    #
+
+    uuid:  '00000000-0700-0000-0000-fffffffffff0'
+
     # 
     # opts.description (required)
     # ---------------------------

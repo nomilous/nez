@@ -7,9 +7,16 @@ module.exports = ( opts, objectiveFn = (end) -> ) ->
                                 # default the objectiveFn as PhraseLeaf
                                 #
     
-    opts       ||= {}
-    opts.title ||= 'untitled' 
-    opts.uuid  ||= '0'
+    missing = for required in ['title', 'uuid', 'description']
+        continue if opts[required]?
+        required
+
+    if missing.length > 0
+        console.log "objective(opts, objectiveFn) requires #{
+            missing.map( (p) -> "opts.#{p}" ).join ', '
+        }"
+        process.exit 2
+
 
     #
     # start notice hub
