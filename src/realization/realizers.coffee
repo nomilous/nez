@@ -3,7 +3,7 @@
 # ====================
 #
 
-exports.createCollection = ( π ) -> 
+exports.createCollection = ( ƒ ) -> 
 
     new ( try 
 
@@ -14,7 +14,7 @@ exports.createCollection = ( π ) ->
         # * opts.controller can define node module
         #
 
-        if π.controller? then require π.controller
+        if ƒ.controller? then require ƒ.controller
 
         #
         # * or the default
@@ -22,7 +22,7 @@ exports.createCollection = ( π ) ->
 
         else require './controller'
 
-    catch error
+    catch π
 
         #
         # EXIT 4
@@ -31,10 +31,10 @@ exports.createCollection = ( π ) ->
         # * the specified controller was not installed
         #
 
-        try delete π.listen.secret
-        try delete π.listening
-        console.log OPTS: π, ERROR: error
+        try delete ƒ.listen.secret
+        try delete ƒ.listening
+        console.log OPTS: ƒ, ERROR: π
         process.exit 4
 
-    ) π
+    ) ƒ
 
