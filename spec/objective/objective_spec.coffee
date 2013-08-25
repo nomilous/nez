@@ -1,5 +1,6 @@
 should    = require 'should'
-objective = require '../../lib/objective/objective'
+Objective = require '../../lib/objective/objective'
+Realizers = require '../../lib/realization/realizers'
 Phrase    = require 'phrase'
 Notice    = require 'notice'
 
@@ -7,13 +8,17 @@ describe 'objective', ->
 
     beforeEach -> 
 
-        @noticeListen = Notice.listen
-        @swap2 = Phrase.createRoot
+        @noticeListen       = Notice.listen
+        @phraseCreate       = Phrase.createRoot
+        @realizerCollection = Realizers.createCollection
+
+        Realizers.createCollection = ->
 
     afterEach -> 
 
-        Notice.listen     = @noticeListen
-        Phrase.createRoot = @swap2
+        Notice.listen              = @noticeListen
+        Phrase.createRoot          = @phraseCreate
+        Realizers.createCollection = @realizerCollection
 
     context 'message bus', ->
 
@@ -23,9 +28,9 @@ describe 'objective', ->
 
                 hubname.should.equal 'objective/2'
                 done()
-                throw 'go no further'
+                
 
-            try objective
+            try Objective
                 title:       'title'
                 uuid:        '2'
                 description: 'description'
@@ -34,9 +39,7 @@ describe 'objective', ->
         it 'allows the hub to default the listen parameters', (done) -> 
 
             objectiveOpts = 
-                title:       'title'
-                uuid:        '2'
-                description: 'description'
+                
 
             #
             # restore Notice.listen to un-stubbed
@@ -44,31 +47,43 @@ describe 'objective', ->
 
             Notice.listen = @noticeListen
 
+            Phrase.createRoot = (opts) ->
 
-            objective objectiveOpts, (end) -> 
-            setTimeout (->
-                
                 #
-                # using timeout to allow phrase to complete the walk
-                # --------------------------------------------------
-                # 
-                # * otherwise it won't do another one
-                # 
-                # * hub appends opts with details of the listening server
-                #   that it created
+                # notice hub appended listening details onto 
+                # opts
                 #
 
-                objectiveOpts.listening.transport.should.equal 'http'
-                objectiveOpts.listening.address.should.equal   '127.0.0.1'
-                should.exist objectiveOpts.listening.port 
-                done()
+                opts.listening.transport.should.equal 'http'
+                opts.listening.address.should.equal   '127.0.0.1'
+                should.exist opts.listening.port 
 
-            ), 10
+                -> done()
 
+
+            Objective 
+
+                title:       'title'
+                uuid:        '2'
+                description: 'description'
+
+                (end) -> 
 
         it 'can specify listen parameters', (done) -> 
 
-            objectiveOpts = 
+            Notice.listen = @noticeListen
+
+            Phrase.createRoot = (opts) ->
+
+                opts.listening.should.eql
+
+                    transport: 'http'
+                    address:   '0.0.0.0'
+                    port:      10101
+
+                -> done()
+
+            Objective 
 
                 title:       'title'
                 uuid:        '2'
@@ -77,20 +92,7 @@ describe 'objective', ->
                     port:    10101
                     address: '0.0.0.0'
 
-            Notice.listen = @noticeListen
-            objective objectiveOpts, (end) -> 
-            setTimeout (->
-                
-                objectiveOpts.listening.should.eql 
-
-                    transport: 'http'
-                    address:   '0.0.0.0'
-                    port:      10101
-
-                done()
-
-            ), 10
-            
+                (end) -> 
 
 
     context 'phrase tree', ->
@@ -113,9 +115,9 @@ describe 'objective', ->
                     uuid:        '0'
                     description: 'description'
 
-                done()
+                -> done()
                 
-            try objective 
+            Objective 
 
                 title:       'untitled'
                 uuid:        '0'
@@ -130,13 +132,13 @@ describe 'objective', ->
                 # mock rootRegistrar
                 #
 
-                (phraseFn) -> 
+                (phraseString, phraseFn) -> 
 
-                    phraseFn.toString().should.match /the Objective phrase tree/
+                    phraseString.should.equal 'objective'
+                    phraseFn.toString().should.match /the Objective phrase tree/     
                     done()
 
-
-            objective 
+            Objective 
 
                 title:       'untitled'
                 uuid:        '0'
@@ -151,7 +153,7 @@ describe 'objective', ->
         it '...what lies down this road', (done) -> 
 
 
-            objective 
+            Objective 
 
                 title:       'Some App or New Feature'
                 uuid:        'uniqueness, for state / metric persistance'
@@ -209,6 +211,38 @@ describe 'objective', ->
                     # or something like that...
                     #
 
+
+    context 'realizers collection', -> 
+
+        it "is created with the hub messenger and the phrase tree's token and bus", (done) -> 
+
+            Realizers.createCollection = (opts, realizerHub, objectiveToken, objectiveNotice) ->
+
+                opts.should.eql 
+                    title:       'Title'
+                    uuid:        '00000000-0700-0000-0000-fffffffffff0'
+                    description: 'description'
+
+                realizerHub.should.equal        'MOCK_REALIZER_HUB'
+                objectiveToken.should.equal     'MOCK TOKEN'
+                objectiveNotice.should.equal    'MOCK NOTIFIER'
+
+                done()
+
+
+            Notice.listen = (hubname, opts, linkFn) ->
+                linkFn null, 'MOCK_REALIZER_HUB'
+
+            Phrase.createRoot = (opts, linkFn) -> 
+                linkFn 'MOCK TOKEN', 'MOCK NOTIFIER'
+                ->
+
+            
+            Objective
+
+                title:       'Title'
+                uuid:        '00000000-0700-0000-0000-fffffffffff0'
+                description: 'description'
 
 
 

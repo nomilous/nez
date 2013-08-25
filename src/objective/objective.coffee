@@ -1,5 +1,6 @@
-Notice = require 'notice'
-Phrase = require 'phrase'
+Notice    = require 'notice'
+Phrase    = require 'phrase'
+Realizers = require '../realization/realizers'
 
 module.exports = ( opts, objectiveFn = (end) -> ) ->
 
@@ -39,42 +40,36 @@ module.exports = ( opts, objectiveFn = (end) -> ) ->
     #               key:      './cert/develop-key.pem'
     #
 
-    Notice.listen "objective/#{ opts.uuid }",
+    Notice.listen "objective/#{ opts.uuid }", opts, (error, realizerHub) -> 
 
-        opts
+        if error? 
 
-        (error, hub) -> 
+            try delete opts.listen.secret
+            try delete opts.listening
+            console.log OPTS: opts, ERROR: error
+            process.exit 1
 
-            if error? 
+        #
+        # hub up and listening
+        # --------------------
+        # 
+        # * `opts.listening` now contains details (transport, address, port)
+        #
+        # 
+        # Initialize PhraseTree with the objectiveFn
+        # ------------------------------------------
+        # 
 
-                try delete opts.listen.secret
-                try delete opts.listening
-                console.log OPTS: opts, ERROR: error
-                process.exit 1
+        Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
 
             #
-            # hub up and listening
-            # --------------------
+            # * Objective PhraseTree is online.
+            # * Pass all 'integratables' into the realizer collection.
             # 
-            # * `opts.listening` now contains details (transport, address, port)
-            #
-            # 
-            # Initialize PhraseTree with the objectiveFn
-            # ------------------------------------------
-            # 
-            # * 
 
-            Phrase.createRoot( 
+            Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
 
-                opts 
-
-                (token, notice) ->
-
-                    token.on 'ready', (data) -> 
-
-                        console.log data
-
-            ) objectiveFn
+        ) 'objective', objectiveFn
 
 
 
