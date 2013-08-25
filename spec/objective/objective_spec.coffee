@@ -1,6 +1,25 @@
-should = require 'should'
+should    = require 'should'
+objective = require '../../lib/objective/objective'
+phrase    = require 'phrase'
 
-describe 'objective', -> it ''
+describe 'objective', -> 
+
+    it 'creates a phrase tree', (done) -> 
+
+        swap = phrase.createRoot
+        phrase.createRoot = (opts) -> 
+            phrase.createRoot = swap
+
+            opts.should.eql 
+                title: 'untitled'
+                uuid:  '0'
+
+            done()
+            
+        objective {}, ->
+
+
+
 
 
 

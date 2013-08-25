@@ -1,16 +1,15 @@
-module.exports = ->
+module.exports = (opts, objectiveFn) -> 
+    
+    opts       ||= {}
+    opts.title ||= 'untitled' 
+    opts.uuid  ||= '0'
 
+    require('phrase').createRoot(
 
+        opts
+        ->
 
-
-
-
-
-
-
-
-
-
+    )
 
 
 
