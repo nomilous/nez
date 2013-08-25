@@ -1,23 +1,36 @@
-should    = require 'should'
-objective = require '../../lib/objective/objective'
-notice    = require 'notice'
-eo        = require 'eo'
+should = require 'should'
 
-notice.listen = (hubName, opts, cb) -> cb()
-
-describe 'objective', -> 
-
-    it 'starts a notice hub listening for realizers', (done) -> 
-
-        notice.listen = (hubName, opts, cb) -> done()
-        objective 'title', description: 'd', ->
+describe 'objective', -> it ''
 
 
-    it 'attaches tools onto the context', (done) -> 
 
-        notice.listen = (hubName, opts, cb) -> 
-            opts.tools.should.equal require '../../lib/tools'
-            done()
 
-        objective 'title', description: 'd', -> 
+
+
+
+
+
+
+# should    = require 'should'
+# objective = require '../../lib/objective/objective'
+# notice    = require 'notice'
+# eo        = require 'eo'
+
+# notice.listen = (hubName, opts, cb) -> cb()
+
+# describe 'objective', -> 
+
+    # it 'starts a notice hub listening for realizers', (done) -> 
+
+        # notice.listen = (hubName, opts, cb) -> done()
+        # objective 'title', description: 'd', ->
+
+
+    # it 'attaches tools onto the context', (done) -> 
+
+        # notice.listen = (hubName, opts, cb) -> 
+            # opts.tools.should.equal require '../../lib/tools'
+            # done()
+
+        # objective 'title', description: 'd', -> 
 
