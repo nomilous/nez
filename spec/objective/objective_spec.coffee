@@ -4,21 +4,52 @@ phrase    = require 'phrase'
 
 describe 'objective', -> 
 
+    beforeEach -> 
+
+        @swap = phrase.createRoot
+
+    afterEach -> 
+
+        phrase.createRoot = @swap
+
     it 'creates a phrase tree', (done) -> 
 
-        swap = phrase.createRoot
         phrase.createRoot = (opts) -> 
-            phrase.createRoot = swap
 
             opts.should.eql 
                 title: 'untitled'
                 uuid:  '0'
 
             done()
+            throw 'go no further'
             
-        objective {}, ->
+        try objective {}, ->
 
 
+    it 'initializes the phrase tree with the objectiveFn', (done) -> 
+
+        phrase.createRoot = -> 
+
+            #
+            # mock rootRegistrar
+            #
+
+            (phraseFn) -> 
+
+                phraseFn.toString().should.match /theObjective/
+                done()
+
+
+        objective {}, (requirements) -> 
+
+            #
+            # not going to implement the graph paths from
+            # objective to specs via the requirements
+            # 
+            #  (dependancy maps, for client view, later)
+            #
+
+            'theObjective'
 
 
 

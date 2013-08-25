@@ -9,8 +9,7 @@ module.exports = (opts, objectiveFn) ->
         opts
         ->
 
-    )
-
+    ) objectiveFn
 
 
 
