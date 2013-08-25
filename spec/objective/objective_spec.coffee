@@ -40,22 +40,65 @@ describe 'objective', ->
                 done()
 
 
-        objective {}, (requirements) -> 
-
-            #
-            # not going to implement the graph paths from
-            # objective to specs via the requirements
-            # 
-            #  (dependancy maps, for client view, later)
-            #
-
-            'theObjective'
+        objective {}, (requirement) -> 'theObjective'
 
 
 
+    xit '...what lies down this road', (done) -> 
 
 
+        objective 
 
+            title:    'Some App or New Feature'
+            uuid:     'uniqueness, for state / metric persistance'
+            edge:     ['specs']
+
+            (requirement) -> 
+
+                # 
+                # requirement.link
+                # 
+                #     #
+                #     # recurse user stories directory
+                #     # attaching each to this PhraseNode
+                #     #  
+                # 
+                #     directory: './stories'
+                # 
+                # 
+
+                requirement 'login', 
+
+                    as:   'system user'
+                    to:   'login'
+                    uuid: 'again with the persistable-ness'
+
+                    (need) -> 
+                        
+                        need 'a login form'
+                        need 'other things that have understandable meaning to customers'
+                        need '...', (specs) -> 
+
+                            #
+                            # each user story mapping to the code specs 
+                            # upon which they depend, so...
+                            #
+
+                            specs.link file: './spec/app/model/user'
+                            specs.link file: './spec/app/server'
+                            specs.link file: './.....'
+
+                            #
+                            # ...so  that the advance of dev progress through 
+                            #        the specs can be reduced to something as 
+                            #        simple as a progress bar per user story.
+                            # 
+                            #               (to keep customers happy)
+                            # 
+
+                #
+                # or something like that...
+                #
 
 
 
