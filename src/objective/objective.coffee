@@ -60,16 +60,23 @@ module.exports = ( opts, objectiveFn = (end) -> ) ->
         # ------------------------------------------
         # 
 
-        Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
+        try Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
 
-            #
-            # * Objective PhraseTree is online.
-            # * Pass all 'integratables' into the realizer collection.
-            # 
+                #
+                # * Objective PhraseTree is online.
+                # * Pass all 'integratables' into the realizer collection.
+                # 
 
-            Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
+                Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
 
-        ) 'objective', objectiveFn
+            ) 'objective', objectiveFn
+
+        catch error
+
+            try delete opts.listen.secret
+            try delete opts.listening
+            console.log OPTS: opts, ERROR: error
+            process.exit 3
 
 
 

@@ -214,7 +214,7 @@ describe 'objective', ->
 
     context 'realizers collection', -> 
 
-        it "is created with the hub messenger and the phrase tree's token and bus", (done) -> 
+        it "is created with the hub messenger and the objective phrase tree's token and bus", (done) -> 
 
             Realizers.createCollection = (opts, realizerHub, objectiveToken, objectiveNotice) ->
 
