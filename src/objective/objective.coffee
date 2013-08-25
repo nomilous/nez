@@ -36,6 +36,13 @@ module.exports = (opts, objectiveFn) ->
 
         (error, hub) -> 
 
+            if error? 
+
+                try delete opts.listen.secret
+                try delete opts.listening
+                console.log OPTS: opts, ERROR: error
+                process.exit 1
+
             #
             # hub up and listening
             # --------------------
