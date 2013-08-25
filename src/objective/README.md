@@ -17,10 +17,13 @@ How do I use it?
 ```coffee
 
 #
-# nez.objective( title, opts, objectiveFn )
+# nez.objective( opts, objectiveFn )
 #
 
-require('nez').objective 'Title of the Objective', 
+require('nez').objective 
+
+    title: 'Title of the Objective'
+    uuid:  
 
     #
     # Opts / Configuration
@@ -37,30 +40,30 @@ require('nez').objective 'Title of the Objective',
 
     description: 'Description of the Objective'
 
-    #
-    # opts.messenger (optional)
-    # -------------------------
-    # 
-    # * A messenger function can be defined.
-    # * It will override the default eo.messenger.
-    # * It will receive all messages generated with the built in notifier
-    # 
-
-    messenger: (message, next) -> 
-
-        console.log message.content
-        next()
-
-    #
-    # opts.error (optional)
-    # ---------------------
-    # 
-    # * Errors that terminate the objective are sent here
-    # 
-
-    error: (error) -> 
-
-        console.log 'ERROR!!', error.stack
+########################    #
+########################    # opts.messenger (optional)
+######  possibly  ######    # -------------------------
+######    not     ######    # 
+########################    # * A messenger function can be defined.
+########################    # * It will override the default eo.messenger.
+########################    # * It will receive all messages generated with the built in notifier
+########################    # 
+########################
+########################    messenger: (message, next) -> 
+########################
+########################        console.log message.content
+########################        next()
+########################
+########################    #
+########################    # opts.error (optional)
+########################    # ---------------------
+########################    # 
+########################    # * Errors that terminate the objective are sent here
+########################    # 
+########################
+########################    error: (error) -> 
+########################
+########################        console.log 'ERROR!!', error.stack
 
     #
     # opts.otherConfig
@@ -79,7 +82,7 @@ require('nez').objective 'Title of the Objective',
     # User defined objective main loop
     #
 
-    -> 
+    (end) -> 
 
 
 ```
