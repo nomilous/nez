@@ -1,4 +1,5 @@
 Notice = require 'notice'
+Phrase = require 'phrase'
 
 module.exports = (opts, objectiveFn) -> 
     
@@ -9,6 +10,24 @@ module.exports = (opts, objectiveFn) ->
     #
     # start notice hub
     # ----------------
+    # 
+    # * defaults socket.io (http, localhost, nextport)
+    # * or specify in objective
+    # 
+    #   eg. 
+    #       require('nez').objective
+    # 
+    #           title: 'Title'
+    #           uuid:  '00000000-0700-0000-0000-fffffffffff0'
+    # 
+    #           listen: 
+    #               secret:   '∫'
+    #               address:  'localhost'
+    #               port:     10001
+    #               cert:     './cert/develop-cert.pem'
+    #               key:      './cert/develop-key.pem'
+    # 
+    #           (end) ->  
     #
 
     Notice.listen "objective/#{ opts.uuid }",
@@ -17,10 +36,22 @@ module.exports = (opts, objectiveFn) ->
 
         (error, hub) -> 
 
-            require('phrase').createRoot(
+            #
+            # hub up and listening
+            # --------------------
+            # 
+            # * `opts.lintening` now contains details (transport, address, port)
+            #
 
-                opts
-                ->
+            Phrase.createRoot( 
+
+                opts 
+
+                (token, notice) ->
+
+                    token.on 'ready', (data) -> 
+
+                        console.log data
 
             ) objectiveFn
 
