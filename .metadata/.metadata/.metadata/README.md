@@ -7,7 +7,8 @@
 
 
 
-                               so world is a Leaf so Tree is a bough
+                       so world is a       Leaf so Tree         is a bough
+
 
                                      (and birds sing sweeter
                                     
@@ -34,12 +35,11 @@
 
                                         around again fly)
 
-                                    forever was never till now
+                                 forever   was never   till now
 
 
 
                                                       - ee cummings
-
 
 
 
