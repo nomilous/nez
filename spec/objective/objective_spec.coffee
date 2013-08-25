@@ -12,96 +12,98 @@ describe 'objective', ->
 
         phrase.createRoot = @swap
 
-    it 'creates a phrase tree', (done) -> 
+    context 'phrase', ->
 
-        phrase.createRoot = (opts) -> 
+        it 'creates a phrase tree', (done) -> 
 
-            opts.should.eql 
-                title: 'untitled'
-                uuid:  '0'
+            phrase.createRoot = (opts) -> 
 
-            done()
-            throw 'go no further'
-            
-        try objective {}, ->
+                opts.should.eql 
+                    title: 'untitled'
+                    uuid:  '0'
 
-
-    it 'initializes the phrase tree with the objectiveFn', (done) -> 
-
-        phrase.createRoot = -> 
-
-            #
-            # mock rootRegistrar
-            #
-
-            (phraseFn) -> 
-
-                phraseFn.toString().should.match /theObjective/
                 done()
+                throw 'go no further'
+                
+            try objective {}, ->
 
 
-        objective {}, (requirement) -> 'theObjective'
+        it 'initializes the phrase tree with the objectiveFn', (done) -> 
 
-
-
-    it '...what lies down this road', (done) -> 
-
-
-        objective 
-
-            title:    'Some App or New Feature'
-            uuid:     'uniqueness, for state / metric persistance'
-            edge:     ['specs']
-
-            (requirement) -> 
-
-                # 
-                # requirement.link
-                # 
-                #     #
-                #     # recurse user stories directory
-                #     # attaching each to this PhraseNode
-                #     #  
-                # 
-                #     directory: './stories'
-                # 
-                # 
-
-                requirement 'login', 
-
-                    as:   'system user'
-                    to:   'login'
-                    uuid: 'again with the persistable-ness'
-
-                    (need) -> 
-                        
-                        need 'a login form', (specs) -> 
-                        need 'other things that have understandable meaning to customers', (specs) ->
-                        need '...', (specs) -> 
-
-                            #
-                            # each user story mapping to the code specs 
-                            # upon which they depend, so...
-                            #
-
-                            specs.link file: './spec/app/model/user'
-                            specs.link file: './spec/app/server'
-                            specs.link file: './.....'
-
-                            #
-                            # ...so  that the advance of dev progress through 
-                            #        the specs can be reduced to something as 
-                            #        simple as a progress bar per user story.
-                            # 
-                            #               (to keep customers happy)
-                            # 
-
-
-                        done()
+            phrase.createRoot = -> 
 
                 #
-                # or something like that...
+                # mock rootRegistrar
                 #
+
+                (phraseFn) -> 
+
+                    phraseFn.toString().should.match /theObjective/
+                    done()
+
+
+            objective {}, (requirement) -> 'theObjective'
+
+
+
+        it '...what lies down this road', (done) -> 
+
+
+            objective 
+
+                title:    'Some App or New Feature'
+                uuid:     'uniqueness, for state / metric persistance'
+                edge:     ['specs']
+
+                (requirement) -> 
+
+                    # 
+                    # requirement.link
+                    # 
+                    #     #
+                    #     # recurse user stories directory
+                    #     # attaching each to this PhraseNode
+                    #     #  
+                    # 
+                    #     directory: './stories'
+                    # 
+                    # 
+
+                    requirement 'login', 
+
+                        as:   'system user'
+                        to:   'login'
+                        uuid: 'again with the persistable-ness'
+
+                        (need) -> 
+                            
+                            need 'a login form', (specs) -> 
+                            need 'other things that have understandable meaning to customers', (specs) ->
+                            need '...', (specs) -> 
+
+                                #
+                                # each user story mapping to the code specs 
+                                # upon which they depend, so...
+                                #
+
+                                specs.link file: './spec/app/model/user'
+                                specs.link file: './spec/app/server'
+                                specs.link file: './.....'
+
+                                #
+                                # ...so  that the advance of dev progress through 
+                                #        the specs can be reduced to something as 
+                                #        simple as a progress bar per user story.
+                                # 
+                                #               (to keep customers happy)
+                                # 
+
+
+                            done()
+
+                    #
+                    # or something like that...
+                    #
 
 
 
