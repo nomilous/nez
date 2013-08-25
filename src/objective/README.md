@@ -95,7 +95,7 @@ require('nez').objective
     # Objective Loop (objectiveFn)
     # ============================
     # 
-    # User defined objective main loop
+    # User defined objective PhraseTree ()
     #
 
     (end) -> 
