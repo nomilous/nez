@@ -7,12 +7,12 @@ describe 'objective', ->
 
     beforeEach -> 
 
-        @swap1 = Notice.listen
+        @noticeListen = Notice.listen
         @swap2 = Phrase.createRoot
 
     afterEach -> 
 
-        Notice.listen     = @swap1 
+        Notice.listen     = @noticeListen
         Phrase.createRoot = @swap2
 
 
@@ -30,10 +30,77 @@ describe 'objective', ->
 
                 uuid: '2'
 
+
+        it 'allows the hub to default the listen parameters', (done) -> 
+
+            objectiveOpts = 
+                title: 'title'
+                uuid:  '2'
+
+            #
+            # restore Notice.listen to un-stubbed
+            #
+
+            Notice.listen = @noticeListen
+
+
+            objective objectiveOpts, (end) -> 
+            setTimeout (->
                 
+                #
+                # using timeout to allow phrase to complete the walk
+                # --------------------------------------------------
+                # 
+                # * otherwise it won't do another one
+                # 
+                # * hub appends opts with details of the listening server
+                #   that it created
+                #
+
+                objectiveOpts.listening.transport.should.equal 'http'
+                objectiveOpts.listening.address.should.equal   '127.0.0.1'
+                should.exist objectiveOpts.listening.port 
+                done()
+
+            ), 10
 
 
-    xcontext 'phrase tress', ->
+        it 'can specify listen parameters', (done) -> 
+
+            objectiveOpts = 
+
+                title: 'title'
+                uuid:  '2'
+                listen: 
+                    port:    10101
+                    address: '0.0.0.0'
+
+            Notice.listen = @noticeListen
+            objective objectiveOpts, (end) -> 
+            setTimeout (->
+                
+                objectiveOpts.listening.should.eql 
+
+                    transport: 'http'
+                    address:   '0.0.0.0'
+                    port:      10101
+
+                done()
+
+            ), 10
+            
+
+
+    context 'phrase tree', ->
+
+        before -> 
+
+            @mockHub = {}
+
+            Notice.listen = (hubname, opts, linkFn) =>
+
+                linkFn null, @mockHub
+
 
         it 'creates a phrase tree', (done) -> 
 
@@ -44,7 +111,6 @@ describe 'objective', ->
                     uuid:  '0'
 
                 done()
-                throw 'go no further'
                 
             try objective {}, ->
 
@@ -67,7 +133,7 @@ describe 'objective', ->
 
 
 
-        it '...what lies down this road', (done) -> 
+        xit '...what lies down this road', (done) -> 
 
 
             objective 

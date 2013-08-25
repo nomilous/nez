@@ -7,17 +7,22 @@ module.exports = (opts, objectiveFn) ->
     opts.uuid  ||= '0'
 
     #
-    # 
+    # start notice hub
+    # ----------------
     #
 
-    return Notice.listen "objective/#{ opts.uuid }"
-
-    require('phrase').createRoot(
+    Notice.listen "objective/#{ opts.uuid }",
 
         opts
-        ->
 
-    ) objectiveFn
+        (error, hub) -> 
+
+            require('phrase').createRoot(
+
+                opts
+                ->
+
+            ) objectiveFn
 
 
 
