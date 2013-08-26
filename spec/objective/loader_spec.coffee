@@ -1,5 +1,5 @@
 should    = require 'should'
-Objective = require '../../lib/objective/objective'
+Objective = require '../../lib/objective/loader'
 Realizers = require '../../lib/realization/realizers'
 Phrase    = require 'phrase'
 Notice    = require 'notice'
@@ -211,38 +211,39 @@ describe 'objective', ->
                     # or something like that...
                     #
 
+    
 
-    context 'realizers collection', -> 
+    # context 'realizers collection', -> 
 
-        it "is created with the hub messenger and the objective phrase tree's token and bus", (done) -> 
+    #     it "is created with the hub messenger and the objective phrase tree's token and bus", (done) -> 
 
-            Realizers.createCollection = (opts, realizerHub, objectiveToken, objectiveNotice) ->
+    #         Realizers.createCollection = (opts, realizerHub, objectiveToken, objectiveNotice) ->
 
-                opts.should.eql 
-                    title:       'Title'
-                    uuid:        '00000000-0700-0000-0000-fffffffffff0'
-                    description: 'description'
+    #             opts.should.eql 
+    #                 title:       'Title'
+    #                 uuid:        '00000000-0700-0000-0000-fffffffffff0'
+    #                 description: 'description'
 
-                realizerHub.should.equal        'MOCK_REALIZER_HUB'
-                objectiveToken.should.equal     'MOCK TOKEN'
-                objectiveNotice.should.equal    'MOCK NOTIFIER'
+    #             realizerHub.should.equal        'MOCK_REALIZER_HUB'
+    #             objectiveToken.should.equal     'MOCK TOKEN'
+    #             objectiveNotice.should.equal    'MOCK NOTIFIER'
 
-                done()
+    #             done()
 
 
-            Notice.listen = (hubname, opts, linkFn) ->
-                linkFn null, 'MOCK_REALIZER_HUB'
+    #         Notice.listen = (hubname, opts, linkFn) ->
+    #             linkFn null, 'MOCK_REALIZER_HUB'
 
-            Phrase.createRoot = (opts, linkFn) -> 
-                linkFn 'MOCK TOKEN', 'MOCK NOTIFIER'
-                ->
+    #         Phrase.createRoot = (opts, linkFn) -> 
+    #             linkFn 'MOCK TOKEN', 'MOCK NOTIFIER'
+    #             ->
 
             
-            Objective
+    #         Objective
 
-                title:       'Title'
-                uuid:        '00000000-0700-0000-0000-fffffffffff0'
-                description: 'description'
+    #             title:       'Title'
+    #             uuid:        '00000000-0700-0000-0000-fffffffffff0'
+    #             description: 'description'
 
 
 

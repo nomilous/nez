@@ -1,6 +1,5 @@
 Notice    = require 'notice'
 Phrase    = require 'phrase'
-Realizers = require '../realization/realizers'
 
 module.exports = ( opts, objectiveFn = (end) -> ) ->
 
@@ -64,10 +63,9 @@ module.exports = ( opts, objectiveFn = (end) -> ) ->
 
                 #
                 # * Objective PhraseTree is online.
-                # * Pass all 'integratables' into the realizer collection.
                 # 
 
-                Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
+                # Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
 
             ) 'objective', objectiveFn
 

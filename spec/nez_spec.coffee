@@ -16,7 +16,7 @@ describe 'nez', ->
 
     it 'exports objective()', (done) ->
 
-        Nez.objective.should.equal require '../lib/objective/objective' 
+        Nez.objective.should.equal require '../lib/objective/loader' 
         done()
 
 

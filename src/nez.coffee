@@ -1,3 +1,3 @@
 
-exports.objective = require './objective/objective'
+exports.objective = require './objective/loader'
 exports.realize   = require './realization/realize'
