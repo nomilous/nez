@@ -73,7 +73,9 @@ module.exports = ( opts, objectiveFn = (end) -> ) ->
 
                 objectiveToken.on 'ready', ( {tokens} ) -> 
 
-                    objective.startMonitor {}, tokens
+                    objective.startMonitor {}, tokens, (token, opts) -> 
+
+                        objectiveToken.run token, opts
 
                 # Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
 

@@ -17,7 +17,7 @@ describe 'Objective', ->
 
         it 'throws undefined override', (done) -> 
 
-            try @objective.startMonitor {}, {}, (token, args...) -> 
+            try @objective.startMonitor {}, {}, (token, opts) -> 
 
             catch error
 
@@ -25,26 +25,59 @@ describe 'Objective', ->
                 done()
 
 
-        it 'receives tokens from the objective phrase tree', (done) -> 
+        context 'objectiveTree', -> 
 
-            #
-            # spy on the prototpe
-            #
+            before (done) -> 
 
-            nez.Objective.prototype.startMonitor = (opts, tokens, tokenEmitter) -> 
+                nez.Objective.prototype.startMonitor = (opts, @tokens, @tokenEmitter) => done()
 
-                should.exist tokens['/Triplet Primes/objective/just/because ~ 301']
+                nez.objective
+
+                    title: 'Failsafe Loop'
+                    uuid:  '11'
+                    description: ''
+
+                    leaf: ['ok']
+
+                    (telemetry) -> 
+
+                        for code in [   'BOOSTER',   'RETRO',    'FIDO',
+                                        'GUIDANCE',  'SURGEON',  'EECOM',
+                                        'GNC',       'TELMU',    'CONTROL',
+                                        'PROCEDURES','INCO',     'FAO',
+                                        'NETWORK',   'RECOVERY', 'CAPCOM'  ] 
+
+                            do (code) -> 
+
+                                telemetry code, (ok) -> 
+
+                                    @metric1       = 42014.22
+                                    @metric2       = 19
+                                    @GO_FOR_LAUNCH = true
+
+                                    ok()
+
+
+
+            it 'receives tokens from the objective phrase tree', (done) -> 
+
+                should.exist @tokens['/Failsafe Loop/objective/telemetry/FIDO']
                 done()
 
-   
-            nez.objective
 
-                title: 'Triplet Primes'
-                uuid:  'UUID'
-                description: ''
+            it 'can call a token run via the tokenEmitter', (done) -> 
 
-                (just) ->
+                @tokenEmitter( @tokens['/Failsafe Loop/objective/telemetry/BOOSTER'] ).then (result) -> 
 
-                    for triple in [[5, 7, 11], [7, 11, 13], [11, 13, 17], [13, 17, 19], [17, 19, 23], [37, 41, 43], [41, 43, 47], [67, 71, 73], [97, 101, 103], [101, 103, 107], [103, 107, 109], [107, 109, 113], [191, 193, 197], [193, 197, 199], [223, 227, 229], [227, 229, 233], [277, 281, 283], [307, 311, 313], [311, 313, 317], [347, 349, 353]]
+                    result.should.eql
 
-                        do (triple) -> just "because ~ #{  triple.reduce (a,b) -> a + b }", (end) ->
+                        job: 
+
+                            metric1:       42014.22
+                            metric2:       19
+                            GO_FOR_LAUNCH: true
+
+                    done()
+
+           
+
