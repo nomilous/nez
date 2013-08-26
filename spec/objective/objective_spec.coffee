@@ -29,7 +29,7 @@ describe 'Objective', ->
 
             before (done) -> 
 
-                nez.Objective.prototype.startMonitor = (opts, @tokens, @tokenEmitter) => done()
+                nez.Objective.prototype.startMonitor = (opts, @tokens, @jobEmitter) => done()
 
                 nez.objective
 
@@ -40,6 +40,9 @@ describe 'Objective', ->
                     leaf: ['ok']
 
                     (telemetry) -> 
+
+                        before each: -> @sequence++
+                        after  each: -> @input9 = @input9.toUpperCase()
 
                         for code in [   'BOOSTER',   'RETRO',    'FIDO',
                                         'GUIDANCE',  'SURGEON',  'EECOM',
@@ -67,12 +70,20 @@ describe 'Objective', ->
 
             it 'can call a token run via the tokenEmitter', (done) -> 
 
-                @tokenEmitter( @tokens['/Failsafe Loop/objective/telemetry/BOOSTER'] ).then (result) -> 
+                @jobEmitter( 
+
+                    @tokens['/Failsafe Loop/objective/telemetry/BOOSTER']
+
+                    sequence: 1232
+                    input9:   'elephant'
+
+                ).then (result) -> 
 
                     result.should.eql
 
                         job: 
-
+                            sequence:      1233
+                            input9:        'ELEPHANT'
                             metric1:       42014.22
                             metric2:       19
                             GO_FOR_LAUNCH: true
