@@ -1,5 +1,6 @@
 Notice    = require 'notice'
 Phrase    = require 'phrase'
+Objective = require './objective'
 
 module.exports = ( opts, objectiveFn = (end) -> ) ->
 
@@ -62,8 +63,17 @@ module.exports = ( opts, objectiveFn = (end) -> ) ->
         try Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
 
                 #
-                # * Objective PhraseTree is online.
+                # Objective PhraseTree is online
+                # ------------------------------
                 # 
+                # * Start the Objective processor
+                # 
+
+                objective = new Objective
+
+                objectiveToken.on 'ready', ( {tokens} ) -> 
+
+                    objective.startMonitor {}, tokens
 
                 # Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
 
