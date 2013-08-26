@@ -13,3 +13,16 @@ describe 'Objective', ->
         @objective.should.be.an.instanceof Objective
         done()
 
+
+    context 'startMonitor( opts, tokens, emitter )', -> 
+
+        it 'throws undefined override', (done) -> 
+
+            try @objective.startMonitor {}, {}, (token, args...) -> 
+
+            catch error
+
+                error.should.match /undefined override/
+                done()
+
+                
