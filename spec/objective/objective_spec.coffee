@@ -17,7 +17,7 @@ describe 'Objective', ->
 
         it 'throws undefined override', (done) -> 
 
-            try @objective.startMonitor {}, {}, (token, opts) -> 
+            try @objective.startMonitor()
 
             catch error
 
@@ -41,8 +41,8 @@ describe 'Objective', ->
 
                     (telemetry) -> 
 
-                        before each: -> @sequence++
-                        after  each: -> @input9 = @input9.toUpperCase()
+                        
+                        
 
                         for code in [   'BOOSTER',   'RETRO',    'FIDO',
                                         'GUIDANCE',  'SURGEON',  'EECOM',
@@ -52,11 +52,27 @@ describe 'Objective', ->
 
                             do (code) -> 
 
+                                # 
+                                # BUG: (possibly) this failing after each hook is
+                                #                 notifying three times, um...
+                                # 
+                                #                     
+                                #
+                                #
+                                # before each: -> @sequence++
+                                # after  each: -> @payload = @payload.toUpperCase()
+                                #  
+                                # 
+
+                                
+                                before each: -> @payload = @payload.toUpperCase()
+                                after  each: -> @sequence++
+
                                 telemetry code, (ok) -> 
 
-                                    @metric1       = 42014.22
-                                    @metric2       = 19
-                                    @GO_FOR_LAUNCH = true
+                                    @metric1  = 42014.22
+                                    @metric2  = 19
+                                    @STILL_GO = true
 
                                     ok()
 
@@ -75,7 +91,7 @@ describe 'Objective', ->
                     @tokens['/Failsafe Loop/objective/telemetry/BOOSTER']
 
                     sequence: 1232
-                    input9:   'elephant'
+                    payload:  'elephant'
 
                 ).then (result) -> 
 
@@ -83,12 +99,34 @@ describe 'Objective', ->
 
                         job: 
                             sequence:      1233
-                            input9:        'ELEPHANT'
+                            payload:       'ELEPHANT'
                             metric1:       42014.22
                             metric2:       19
-                            GO_FOR_LAUNCH: true
+                            STILL_GO:      true
 
                     done()
+
+
+            it 'gets notified of failing steps', (done) -> 
+
+                @jobEmitter( @tokens['/Failsafe Loop/objective/telemetry/BOOSTER'] ).then( 
+
+                    -> 
+                    -> 
+                    (notify) => 
+
+                        # console.log notify
+
+                        if notify.state == 'run::step:failed' then @ERROR_IS = notify.error
+
+                        else if notify.state == 'run::complete'
+
+                            @ERROR_IS.should.match /Cannot call method 'toUpperCase' of undefined/
+
+                            notify.progress.should.eql steps: 3, done: 0, failed: 1, skipped: 2
+                            done()
+
+                )
 
            
 
