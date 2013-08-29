@@ -13,17 +13,27 @@ describe 'Objective', ->
         done()
 
 
+
+    context 'defaultObjective()', -> 
+
+        it 'does nothing', (done) -> 
+
+            nez.Objective.prototype.startMonitor = (opts, tokens, jobEmitter) -> 
+
+                jobEmitter( tokens['/Untitled/objective'] ).then (result) ->
+
+                    result.should.eql job: does: 'nothing'
+                    done()
+
+            nez.objective
+
+                title: 'Untitled'
+                uuid:  '00000000'
+                description:   ''
+
+
+
     context 'startMonitor( opts, tokens, emitter )', -> 
-
-        it 'throws undefined override', (done) -> 
-
-            try @objective.startMonitor()
-
-            catch error
-
-                error.should.match /undefined override/
-                done()
-
 
         context 'objectiveTree', -> 
 
@@ -40,9 +50,6 @@ describe 'Objective', ->
                     leaf: ['ok']
 
                     (telemetry) -> 
-
-                        
-                        
 
                         for code in [   'BOOSTER',   'RETRO',    'FIDO',
                                         'GUIDANCE',  'SURGEON',  'EECOM',

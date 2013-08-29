@@ -2,11 +2,7 @@ Notice    = require 'notice'
 Phrase    = require 'phrase'
 Objective = require './objective'
 
-module.exports = ( opts, objectiveFn = (end) -> ) ->
-
-                                #
-                                # default the objectiveFn as PhraseLeaf
-                                #
+module.exports = (opts, objectiveFn) ->
     
     missing = for required in ['title', 'uuid', 'description']
         continue if opts[required]?
@@ -54,22 +50,17 @@ module.exports = ( opts, objectiveFn = (end) -> ) ->
         # --------------------
         # 
         # * `opts.listening` now contains details (transport, address, port)
-        #
+        # * Start the Objective processor
+        # 
+
+        objective = new Objective
+
         # 
         # Initialize PhraseTree with the objectiveFn
         # ------------------------------------------
         # 
 
         try Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
-
-                #
-                # Objective PhraseTree is online
-                # ------------------------------
-                # 
-                # * Start the Objective processor
-                # 
-
-                objective = new Objective
 
                 objectiveToken.on 'ready', ( {tokens} ) -> 
 
@@ -79,7 +70,7 @@ module.exports = ( opts, objectiveFn = (end) -> ) ->
 
                 # Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
 
-            ) 'objective', objectiveFn
+            ) 'objective', objectiveFn || objective.defaultObjective
 
         catch error
 
