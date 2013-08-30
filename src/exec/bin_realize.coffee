@@ -39,7 +39,7 @@ pipeline( [
 
 runRealizer = ({uplink, token, notice}) ->
 
-    console.log UPLINK: uplink
+    uplink.event 'hello', testing: 'UPLINK'
 
     token.on 'ready', ({tokens}) -> 
     
@@ -176,7 +176,7 @@ loadRealizer = (program) ->
         if program.connect
             realizer.connect = 
                 transport: if program.https then 'https' else 'http'
-                secret: '∫'
+                secret: '∫.'
                 port: program.port
 
         load.resolve opts: realizer, realizerFn: realzerFn

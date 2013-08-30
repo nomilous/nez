@@ -78,6 +78,18 @@ module.exports = (opts, objectiveFn) ->
         # --------------------
         # 
         # * `opts.listening` now contains details (transport, address, port)
+        # 
+        # 
+
+
+        realizerHub.use (msg, next) -> 
+
+            console.log msg
+            next()
+
+
+
+        # 
         # * Start the Objective processor
         # 
 
