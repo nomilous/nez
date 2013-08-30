@@ -19,13 +19,13 @@ pipeline( [
 
 ] ).then( 
 
-    (resolve) -> console.log RESOLVED: resolve
+    (resolve) -> # console.log RESOLVED: resolve
     (error)  -> 
 
         process.stderr.write error.toString()
         process.exit error.errno || 100
 
-    (notify)  -> console.log NOTIFY:   notify
+    (notify)  -> # console.log NOTIFY:   notify
 
 )
 
@@ -42,9 +42,19 @@ runRealizer = ({token, notice}) ->
 
             token.run( tokens[path] ).then( 
 
-                (resolve) -> console.log RESOLVED: resolve
+                (resolve) -> # console.log RESOLVED: resolve
                 (reject)  -> console.log REJECTED: reject 
-                (notify)  -> console.log NOTIFY:   notify 
+                (notify)  -> 
+
+                    if notify.state == 'run::step:failed'
+
+                                            #
+                                            # TODO: step.path (including hook steps)
+                                            # 
+
+                        console.log notify.step.ref.token.signature, notify.step.ref.text
+                        console.log notify.error.message
+
 
             ) if tokens[path].type == 'root'
 
