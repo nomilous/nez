@@ -22,7 +22,7 @@ pipeline( [
     (error)  -> 
 
         process.stderr.write error.toString()
-        process.exit error.errno || 1
+        process.exit error.errno || 100
 
     (notify)  -> console.log NOTIFY:   notify
 
@@ -65,7 +65,7 @@ loadRealizer = (program) ->
         filename = program.args[0]
 
         unless filename? 
-            return load.reject withError 100, 'MISSING_ARG', 'missing realizerFile'
+            return load.reject withError 101, 'MISSING_ARG', 'missing realizerFile'
 
         try realizer = fs.readFileSync filename, 'utf8'
         catch error
