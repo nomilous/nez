@@ -46,6 +46,10 @@ runRealizer = ({token, notice}) ->
                 (reject)  -> console.log REJECTED: reject 
                 (notify)  -> 
 
+                                #
+                                # TODO: fix: 'this is not a "state"'
+                                #
+
                     if notify.state == 'run::step:failed'
 
                                             #
