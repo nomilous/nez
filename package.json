@@ -18,7 +18,8 @@
     "phrase": "0.0.4",
     "nezcore": "0.0.3",
     "notice": "0.0.8",
-    "commander": "~2.0.0"
+    "commander": "~2.0.0",
+    "when": "~2.3.0"
   },
   "devDependencies": {
     "hound": "~1.0.4",
