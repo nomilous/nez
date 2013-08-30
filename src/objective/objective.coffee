@@ -18,4 +18,4 @@ module.exports = class Objective
 
     startMonitor: (opts, jobTokens, jobEmitter) -> 
 
-        throw new Error 'Objective.startMonitor() undefined override.'
+        console.log  'WARNING Objective.startMonitor() undefined override.'

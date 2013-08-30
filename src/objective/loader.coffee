@@ -27,7 +27,7 @@ module.exports = (opts, objectiveFn) ->
 
     try 
         
-        Module    = require localopts.module
+        Module = require localopts.module
 
         unless Module[ localopts.class ]?
             throw new Error "Could not initialize objective module(=#{
