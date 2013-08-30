@@ -7,20 +7,14 @@ describe 'Objective', ->
 
         @objective = new nez.Objective
 
-    it 'is a class', (done) -> 
 
-        @objective.should.be.an.instanceof nez.Objective
-        done()
-
-
-
-    context 'defaultObjective()', -> 
+    context 'Objective.defaultObjective()', -> 
 
         it 'does nothing', (done) -> 
 
-            nez.Objective.prototype.startMonitor = (opts, tokens, jobEmitter) -> 
+            nez.Objective.prototype.startMonitor = (opts, jobTokens, jobEmitter) -> 
 
-                jobEmitter( tokens['/Untitled/objective'] ).then (result) ->
+                jobEmitter( jobTokens['/Untitled/objective'] ).then (result) ->
 
                     result.should.eql job: does: 'nothing'
                     done()
@@ -29,7 +23,10 @@ describe 'Objective', ->
 
                 title: 'Untitled'
                 uuid:  '00000000'
-                description:   ''
+                description: ''
+
+                module: '../nez'
+                class: 'Objective'
 
 
 
@@ -39,13 +36,17 @@ describe 'Objective', ->
 
             before (done) -> 
 
-                nez.Objective.prototype.startMonitor = (opts, @tokens, @jobEmitter) => done()
+                nez.Objective.prototype.startMonitor = (opts, @jobTokens, @jobEmitter) => done()
 
                 nez.objective
 
                     title: 'Failsafe Loop'
                     uuid:  '11'
                     description: ''
+
+                    module: '../nez'
+                    class: 'Objective'  
+                    
 
                     leaf: ['ok']
 
@@ -87,7 +88,7 @@ describe 'Objective', ->
 
             it 'receives tokens from the objective phrase tree', (done) -> 
 
-                should.exist @tokens['/Failsafe Loop/objective/telemetry/FIDO']
+                should.exist @jobTokens['/Failsafe Loop/objective/telemetry/FIDO']
                 done()
 
 
@@ -95,7 +96,7 @@ describe 'Objective', ->
 
                 @jobEmitter( 
 
-                    @tokens['/Failsafe Loop/objective/telemetry/BOOSTER']
+                    @jobTokens['/Failsafe Loop/objective/telemetry/BOOSTER']
 
                     sequence: 1232
                     payload:  'elephant'
@@ -116,7 +117,7 @@ describe 'Objective', ->
 
             it 'gets notified of failing steps', (done) -> 
 
-                @jobEmitter( @tokens['/Failsafe Loop/objective/telemetry/BOOSTER'] ).then( 
+                @jobEmitter( @jobTokens['/Failsafe Loop/objective/telemetry/BOOSTER'] ).then( 
 
                     -> 
                     -> 

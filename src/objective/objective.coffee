@@ -1,5 +1,12 @@
 module.exports = class Objective
 
+    #
+    # Default Objective
+    # -----------------
+    # 
+    # * This objectiveFn is used if no objective is passed into 
+    #   `nez.objective(opts, objectiveFn)`
+    # 
 
     defaultObjective: (Signature) -> 
 
@@ -9,6 +16,6 @@ module.exports = class Objective
             done()
 
 
-    startMonitor: (opts, tokens, jobEmitter) -> 
+    startMonitor: (opts, jobTokens, jobEmitter) -> 
 
         throw new Error 'Objective.startMonitor() undefined override.'

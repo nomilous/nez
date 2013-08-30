@@ -12,8 +12,36 @@ module.exports = (opts, objectiveFn) ->
         console.log "objective(opts, objectiveFn) requires #{
             missing.map( (p) -> "opts.#{p}" ).join ', '
         }"
-        process.exit 2
+        process.exit 1
 
+
+    #
+    # Initialize Objective Processor
+    # ------------------------------
+    #
+
+    localopts = 
+
+        module: opts.module || '../defaults'
+        class:  opts.class  || 'Develop'
+
+    try 
+        
+        Module    = require localopts.module
+
+        unless Module[ localopts.class ]?
+            throw new Error "Could not initialize objective module(=#{
+                localopts.module}) does not define class(=#{
+                    localopts.class})"
+
+        Objective = Module[ localopts.class ]
+
+    catch error
+
+            try delete opts.listen.secret
+            try delete opts.listening
+            console.log OPTS: opts, ERROR: error
+            process.exit 2
 
     #
     # start notice hub
@@ -43,7 +71,7 @@ module.exports = (opts, objectiveFn) ->
             try delete opts.listen.secret
             try delete opts.listening
             console.log OPTS: opts, ERROR: error
-            process.exit 1
+            process.exit 3
 
         #
         # hub up and listening
@@ -60,7 +88,10 @@ module.exports = (opts, objectiveFn) ->
         # ------------------------------------------
         # 
 
-        try Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
+        try 
+
+
+            recursor = Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
 
                 objectiveToken.on 'ready', ( {tokens} ) -> 
 
@@ -68,16 +99,17 @@ module.exports = (opts, objectiveFn) ->
 
                         objectiveToken.run token, opts
 
-                # Realizers.createCollection opts, realizerHub, objectiveToken, objectiveNotice
+                
+            ) 
 
-            ) 'objective', objectiveFn || objective.defaultObjective
+            recursor 'objective', objectiveFn || objective.defaultObjective
 
         catch error
 
             try delete opts.listen.secret
             try delete opts.listening
             console.log OPTS: opts, ERROR: error
-            process.exit 3
+            process.exit 4
 
 
 

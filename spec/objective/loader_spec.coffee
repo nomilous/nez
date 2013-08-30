@@ -1,6 +1,7 @@
 should    = require 'should'
 Objective = require '../../lib/objective/loader'
 Realizers = require '../../lib/realization/realizers'
+Develop   = require '../../lib/defaults/develop'
 Phrase    = require 'phrase'
 Notice    = require 'notice'
 
@@ -10,16 +11,12 @@ describe 'objective', ->
 
         @noticeListen       = Notice.listen
         @phraseCreate       = Phrase.createRoot
-        @realizerCollection = Realizers.createCollection
-
-        Realizers.createCollection = ->
 
     afterEach -> 
 
         Notice.listen              = @noticeListen
         Phrase.createRoot          = @phraseCreate
-        Realizers.createCollection = @realizerCollection
-
+        
     context 'message bus', ->
 
         it 'starts a notice hub named "objective/{uuid}"', (done) -> 
@@ -93,6 +90,20 @@ describe 'objective', ->
                     address: '0.0.0.0'
 
                 (end) -> 
+
+    context 'objective processor', ->
+
+        it 'loads the default objective processor', (done) -> 
+
+            Develop.prototype.startMonitor = -> 
+
+                done()
+
+            Objective 
+
+                title:       'title'
+                uuid:        '2'
+                description: 'description'
 
 
     context 'phrase tree', ->
