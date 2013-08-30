@@ -58,10 +58,7 @@ startRealizer = ({opts, realizerFn}) ->
 
             start.resolve token: token, notice: notice
         
-        try recursor 'realizer', realizerFn
-        catch error
-
-            console.log ERROR: error
+        recursor 'realizer', realizerFn
         
     start.promise
 
