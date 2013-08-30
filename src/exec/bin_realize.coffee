@@ -29,16 +29,18 @@ try
         token.on 'ready', ({tokens}) -> 
         
             #
-            # TEMPORARY: run the phrase tree (from root)
+            # TEMPORARY: find and run the phrase tree (from root)
             #  
 
-            token.run( tokens['/submarine test/realizer'] ).then( 
+            for path of tokens
 
-                (resolve) -> console.log RESOLVED: resolve
-                (reject)  -> console.log REJECTED: reject 
-                (notify)  -> console.log NOTIFY:   notify 
+                token.run( tokens[path] ).then( 
 
-            )
+                    (resolve) -> console.log RESOLVED: resolve
+                    (reject)  -> console.log REJECTED: reject 
+                    (notify)  -> console.log NOTIFY:   notify 
+
+                ) if tokens[path].type == 'root'
 
 
 
