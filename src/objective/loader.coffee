@@ -84,7 +84,7 @@ module.exports = (opts, objectiveFn) ->
 
         realizerHub.use (msg, next) -> 
 
-            console.log msg
+            console.log msg.content
             next()
 
 
