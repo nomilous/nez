@@ -15,6 +15,7 @@ pipeline( [
 
     (        ) -> loadRealizer program
     (realizer) -> startRealizer realizer
+    (controls) -> runRealizer controls
 
 ] ).then( 
 
@@ -29,33 +30,40 @@ pipeline( [
 )
 
 
+runRealizer = ({token, notice}) ->
+
+    token.on 'ready', ({tokens}) -> 
+    
+        #
+        # TEMPORARY: find and run the phrase tree (from root)
+        #  
+
+        for path of tokens
+
+            token.run( tokens[path] ).then( 
+
+                (resolve) -> console.log RESOLVED: resolve
+                (reject)  -> console.log REJECTED: reject 
+                (notify)  -> console.log NOTIFY:   notify 
+
+            ) if tokens[path].type == 'root'
+
+
 startRealizer = ({opts, realizerFn}) ->
 
-    recursor = phrase.createRoot opts, (token) ->
-        
-        token.on 'ready', ({tokens}) -> 
-        
-            #
-            # TEMPORARY: find and run the phrase tree (from root)
-            #  
-
-            for path of tokens
-
-                token.run( tokens[path] ).then( 
-
-                    (resolve) -> console.log RESOLVED: resolve
-                    (reject)  -> console.log REJECTED: reject 
-                    (notify)  -> console.log NOTIFY:   notify 
-
-                ) if tokens[path].type == 'root'
-
-    recursor 'realizer', realizerFn
-
-
-
+    start = defer()
+    process.nextTick -> 
     
+        recursor = phrase.createRoot opts, (token, notice) ->
 
+            start.resolve token: token, notice: notice
+        
+        try recursor 'realizer', realizerFn
+        catch error
 
+            console.log ERROR: error
+        
+    start.promise
 
 loadRealizer = (program) -> 
     
@@ -107,9 +115,9 @@ loadRealizer = (program) ->
     load.promise
 
 
-withError = (errno, code, description) -> 
+withError = (errno, code, message) -> 
 
-    error       = new Error description
+    error       = new Error message
     error.errno = errno
     error.code  = code
     return error
