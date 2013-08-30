@@ -9,23 +9,10 @@ program.usage '[options] [realizerFile]'
 program.parse process.argv
 
 
-try
-    
-    filename = program.args[0]
-    unless filename? 
-        console.log 'missing realizerFile'
-        process.exit 1
+startRealizer = ({opts, realizerFn}) ->
 
-    realizer = fs.readFileSync filename, 'utf8'
-
-    if filename.match /[coffee|litcoffee]$/
-        realizer = coffee.compile realizer, bare: true
-
-    realizer = eval realizer
-    realzerFn = realizer.realize || (Signature) -> Signature 'Title', (end) -> end()
-    delete realizer.realize
-
-    recursor = phrase.createRoot realizer, (token) ->
+    recursor = phrase.createRoot opts, (token) ->
+        
         token.on 'ready', ({tokens}) -> 
         
             #
@@ -42,9 +29,29 @@ try
 
                 ) if tokens[path].type == 'root'
 
+    recursor 'realizer', realizerFn
 
 
-    recursor 'realizer', realzerFn
+
+loadRealizer = (opts) -> 
+
+    unless opts.filename? 
+        console.log 'missing realizerFile'
+        process.exit 1
+
+    realizer = fs.readFileSync opts.filename, 'utf8'
+    if opts.filename.match /[coffee|litcoffee]$/
+        realizer = coffee.compile realizer, bare: true
+
+    realizer = eval realizer
+    realzerFn = realizer.realize || (Signature) -> Signature 'Title', (end) -> end()
+    delete realizer.realize
+    return opts: realizer, realizerFn: realzerFn
+
+
+try
+    
+    startRealizer loadRealizer filename: program.args[0]
 
 catch error
     
