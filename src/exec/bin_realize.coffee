@@ -4,10 +4,17 @@ coffee   = require 'coffee-script'
 phrase   = require 'phrase'
 {defer}  = require 'when'
 pipeline = require 'when/pipeline'
+sequence = require 'when/sequence'
+notice   = require 'notice'
+
 
  
 program.version JSON.parse( fs.readFileSync __dirname + '/../../package.json', 'utf8' ).version
 program.usage '[options] [realizer]'
+program.option '-c, --connect',        'Establish connection to objective', false
+program.option '-p, --port  <num>      ', 'Objective port', 10001
+program.option '-X, --no-https         ', 'Connect insecurely', false
+
 program.parse process.argv
 
 
@@ -30,7 +37,9 @@ pipeline( [
 )
 
 
-runRealizer = ({token, notice}) ->
+runRealizer = ({uplink, token, notice}) ->
+
+    console.log UPLINK: uplink
 
     token.on 'ready', ({tokens}) -> 
     
@@ -59,11 +68,37 @@ runRealizer = ({token, notice}) ->
                         console.log notify.step.ref.token.signature, notify.step.ref.text
                         console.log notify.error.message
 
+                    else if notify.state == 'run::complete'
+
+                        console.log notify.progress
+
+
 
             ) if tokens[path].type == 'root'
 
 
-startRealizer = ({opts, realizerFn}) ->
+startRealizer = (realizer) ->
+
+    start = defer()
+    sequence( [
+
+        -> startNotifier realizer
+        -> startPhrase realizer
+
+    ] ).then(
+
+        (resolve) -> start.resolve 
+
+            uplink: resolve[0]
+            token:  resolve[1].token
+            notice: resolve[1].notice
+
+        start.reject
+
+    )
+    start.promise
+
+startPhrase = ({opts, realizerFn}) ->
 
     start = defer()
     process.nextTick -> 
@@ -75,6 +110,22 @@ startRealizer = ({opts, realizerFn}) ->
         recursor 'realizer', realizerFn
         
     start.promise
+
+
+startNotifier = ({opts}) -> 
+    
+    start = defer()
+    process.nextTick -> 
+
+        return start.resolve null unless opts.connect?
+    
+        notice.connect "realizer/#{opts.uuid}", opts, (error, connection) ->
+
+            return start.reject error if error?
+            start.resolve connection
+        
+    start.promise
+
 
 loadRealizer = (program) -> 
     
@@ -121,6 +172,13 @@ loadRealizer = (program) ->
 
         realzerFn = realizer.realize || (Signature) -> Signature 'Title', (end) -> end()
         delete realizer.realize
+
+        if program.connect
+            realizer.connect = 
+                transport: if program.https then 'https' else 'http'
+                secret: '∫'
+                port: program.port
+
         load.resolve opts: realizer, realizerFn: realzerFn
 
     load.promise
