@@ -32,9 +32,13 @@ try
             # TEMPORARY: run the phrase tree (from root)
             #  
 
-            token.run( tokens['/submarine test/realizer'] ).then ({job}) ->
+            token.run( tokens['/submarine test/realizer'] ).then( 
 
-                console.log job
+                (resolve) -> console.log RESOLVED: resolve
+                (reject)  -> console.log REJECTED: reject 
+                (notify)  -> console.log NOTIFY:   notify 
+
+            )
 
 
 
