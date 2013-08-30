@@ -10,6 +10,9 @@
     }
   ],
   "main": "./lib/nez",
+  "bin": {
+    "realize": "./bin/realize"
+  },
   "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
     "phrase": "0.0.4",
