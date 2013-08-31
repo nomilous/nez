@@ -28,9 +28,17 @@ class Develop extends Objective
     #           (units) -> units.link directory: '../path/to/test/units'
     #
 
-    configure: (opts) ->
 
-        opts.boundry =  ['spec', 'test']
+    configure: (opts) ->  
+
+        opts.boundry = ['spec', 'test']
+
+
+    onBoundry: (params, callback) -> 
+
+        console.log TODO: Develop: AssembleBoundryPhrase: params
+
+        callback null, null
 
     defaultObjective: (spec) -> spec.link directory: './spec'
 
