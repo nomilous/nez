@@ -28,7 +28,10 @@ class Develop extends Objective
     #           (tests) -> tests.link directory: '../path/to/tests/'
     #
 
-    configure: (opts) -> opts.boundry.push ['spec']
+    configure: (opts) ->
+     
+        opts.boundry ||=  []
+        opts.boundry.push ['spec']
 
     defaultObjective: (spec) -> spec.link directory: './spec'
 
