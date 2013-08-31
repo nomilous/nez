@@ -94,6 +94,7 @@ module.exports = (opts, objectiveFn) ->
         # 
 
         objective = new Objective
+        objective.configure opts
 
         # 
         # Initialize PhraseTree with the objectiveFn

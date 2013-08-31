@@ -93,7 +93,7 @@ describe 'objective', ->
 
     context 'objective processor', ->
 
-        it 'loads the default objective processor', (done) -> 
+        xit 'loads the default objective processor', (done) -> 
 
             Develop.prototype.startMonitor = -> 
 
@@ -110,7 +110,7 @@ describe 'objective', ->
 
         before -> 
 
-            @mockHub = {}
+            @mockHub = use: ->
 
             Notice.listen = (hubname, opts, linkFn) =>
 

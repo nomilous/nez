@@ -1,8 +1,18 @@
 module.exports = class Objective
 
     #
-    # Default Objective
-    # -----------------
+    # configure()
+    # -----------
+    # 
+    # * Objective can ammend options ahead of the PhraseTree recursion
+    #
+
+    configure: (opts) -> 
+
+
+    #
+    # defaultObjective()
+    # ------------------
     # 
     # * This objectiveFn is used if no objective is passed into 
     #   `nez.objective(opts, objectiveFn)`
