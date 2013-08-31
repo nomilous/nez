@@ -28,7 +28,7 @@ module.exports = class Objective
 
     onBoundry: (params, callback) -> 
 
-        console.log  'WARNING Objective.startMonitor() undefined override.'
+        console.log  'WARNING Objective.onBoundry() undefined override.'
 
 
     startMonitor: (opts, jobTokens, jobEmitter) -> 

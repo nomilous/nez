@@ -9,9 +9,18 @@ Objective = require '../objective/objective'
 
 class Develop extends Objective
 
+
+    onBoundry: (params, callback) -> 
+
+        console.log AssembleBoundryPhrase: params
+
+        callback null, null
+
+
+
     #
-    # default develop objective links into the spec directory
-    # -------------------------------------------------------
+    # configuration defaults
+    # ----------------------
     # 
     # * Setting the objectiveFn in the objective file will override this.
     # 
@@ -28,17 +37,7 @@ class Develop extends Objective
     #           (units) -> units.link directory: '../path/to/test/units'
     #
 
-
-    configure: (opts) ->  
-
-        opts.boundry = ['spec', 'test']
-
-
-    onBoundry: (params, callback) -> 
-
-        console.log TODO: Develop: AssembleBoundryPhrase: params
-
-        callback null, null
+    configure: (opts) ->  opts.boundry = ['spec', 'test']
 
     defaultObjective: (spec) -> spec.link directory: './spec'
 
