@@ -1,11 +1,11 @@
 program  = require 'commander'
 fs       = require 'fs'
-coffee   = require 'coffee-script'
 phrase   = require 'phrase'
 {defer}  = require 'when'
 pipeline = require 'when/pipeline'
 sequence = require 'when/sequence'
 notice   = require 'notice'
+Realize  = require '../realization/realize'
 
 
  
@@ -20,7 +20,8 @@ program.parse process.argv
 
 pipeline( [
 
-    (        ) -> loadRealizer program
+    (        ) -> marshalArgs program
+    ( params ) -> Realize.loadRealizer params
     (realizer) -> startRealizer realizer
     (controls) -> runRealizer controls
 
@@ -127,61 +128,29 @@ startNotifier = ({opts}) ->
     start.promise
 
 
-loadRealizer = (program) -> 
-    
-    load = defer()
+marshalArgs = (program) -> 
+
+    marshal = defer()
     process.nextTick -> 
 
-        filename = program.args[0]
-
-        unless filename? 
-            return load.reject withError 101, 'MISSING_ARG', 'missing realizerFile'
-
-        try realizer = fs.readFileSync filename, 'utf8'
-        catch error
-            return load.reject error
-
-        try if filename.match /[coffee|litcoffee]$/
-            realizer = coffee.compile realizer, bare: true
-        catch error
-
-            #  
-            #  { [SyntaxError: unexpected STRING]
-            #    location: 
-            #     { first_line: 27,
-            #       first_column: 12,
-            #       last_line: 27,
-            #       last_column: 29 } }
-            #  
-
-            return load.reject error
+    #     filename = program.args[0]
+    #     unless filename? 
+    #         return marshal.reject withError 101, 'MISSING_ARG', 'missing realizerFile'
 
 
-        try realizer = eval realizer
-        catch error
+    #         filename = params.filename 
+    # connect = params.connect
+    # https = params.https
+    # port = params.port
 
-            #
-            # [ReferenceError: f is not defined]
-            # 
-            # TODO: surely an eval has more than this on error?
-            #
+        marshal.resolve 
 
-            return load.reject error
+            filename: program.args[0]
+            connect: program.connect
+            https: program.https
+            port: program.port
 
-
-
-        realzerFn = realizer.realize || (Signature) -> Signature 'Title', (end) -> end()
-        delete realizer.realize
-
-        if program.connect
-            realizer.connect = 
-                transport: if program.https then 'https' else 'http'
-                secret: '∫'
-                port: program.port
-
-        load.resolve opts: realizer, realizerFn: realzerFn
-
-    load.promise
+    marshal.promise
 
 
 withError = (errno, code, message) -> 

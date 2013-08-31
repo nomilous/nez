@@ -124,10 +124,11 @@ module.exports = (opts, objectiveFn) ->
                                 return objective.onBoundry msg.params, (error, result) ->
 
                                     #
-                                    # TODO: fix, "notice has no capacity for error"
+                                    # TODO: fix, "notice has limited capacity for error"
                                     #
                                     
                                     msg.result = result
+                                    msg.error  = error
                                     next()
 
                         console.log 'IGNORED:', msg.context.title

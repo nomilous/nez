@@ -6,17 +6,33 @@
 # 
 
 Objective = require '../objective/objective'
+Realize   = require '../realization/realize'
 
 class Develop extends Objective
 
 
     onBoundry: (params, callback) -> 
 
-        console.log AssembleBoundryPhrase: params
+        Realize.loadRealizer( params ).then( 
 
-        callback null, null
+            (realizer) -> 
 
+                #
+                # convert to phrase format
+                #
 
+                result = 
+                    title: realizer.opts.title
+                    opts: realizer.opts
+                    fn: realizer.realizerFn  
+
+                delete realizer.opts.title
+
+                callback null, result
+
+            (error) -> callback error      
+
+        )
 
     #
     # configuration defaults
