@@ -7,7 +7,7 @@ module.exports = class Objective
     # * Objective can ammend options ahead of the PhraseTree recursion
     #
 
-    configure: (opts) -> 
+    configure: (opts, done) -> done() 
 
 
     #

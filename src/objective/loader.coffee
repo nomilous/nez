@@ -94,68 +94,68 @@ module.exports = (opts, objectiveFn) ->
         # 
 
         objective = new Objective
-        objective.configure opts
+        objective.configure opts, ->
 
-        try 
+            try 
 
-            # 
-            # Initialize PhraseTree with the objectiveFn
-            # ------------------------------------------
-            # 
+                # 
+                # Initialize PhraseTree with the objectiveFn
+                # ------------------------------------------
+                # 
 
-            recursor = Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
+                recursor = Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
 
-                #
-                # * PhraseTree is ready for the 'first walk'
-                # * Assign middleware to proxy selected messages into the objective 
-                #
+                    #
+                    # * PhraseTree is ready for the 'first walk'
+                    # * Assign middleware to proxy selected messages into the objective 
+                    #
 
-                objectiveNotice.use (msg, next) -> 
+                    objectiveNotice.use (msg, next) -> 
 
-                    switch msg.context.title
+                        switch msg.context.title
 
-                        when 'phrase::boundry:assemble'
-
-                            #
-                            # proxy the boundry assembly into objective
-                            # -----------------------------------------
-                            #
-
-                            return objective.onBoundry msg.params, (error, result) ->
+                            when 'phrase::boundry:assemble'
 
                                 #
-                                # TODO: fix, "notice has no capacity for error"
+                                # proxy the boundry assembly into objective
+                                # -----------------------------------------
                                 #
-                                
-                                msg.result = result
-                                next()
 
-                    console.log 'IGNORED:', msg.context.title
-                    next()
+                                return objective.onBoundry msg.params, (error, result) ->
+
+                                    #
+                                    # TODO: fix, "notice has no capacity for error"
+                                    #
+                                    
+                                    msg.result = result
+                                    next()
+
+                        console.log 'IGNORED:', msg.context.title
+                        next()
 
 
 
-                objectiveToken.on 'ready', ( {tokens} ) -> 
+                    objectiveToken.on 'ready', ( {tokens} ) -> 
 
-                    objective.startMonitor {}, tokens, (token, opts) -> 
+                        objective.startMonitor {}, tokens, (token, opts) -> 
 
-                        objectiveToken.run token, opts
+                            objectiveToken.run token, opts
 
-                
-            ) 
+                    
+                ) 
 
-            #
-            # * Walk the objectiveFn (creates the objective PhraseTree)
-            #
+                #
+                # * Walk the objectiveFn (creates the objective PhraseTree)
+                #
 
-            recursor 'objective', objectiveFn || objective.defaultObjective
+                recursor 'objective', objectiveFn || objective.defaultObjective
 
-        catch error
+            catch error
 
-            try delete opts.listen.secret
-            try delete opts.listening
-            console.log OPTS: opts, ERROR: error
-            process.exit 4
+                try delete opts.listen.secret
+                try delete opts.listening
+                console.log OPTS: opts, ERROR: error
+                process.exit 4
 
 
 

@@ -11,16 +11,13 @@ describe 'Develop', ->
         @dev.should.be.an.instanceof Objective
         done()
 
-    it 'configures phrase boundry signatures', (done) -> 
+    it 'allows async config of phrase opts', (done) -> 
 
-        @dev.configure ( opts = {} )
+        @dev.configure ( opts = {} ), -> 
 
-        opts.should.eql boundry: ['spec', 'test']
-        done()
+            opts.should.eql boundry: ['spec', 'test']
+            done()
 
-        #
-        # TODO: allow breakout on configure
-        #
 
     it 'handles phrase boundry assembly', (done) -> 
 
