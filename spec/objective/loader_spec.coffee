@@ -11,11 +11,13 @@ describe 'objective', ->
 
         @noticeListen       = Notice.listen
         @phraseCreate       = Phrase.createRoot
+        @onBoundry          = Develop.prototype.onBoundry 
 
     afterEach -> 
 
-        Notice.listen              = @noticeListen
-        Phrase.createRoot          = @phraseCreate
+        Notice.listen               = @noticeListen
+        Phrase.createRoot           = @phraseCreate
+        Develop.prototype.onBoundry = @onBoundry
         
     context 'message bus', ->
 
@@ -126,6 +128,12 @@ describe 'objective', ->
                     uuid:        '0'
                     description: 'description'
 
+                    #
+                    # default objective sets boundry signatire match
+                    #
+
+                    boundry:     ['spec', 'test']
+
                 -> done()
                 
             Objective 
@@ -133,6 +141,22 @@ describe 'objective', ->
                 title:       'untitled'
                 uuid:        '0'
                 description: 'description'
+
+
+        it 'proxies the boundry phrase assembly into the objective', (done) ->
+
+            Develop.prototype.onBoundry = (params, callback) -> 
+
+                params.filename.should.match new RegExp __dirname
+                done()
+
+            Objective 
+
+                title:       'untitled'
+                uuid:        '0'
+                description: 'description'
+
+                (spec) -> spec.link directory: __dirname
 
 
         it 'initializes the phrase tree with the objectiveFn', (done) -> 

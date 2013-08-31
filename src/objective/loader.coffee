@@ -96,15 +96,44 @@ module.exports = (opts, objectiveFn) ->
         objective = new Objective
         objective.configure opts
 
-        # 
-        # Initialize PhraseTree with the objectiveFn
-        # ------------------------------------------
-        # 
-
         try 
 
+            # 
+            # Initialize PhraseTree with the objectiveFn
+            # ------------------------------------------
+            # 
 
             recursor = Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
+
+                #
+                # * PhraseTree is ready for the 'first walk'
+                # * Assign middleware to proxy selected messages into the objective 
+                #
+
+                objectiveNotice.use (msg, next) -> 
+
+                    switch msg.context.title
+
+                        when 'phrase::boundry:assemble'
+
+                            #
+                            # proxy the boundry assembly into objective
+                            # -----------------------------------------
+                            #
+
+                            return objective.onBoundry msg.params, (error, result) ->
+
+                                #
+                                # TODO: fix, "notice has no capacity for error"
+                                #
+                                
+                                msg.result = result
+                                next()
+
+                    console.log 'IGNORED:', msg.context.title
+                    next()
+
+
 
                 objectiveToken.on 'ready', ( {tokens} ) -> 
 
@@ -114,6 +143,10 @@ module.exports = (opts, objectiveFn) ->
 
                 
             ) 
+
+            #
+            # * Walk the objectiveFn (creates the objective PhraseTree)
+            #
 
             recursor 'objective', objectiveFn || objective.defaultObjective
 

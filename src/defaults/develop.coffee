@@ -23,15 +23,14 @@ class Develop extends Objective
     #           uuid:  '...'
     #           description: '...'
     # 
-    #           boundry: ['tests']
+    #           boundry: ['units']
     # 
-    #           (tests) -> tests.link directory: '../path/to/tests/'
+    #           (units) -> units.link directory: '../path/to/test/units'
     #
 
     configure: (opts) ->
-     
-        opts.boundry ||=  []
-        opts.boundry.push ['spec']
+
+        opts.boundry =  ['spec', 'test']
 
     defaultObjective: (spec) -> spec.link directory: './spec'
 
