@@ -183,69 +183,6 @@ describe 'objective', ->
 
                     'the Objective phrase tree'
 
-
-
-        it '...what lies down this road', (done) -> 
-
-
-            Objective 
-
-                title:       'Some App or New Feature'
-                uuid:        'uniqueness, for state / metric persistance'
-                description: 'description'
-
-                edge:     ['specs']
-
-                (requirement) -> 
-
-                    # 
-                    # requirement.link
-                    # 
-                    #     #
-                    #     # recurse user stories directory
-                    #     # attaching each to this PhraseNode
-                    #     #  
-                    # 
-                    #     directory: './stories'
-                    # 
-                    # 
-
-                    requirement 'login', 
-
-                        as:   'system user'
-                        to:   'login'
-                        uuid: 'again with the persistable-ness'
-
-                        (need) -> 
-                            
-                            need 'a login form', (specs) -> 
-                            need 'other things that have understandable meaning to customers', (specs) ->
-                            need '...', (specs) -> 
-
-                                #
-                                # each user story mapping to the code specs 
-                                # upon which they depend, so...
-                                #
-
-                                specs.link file: './spec/app/model/user'
-                                specs.link file: './spec/app/server'
-                                specs.link file: './.....'
-
-                                #
-                                # ...so  that the advance of dev progress through 
-                                #        the specs can be reduced to something as 
-                                #        simple as a progress bar per user story.
-                                # 
-                                #               (to keep customers happy)
-                                # 
-
-
-                            done()
-
-                    #
-                    # or something like that...
-                    #
-
     
 
     # context 'realizers collection', -> 
