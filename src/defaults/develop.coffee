@@ -28,7 +28,9 @@ class Develop extends Objective
                 # NOISEY... 
                 #
 
-                if notify.update == 'run::complete' then console.log NOTIFY: notify
+                
+                if notify.update == 'run::step:failed' then console.log FAIL: notify
+                else if notify.update == 'run::complete'    then console.log COMPLETE: notify
         
         )
 
