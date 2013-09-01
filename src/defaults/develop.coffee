@@ -12,8 +12,8 @@ class Develop extends Objective
 
     startMonitor: (opts, jobTokens, jobEmitter) -> 
 
-        console.log jobTokens
-
+        #console.log jobTokens
+        # 
         #
         #  '/cetera/objective': 
         #   { type: 'root', 
@@ -49,6 +49,37 @@ class Develop extends Objective
         #     signature: 'it' } 
         # 
 
+        jobEmitter( jobTokens['/cetera/objective'] ).then(
+
+            (result) -> console.log RESULT: result
+            (error)  -> console.log ERROR: error
+            (notify) -> 
+
+                #
+                # NOISEY... 
+                #
+
+                if notify.update == 'run::complete' then console.log NOTIFY: notify
+        
+        )
+
+        #
+        #   { NOTIFY: 
+        #       { update: 'run::complete',
+        #         class: 'Job',
+        #         jobUUID: '3ddcce20-1327-11e3-8b52-e1b46bf7a0cb',
+        #         progress: { steps: 10, done: 9, failed: 1, skipped: 0 },
+        #         at: 1378054501394 } }
+        #         
+        #   { RESULT: 
+        #        { job: 
+        #              { before_each_ON_THE_OBJECTIVE: 1,
+        #                before_each_REQUIREMENT: 1,
+        #                periscope: {},
+        #                created_on_realizer: 1,
+        #                confirmed: 1,
+        #                after_all_REQUIREMENT: 1 } } }
+        # 
 
     onBoundryAssemble: (opts, callback) -> 
 
