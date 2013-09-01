@@ -29,7 +29,7 @@ class Develop extends Objective
                 #
 
                 
-                if notify.update == 'run::step:failed' then console.log FAIL: notify
+                if notify.update == 'run::step:failed' then console.log FAIL: notify.error
                 else if notify.update == 'run::complete'    then console.log COMPLETE: notify
         
         )
