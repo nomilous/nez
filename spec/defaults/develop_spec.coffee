@@ -48,7 +48,7 @@ describe 'Develop', ->
 
                     title: 'Test'
 
-                    opts: 
+                    control: 
                         uuid: 'UUID'
                         other: 'stuff'
 

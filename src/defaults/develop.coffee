@@ -23,10 +23,20 @@ class Develop extends Objective
 
                 phrase =
                     title: realizer.opts.title
-                    opts: realizer.opts
+                    control: realizer.opts
                     fn: realizer.realizerFn
 
-                delete phrase.opts.title
+                delete phrase.control.title
+
+
+
+                #
+                # TEMPORARY: Develop objective nests each realizer tree into
+                #            the objective tree.
+                #
+
+                opts.mode = 'nest'
+
 
                 callback null, phrase
 
