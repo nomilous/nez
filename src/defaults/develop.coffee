@@ -11,9 +11,9 @@ Realize   = require '../realization/realize'
 class Develop extends Objective
 
 
-    onBoundry: (params, callback) -> 
+    onBoundryAssemble: (opts, callback) -> 
 
-        Realize.loadRealizer( params ).then( 
+        Realize.loadRealizer( opts ).then( 
 
             (realizer) -> 
 
@@ -21,16 +21,16 @@ class Develop extends Objective
                 # convert to phrase format
                 #
 
-                result = 
+                phrase =
                     title: realizer.opts.title
                     opts: realizer.opts
-                    fn: realizer.realizerFn  
+                    fn: realizer.realizerFn
 
-                delete realizer.opts.title
+                delete phrase.opts.title
 
-                callback null, result
+                callback null, phrase
 
-            (error) -> callback error      
+            (error) -> callback error
 
         )
 

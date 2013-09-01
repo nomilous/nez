@@ -26,7 +26,7 @@ module.exports = class Objective
             done()
 
 
-    onBoundry: (params, callback) -> 
+    onBoundryAssemble: (opts, callback) -> 
 
         console.log  'WARNING Objective.onBoundry() undefined override.'
 

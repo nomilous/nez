@@ -121,13 +121,13 @@ module.exports = (opts, objectiveFn) ->
                                 # -----------------------------------------
                                 #
 
-                                return objective.onBoundry msg.params, (error, result) ->
+                                return objective.onBoundryAssemble msg.opts, (error, phrase) ->
 
                                     #
                                     # TODO: fix, "notice has limited capacity for error"
                                     #
                                     
-                                    msg.result = result
+                                    msg.phrase = phrase
                                     msg.error  = error
                                     next()
 

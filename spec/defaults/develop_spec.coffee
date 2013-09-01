@@ -22,10 +22,10 @@ describe 'Develop', ->
 
     it 'handles phrase boundry assembly', (done) -> 
 
-        @dev.onBoundry {}, -> done()
+        @dev.onBoundryAssemble {}, -> done()
 
 
-    context 'onBoundry()', -> 
+    context 'onBoundryAssemble()', -> 
 
         it 'loads the realizer into phrase format', (done) -> 
 
@@ -42,9 +42,9 @@ describe 'Develop', ->
 
             """
 
-            @dev.onBoundry filename: 'something.coffee', (error, realizer) -> 
+            @dev.onBoundryAssemble filename: 'something.coffee', (error, phrase) -> 
 
-                realizer.should.eql
+                phrase.should.eql
 
                     title: 'Test'
 
@@ -52,7 +52,7 @@ describe 'Develop', ->
                         uuid: 'UUID'
                         other: 'stuff'
 
-                    fn: realizer.fn
+                    fn: phrase.fn
 
-                realizer.fn().should.equal 'ok,good.'
+                phrase.fn().should.equal 'ok,good.'
                 done()
