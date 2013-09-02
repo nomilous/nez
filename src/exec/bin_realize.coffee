@@ -62,7 +62,14 @@ runRealizer = ({uplink, opts, realizerFn}) ->
 
 
     #
+    # TEMPORARY
+    # ---------
+    # 
     # * call the 'first walk' into the realizerFn to load the tree
+    # 
+    #    This sends all phrase recursion payloads 
+    #    over to the objective.
+    # 
     # 
 
     phraseRecursor 'realizer', realizerFn
