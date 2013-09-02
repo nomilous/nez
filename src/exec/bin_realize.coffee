@@ -22,7 +22,7 @@ pipeline( [
 
     (        ) -> marshalArgs program
     ( params ) -> Realize.loadRealizer params
-    (realizer) -> startRealizer realizer
+    (realizer) -> startNotifier realizer
     (controls) -> runRealizer controls
 
 ] ).then( 
@@ -38,92 +38,73 @@ pipeline( [
 )
 
 
-runRealizer = ({uplink, token, notice}) ->
+runRealizer = ({uplink, opts, realizerFn}) -> 
 
-    uplink.event 'hello', testing: 'UPLINK'
+    #
+    # uplink     - connection to the objective (if -c)
+    # opts       - realizer title, uuid and such
+    # realizerFn - realizer phrase function
+    # 
 
-    token.on 'ready', ({tokens}) -> 
+    #
+    # Initialize Realizer PhraseTree
+    # ------------------------------
+    #
+    # * create the PhraseTree with objective uplink as message bus
+    # 
+
+    opts.notice    = uplink
+    phraseRecursor = phrase.createRoot opts, (token) -> 
+
+
+
+
+
+
+    #
+    # * call the 'first walk' into the realizerFn to load the tree
+    # 
+
+    phraseRecursor 'realizer', realizerFn
+
+
+startNotifier = ({opts, realizerFn}) -> 
     
+    start = defer()
+    process.nextTick -> 
+
+        unless opts.connect?
+
+            #
+            # offline mode
+            # ------------
+            # 
+            # * starts standalone notifier, still "called" uplink
+            #
+
+            return start.resolve 
+
+                uplink:     notice.create "realizer/#{opts.uuid}"
+                opts:       opts
+                realizerFn: realizerFn 
+
         #
-        # TEMPORARY: find and run the phrase tree (from root)
-        #  
-
-        for path of tokens
-
-            token.run( tokens[path] ).then( 
-
-                (resolve) -> # console.log RESOLVED: resolve
-                (reject)  -> console.log REJECTED: reject 
-                (notify)  -> 
-
-                                #
-                                # TODO: fix: 'this is not a "state"'
-                                #
-
-                    if notify.state == 'run::step:failed'
-
-                                            #
-                                            # TODO: step.path (including hook steps)
-                                            # 
-
-                        console.log notify.step.ref.token.signature, notify.step.ref.text
-                        console.log notify.error.message
-
-                    else if notify.state == 'run::complete'
-
-                        console.log notify.progress
-
-
-
-            ) if tokens[path].type == 'root'
-
-
-startRealizer = (realizer) ->
-
-    start = defer()
-    sequence( [
-
-        -> startNotifier realizer
-        -> startPhrase realizer
-
-    ] ).then(
-
-        (resolve) -> start.resolve 
-
-            uplink: resolve[0]
-            token:  resolve[1].token
-            notice: resolve[1].notice
-
-        start.reject
-
-    )
-    start.promise
-
-startPhrase = ({opts, realizerFn}) ->
-
-    start = defer()
-    process.nextTick -> 
+        # uplinked
+        # --------
+        # 
+        # * notifier connectes to objective per connect config present
+        #   in the realizer or on the commandline
+        #
     
-        recursor = phrase.createRoot opts, (token, notice) ->
-
-            start.resolve token: token, notice: notice
-        
-        recursor 'realizer', realizerFn
-        
-    start.promise
-
-
-startNotifier = ({opts}) -> 
-    
-    start = defer()
-    process.nextTick -> 
-
-        return start.resolve null unless opts.connect?
-    
-        notice.connect "realizer/#{opts.uuid}", opts, (error, connection) ->
+        notice.connect "realizer/#{opts.uuid}", opts, (error, uplink) ->
 
             return start.reject error if error?
-            start.resolve connection
+            
+            start.resolve 
+
+                uplink: uplink
+                opts: opts
+                realizerFn: realizerFn
         
     start.promise
 
@@ -132,16 +113,6 @@ marshalArgs = (program) ->
 
     marshal = defer()
     process.nextTick -> 
-
-    #     filename = program.args[0]
-    #     unless filename? 
-    #         return marshal.reject withError 101, 'MISSING_ARG', 'missing realizerFile'
-
-
-    #         filename = params.filename 
-    # connect = params.connect
-    # https = params.https
-    # port = params.port
 
         marshal.resolve 
 
