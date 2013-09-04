@@ -51,16 +51,6 @@ class Develop extends Objective
 
                 delete phrase.control.title
 
-
-
-                #
-                # TEMPORARY: Develop objective nests each realizer tree into
-                #            the objective tree.
-                #
-
-                opts.mode = 'nest'
-
-
                 callback null, phrase
 
             (error) -> callback error
