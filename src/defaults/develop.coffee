@@ -14,25 +14,25 @@ class Develop extends Objective
 
         console.log Develop: startMonitor: opts
 
+        for key of jobTokens
+
+            if jobTokens[key].type == 'tree'
+
+                console.log REALIZER: jobTokens[key].source.filename
+
         #
         # TEMPORARY: run entire tree immediately
         #
-
-        jobEmitter( jobTokens['/cetera/objective'] ).then(
-
-            (result) -> console.log RESULT: result
-            (error)  -> console.log ERROR: error
-            (notify) -> 
-
-                #
-                # NOISEY... 
-                #
-
-                
-                if notify.update == 'run::step:failed' then console.log FAIL: notify.error
-                else if notify.update == 'run::complete'    then console.log COMPLETE: notify
-        
-        )
+        # jobEmitter( jobTokens['/cetera/objective'] ).then(
+        #     (result) -> console.log RESULT: result
+        #     (error)  -> console.log ERROR: error
+        #     (notify) -> 
+        #         #
+        #         # NOISEY... 
+        #         #       
+        #         if notify.update == 'run::step:failed' then console.log FAIL: notify.error
+        #         else if notify.update == 'run::complete'    then console.log COMPLETE: notify
+        # )
 
     onBoundryAssemble: (opts, callback) -> 
 
