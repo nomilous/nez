@@ -169,6 +169,7 @@ describe 'objective', ->
 
                 directory.should.equal './test/path'
                 done()
+                on: ->
 
             Phrase.createRoot = (opts, linkFn) => 
 
@@ -176,6 +177,11 @@ describe 'objective', ->
                     mockToken    = on: ->
                     mockNotifier = 
                         use: (middleware) -> 
+
+                            #
+                            # fake inboud message to link directory
+                            #
+
                             middleware
                                 context: title: 'phrase::link:directory'
                                 directory: './test/path'
@@ -191,8 +197,59 @@ describe 'objective', ->
                 description: 'description'
 
 
-        it 'filters changes according to the linked directory match (regex)'
+        it 'filters changes according to the linked directory match (regex)', (done) -> 
 
+            CHANGED = []
+
+            Hound.watch = (directory) ->
+                on: (event, listener) -> 
+                    return unless event == 'change'
+                    setTimeout (-> 
+                        listener 'file/name/changed.not_a_match'
+                    ), 10
+                    setTimeout (-> 
+                        listener 'file/name/changed.match'
+                    ), 20
+                    setTimeout (-> 
+                        
+                        CHANGED.should.eql [ 'file/name/changed.match' ]
+                        done()
+
+                    ), 30
+
+
+            Develop.prototype.startMonitor = (opts, monitors, jobTokens, jobEmitter) -> 
+
+                monitors.dirs.on 'change', (filename) -> 
+
+                    CHANGED.push filename
+                    
+            Phrase.createRoot = (opts, linkFn) => 
+                linkFn( 
+                    mockToken = 
+                        on: (event, listener) -> 
+
+                            #
+                            # fake tree initialization complete
+                            #
+
+                            if event == 'ready' then process.nextTick -> 
+                                listener walk: {}, tokens: {}
+                    mockNotifier = 
+                        use: (middleware) -> 
+                            middleware
+                                context: title: 'phrase::link:directory'
+                                directory: './test/path'
+                                match: /\.match$/
+                                ->
+                )
+                ->
+
+            Objective 
+
+                title:       'untitled'
+                uuid:        '0'
+                description: 'description'
 
         xit 'does not re-watch already watched directories', (done) -> 
 
@@ -205,6 +262,7 @@ describe 'objective', ->
             Hound.watch = (directory) ->
 
                 WATCHED.push directory
+                on: ->
 
             Phrase.createRoot = (opts, linkFn) => 
 

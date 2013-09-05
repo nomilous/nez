@@ -10,9 +10,14 @@ Realize   = require '../realization/realize'
 
 class Develop extends Objective
 
-    startMonitor: (opts, jobTokens, jobEmitter) -> 
+    startMonitor: (opts, monitor, jobTokens, jobEmitter) -> 
 
         console.log Develop: startMonitor: opts
+
+        monitor.dirs.on 'create', (filename) -> console.log CREATED: filename
+        monitor.dirs.on 'change', (filename) -> console.log CHANGED: filename
+        monitor.dirs.on 'delete', (filename) -> console.log DELETED: filename
+
 
     #
     # TODO: 

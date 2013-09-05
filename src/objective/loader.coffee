@@ -1,8 +1,9 @@
-Notice    = require 'notice'
-Phrase    = require 'phrase'
-Objective = require './objective'
-Hound     = require 'hound'
-watchers  = {}
+Notice         = require 'notice'
+Phrase         = require 'phrase'
+Objective      = require './objective'
+Hound          = require 'hound'
+{EventEmitter} = require 'events'
+watchers       = {}
 
 module.exports = (opts, objectiveFn) ->
     
@@ -96,6 +97,8 @@ module.exports = (opts, objectiveFn) ->
         # 
 
         objective = new Objective
+        monitor   = new EventEmitter
+
         objective.configure opts, ->
 
             try 
@@ -119,10 +122,29 @@ module.exports = (opts, objectiveFn) ->
                             when 'phrase::link:directory'
 
                                 directory = msg.directory
+                                match     = msg.match
 
                                 return next() if watchers[directory]?
 
-                                watchers[directory] = Hound.watch directory
+                                #
+                                # * wrap hound to watch multiple directories 
+                                #   with a regex filename filter
+                                # 
+
+                                watchers[directory] = watcher = Hound.watch directory
+                                for event in ['create', 'change', 'delete']
+                                    do (event) -> watcher.on event, (file) -> 
+                                        return unless file.match match
+
+                                        monitor.emit event, file
+
+                                        #
+                                        # TODO: consider moving this to boundry:assemble
+                                        #       and watch specific file
+                                        # 
+                                        #       may need something else to watch for 
+                                        #       created files anyway
+                                        #
 
                                 next()
 
@@ -150,7 +172,15 @@ module.exports = (opts, objectiveFn) ->
 
                     objectiveToken.on 'ready', ( {tokens} ) -> 
 
-                        objective.startMonitor {}, tokens, (token, opts) -> 
+                        objective.startMonitor {}, {
+
+                            #
+                            # monitors
+                            #
+
+                            dirs: monitor
+
+                        }, tokens, (token, opts) -> 
 
                             objectiveToken.run token, opts
 

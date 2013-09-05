@@ -12,7 +12,7 @@ describe 'Objective', ->
 
         it 'does nothing', (done) -> 
 
-            nez.Objective.prototype.startMonitor = (opts, jobTokens, jobEmitter) -> 
+            nez.Objective.prototype.startMonitor = (opts, monitors, jobTokens, jobEmitter) -> 
 
                 jobEmitter( jobTokens['/Untitled/objective'] ).then (result) ->
 
@@ -36,7 +36,7 @@ describe 'Objective', ->
 
             before (done) -> 
 
-                nez.Objective.prototype.startMonitor = (opts, @jobTokens, @jobEmitter) => done()
+                nez.Objective.prototype.startMonitor = (opts, @monitors, @jobTokens, @jobEmitter) => done()
 
                 nez.objective
 
