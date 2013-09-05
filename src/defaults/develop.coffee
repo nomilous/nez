@@ -27,6 +27,7 @@ class Develop extends Objective
     # * configurable/optional src folder
     # * monitor spec and src and compile appropriately
     # * on change spawn realizer unless already spawned
+    # * on create src auto create spec with snippet including uuid
     # * if already spawned instruct to reload and apply changeset
     # * only run changed specs on first run after reload
     #
