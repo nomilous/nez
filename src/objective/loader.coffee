@@ -1,6 +1,8 @@
 Notice    = require 'notice'
 Phrase    = require 'phrase'
 Objective = require './objective'
+Hound     = require 'hound'
+watchers  = {}
 
 module.exports = (opts, objectiveFn) ->
     
@@ -114,12 +116,22 @@ module.exports = (opts, objectiveFn) ->
 
                         switch msg.context.title
 
+                            when 'phrase::link:directory'
+
+                                directory = msg.directory
+
+                                return next() if watchers[directory]?
+
+                                watchers[directory] = Hound.watch directory
+
+                                next()
+
                             when 'phrase::boundry:assemble'
 
                                 #
                                 # proxy the boundry assembly into objective
                                 # -----------------------------------------
-                                #
+                                # 
 
                                 return objective.onBoundryAssemble msg.opts, (error, phrase) ->
 

@@ -14,12 +14,6 @@ class Develop extends Objective
 
         console.log Develop: startMonitor: opts
 
-        for key of jobTokens
-
-            if jobTokens[key].type == 'tree'
-
-                console.log REALIZER: jobTokens[key].source.filename
-
     #
     # TODO: 
     # 
@@ -33,6 +27,8 @@ class Develop extends Objective
     #
 
     onBoundryAssemble: (opts, callback) -> 
+
+
 
         Realize.loadRealizer( opts ).then( 
 

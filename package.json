@@ -19,7 +19,9 @@
     "nezcore": "0.0.3",
     "notice": "0.0.8",
     "commander": "~2.0.0",
-    "when": "~2.3.0"
+    "when": "~2.3.0",
+    "nodewatch": "~0.3.1",
+    "hound": "~1.0.4"
   },
   "devDependencies": {
     "hound": "~1.0.4",

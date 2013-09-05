@@ -4,6 +4,8 @@ Realizers = require '../../lib/realization/realizers'
 Develop   = require '../../lib/defaults/develop'
 Phrase    = require 'phrase'
 Notice    = require 'notice'
+Hound     = require 'hound'
+fs        = require 'fs'
 
 describe 'objective', -> 
 
@@ -11,15 +13,17 @@ describe 'objective', ->
 
         @noticeListen       = Notice.listen
         @phraseCreate       = Phrase.createRoot
-        @onBoundry          = Develop.prototype.onBoundry 
+        @onBoundry          = Develop.prototype.onBoundry
+        @watch              = Hound.watch
 
     afterEach -> 
 
         Notice.listen               = @noticeListen
         Phrase.createRoot           = @phraseCreate
         Develop.prototype.onBoundry = @onBoundry
+        Hound.watch                 = @watch
         
-    context 'message bus', ->
+    xcontext 'message bus', ->
 
         it 'starts a notice hub named "objective/{uuid}"', (done) -> 
 
@@ -93,9 +97,9 @@ describe 'objective', ->
 
                 (end) -> 
 
-    context 'objective processor', ->
+    xcontext 'objective processor', ->
 
-        xit 'loads the default objective processor', (done) -> 
+        it 'loads the default objective processor', (done) -> 
 
             Develop.prototype.startMonitor = -> 
 
@@ -119,7 +123,7 @@ describe 'objective', ->
                 linkFn null, @mockHub
 
 
-        it 'creates a phrase tree', (done) -> 
+        xit 'creates a phrase tree', (done) -> 
 
             Phrase.createRoot = (opts) -> 
 
@@ -143,7 +147,7 @@ describe 'objective', ->
                 description: 'description'
 
 
-        it 'proxies the boundry phrase assembly into the objective', (done) ->
+        xit 'proxies the boundry phrase assembly into the objective', (done) ->
 
             Develop.prototype.onBoundry = (params, callback) -> 
 
@@ -159,7 +163,85 @@ describe 'objective', ->
                 (spec) -> spec.link directory: __dirname
 
 
-        it 'initializes the phrase tree with the objectiveFn', (done) -> 
+        xit 'starts a file monitor on each linked directory', (done) -> 
+
+            Hound.watch = (directory) ->
+
+                directory.should.equal './test/path'
+                done()
+
+            Phrase.createRoot = (opts, linkFn) => 
+
+                linkFn( 
+                    mockToken    = on: ->
+                    mockNotifier = 
+                        use: (middleware) -> 
+                            middleware
+                                context: title: 'phrase::link:directory'
+                                directory: './test/path'
+                                ->
+                )
+                ->
+
+
+            Objective 
+
+                title:       'untitled'
+                uuid:        '0'
+                description: 'description'
+
+
+        it 'filters changes according to the linked directory match (regex)'
+
+
+        xit 'does not re-watch already watched directories', (done) -> 
+
+            #
+            # um... (pass)
+            #
+
+            WATCHED = []
+
+            Hound.watch = (directory) ->
+
+                WATCHED.push directory
+
+            Phrase.createRoot = (opts, linkFn) => 
+
+                linkFn( 
+                    mockToken    = on: ->
+                    mockNotifier = 
+                        use: (middleware) -> 
+
+                            middleware
+                                context: title: 'phrase::link:directory'
+                                directory: './test/path'
+                                ->
+                            middleware
+                                context: title: 'phrase::link:directory'
+                                directory: './test/path2'
+                                ->
+                            middleware
+                                context: title: 'phrase::link:directory'
+                                directory: './test/path/um/no'
+                                ->
+
+                )
+                ->
+                    WATCHED.should.eql [
+                        './test/path'
+                        './test/path2'
+                    ]
+
+            Objective 
+
+                title:       'untitled'
+                uuid:        '0'
+                description: 'description'
+
+
+
+        xit 'initializes the phrase tree with the objectiveFn', (done) -> 
 
             Phrase.createRoot = -> 
 
