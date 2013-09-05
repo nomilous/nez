@@ -20,19 +20,16 @@ class Develop extends Objective
 
                 console.log REALIZER: jobTokens[key].source.filename
 
-        #
-        # TEMPORARY: run entire tree immediately
-        #
-        # jobEmitter( jobTokens['/cetera/objective'] ).then(
-        #     (result) -> console.log RESULT: result
-        #     (error)  -> console.log ERROR: error
-        #     (notify) -> 
-        #         #
-        #         # NOISEY... 
-        #         #       
-        #         if notify.update == 'run::step:failed' then console.log FAIL: notify.error
-        #         else if notify.update == 'run::complete'    then console.log COMPLETE: notify
-        # )
+    #
+    # TODO: 
+    # 
+    # * handle new realizers (additional boundry tree to load)
+    # * configurable/optional src folder
+    # * monitor spec and src and compile appropriately
+    # * on change spawn realizer unless already spawned
+    # * if already spawned instruct to reload and apply changeset
+    # * only run changed specs on first run after reload
+    #
 
     onBoundryAssemble: (opts, callback) -> 
 
@@ -57,24 +54,6 @@ class Develop extends Objective
 
         )
 
-    #
-    # configuration defaults
-    # ----------------------
-    # 
-    # * Setting the objectiveFn in the objective file will override this.
-    # 
-    #   eg. 
-    # 
-    #        require('nez').objective
-    # 
-    #           title: '...'
-    #           uuid:  '...'
-    #           description: '...'
-    # 
-    #           boundry: ['units']
-    # 
-    #           (units) -> units.link directory: '../path/to/test/units'
-    #
 
     configure: (opts, done) ->  
 
@@ -82,7 +61,9 @@ class Develop extends Objective
         done()
 
 
-    defaultObjective: (spec) -> spec.link directory: './spec'
+    defaultObjective: (spec) -> 
+
+        spec.link directory: './spec'
 
 
 module.exports = Develop
