@@ -23,7 +23,7 @@ describe 'objective', ->
         Develop.prototype.onBoundry = @onBoundry
         Hound.watch                 = @watch
         
-    xcontext 'message bus', ->
+    context 'message bus', ->
 
         it 'starts a notice hub named "objective/{uuid}"', (done) -> 
 
@@ -40,9 +40,6 @@ describe 'objective', ->
 
 
         it 'allows the hub to default the listen parameters', (done) -> 
-
-            objectiveOpts = 
-                
 
             #
             # restore Notice.listen to un-stubbed
@@ -123,7 +120,7 @@ describe 'objective', ->
                 linkFn null, @mockHub
 
 
-        xit 'creates a phrase tree', (done) -> 
+        it 'creates a phrase tree', (done) -> 
 
             Phrase.createRoot = (opts) -> 
 
@@ -163,41 +160,7 @@ describe 'objective', ->
                 (spec) -> spec.link directory: __dirname
 
 
-        xit 'starts a file monitor on each linked directory', (done) -> 
-
-            Hound.watch = (directory) ->
-
-                directory.should.equal './test/path'
-                done()
-                on: ->
-
-            Phrase.createRoot = (opts, linkFn) => 
-
-                linkFn( 
-                    mockToken    = on: ->
-                    mockNotifier = 
-                        use: (middleware) -> 
-
-                            #
-                            # fake inboud message to link directory
-                            #
-
-                            middleware
-                                context: title: 'phrase::link:directory'
-                                directory: './test/path'
-                                ->
-                )
-                ->
-
-
-            Objective 
-
-                title:       'untitled'
-                uuid:        '0'
-                description: 'description'
-
-
-        it 'filters changes according to the linked directory match (regex)', (done) -> 
+        it 'moniors linked directory for change and filters by link match', (done) -> 
 
             CHANGED = []
 
@@ -299,7 +262,7 @@ describe 'objective', ->
 
 
 
-        xit 'initializes the phrase tree with the objectiveFn', (done) -> 
+        it 'initializes the phrase tree with the objectiveFn', (done) -> 
 
             Phrase.createRoot = -> 
 
