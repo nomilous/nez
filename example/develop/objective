@@ -1,0 +1,23 @@
+#!/usr/bin/env coffee
+
+require('../../lib/nez').objective
+
+    title: 'Develop Example'
+    uuid:  '00000000-0000-0000-0000-000000000001'
+    description: """
+
+    Illustrate development objective.
+
+    """
+
+    listen: 
+        secret: '∫'
+        address: 'localhost'
+        port:     10101
+        cert:     './cert/develop-cert.pem'
+        key:      './cert/develop-key.pem'
+
+    (spec) -> 
+
+        spec.link directory: 'unit_tests'
+        spec.link directory: 'integration_tests', match: /_especulacion\.coffee$/

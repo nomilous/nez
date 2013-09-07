@@ -4,4 +4,4 @@ class DirectoryMonitor
 
         @watchers = []
 
-module.exports.DirectoryMonitor = 
+module.exports.DirectoryMonitor = DirectoryMonitor
