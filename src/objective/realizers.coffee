@@ -8,28 +8,53 @@
 {defer} = require 'when'
 spawner = require './spawner'
 
-module.exports = new ( class Realizers
+realizers  = {}
+fromfilename = {}
+
+module.exports = 
 
     autospawn: false
 
-    get: -> 
+    get: (opts = {}) -> 
 
         getting = defer()
         process.nextTick => 
 
-            console.log AUTOSPAWN: @autospawn
-            getting.resolve 'REALIZER'
+            #
+            # TODO: autospawn
+            # TODO: no such realizer
+            #
+
+            if opts.filename? 
+
+                getting.resolve fromfilename[opts.filename]
+
 
         getting.promise
 
-    update: -> 
+    update: (tokens) -> 
 
         updating = defer()
         process.nextTick => 
 
-            updating.resolve 'REALIZER'
+            for path of tokens
+
+                token = tokens[path]
+                uuid  = token.uuid
+                continue unless token.type == 'tree'
+
+                realizers[uuid] ||= {}
+                realizers[uuid].token = token
+                continue unless token.source? 
+
+                switch token.source.type
+
+                    when 'file' 
+
+                        filename = token.source.filename
+                        fromfilename[filename] = realizers[uuid]
+
+
+            updating.resolve()
 
         updating.promise
-
-
-)

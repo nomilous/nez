@@ -21,9 +21,29 @@ describe 'Realizers', ->
 
         it 'returns a promise', (done) -> 
 
-            Realizers.update().then.should.be.an.instanceof Function
+            Realizers.update( {} ).then.should.be.an.instanceof Function
             done()
+
 
         it 'loads boundry phrase tokens', (done) -> 
 
-            done()
+            Realizers.update( 
+
+                '/Objective Title/objective/spec/Spec title': 
+
+                    type: 'tree'
+                    uuid: '0'
+                    source:
+                        type:     'file'
+                        filename: 'path/to/realizer.coffee'
+
+             ).then -> 
+                
+                Realizers.get( 
+
+                    filename: 'path/to/realizer.coffee' 
+
+                ).then (realizer) -> 
+
+                    realizer.token.uuid.should.equal '0'
+                    done()
