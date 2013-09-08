@@ -21,4 +21,13 @@ class DirectoryMonitor extends EventEmitter
                     @emit event, filename
 
 
+
+
+module.exports = monitor = (opts) ->  
+
+    if opts.directory? then monitor.dirs.add opts.directory, opts.match
+
+monitor.dirs ||= new DirectoryMonitor
+
 module.exports.DirectoryMonitor = DirectoryMonitor
+

@@ -101,5 +101,23 @@ describe 'DirectoryMonitor', ->
             should.not.exist CHANGED['./mock/changed/file.not_match']
             done()
 
+    context 'monitors (collection)', -> 
+
+        it 'has predefined directory monitor', (done) -> 
+
+            Hound.watch = (directory) -> 
+                on: (event, listener) -> if event == 'change'
+
+                    listener './mock/' + event + 'd/file_spec.coffee'
+                    listener './mock/' + event + 'd/file_spec.tea'
+            
+            
+            monitor.dirs.on 'change', (filename) -> 
+
+                done() # called once
+
+
+            monitor directory: __dirname , match: /_spec\.coffee$/
+
 
 
