@@ -10,13 +10,6 @@ require('../../lib/nez').objective
 
     """
 
-    listen: 
-        secret: '∫'
-        address: 'localhost'
-        port:     10101
-        cert:     './cert/develop-cert.pem'
-        key:      './cert/develop-key.pem'
-
     (spec) -> 
 
         spec.link directory: 'unit_tests'

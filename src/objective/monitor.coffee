@@ -1,7 +1,15 @@
+Hound  = require 'hound'
+
 class DirectoryMonitor
 
     constructor: ->
 
-        @watchers = []
+        @monitors = {}
+
+    add: (directory) -> 
+
+        @monitors[directory] = Hound.watch directory
+
+
 
 module.exports.DirectoryMonitor = DirectoryMonitor
