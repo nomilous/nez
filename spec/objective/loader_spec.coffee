@@ -58,7 +58,9 @@ describe 'objective', ->
                 opts.listening.address.should.equal   '127.0.0.1'
                 should.exist opts.listening.port 
 
-                -> done()
+                done()
+
+                -> 
 
 
             Objective 
@@ -81,7 +83,9 @@ describe 'objective', ->
                     address:   '0.0.0.0'
                     port:      10101
 
-                -> done()
+                done()
+
+                -> 
 
             Objective 
 
@@ -143,7 +147,9 @@ describe 'objective', ->
                         directory: 'src'
                         match: /\.coffee$/
 
-                -> done()
+                    done()
+
+                -> 
                 
             Objective 
 
@@ -210,7 +216,71 @@ describe 'objective', ->
                 uuid:        '0'
                 description: 'description'
 
-        
+        it 'rewalks the objective on created/deleted linked files (realizers)', (done) -> 
+
+            count = 0
+            mockObjectiveRecursor = -> count++
+
+            Monitor.dirs.add = (dirname, match, ref) ->
+                process.nextTick => 
+
+                    count.should.equal 1
+
+                    #
+                    # mock create a new file in a linked directory
+                    #
+
+                    @emit 'create', './test/path/realizer.coffee', {}, 'linked'
+
+                    #
+                    # objective should have rewalked walked the tree, 
+                    # to link in the new file
+                    #
+
+                    count.should.equal 2
+
+                    process.nextTick => 
+
+                        @emit 'delete', './test/path/realizer.coffee', {}, 'linked'
+
+                        #
+                        # on delete, it walks again, to unlink
+                        #
+
+                        count.should.equal 3
+                        done()
+  
+            Develop.prototype.startMonitor = (opts, monitors, jobTokens, jobEmitter) -> 
+                    
+            Phrase.createRoot = (opts, linkFn) => 
+                linkFn( 
+                    mockToken = 
+                        on: (event, listener) -> 
+
+                            #
+                            # fake tree initialization complete
+                            #
+
+                            if event == 'ready' then process.nextTick -> 
+                                listener walk: {}, tokens: {}
+                    mockNotifier = 
+                        use: (middleware) -> 
+                            middleware
+                                context: title: 'phrase::link:directory'
+                                directory: './test/path'
+                                match: /\.coffee$/
+                                ->
+                )
+                
+                return mockObjectiveRecursor
+
+            Objective 
+
+                title:       'untitled'
+                uuid:        '0'
+                description: 'description'
+
+
 
         it 'initializes the phrase tree with the objectiveFn', (done) -> 
 

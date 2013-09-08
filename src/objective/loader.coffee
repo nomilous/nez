@@ -82,7 +82,7 @@ module.exports = (opts, objectiveFn) ->
         # 
         # 
 
-        recursor = undefined
+        objectiveRecursor = undefined
 
 
         realizerHub.use (msg, next) -> 
@@ -106,7 +106,7 @@ module.exports = (opts, objectiveFn) ->
                 # ------------------------------------------
                 # 
 
-                recursor = Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
+                objectiveRecursor = Phrase.createRoot( opts, (objectiveToken, objectiveNotice) -> 
 
                     #
                     # * PhraseTree is ready for the 'first walk'
@@ -167,7 +167,7 @@ module.exports = (opts, objectiveFn) ->
                 # * Walk the objectiveFn (creates the objective PhraseTree)
                 #
 
-                recursor 'objective', objectiveFn || objective.defaultObjective
+                objectiveRecursor 'objective', objectiveFn || objective.defaultObjective
 
             catch error
 
@@ -176,6 +176,18 @@ module.exports = (opts, objectiveFn) ->
                 console.log OPTS: opts, ERROR: error
                 process.exit 4
 
+
+        #
+        # * reload objective on create or delete realizer
+        #
+
+        for event in ['create', 'delete']
+
+            do (event) -> monitor.dirs.on event, (filename, stats, ref) -> 
+                
+                return unless ref == 'linked'
+                objectiveRecursor 'objective', objectiveFn || objective.defaultObjective
+           
 
 
 #Notice    = require 'notice'
