@@ -1,10 +1,10 @@
 should    = require 'should'
 Objective = require '../../lib/objective/loader'
-Realizers = require '../../lib/realization/realizers'
+Monitor   = require '../../lib/objective/monitor'
+# Realizers = require '../../lib/realization/realizers'
 Develop   = require '../../lib/defaults/develop'
 Phrase    = require 'phrase'
 Notice    = require 'notice'
-Hound     = require 'hound'
 fs        = require 'fs'
 
 describe 'objective', -> 
@@ -14,14 +14,14 @@ describe 'objective', ->
         @noticeListen       = Notice.listen
         @phraseCreate       = Phrase.createRoot
         @onBoundry          = Develop.prototype.onBoundry
-        @watch              = Hound.watch
+        @monitorDirs        = Monitor.dirs.add
 
     afterEach -> 
 
         Notice.listen               = @noticeListen
         Phrase.createRoot           = @phraseCreate
         Develop.prototype.onBoundry = @onBoundry
-        Hound.watch                 = @watch
+        Monitor.dirs.add            = @monitorDirs
         
     context 'message bus', ->
 
@@ -168,26 +168,14 @@ describe 'objective', ->
                 (spec) -> spec.link directory: __dirname
 
 
-        it 'moniors linked directory for change and filters by link match', (done) -> 
+        it 'monitors linked directory for change and filters by link match', (done) -> 
 
-            CHANGED = []
+            Monitor.dirs.add = (dirname, match, ref)->
 
-            Hound.watch = (directory) ->
-                on: (event, listener) -> 
-                    return unless event == 'change'
-                    setTimeout (-> 
-                        listener 'file/name/changed.not_a_match'
-                    ), 10
-                    setTimeout (-> 
-                        listener 'file/name/changed.match'
-                    ), 20
-                    setTimeout (-> 
-                        
-                        CHANGED.should.eql [ 'file/name/changed.match' ]
-                        done()
-
-                    ), 30
-
+                dirname.should.equal './test/path'
+                match.should.eql /\.match$/
+                ref.should.equal 'linked'
+                done()
 
             Develop.prototype.startMonitor = (opts, monitors, jobTokens, jobEmitter) -> 
 
@@ -222,53 +210,7 @@ describe 'objective', ->
                 uuid:        '0'
                 description: 'description'
 
-        xit 'does not re-watch already watched directories', (done) -> 
-
-            #
-            # um... (pass)
-            #
-
-            WATCHED = []
-
-            Hound.watch = (directory) ->
-
-                WATCHED.push directory
-                on: ->
-
-            Phrase.createRoot = (opts, linkFn) => 
-
-                linkFn( 
-                    mockToken    = on: ->
-                    mockNotifier = 
-                        use: (middleware) -> 
-
-                            middleware
-                                context: title: 'phrase::link:directory'
-                                directory: './test/path'
-                                ->
-                            middleware
-                                context: title: 'phrase::link:directory'
-                                directory: './test/path2'
-                                ->
-                            middleware
-                                context: title: 'phrase::link:directory'
-                                directory: './test/path/um/no'
-                                ->
-
-                )
-                ->
-                    WATCHED.should.eql [
-                        './test/path'
-                        './test/path2'
-                    ]
-
-            Objective 
-
-                title:       'untitled'
-                uuid:        '0'
-                description: 'description'
-
-
+        
 
         it 'initializes the phrase tree with the objectiveFn', (done) -> 
 

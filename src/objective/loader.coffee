@@ -82,26 +82,13 @@ module.exports = (opts, objectiveFn) ->
         # 
         # 
 
+        recursor = undefined
+
 
         realizerHub.use (msg, next) -> 
 
             console.log msg.content
             next()
-
-
-        #
-        # * register listener for changes in linked directories
-        #
-
-        monitor.dirs.on 'create', (filename, stats, ref) -> 
-            return unless ref == 'linked'
-            console.log CREATED_REALIZER: filename
-
-        monitor.dirs.on 'delete', (filename, stats, ref) -> 
-            return unless ref == 'linked'
-            console.log DELETED_REALIZER: filename
-
-        
 
 
         # 
@@ -137,7 +124,7 @@ module.exports = (opts, objectiveFn) ->
                                     match:     msg.match
                                     ref:       'linked'
 
-                                next()
+                                return next()
 
                             when 'phrase::boundry:assemble'
 
@@ -156,7 +143,13 @@ module.exports = (opts, objectiveFn) ->
                                     msg.error  = error
                                     next()
 
-                        #console.log 'IGNORED:', msg.context.title
+                            when 'phrase::recurse:end'
+
+                                console.log LOADED_PHRASE: msg
+                                return next()
+
+
+                        console.log 'IGNORED:', msg.context.title
                         next()
 
 

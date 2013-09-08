@@ -14,8 +14,6 @@ realize: (it, ThePeriscope, should ) ->
 
     it 'can peek topside', (done) -> 
 
-
-
         #
         # 1. Create expectations
         # 
