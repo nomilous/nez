@@ -2,7 +2,7 @@ Notice           = require 'notice'
 Phrase           = require 'phrase'
 Objective        = require './objective'
 RealizersFactory = require './realizers'
-monitor          = require './monitor'
+MonitorFactory   = require './monitor'
 
 module.exports = (opts, objectiveFn) ->
     
@@ -84,6 +84,7 @@ module.exports = (opts, objectiveFn) ->
         # 
 
         objectiveRecursor = undefined
+        objectiveMonitor  = undefined
 
 
         realizerHub.use (msg, next) -> 
@@ -100,8 +101,9 @@ module.exports = (opts, objectiveFn) ->
 
         objective.configure opts, ->
 
-            Realizers = RealizersFactory.createClass opts
+            Realizers           = RealizersFactory.createClass opts
             Realizers.autospawn = opts.autospawn || false
+            objectiveMonitor    = MonitorFactory.createFunction Realizers
 
             try 
 
@@ -123,7 +125,8 @@ module.exports = (opts, objectiveFn) ->
 
                             when 'phrase::link:directory'
 
-                                monitor 
+                                objectiveMonitor
+                                 
                                     directory: msg.directory
                                     match:     msg.match
                                     ref:       'realizer'
@@ -160,7 +163,7 @@ module.exports = (opts, objectiveFn) ->
 
                     objectiveToken.on 'ready', ( {tokens} ) -> 
 
-                        objective.startMonitor opts, monitor, tokens, (token, opts) -> 
+                        objective.startMonitor opts, objectiveMonitor, tokens, (token, opts) -> 
 
                             objectiveToken.run token, opts
 
@@ -188,7 +191,7 @@ module.exports = (opts, objectiveFn) ->
 
         for event in ['create', 'delete']
 
-            do (event) -> monitor.dirs.on event, (filename, stats, ref) -> 
+            do (event) -> objectiveMonitor.dirs.on event, (filename, stats, ref) -> 
                 
                 return unless ref == 'realizer'
                 objectiveRecursor 'objective', objectiveFn || objective.defaultObjective

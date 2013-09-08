@@ -1,11 +1,11 @@
-should    = require 'should'
-Objective = require '../../lib/objective/loader'
-Monitor   = require '../../lib/objective/monitor'
-Realizers = require '../../lib/objective/realizers'
-Develop   = require '../../lib/defaults/develop'
-Phrase    = require 'phrase'
-Notice    = require 'notice'
-fs        = require 'fs'
+should           = require 'should'
+Objective        = require '../../lib/objective/loader'
+MonitorFactory   = require '../../lib/objective/monitor'
+RealizersFactory = require '../../lib/objective/realizers'
+Develop          = require '../../lib/defaults/develop'
+Phrase           = require 'phrase'
+Notice           = require 'notice'
+fs               = require 'fs'
 
 describe 'objective', -> 
 
@@ -14,16 +14,15 @@ describe 'objective', ->
         @noticeListen       = Notice.listen
         @phraseCreate       = Phrase.createRoot
         @onBoundry          = Develop.prototype.onBoundry
-        @monitorDirs        = Monitor.dirs.add
-        @update             = Realizers.update
+        @monitorFn          = MonitorFactory.createFunction
+        
 
     afterEach -> 
 
-        Notice.listen               = @noticeListen
-        Phrase.createRoot           = @phraseCreate
-        Develop.prototype.onBoundry = @onBoundry
-        Monitor.dirs.add            = @monitorDirs
-        Realizers.update            = @update
+        Notice.listen                 = @noticeListen
+        Phrase.createRoot             = @phraseCreate
+        Develop.prototype.onBoundry   = @onBoundry
+        MonitorFactory.createFunction = @monitorFn
         
     context 'message bus', ->
 
@@ -180,12 +179,23 @@ describe 'objective', ->
 
         it 'monitors realizer directory for change and filters by link match', (done) -> 
 
-            Monitor.dirs.add = (dirname, match, ref)->
+            MonitorFactory.createFunction = -> 
 
-                dirname.should.equal './test/path'
-                match.should.eql /\.match$/
-                ref.should.equal 'realizer'
-                done()
+                fn = (opts) -> 
+
+                    fn.dirs.add opts.directory, opts.match, opts.ref
+
+                fn.dirs = 
+                    on: -> 
+                    add: (dirname, match, ref) ->
+
+                        dirname.should.equal './test/path'
+                        match.should.eql /\.match$/
+                        ref.should.equal 'realizer'
+                        done()
+
+                return fn
+
 
             Develop.prototype.startMonitor = (opts, monitors, jobTokens, jobEmitter) -> 
 
@@ -220,92 +230,10 @@ describe 'objective', ->
                 uuid:        '0'
                 description: 'description'
 
-        it 'rewalks the objective on created/deleted realizer files (realizers) and updates tokens into the Realizer collection', (done) -> 
 
-            MIDDLEWARE = undefined
-            COUNT      = 0
+        xit 'rewalks the objective on created/deleted realizer files (realizers) and updates tokens into the Realizer collection'
 
-            mockObjectiveRecursor = -> COUNT++
 
-            Realizers.createClass = ->
-                autospawn: false
-                get: ->
-                update: (tokens) ->
-                    tokens.should.equal  'MOCK_TOKENS'
-                    done()
-                    then: ->
-
-            Monitor.dirs.add = (dirname, match, ref) ->
-                process.nextTick => 
-
-                    COUNT.should.equal 1
-
-                    #
-                    # mock create a new file in a linked directory
-                    #
-
-                    @emit 'create', './test/path/realizer.coffee', {}, 'realizer'
-
-                    #
-                    # objective should have rewalked walked the tree, 
-                    # to link in the new file
-                    #
-
-                    COUNT.should.equal 2
-
-                    process.nextTick => 
-
-                        @emit 'delete', './test/path/realizer.coffee', {}, 'realizer'
-
-                        #
-                        # on delete, it walks again, to unlink
-                        #
-
-                        COUNT.should.equal 3
-                        
-                        #
-                        # mockObjectiveRecursor would result in 'phrase::recurse:end'
-                        # being sent onto the messageBus at the end of the walk, 
-                        # fake it.
-                        #
-
-                        MIDDLEWARE
-
-                            context: title: 'phrase::recurse:end'
-                            root: uuid: '0'
-                            tokens: 'MOCK_TOKENS'
-                            next = ->
-  
-            Develop.prototype.startMonitor = (opts, monitors, jobTokens, jobEmitter) -> 
-                    
-            Phrase.createRoot = (opts, linkFn) => 
-                linkFn( 
-                    mockToken = 
-                        on: (event, listener) -> 
-
-                            #
-                            # fake tree initialization complete
-                            #
-
-                            if event == 'ready' then process.nextTick -> 
-                                listener walk: {}, tokens: {}
-                    mockNotifier = 
-                        use: (middleware) -> 
-                            MIDDLEWARE = middleware
-                            middleware
-                                context: title: 'phrase::link:directory'
-                                directory: './test/path'
-                                match: /\.coffee$/
-                                next = ->
-                )
-                
-                return mockObjectiveRecursor
-
-            Objective 
-
-                title:       'untitled'
-                uuid:        '0'
-                description: 'description'
 
 
 

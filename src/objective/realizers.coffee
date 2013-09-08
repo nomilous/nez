@@ -8,57 +8,66 @@
 {defer} = require 'when'
 spawner = require './spawner'
 
-module.exports.createClass = (opts) -> 
+module.exports.createClass = (classOpts) -> 
 
     realizers    = {}
     fromfilename = {}
 
-    autospawn: false
+    return api = 
 
-    get: (opts = {}) -> 
+        autospawn: false
 
-        getting = defer()
-        process.nextTick => 
-
-            #
-            # TODO: autospawn
-            # TODO: no such realizer
-            #
-
-            if opts.filename? 
-
-                realizer = fromfilename[opts.filename]
-
-                return getting.resolve( realizer) unless @autospawn 
-
-                spawner.spawn opts, realizer.token
+        get: (opts = {}) -> 
 
 
-        getting.promise
+            console.log get: opts
 
-    update: (tokens) -> 
+            getting = defer()
+            process.nextTick => 
 
-        updating = defer()
-        process.nextTick => 
+                #
+                # TODO: autospawn
+                # TODO: no such realizer
+                #
 
-            for path of tokens
+                if opts.filename? 
 
-                token = tokens[path]
-                uuid  = token.uuid
-                continue unless token.type == 'tree'
+                    realizer = fromfilename[opts.filename]
 
-                realizers[uuid] ||= {}
-                realizers[uuid].token = token
-                continue unless token.source? 
+                    console.log AUTOSPAWN: api.autospawn
 
-                switch token.source.type
-
-                    when 'file' 
-
-                        filename = token.source.filename
-                        fromfilename[filename] = realizers[uuid]
+                    return getting.resolve( realizer) unless api.autospawn
 
 
-            updating.resolve()
 
-        updating.promise
+                    spawner.spawn classOpts, realizer.token
+
+
+            getting.promise
+
+        update: (tokens) -> 
+
+            updating = defer()
+            process.nextTick => 
+
+                for path of tokens
+
+                    token = tokens[path]
+                    uuid  = token.uuid
+                    continue unless token.type == 'tree'
+
+                    realizers[uuid] ||= {}
+                    realizers[uuid].token = token
+                    continue unless token.source? 
+
+                    switch token.source.type
+
+                        when 'file' 
+
+                            filename = token.source.filename
+                            fromfilename[filename] = realizers[uuid]
+
+
+                updating.resolve()
+
+            updating.promise

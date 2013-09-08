@@ -1,8 +1,14 @@
-monitor = require '../../lib/objective/monitor'
+Monitor = require '../../lib/objective/monitor'
+monitor = undefined
 should  = require 'should'
 Hound   = require 'hound'
 
 describe 'DirectoryMonitor', -> 
+
+    before -> 
+
+        monitor = Monitor.createFunction {}
+
 
     beforeEach -> 
         @watch = Hound.watch
@@ -133,16 +139,9 @@ describe 'DirectoryMonitor', ->
             
             monitor.dirs.on 'change', (filename) -> 
 
-                done() # called once
+               done() # called once
 
 
             monitor directory: __dirname , match: /_spec\.coffee$/
 
 
-        it 'has autospawn property default false', (done) -> 
-
-            monitor.autospawn.should.equal false
-            monitor.autospawn = true
-            monitor.autospawn.should.equal true
-            monitor.autospawn = false
-            done()

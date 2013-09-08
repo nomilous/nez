@@ -1,48 +1,50 @@
 {EventEmitter} = require 'events'
 Hound          = require 'hound'
-Realizers      = require './realizers'
 
-class DirectoryMonitor extends EventEmitter
+module.exports.createFunction = (Realizers) ->
 
-    constructor: (opts = {}) ->
+    monitor = (opts) ->  
 
-        @monitors  = {}
-
-    add: (dirname, match, ref) -> 
-
-        unless @monitors[dirname]?
-
-            @monitors[dirname] = watch = Hound.watch dirname
-
-            for event in ['create', 'change', 'delete']
-                
-                do (event) => watch.on event, (filename, stats) =>
-
-                    if match? then return unless filename.match match
-
-                    unless Realizers.autospawn and event == 'change' and ref == 'realizer'
-                    
-                        return @emit event, filename, stats, ref
-
-                    #
-                    # TODO: if autospawn is enabled and the changed file refers 
-                    #       to a realizer then pend the change event propagation 
-                    #       until the realizer is spawned (or already running)
-                    #
-
-                    Realizers.get( filename: filename ).then(
-
-                        (realizer) -> console.log GOT_REALIZER: realizer
-                        (error) ->    console.log TODO: 'handle error getting realizer@' + filename 
-
-                    )
+        if opts.directory? then monitor.dirs.add opts.directory, opts.match, opts.ref
 
 
-module.exports = monitor = (opts) ->  
+    monitor.DirectoryMonitor = class DirectoryMonitor extends EventEmitter
 
-    if opts.directory? then monitor.dirs.add opts.directory, opts.match, opts.ref
+            constructor: (opts = {}) ->
 
-monitor.dirs ||= new DirectoryMonitor
+                @monitors  = {}
 
-module.exports.DirectoryMonitor = DirectoryMonitor
+            add: (dirname, match, ref) -> 
+
+                unless @monitors[dirname]?
+
+                    @monitors[dirname] = watch = Hound.watch dirname
+
+                    for event in ['create', 'change', 'delete']
+                        
+                        do (event) => watch.on event, (filename, stats) =>
+
+                            if match? then return unless filename.match match
+
+                            unless Realizers.autospawn and event == 'change' and ref == 'realizer'
+                            
+                                return @emit event, filename, stats, ref
+
+                            #
+                            # TODO: if autospawn is enabled and the changed file refers 
+                            #       to a realizer then pend the change event propagation 
+                            #       until the realizer is spawned (or already running)
+                            #
+
+                            Realizers.get( filename: filename ).then(
+
+                                (realizer) -> console.log GOT_REALIZER: realizer
+                                (error) ->    console.log TODO: 'handle error getting realizer@' + filename 
+
+                            )
+
+    
+    monitor.dirs ||= new DirectoryMonitor
+
+    return monitor
 
