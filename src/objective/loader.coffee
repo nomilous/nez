@@ -89,7 +89,10 @@ module.exports = (opts, objectiveFn) ->
 
         realizerHub.use (msg, next) -> 
 
-            console.log msg.content
+            console.log IGNORED_REMOTE: 
+                event:   msg.context.title
+                origin:  msg.context.origin
+                
             next()
 
 
@@ -101,7 +104,7 @@ module.exports = (opts, objectiveFn) ->
 
         objective.configure opts, ->
 
-            Realizers           = RealizersFactory.createClass opts
+            Realizers           = RealizersFactory.createClass opts, realizerHub
             Realizers.autospawn = opts.autospawn || false
             objectiveMonitor    = MonitorFactory.createFunction Realizers
 

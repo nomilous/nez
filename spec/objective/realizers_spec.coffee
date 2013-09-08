@@ -1,10 +1,12 @@
 should = require 'should'
-Realizers = require( '../../lib/objective/realizers' ).createClass {}
-spawner   = require '../../lib/objective/spawner'
+Realizers = undefined 
+spawner   = undefined
 
 describe 'Realizers', -> 
 
-    before (done) -> 
+    beforeEach (done) -> 
+
+        Realizers = require( '../../lib/objective/realizers' ).createClass {}, use: ->
 
         Realizers.update( 
 
@@ -16,15 +18,14 @@ describe 'Realizers', ->
                     type:     'file'
                     filename: 'path/to/realizer.coffee'
 
-         ).then -> done()
+         ).then -> 
 
-
-    beforeEach -> 
-        @spawn = spawner.spawn
-        Realizers.autospawn = false
+            Realizers.autospawn = false
+            spawner = Realizers.spawner
+            done()
 
     afterEach ->
-        spawner.spawn = @spawn
+        #spawner.spawn = @spawn
 
     it 'has autospawn option property', (done) -> 
 
@@ -43,7 +44,7 @@ describe 'Realizers', ->
 
             Realizers.autospawn = true
 
-            spawner.spawn = (opts, token) -> 
+            spawner.spawn = (token) -> 
 
                 token.should.eql
                     type: 'tree'
@@ -53,6 +54,7 @@ describe 'Realizers', ->
                         filename: 'path/to/realizer.coffee'
 
                 done()
+                then: ->
 
             Realizers.get filename: 'path/to/realizer.coffee'
 

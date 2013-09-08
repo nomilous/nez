@@ -17,6 +17,8 @@ require('../../lib/nez').objective
     
     src: directory: 'source', match: /\.coffee$/
 
+    listen: secret: '∫'
+
     (spec) -> 
 
         spec.link directory: 'unit_tests'

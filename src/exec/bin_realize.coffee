@@ -57,7 +57,7 @@ runRealizer = ({uplink, opts, realizerFn}) ->
     phraseRecursor = phrase.createRoot opts, (token) -> 
 
 
-
+    uplink.event 'realizer::connect'
 
 
 
@@ -102,6 +102,8 @@ startNotifier = ({opts, realizerFn}) ->
         # * notifier connectes to objective per connect config present
         #   in the realizer or on the commandline
         #
+
+        console.log REALIZER_OPTS: opts
     
         notice.connect "realizer/#{opts.uuid}", opts, (error, uplink) ->
 

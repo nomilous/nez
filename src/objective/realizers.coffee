@@ -5,10 +5,10 @@
 # 
 #
 
-{defer} = require 'when'
-spawner = require './spawner'
+{defer}         = require 'when'
+SpawnerFactory = require './spawner'
 
-module.exports.createClass = (classOpts) -> 
+module.exports.createClass = (classOpts, messageBus) -> 
 
     realizers    = {}
     fromfilename = {}
@@ -17,12 +17,9 @@ module.exports.createClass = (classOpts) ->
 
         autospawn: false
 
+        spawner: SpawnerFactory.createClass classOpts, messageBus
+
         get: (opts = {}) -> 
-
-
-            console.log get: opts
-
-            console.log FILES: fromfilename
 
             getting = defer()
             process.nextTick => 
@@ -36,13 +33,22 @@ module.exports.createClass = (classOpts) ->
 
                     realizer = fromfilename[opts.filename]
 
-                    console.log AUTOSPAWN: api.autospawn
-
                     return getting.resolve( realizer) unless api.autospawn
 
+                    api.spawner.spawn( realizer.token ).then(
 
+                        #
+                        # TEMPORARY: spawner resolves with the new / existing process
+                        # 
+                        # TODO:      return connected notifier 
+                        #            (notice as ""switch"" instead of ""hub"")
+                        # 
 
-                    spawner.spawn classOpts, realizer.token
+                        (process) -> console.log SPAWNED: pid: process.pid
+
+                        (error)  -> console.log TODO: 'handle failed spawn', ERROR: error
+
+                    )
 
 
             getting.promise
@@ -73,3 +79,6 @@ module.exports.createClass = (classOpts) ->
                 updating.resolve()
 
             updating.promise
+
+
+    console.log API: api
