@@ -1,6 +1,6 @@
 {EventEmitter} = require 'events'
 Hound          = require 'hound'
-spawner        = require './spawner'
+Realizers      = require './realizers'
 autospawn      = false
 
 class DirectoryMonitor extends EventEmitter
@@ -21,7 +21,7 @@ class DirectoryMonitor extends EventEmitter
 
                     if match? then return unless filename.match match
 
-                    unless autospawn and ref == 'realizer'
+                    unless autospawn and event == 'change' and ref == 'realizer'
                     
                         return @emit event, filename, stats, ref
 
@@ -31,7 +31,12 @@ class DirectoryMonitor extends EventEmitter
                     #       until the realizer is spawned (or already running)
                     #
 
-                    console.log PENDING_SPAWN: filename
+                    Realizers.get( filename: filename ).then(
+
+                        (realizer) -> console.log GOT_REALIZER: realizer
+                        (error) ->    console.log TODO: 'handle error getting realizer@' + filename 
+
+                    )
 
 
 module.exports = monitor = (opts) ->  
