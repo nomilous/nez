@@ -22,4 +22,14 @@ module.exports = new ( class Realizers
 
         getting.promise
 
+    update: -> 
+
+        updating = defer()
+        process.nextTick => 
+
+            updating.resolve 'REALIZER'
+
+        updating.promise
+
+
 )

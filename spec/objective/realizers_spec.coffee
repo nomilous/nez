@@ -14,3 +14,16 @@ describe 'Realizers', ->
 
             Realizers.get().then.should.be.an.instanceof Function
             done()
+
+
+
+    context 'update(tokens)', -> 
+
+        it 'returns a promise', (done) -> 
+
+            Realizers.update().then.should.be.an.instanceof Function
+            done()
+
+        it 'loads boundry phrase tokens', (done) -> 
+
+            done()

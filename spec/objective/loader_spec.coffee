@@ -1,7 +1,7 @@
 should    = require 'should'
 Objective = require '../../lib/objective/loader'
 Monitor   = require '../../lib/objective/monitor'
-# Realizers = require '../../lib/realization/realizers'
+Realizers = require '../../lib/objective/realizers'
 Develop   = require '../../lib/defaults/develop'
 Phrase    = require 'phrase'
 Notice    = require 'notice'
@@ -15,6 +15,7 @@ describe 'objective', ->
         @phraseCreate       = Phrase.createRoot
         @onBoundry          = Develop.prototype.onBoundry
         @monitorDirs        = Monitor.dirs.add
+        @update             = Realizers.update
 
     afterEach -> 
 
@@ -22,6 +23,7 @@ describe 'objective', ->
         Phrase.createRoot           = @phraseCreate
         Develop.prototype.onBoundry = @onBoundry
         Monitor.dirs.add            = @monitorDirs
+        Realizers.update            = @update
         
     context 'message bus', ->
 
@@ -218,15 +220,22 @@ describe 'objective', ->
                 uuid:        '0'
                 description: 'description'
 
-        it 'rewalks the objective on created/deleted realizer files (realizers)', (done) -> 
+        it 'rewalks the objective on created/deleted realizer files (realizers) and updates tokens into the Realizer collection', (done) -> 
 
-            count = 0
-            mockObjectiveRecursor = -> count++
+            MIDDLEWARE = undefined
+            COUNT      = 0
+
+            mockObjectiveRecursor = -> COUNT++
+
+            Realizers.update = (tokens) -> 
+
+                tokens.should.equal 'MOCK_TOKENS'
+                then: -> done()
 
             Monitor.dirs.add = (dirname, match, ref) ->
                 process.nextTick => 
 
-                    count.should.equal 1
+                    COUNT.should.equal 1
 
                     #
                     # mock create a new file in a linked directory
@@ -239,7 +248,7 @@ describe 'objective', ->
                     # to link in the new file
                     #
 
-                    count.should.equal 2
+                    COUNT.should.equal 2
 
                     process.nextTick => 
 
@@ -249,8 +258,19 @@ describe 'objective', ->
                         # on delete, it walks again, to unlink
                         #
 
-                        count.should.equal 3
-                        done()
+                        COUNT.should.equal 3
+                        
+                        #
+                        # mockObjectiveRecursor would result in 'phrase::recurse:end'
+                        # being sent onto the messageBus at the end of the walk, 
+                        # fake it.
+                        #
+
+                        MIDDLEWARE
+                            context: title: 'phrase::recurse:end'
+                            root: uuid: '0'
+                            tokens: 'MOCK_TOKENS'
+                            next = ->
   
             Develop.prototype.startMonitor = (opts, monitors, jobTokens, jobEmitter) -> 
                     
@@ -267,11 +287,12 @@ describe 'objective', ->
                                 listener walk: {}, tokens: {}
                     mockNotifier = 
                         use: (middleware) -> 
+                            MIDDLEWARE = middleware
                             middleware
                                 context: title: 'phrase::link:directory'
                                 directory: './test/path'
                                 match: /\.coffee$/
-                                ->
+                                next = ->
                 )
                 
                 return mockObjectiveRecursor

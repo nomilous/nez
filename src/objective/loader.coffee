@@ -148,11 +148,11 @@ module.exports = (opts, objectiveFn) ->
 
                             when 'phrase::recurse:end'
 
-                                console.log LOADED_PHRASE: msg
-                                return next()
+                                return next() unless msg.root.uuid == opts.uuid
+                                return Realizers.update( msg.tokens ).then -> next()
 
 
-                        console.log 'IGNORED:', msg.context.title
+                        #console.log 'IGNORED:', msg.context.title
                         next()
 
 
