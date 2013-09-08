@@ -23,7 +23,7 @@ class DirectoryMonitor extends EventEmitter
 
 module.exports = monitor = (opts) ->  
 
-    if opts.directory? then monitor.dirs.add opts.directory, opts.match
+    if opts.directory? then monitor.dirs.add opts.directory, opts.match, opts.ref
 
 monitor.dirs ||= new DirectoryMonitor
 

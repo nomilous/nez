@@ -10,28 +10,23 @@ Realize   = require '../realization/realize'
 
 class Develop extends Objective
 
-    startMonitor: (opts, monitor, jobTokens, jobEmitter) -> 
+    startMonitor: (opts, monitor, @jobTokens, @jobEmitter) -> 
 
         # console.log Develop: startMonitor: opts
 
         monitor.dirs.add opts.src.directory, opts.src.match, 'src'
 
-        monitor.dirs.on 'create', (filename, stats, ref) -> 
+        monitor.dirs.on 'create', (filename, stats, ref) => 
+            return unless ref == 'src'
+            @handleCreatedSourceFile filename 
 
-            if ref == 'src' then console.log SRC_CREATE: filename
-            else console.log SPEC_CREATE: filename
+        monitor.dirs.on 'change', (filename, stats, ref) => 
+            if ref == 'src' then @handleChangedSourceFile filename
+            else @handleChangedSpecFile filename
 
-
-        monitor.dirs.on 'change', (filename, stats, ref) -> 
-
-            if ref == 'src' then console.log SRC_CHANGE: filename
-            else console.log SPEC_CHANGE: filename
-
-
-        monitor.dirs.on 'delete', (filename, stats, ref) -> 
-
-            if ref == 'src' then console.log SRC_DELETE: filename
-            else console.log SPEC_DELETE: filename
+        monitor.dirs.on 'delete', (filename, stats, ref) => 
+            return unless ref == 'src'
+            @handleDeletedSourceFile filename 
 
 
 
@@ -48,8 +43,6 @@ class Develop extends Objective
     #
 
     onBoundryAssemble: (opts, callback) -> 
-
-
 
         Realize.loadRealizer( opts ).then( 
 
@@ -91,6 +84,27 @@ class Develop extends Objective
     defaultObjective: (spec) -> 
 
         spec.link directory: 'spec'
+        
+
+    handleCreatedSourceFile: (filename) -> 
+
+        console.log created: filename
+
+
+    handleChangedSourceFile: (filename) -> 
+
+        console.log changed: filename
+
+
+    handleDeletedSourceFile: (filename) -> 
+
+        console.log deleted: filename
+
+
+    handleChangedSpecFile: (filename) -> 
+
+        console.log SPEC_CHANGE: filename
+        console.log @jobTokens
 
 
 module.exports = Develop

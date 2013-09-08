@@ -89,6 +89,20 @@ module.exports = (opts, objectiveFn) ->
             next()
 
 
+        #
+        # * register listener for changes in linked directories
+        #
+
+        monitor.dirs.on 'create', (filename, stats, ref) -> 
+            return unless ref == 'linked'
+            console.log CREATED_REALIZER: filename
+
+        monitor.dirs.on 'delete', (filename, stats, ref) -> 
+            return unless ref == 'linked'
+            console.log DELETED_REALIZER: filename
+
+        
+
 
         # 
         # * Start the Objective processor
@@ -121,6 +135,7 @@ module.exports = (opts, objectiveFn) ->
                                 monitor 
                                     directory: msg.directory
                                     match:     msg.match
+                                    ref:       'linked'
 
                                 next()
 
