@@ -33,8 +33,7 @@ class Develop extends Objective
     #
     # TODO: 
     # 
-    # * handle new realizers (additional boundry tree to load)
-    # * configurable/optional src folder
+    # * optional src folder
     # * monitor spec and src and compile appropriately
     # * on change spawn realizer unless already spawned
     # * on create src auto create spec with snippet including uuid
@@ -84,7 +83,7 @@ class Develop extends Objective
     defaultObjective: (spec) -> 
 
         spec.link directory: 'spec'
-        
+
 
     handleCreatedSourceFile: (filename) -> 
 
