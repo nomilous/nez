@@ -3,6 +3,11 @@ Realizers = require '../../lib/objective/realizers'
 
 describe 'Realizers', -> 
 
+    it 'has autospawn option property', (done) -> 
+
+        Realizers.autospawn.should.equal false
+        done()
+
     context 'get()', -> 
 
         it 'returns a promise', (done) -> 

@@ -1,7 +1,6 @@
 {EventEmitter} = require 'events'
 Hound          = require 'hound'
 Realizers      = require './realizers'
-autospawn      = false
 
 class DirectoryMonitor extends EventEmitter
 
@@ -21,7 +20,7 @@ class DirectoryMonitor extends EventEmitter
 
                     if match? then return unless filename.match match
 
-                    unless autospawn and event == 'change' and ref == 'realizer'
+                    unless Realizers.autospawn and event == 'change' and ref == 'realizer'
                     
                         return @emit event, filename, stats, ref
 
@@ -44,15 +43,6 @@ module.exports = monitor = (opts) ->
     if opts.directory? then monitor.dirs.add opts.directory, opts.match, opts.ref
 
 monitor.dirs ||= new DirectoryMonitor
-
-
-Object.defineProperty monitor, 'autospawn', 
-
-    enumareable: true
-    get: -> autospawn
-    set: (value) -> autospawn = value is true
-
-
 
 module.exports.DirectoryMonitor = DirectoryMonitor
 

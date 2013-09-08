@@ -10,10 +10,16 @@ spawner = require './spawner'
 
 module.exports = new ( class Realizers
 
+    autospawn: false
+
     get: -> 
 
         getting = defer()
-        process.nextTick -> getting.resolve 'REALIZER'
+        process.nextTick => 
+
+            console.log AUTOSPAWN: @autospawn
+            getting.resolve 'REALIZER'
+
         getting.promise
 
 )

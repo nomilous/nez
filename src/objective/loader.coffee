@@ -1,6 +1,7 @@
 Notice         = require 'notice'
 Phrase         = require 'phrase'
 Objective      = require './objective'
+Realizers      = require './realizers'
 monitor        = require './monitor'
 
 module.exports = (opts, objectiveFn) ->
@@ -99,7 +100,7 @@ module.exports = (opts, objectiveFn) ->
 
         objective.configure opts, ->
 
-            monitor.autospawn = opts.autospawn || false
+            Realizers.autospawn = opts.autospawn || false
 
             try 
 
