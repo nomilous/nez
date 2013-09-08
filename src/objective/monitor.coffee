@@ -1,6 +1,7 @@
-Hound  = require 'hound'
+{EventEmitter} = require 'events'
+Hound          = require 'hound'
 
-class DirectoryMonitor
+class DirectoryMonitor extends EventEmitter
 
     constructor: ->
 
@@ -9,9 +10,15 @@ class DirectoryMonitor
     add: (directory) -> 
 
         unless @monitors[directory]?
-        
-            @monitors[directory] = Hound.watch directory
 
+            @monitors[directory] = watch = Hound.watch directory
+
+            for event in ['create', 'change', 'delete']
+                
+                do (event) => watch.on event, (filename) =>
+
+
+                    @emit event, filename
 
 
 module.exports.DirectoryMonitor = DirectoryMonitor
