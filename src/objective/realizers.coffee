@@ -27,7 +27,11 @@ module.exports =
 
             if opts.filename? 
 
-                getting.resolve fromfilename[opts.filename]
+                realizer = fromfilename[opts.filename]
+
+                return getting.resolve( realizer) unless @autospawn 
+
+                spawner.spawn realizer.token
 
 
         getting.promise

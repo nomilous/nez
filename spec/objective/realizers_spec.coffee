@@ -1,7 +1,30 @@
 should = require 'should'
 Realizers = require '../../lib/objective/realizers'
+spawner   = require '../../lib/objective/spawner'
 
 describe 'Realizers', -> 
+
+    before (done) -> 
+
+        Realizers.update( 
+
+            '/Objective Title/objective/spec/Spec title': 
+
+                type: 'tree'
+                uuid: '0'
+                source:
+                    type:     'file'
+                    filename: 'path/to/realizer.coffee'
+
+         ).then -> done()
+
+
+    beforeEach -> 
+        @spawn = spawner.spawn
+        Realizers.autospawn = false
+
+    afterEach ->
+        spawner.spawn = @spawn
 
     it 'has autospawn option property', (done) -> 
 
@@ -16,6 +39,23 @@ describe 'Realizers', ->
             done()
 
 
+        it 'autospawns the realizer if enabled', (done) -> 
+
+            Realizers.autospawn = true
+
+            spawner.spawn = (token) -> 
+
+                token.should.eql
+                    type: 'tree'
+                    uuid: '0'
+                    source:
+                        type:     'file'
+                        filename: 'path/to/realizer.coffee'
+
+                done()
+
+            Realizers.get filename: 'path/to/realizer.coffee'
+
 
     context 'update(tokens)', -> 
 
@@ -25,7 +65,7 @@ describe 'Realizers', ->
             done()
 
 
-        it 'loads boundry phrase tokens', (done) -> 
+        it 'loads boundry phrase tokens into the realizer reference collection', (done) -> 
 
             Realizers.update( 
 
