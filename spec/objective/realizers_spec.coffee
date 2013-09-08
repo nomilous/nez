@@ -1,5 +1,5 @@
 should = require 'should'
-Realizers = require '../../lib/objective/realizers'
+Realizers = require( '../../lib/objective/realizers' ).createClass {}
 spawner   = require '../../lib/objective/spawner'
 
 describe 'Realizers', -> 
@@ -43,7 +43,7 @@ describe 'Realizers', ->
 
             Realizers.autospawn = true
 
-            spawner.spawn = (token) -> 
+            spawner.spawn = (opts, token) -> 
 
                 token.should.eql
                     type: 'tree'

@@ -227,10 +227,13 @@ describe 'objective', ->
 
             mockObjectiveRecursor = -> COUNT++
 
-            Realizers.update = (tokens) -> 
-
-                tokens.should.equal 'MOCK_TOKENS'
-                then: -> done()
+            Realizers.createClass = ->
+                autospawn: false
+                get: ->
+                update: (tokens) ->
+                    tokens.should.equal  'MOCK_TOKENS'
+                    done()
+                    then: ->
 
             Monitor.dirs.add = (dirname, match, ref) ->
                 process.nextTick => 
@@ -267,6 +270,7 @@ describe 'objective', ->
                         #
 
                         MIDDLEWARE
+
                             context: title: 'phrase::recurse:end'
                             root: uuid: '0'
                             tokens: 'MOCK_TOKENS'

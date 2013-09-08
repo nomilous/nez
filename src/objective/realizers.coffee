@@ -1,6 +1,6 @@
 #
-# Realizers Collection (singleton)
-# ================================
+# Realizers Collection (factory)
+# ==============================
 # 
 # 
 #
@@ -8,10 +8,10 @@
 {defer} = require 'when'
 spawner = require './spawner'
 
-realizers  = {}
-fromfilename = {}
+module.exports.createClass = (opts) -> 
 
-module.exports = 
+    realizers    = {}
+    fromfilename = {}
 
     autospawn: false
 
@@ -31,7 +31,7 @@ module.exports =
 
                 return getting.resolve( realizer) unless @autospawn 
 
-                spawner.spawn realizer.token
+                spawner.spawn opts, realizer.token
 
 
         getting.promise
