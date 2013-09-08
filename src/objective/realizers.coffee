@@ -22,6 +22,8 @@ module.exports.createClass = (classOpts) ->
 
             console.log get: opts
 
+            console.log FILES: fromfilename
+
             getting = defer()
             process.nextTick => 
 
