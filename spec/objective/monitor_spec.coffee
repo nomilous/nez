@@ -52,7 +52,7 @@ describe 'DirectoryMonitor', ->
             Hound.watch = (directory) -> 
                 on: (event) -> EVENTS.push event
 
-            m = new monitor.DirectoryMonitor
+            m = new monitor.DirectoryMonitor {}
             m.add __dirname
 
             EVENTS.should.eql ['create', 'change', 'delete']
@@ -68,7 +68,7 @@ describe 'DirectoryMonitor', ->
                 on: (event, listener) -> 
                     listener './mock/' + event + 'd/file'
 
-            m = new monitor.DirectoryMonitor __dirname
+            m = new monitor.DirectoryMonitor
             
             EVENTS = {}
             m.on 'create', (filename) -> EVENTS.created = filename
@@ -92,7 +92,7 @@ describe 'DirectoryMonitor', ->
                     listener './mock/' + event + 'd/file.not_match'
 
             CHANGED = {}
-            m = new monitor.DirectoryMonitor __dirname
+            m = new monitor.DirectoryMonitor
             m.on 'change', (filename) -> CHANGED[filename] = 1
             
             m.add __dirname, /\.match$/
@@ -109,7 +109,7 @@ describe 'DirectoryMonitor', ->
                     listener './mock/' + event + 'd/file.not_match'
 
             CHANGED = {}
-            m = new monitor.DirectoryMonitor __dirname
+            m = new monitor.DirectoryMonitor
             
             m.on 'change', (filename, stats, ref) ->
 
@@ -139,4 +139,10 @@ describe 'DirectoryMonitor', ->
             monitor directory: __dirname , match: /_spec\.coffee$/
 
 
+        it 'has autospawn property default false', (done) -> 
 
+            monitor.autospawn.should.equal false
+            monitor.autospawn = true
+            monitor.autospawn.should.equal true
+            monitor.autospawn = false
+            done()

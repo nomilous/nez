@@ -77,6 +77,8 @@ class Develop extends Objective
         opts.src.directory = 'src' unless opts.src.directory?
         opts.src.match     = /\.coffee$/ unless opts.src.match?
 
+        opts.autospawn     = true
+
         done()
 
 

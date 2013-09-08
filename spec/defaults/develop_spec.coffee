@@ -21,6 +21,7 @@ describe 'Develop', ->
                 src: 
                     directory: 'src'
                     match:   /\.coffee$/
+                autospawn: true
 
             done()
 

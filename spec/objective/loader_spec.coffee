@@ -147,6 +147,8 @@ describe 'objective', ->
                         directory: 'src'
                         match: /\.coffee$/
 
+                    autospawn: true
+
                     done()
 
                 -> 
@@ -174,13 +176,13 @@ describe 'objective', ->
                 (spec) -> spec.link directory: __dirname
 
 
-        it 'monitors linked directory for change and filters by link match', (done) -> 
+        it 'monitors realizer directory for change and filters by link match', (done) -> 
 
             Monitor.dirs.add = (dirname, match, ref)->
 
                 dirname.should.equal './test/path'
                 match.should.eql /\.match$/
-                ref.should.equal 'linked'
+                ref.should.equal 'realizer'
                 done()
 
             Develop.prototype.startMonitor = (opts, monitors, jobTokens, jobEmitter) -> 
@@ -216,7 +218,7 @@ describe 'objective', ->
                 uuid:        '0'
                 description: 'description'
 
-        it 'rewalks the objective on created/deleted linked files (realizers)', (done) -> 
+        it 'rewalks the objective on created/deleted realizer files (realizers)', (done) -> 
 
             count = 0
             mockObjectiveRecursor = -> count++
@@ -230,7 +232,7 @@ describe 'objective', ->
                     # mock create a new file in a linked directory
                     #
 
-                    @emit 'create', './test/path/realizer.coffee', {}, 'linked'
+                    @emit 'create', './test/path/realizer.coffee', {}, 'realizer'
 
                     #
                     # objective should have rewalked walked the tree, 
@@ -241,7 +243,7 @@ describe 'objective', ->
 
                     process.nextTick => 
 
-                        @emit 'delete', './test/path/realizer.coffee', {}, 'linked'
+                        @emit 'delete', './test/path/realizer.coffee', {}, 'realizer'
 
                         #
                         # on delete, it walks again, to unlink

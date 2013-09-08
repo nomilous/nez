@@ -99,6 +99,8 @@ module.exports = (opts, objectiveFn) ->
 
         objective.configure opts, ->
 
+            monitor.autospawn = opts.autospawn || false
+
             try 
 
                 # 
@@ -122,7 +124,7 @@ module.exports = (opts, objectiveFn) ->
                                 monitor 
                                     directory: msg.directory
                                     match:     msg.match
-                                    ref:       'linked'
+                                    ref:       'realizer'
 
                                 return next()
 
@@ -178,14 +180,15 @@ module.exports = (opts, objectiveFn) ->
 
 
         #
-        # * reload objective on create or delete realizer
-        #
+        # * reload objective on create/delete linked file (realizer) to add/remove 
+        #   the corresponding boundry token from the objective PhraseTree
+        # 
 
         for event in ['create', 'delete']
 
             do (event) -> monitor.dirs.on event, (filename, stats, ref) -> 
                 
-                return unless ref == 'linked'
+                return unless ref == 'realizer'
                 objectiveRecursor 'objective', objectiveFn || objective.defaultObjective
 
                 #
