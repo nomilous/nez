@@ -7,17 +7,17 @@ class DirectoryMonitor extends EventEmitter
 
         @monitors = {}
 
-    add: (directory) -> 
+    add: (dirname, match) -> 
 
-        unless @monitors[directory]?
+        unless @monitors[dirname]?
 
-            @monitors[directory] = watch = Hound.watch directory
+            @monitors[dirname] = watch = Hound.watch dirname
 
             for event in ['create', 'change', 'delete']
                 
                 do (event) => watch.on event, (filename) =>
 
-
+                    if match? then return unless filename.match match
                     @emit event, filename
 
 

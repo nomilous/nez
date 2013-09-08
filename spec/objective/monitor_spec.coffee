@@ -18,7 +18,7 @@ describe 'DirectoryMonitor', ->
         done()
 
 
-    context 'add(directory)', -> 
+    context 'add(directory, match)', -> 
 
         it 'adds a directory to be monitored', (done) ->
 
@@ -83,4 +83,23 @@ describe 'DirectoryMonitor', ->
 
             done()
 
-    
+
+        it 'filters events by filename', (done) -> 
+
+            Hound.watch = (directory) -> 
+                on: (event, listener) -> 
+                    listener './mock/' + event + 'd/file.match'
+                    listener './mock/' + event + 'd/file.not_match'
+
+            CHANGED = {}
+            m = new monitor.DirectoryMonitor __dirname
+            m.on 'change', (filename) -> CHANGED[filename] = 1
+            
+            m.add __dirname, /\.match$/
+
+            should.exist CHANGED['./mock/changed/file.match']
+            should.not.exist CHANGED['./mock/changed/file.not_match']
+            done()
+
+
+
