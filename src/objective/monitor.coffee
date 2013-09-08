@@ -8,7 +8,9 @@ class DirectoryMonitor
 
     add: (directory) -> 
 
-        @monitors[directory] = Hound.watch directory
+        unless @monitors[directory]?
+        
+            @monitors[directory] = Hound.watch directory
 
 
 

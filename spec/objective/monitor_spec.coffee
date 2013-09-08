@@ -32,5 +32,12 @@ describe 'DirectoryMonitor', ->
             done()
 
 
+        it 'does not add the same directory morethan 1ce', (done) -> 
 
+            m = new monitor.DirectoryMonitor
+            Hound.watch = (directory) -> 'WATCHER'
+            m.add __dirname 
+            Hound.watch = (directory) -> throw 'should not run'
+            m.add __dirname
+            done()
 
