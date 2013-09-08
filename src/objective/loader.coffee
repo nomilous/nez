@@ -187,6 +187,14 @@ module.exports = (opts, objectiveFn) ->
                 
                 return unless ref == 'linked'
                 objectiveRecursor 'objective', objectiveFn || objective.defaultObjective
+
+                #
+                # TODO: fix: it is likely possible to create realizers in linked directories 
+                #       faster than the walker can complete the recursion through the linked
+                #       tree - it will error with: 
+                # 
+                #       'Phrase root registrar cannot perform concurrent walks'  
+                #
            
 
 
