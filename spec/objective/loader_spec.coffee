@@ -130,10 +130,18 @@ describe 'objective', ->
                     description: 'description'
 
                     #
-                    # default objective sets boundry signatire match
+                    # default objective sets boundry signature match
                     #
 
                     boundry:     ['spec', 'test']
+
+                    #
+                    # default objective sets src directory monitor opts
+                    #
+
+                    src: 
+                        directory: 'src'
+                        match: /\.coffee$/
 
                 -> done()
                 

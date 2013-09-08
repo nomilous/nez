@@ -14,11 +14,25 @@ class Develop extends Objective
 
         # console.log Develop: startMonitor: opts
 
-        monitor.dirs.add opts.src.directory, opts.src.match
+        monitor.dirs.add opts.src.directory, opts.src.match, 'src'
 
-        monitor.dirs.on 'create', (filename) -> console.log CREATED: filename
-        monitor.dirs.on 'change', (filename) -> console.log CHANGED: filename
-        monitor.dirs.on 'delete', (filename) -> console.log DELETED: filename
+        monitor.dirs.on 'create', (filename, stats, ref) -> 
+
+            if ref == 'src' then console.log SRC_CREATE: filename
+            else console.log SPEC_CREATE: filename
+
+
+        monitor.dirs.on 'change', (filename, stats, ref) -> 
+
+            if ref == 'src' then console.log SRC_CHANGE: filename
+            else console.log SPEC_CHANGE: filename
+
+
+        monitor.dirs.on 'delete', (filename, stats, ref) -> 
+
+            if ref == 'src' then console.log SRC_DELETE: filename
+            else console.log SPEC_DELETE: filename
+
 
 
     #

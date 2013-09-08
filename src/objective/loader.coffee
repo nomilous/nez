@@ -118,7 +118,10 @@ module.exports = (opts, objectiveFn) ->
 
                             when 'phrase::link:directory'
 
-                                monitor monitorOpts = msg
+                                monitor 
+                                    directory: msg.directory
+                                    match:     msg.match
+
                                 next()
 
                             when 'phrase::boundry:assemble'

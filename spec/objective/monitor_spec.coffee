@@ -101,6 +101,25 @@ describe 'DirectoryMonitor', ->
             should.not.exist CHANGED['./mock/changed/file.not_match']
             done()
 
+        it 'can include a monitor reference', (done) -> 
+
+            Hound.watch = (directory) -> 
+                on: (event, listener) -> 
+                    listener './mock/' + event + 'd/file.match'
+                    listener './mock/' + event + 'd/file.not_match'
+
+            CHANGED = {}
+            m = new monitor.DirectoryMonitor __dirname
+            
+            m.on 'change', (filename, stats, ref) ->
+
+                ref.should.equal 'REFERENCE'
+                done()
+            
+            m.add __dirname, /\.match$/, 'REFERENCE'
+
+            
+
     context 'monitors (collection)', -> 
 
         it 'has predefined directory monitor', (done) -> 

@@ -7,7 +7,7 @@ class DirectoryMonitor extends EventEmitter
 
         @monitors = {}
 
-    add: (dirname, match) -> 
+    add: (dirname, match, ref) -> 
 
         unless @monitors[dirname]?
 
@@ -15,12 +15,10 @@ class DirectoryMonitor extends EventEmitter
 
             for event in ['create', 'change', 'delete']
                 
-                do (event) => watch.on event, (filename) =>
+                do (event) => watch.on event, (filename, stats) =>
 
                     if match? then return unless filename.match match
-                    @emit event, filename
-
-
+                    @emit event, filename, stats, ref
 
 
 module.exports = monitor = (opts) ->  
