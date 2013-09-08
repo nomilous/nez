@@ -10,6 +10,13 @@ require('../../lib/nez').objective
 
     """
 
+    #
+    # specify opts to watch for chaning source files
+    # defaults to `src`, `/\.coffee$/`
+    #
+    
+    src: directory: 'source', match: /\.coffee$/
+
     (spec) -> 
 
         spec.link directory: 'unit_tests'

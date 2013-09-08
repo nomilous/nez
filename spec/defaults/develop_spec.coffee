@@ -16,7 +16,12 @@ describe 'Develop', ->
 
         @dev.configure ( opts = {} ), -> 
 
-            opts.should.eql boundry: ['spec', 'test']
+            opts.should.eql 
+                boundry: ['spec', 'test']
+                src: 
+                    directory: 'src'
+                    match:   /\.coffee$/
+
             done()
 
 

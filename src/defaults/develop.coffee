@@ -12,7 +12,9 @@ class Develop extends Objective
 
     startMonitor: (opts, monitor, jobTokens, jobEmitter) -> 
 
-        console.log Develop: startMonitor: opts
+        # console.log Develop: startMonitor: opts
+
+        monitor.dirs.add opts.src.directory, opts.src.match
 
         monitor.dirs.on 'create', (filename) -> console.log CREATED: filename
         monitor.dirs.on 'change', (filename) -> console.log CHANGED: filename
@@ -59,13 +61,22 @@ class Develop extends Objective
 
     configure: (opts, done) ->  
 
-        opts.boundry = ['spec', 'test']
+        opts.boundry = ['spec', 'test'] unless opts.boundry?
+
+        #
+        # it is assumed the develop objective will be run in the repo directory
+        #
+
+        opts.src         ||= {}
+        opts.src.directory = 'src' unless opts.src.directory?
+        opts.src.match     = /\.coffee$/ unless opts.src.match?
+
         done()
 
 
     defaultObjective: (spec) -> 
 
-        spec.link directory: './spec'
+        spec.link directory: 'spec'
 
 
 module.exports = Develop

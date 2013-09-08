@@ -1,7 +1,6 @@
 Notice         = require 'notice'
 Phrase         = require 'phrase'
 Objective      = require './objective'
-Hound          = require 'hound'
 monitor        = require './monitor'
 
 module.exports = (opts, objectiveFn) ->
@@ -119,7 +118,7 @@ module.exports = (opts, objectiveFn) ->
 
                             when 'phrase::link:directory'
 
-                                monitor opts = msg
+                                monitor monitorOpts = msg
                                 next()
 
                             when 'phrase::boundry:assemble'
@@ -146,7 +145,7 @@ module.exports = (opts, objectiveFn) ->
 
                     objectiveToken.on 'ready', ( {tokens} ) -> 
 
-                        objective.startMonitor {}, monitor, tokens, (token, opts) -> 
+                        objective.startMonitor opts, monitor, tokens, (token, opts) -> 
 
                             objectiveToken.run token, opts
 
