@@ -27,6 +27,15 @@ module.exports.createFunction = (Realizers) ->
                             if match? then return unless filename.match match
 
                             unless Realizers.autospawn and event == 'change' and ref == 'realizer'
+
+                                                            #
+                                                            # TODO: perhaps all events, will need to protect
+                                                            #       from concurrent calls to spawn
+                                                            #
+                                                            #       currently only on change because the only
+                                                            #       use case is a changeing spec file requiring
+                                                            #       a call to run the spec file at the realizer
+                                                            # 
                             
                                 return @emit event, filename, stats, ref
 
@@ -39,7 +48,18 @@ module.exports.createFunction = (Realizers) ->
                             Realizers.get( filename: filename ).then(
 
                                 (realizer) -> console.log GOT_REALIZER: realizer
-                                (error) ->    console.log TODO: 'handle error getting realizer@' + filename 
+                                (error) ->    
+
+                                    console.log
+
+                                        #
+                                        # TODO: send rootward, later
+                                        #
+
+                                        description: "Failed autospawn realizer file:#{filename}"
+                                        error: error
+
+
 
                             )
 

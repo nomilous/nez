@@ -83,5 +83,3 @@ module.exports.createClass = (classOpts, messageBus) ->
 
             updating.promise
 
-
-    console.log API: api

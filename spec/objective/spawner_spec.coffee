@@ -73,6 +73,7 @@ describe 'Spawner', ->
                 pid: 12345
                 stderr: on: ->
                 stdout: on: ->
+                on: -> 
 
             Spawner.spawn 
                 source:
@@ -84,12 +85,10 @@ describe 'Spawner', ->
 
             ChildProcess.spawn = (bin, args) -> 
                 
-                bin.should.match /bin\/realize/
-                args.should.eql ['-c', '-p', 22122, '-X', 'path/to/realizer.coffee']
-
                 pid: 12345
                 stderr: on: ->
                 stdout: on: ->
+                on: -> 
 
             Spawner.spawn(
 
@@ -117,3 +116,41 @@ describe 'Spawner', ->
                     ->
 
 
+        it 'errors on spawn exit before connect', (done) -> 
+
+            ChildProcess.spawn = (bin, args) -> 
+                
+                pid: 12345
+                stderr: on: ->
+                stdout: on: ->
+                on: (childEvent, callback) -> 
+
+                    #
+                    # fake child exitting immediately on exit listener registration
+                    #
+
+                    if childEvent == 'exit'
+
+                        exitcode   = 101
+                        exitsignal = null
+                        callback exitcode, exitsignal
+
+
+            Spawner.spawn(
+
+                uuid: 'UUID'
+                source:
+                    type: 'file'
+                    filename: 'path/to/realizer.coffee'
+            
+            ).then( 
+
+                (token) -> 
+                (error) -> 
+                    error.should.match /Realizer exited with code:101/
+                    done()
+            
+            )
+
+
+        it '"disconnects" on spawn exit after connect'

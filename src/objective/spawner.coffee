@@ -63,16 +63,30 @@ module.exports.createClass = (opts, messageBus) ->
 
             child = ChildProcess.spawn runner, args
 
-            
-
-            child.stderr.on 'data', (data) -> 
-            child.stdout.on 'data', (data) -> 
-
             console.log SPAWN: token.uuid, PID: child.pid
 
             waiting[child.pid] = 
 
                 promise: spawning
                 token:   token
+
+
+            child.stderr.on 'data', (data) -> 
+            child.stdout.on 'data', (data) -> 
+
+            child.on 'exit', (code, signal) -> 
+
+                #
+                # TODO: formalize realizer exit codes
+                #       - exec/bin_realize.coffee
+                #       - src/realization/realize
+                #
+
+                return unless waiting[child.pid]?
+                {promise, token} = waiting[child.pid]
+                promise.reject new Error "Realizer exited with code:#{code}, signal:#{signal}"
+
+
+
 
         spawning.promise
