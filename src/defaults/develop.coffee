@@ -20,9 +20,9 @@ class Develop extends Objective
             return unless ref == 'src'
             @handleCreatedSourceFile filename 
 
-        monitor.dirs.on 'change', (filename, stats, ref) => 
+        monitor.dirs.on 'change', (filename, stats, ref, realizer) => 
             if ref == 'src' then @handleChangedSourceFile filename
-            else @handleChangedSpecFile filename
+            else @handleChangedSpecFile filename, realizer
 
         monitor.dirs.on 'delete', (filename, stats, ref) => 
             return unless ref == 'src'
@@ -102,10 +102,12 @@ class Develop extends Objective
         console.log deleted: filename
 
 
-    handleChangedSpecFile: (filename) -> 
+    handleChangedSpecFile: (filename, realizer) -> 
 
-        console.log SPEC_CHANGE: filename
-        console.log @jobTokens
+        console.log 
+            SPEC_CHANGE: filename
+            REALIZER: realizer
+        #console.log @jobTokens
 
 
 module.exports = Develop

@@ -5,12 +5,8 @@ Hound   = require 'hound'
 
 describe 'DirectoryMonitor', -> 
 
-    before -> 
-
-        monitor = Monitor.createFunction {}
-
-
     beforeEach -> 
+        monitor = Monitor.createFunction {}
         @watch = Hound.watch
 
     afterEach -> 
@@ -144,4 +140,30 @@ describe 'DirectoryMonitor', ->
 
             monitor directory: __dirname , match: /_spec\.coffee$/
 
+
+    context 'with autospawn', ->
+
+        it 'includes the (possibly newly spawned) realizer in the realizer file change event', (done) -> 
+
+            Hound.watch = (directory) -> 
+                on: (event, listener) -> if event == 'change'
+                    listener 'mock/' + event + 'd/file_spec.coffee'
+            
+
+            monitor = Monitor.createFunction mockRealizersCollection =
+
+                autospawn: true
+                get: (opts) -> 
+                    then: (resolve) -> 
+                        resolve MOCK_REALIZER: opts
+
+            monitor.dirs.on 'change', (filename, stats, ref, realizer) -> 
+
+                filename.should.equal 'mock/changed/file_spec.coffee'
+                ref.should.equal 'realizer'
+                should.exist realizer.MOCK_REALIZER
+                done()
+
+
+            monitor directory: __dirname , match: /_spec\.coffee$/, ref: 'realizer'
 

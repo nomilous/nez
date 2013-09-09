@@ -39,15 +39,26 @@ module.exports.createFunction = (Realizers) ->
                             
                                 return @emit event, filename, stats, ref
 
+
                             #
-                            # TODO: if autospawn is enabled and the changed file refers 
-                            #       to a realizer then pend the change event propagation 
-                            #       until the realizer is spawned (or already running)
+                            # * if autospawn is enabled and the changed file refers 
+                            #   to a realizer then pend the change event propagation 
+                            #   until the realizer is spawned and connected
+                            # 
+                            # * (or found already connected)
                             #
 
                             Realizers.get( filename: filename ).then(
 
-                                (realizer) -> console.log GOT_REALIZER: realizer
+                                (realizer) => 
+
+                                    #
+                                    # * include the realizer on emitted change event
+                                    #
+
+                                    @emit event, filename, stats, ref, realizer
+
+
                                 (error) ->    
 
                                     console.log
