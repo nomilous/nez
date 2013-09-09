@@ -1,13 +1,28 @@
 should         = require 'should'
 SpawnerFactory = require '../../lib/objective/spawner'
 Spawner        = undefined
+ChildProcess   = require 'child_process'
 
 describe 'Spawner', ->
 
     before (done) -> 
 
-        Spawner = SpawnerFactory.createClass {}, use: ->
+        mockOpts = 
+            listening: 
+                port: 22122
+
+        mockMessageBus =
+            use: ->
+
+        Spawner = SpawnerFactory.createClass mockOpts, mockMessageBus
         done()
+
+    beforeEach -> 
+        @spawn = ChildProcess.spawn
+
+    afterEach ->
+        ChildProcess.spawn = @spawn
+
 
     context 'spawn()', -> 
 
@@ -46,4 +61,21 @@ describe 'Spawner', ->
 
             )
 
-        it ''
+
+        it 'spawns the realizer runner', (done) -> 
+
+            ChildProcess.spawn = (bin, args) -> 
+                
+                bin.should.match /bin\/realize/
+                args.should.eql ['-c', '-p', 22122, '-X', 'path/to/realizer.coffee']
+                done()
+
+                pid: 12345
+                stderr: on: ->
+                stdout: on: ->
+
+            Spawner.spawn 
+                source:
+                    type: 'file'
+                    filename: 'path/to/realizer.coffee'
+

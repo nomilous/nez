@@ -1,8 +1,10 @@
-{defer} = require 'when'
-spawn   = require('child_process').spawn
-path    = require 'path'
+{defer}      = require 'when'
+ChildProcess = require 'child_process'
+path         = require 'path'
 
 module.exports.createClass = (opts, messageBus) -> 
+
+    waiting = {}
 
     messageBus.use (msg, next) -> 
 
@@ -36,19 +38,23 @@ module.exports.createClass = (opts, messageBus) ->
 
             )
 
+            #
+            # * spawn the realizer runner and pend the promise into waiting
+            #
+
             runner    = path.normalize __dirname + '/../../bin/realize'
             args      = [ '-c', '-p', opts.listening.port]
             args.push '-X' unless opts.listening.transport == 'https'
             args.push token.source.filename
 
-            process = spawn runner, args
+            child = ChildProcess.spawn runner, args
 
-            token.pid = process.pid
+            child.stderr.on 'data', (data) -> 
+            child.stdout.on 'data', (data) -> 
 
-            #
-            # TODO: handle spawn error / exit
-            # 
+            waiting[child.pid] = 
 
-            spawning.resolve token
+                promise: spawning
+                token:   token
 
         spawning.promise
