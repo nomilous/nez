@@ -87,13 +87,13 @@ module.exports = (opts, objectiveFn) ->
         objectiveMonitor  = undefined
 
 
-        realizerHub.use (msg, next) -> 
+        # realizerHub.use (msg, next) -> 
 
-            console.log IGNORED_REMOTE: 
-                event:   msg.context.title
-                origin:  msg.context.origin
+        #     console.log IGNORED_REMOTE: 
+        #         event:   msg.context.title
+        #         origin:  msg.context.origin
                 
-            next()
+        #     next()
 
 
         # 

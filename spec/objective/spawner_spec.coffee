@@ -12,7 +12,7 @@ describe 'Spawner', ->
                 port: 22122
 
         mockMessageBus =
-            use: ->
+            use: (@middleware) =>  
 
         Spawner = SpawnerFactory.createClass mockOpts, mockMessageBus
         done()
@@ -34,7 +34,7 @@ describe 'Spawner', ->
 
         it 'rejects if already spawned', (done) ->  
 
-            Spawner.spawn( pid: 12345 ).then( 
+            Spawner.spawn( localPID: 12345 ).then( 
 
                 ->
                 -> 
@@ -78,4 +78,42 @@ describe 'Spawner', ->
                 source:
                     type: 'file'
                     filename: 'path/to/realizer.coffee'
+
+
+        it 'resolves the promise on realizer::connect with connected realizer token and attached localPID', (done) -> 
+
+            ChildProcess.spawn = (bin, args) -> 
+                
+                bin.should.match /bin\/realize/
+                args.should.eql ['-c', '-p', 22122, '-X', 'path/to/realizer.coffee']
+
+                pid: 12345
+                stderr: on: ->
+                stdout: on: ->
+
+            Spawner.spawn(
+
+                uuid: 'UUID'
+                source:
+                    type: 'file'
+                    filename: 'path/to/realizer.coffee'
+            
+            ).then (token) -> 
+
+                token.localPID.should.equal 12345
+                done()
+
+            process.nextTick =>
+
+                #
+                # fake realizer connecting with pid
+                #
+
+                @middleware 
+
+                    context: title: 'realizer::connect'
+                    uuid: 'UUID'
+                    pid:  12345
+                    ->
+
 

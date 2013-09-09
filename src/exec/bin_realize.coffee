@@ -57,7 +57,11 @@ runRealizer = ({uplink, opts, realizerFn}) ->
     phraseRecursor = phrase.createRoot opts, (token) -> 
 
 
-    uplink.event 'realizer::connect'
+    uplink.event 'realizer::connect', 
+
+        uuid: opts.uuid
+        pid:  process.pid
+
 
 
 
@@ -71,8 +75,8 @@ runRealizer = ({uplink, opts, realizerFn}) ->
     #    over to the objective.
     # 
     # 
-
-    phraseRecursor 'realizer', realizerFn
+    # phraseRecursor 'realizer', realizerFn
+    #
 
 
 startNotifier = ({opts, realizerFn}) -> 

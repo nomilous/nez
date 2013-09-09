@@ -37,19 +37,10 @@ module.exports.createClass = (classOpts, messageBus) ->
 
                     api.spawner.spawn( realizer.token ).then(
 
-                        #
-                        # TEMPORARY: spawner resolves with the new / existing process
-                        # 
-                        # TODO:      return connected notifier 
-                        #            (notice as ""switch"" instead of ""hub"")
-                        # 
-
-                        (process) -> console.log SPAWNED: pid: process.pid
-
-                        (error)  -> console.log TODO: 'handle failed spawn', ERROR: error
+                        (token)  -> getting.resolve realizers[token.uuid]
+                        (error)  -> getting.reject error
 
                     )
-
 
             getting.promise
 

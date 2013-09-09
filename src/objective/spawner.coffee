@@ -10,7 +10,19 @@ module.exports.createClass = (opts, messageBus) ->
 
         if msg.context.title == 'realizer::connect'
 
-            console.log HANDLE_CONNECT: msg.content
+            #
+            # * realizer sends pid on connect, resolve the corresponding 
+            #   conneciton waiting 
+            #
+
+            if waiting[msg.pid]?
+
+                {promise, token} = waiting[msg.pid]
+                return next() unless token.uuid == msg.uuid
+
+                token.localPID = msg.pid
+                promise.resolve token
+                delete waiting[msg.pid]
 
         next()
 
@@ -22,9 +34,9 @@ module.exports.createClass = (opts, messageBus) ->
 
             return spawning.reject new Error( 
 
-                "Already running realizer at pid: #{token.pid}"
+                "Already running realizer at pid: #{token.localPID}"
 
-            ) if token.pid? 
+            ) if token.localPID? 
 
             return spawning.reject new Error( 
 
