@@ -13,10 +13,19 @@ describe 'Realizers', ->
             '/Objective Title/objective/spec/Spec title': 
 
                 type: 'tree'
-                uuid: '0'
+                uuid: '1'
                 source:
                     type:     'file'
-                    filename: 'path/to/realizer.coffee'
+                    filename: 'path/to/realizer1.coffee'
+
+            '/Objective Title/objective/spec/Another spec title': 
+
+                type: 'tree'
+                uuid: '2'
+                localPID: 54321
+                source:
+                    type:     'file'
+                    filename: 'path/to/realizer2.coffee'
 
          ).then -> 
 
@@ -48,15 +57,33 @@ describe 'Realizers', ->
 
                 token.should.eql
                     type: 'tree'
-                    uuid: '0'
+                    uuid: '1'
                     source:
                         type:     'file'
-                        filename: 'path/to/realizer.coffee'
+                        filename: 'path/to/realizer1.coffee'
 
                 done()
                 then: ->
 
-            Realizers.get filename: 'path/to/realizer.coffee'
+            Realizers.get filename: 'path/to/realizer1.coffee'
+
+
+        it 'resolves with already spawned realizers', (done) -> 
+
+            Realizers.autospawn = true
+            spawner.spawn = -> throw 'should not run'
+
+            Realizers.get( filename: 'path/to/realizer2.coffee' ).then(
+
+                (realizer) -> 
+
+                    realizer.token.uuid.should.equal '2'
+                    done()
+
+
+                (error)    -> console.log REALIZERS_SPEC_ERROR_1: error.stack
+
+            )
 
 
     context 'update(tokens)', -> 
@@ -74,18 +101,18 @@ describe 'Realizers', ->
                 '/Objective Title/objective/spec/Spec title': 
 
                     type: 'tree'
-                    uuid: '0'
+                    uuid: '1'
                     source:
                         type:     'file'
-                        filename: 'path/to/realizer.coffee'
+                        filename: 'path/to/realizer1.coffee'
 
              ).then -> 
                 
                 Realizers.get( 
 
-                    filename: 'path/to/realizer.coffee' 
+                    filename: 'path/to/realizer1.coffee' 
 
                 ).then (realizer) -> 
 
-                    realizer.token.uuid.should.equal '0'
+                    realizer.token.uuid.should.equal '1'
                     done()

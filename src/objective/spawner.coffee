@@ -20,6 +20,8 @@ module.exports.createClass = (opts, messageBus) ->
                 {promise, token} = waiting[msg.pid]
                 return next() unless token.uuid == msg.uuid
 
+                console.log CONNECT: token.uuid, PID: msg.pid
+
                 token.localPID = msg.pid
                 promise.resolve token
                 delete waiting[msg.pid]
@@ -61,8 +63,12 @@ module.exports.createClass = (opts, messageBus) ->
 
             child = ChildProcess.spawn runner, args
 
+            
+
             child.stderr.on 'data', (data) -> 
             child.stdout.on 'data', (data) -> 
+
+            console.log SPAWN: token.uuid, PID: child.pid
 
             waiting[child.pid] = 
 
