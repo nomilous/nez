@@ -4,7 +4,8 @@ path         = require 'path'
 
 module.exports.createClass = (opts, messageBus) -> 
 
-    waiting = {}
+    waiting   = {}
+    connected = {}
 
     messageBus.use (msg, next) -> 
 
@@ -21,10 +22,17 @@ module.exports.createClass = (opts, messageBus) ->
                 return next() unless token.uuid == msg.uuid
 
                 console.log CONNECT: token.uuid, PID: msg.pid
+                connected[msg.pid] = token: token
 
                 token.localPID = msg.pid
                 promise.resolve token
                 delete waiting[msg.pid]
+
+
+
+            else 
+
+                console.log "autospawn ignored realizer at pid:#{msg.pid}"
 
         next()
 
@@ -82,10 +90,24 @@ module.exports.createClass = (opts, messageBus) ->
                 #       - src/realization/realize
                 #
 
-                return unless waiting[child.pid]?
-                {promise, token} = waiting[child.pid]
-                promise.reject new Error "Realizer exited with code:#{code}, signal:#{signal}"
+                if waiting[child.pid]?
+                    
+                    {promise, token} = waiting[child.pid]
+                    promise.reject new Error "Realizer exited with code:#{code}, signal:#{signal}"
+                    return
 
+                if connected[child.pid]? 
+
+                    #
+                    # TODO: more about disconnecting realizer to be handled
+                    #       - the notice hub connection
+                    #
+
+                    {token} = connected[child.pid]
+                    delete token.localPID
+                    delete connected[child.pid]
+                    console.log DISCONNECT: token.uuid, PID: child.pid, code: code, signal: signal
+                    return
 
 
 

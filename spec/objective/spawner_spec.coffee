@@ -116,7 +116,7 @@ describe 'Spawner', ->
                     ->
 
 
-        it 'errors on spawn exit before connect', (done) -> 
+        it 'errors on child exit before connect', (done) -> 
 
             ChildProcess.spawn = (bin, args) -> 
                 
@@ -153,4 +153,38 @@ describe 'Spawner', ->
             )
 
 
-        it '"disconnects" on spawn exit after connect'
+        it '"disconnects" on child exit after connect', (done) -> 
+
+            EXITLISTENER = undefined
+
+            ChildProcess.spawn = (bin, args) ->  
+                pid: 12345
+                stderr: on: ->
+                stdout: on: ->
+                on: (childEvent, callback) -> 
+                    if childEvent == 'exit' 
+                        EXITLISTENER = callback
+
+            Spawner.spawn(
+                uuid: 'UUID'
+                source:
+                    type: 'file'
+                    filename: 'path/to/realizer.coffee'
+            ).then (token) -> 
+
+                #
+                # realizer has connected, ensure exit clears localPID from token
+                #
+
+                token.localPID.should.equal 12345
+                EXITLISTENER exitcode = 0
+                should.not.exist token.localPID
+                done()
+
+            process.nextTick =>
+                @middleware 
+                    context: title: 'realizer::connect'
+                    uuid: 'UUID'
+                    pid:  12345
+                    ->
+
