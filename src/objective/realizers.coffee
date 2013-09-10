@@ -13,6 +13,24 @@ module.exports.createClass = (classOpts, messageBus) ->
     realizers    = {}
     fromfilename = {}
 
+    messageBus.use (msg, next) -> 
+
+        return next() unless msg.context.title == 'realizer::connect'
+        return next() unless uuid = msg.uuid
+
+        #
+        # * Assign realizer messenger
+        # 
+        #   TODO: consider support for more than one instance of
+        #         a realizer, keying on uuid will not suffice in
+        #         that case
+        #
+
+        realizers[uuid] ||= {}
+        realizers[uuid].notice = try msg.context.responder
+        next()
+
+
     return api = 
 
         autospawn: false
@@ -24,10 +42,12 @@ module.exports.createClass = (classOpts, messageBus) ->
             getting = defer()
             process.nextTick => 
 
-                #
-                # TODO: autospawn
-                # TODO: no such realizer
-                #
+
+                if opts.uuid?
+
+                    return getting.resolve( realizers[opts.uuid] ) if realizers[opts.uuid]?
+                    return getting.reject new Error "Missing realizer uuid:#{opts.uuid}"
+
 
                 if opts.filename? 
 

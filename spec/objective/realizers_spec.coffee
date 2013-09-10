@@ -6,7 +6,13 @@ describe 'Realizers', ->
 
     beforeEach (done) -> 
 
-        Realizers = require( '../../lib/objective/realizers' ).createClass {}, use: ->
+        @MIDDLEWARES = []
+
+        Realizers = require( '../../lib/objective/realizers' ).createClass(
+            {} 
+            use: (middleware) => @MIDDLEWARES.push middleware
+        )
+
 
         Realizers.update( 
 
@@ -40,6 +46,23 @@ describe 'Realizers', ->
 
         Realizers.autospawn.should.equal false
         done()
+
+
+    it 'assigns realizer responce notifiers into collection', (done) -> 
+
+        @MIDDLEWARES[0]
+
+            context: 
+                title: 'realizer::connect'
+                responder: 'REALIZER_BOUND_MESSAGE_BUS'
+            uuid: 'UUID'
+            ->
+
+                Realizers.get( uuid: 'UUID' ).then (realizer) -> 
+
+                    realizer.notice.should.equal 'REALIZER_BOUND_MESSAGE_BUS'
+                    done()
+
 
     context 'get()', -> 
 
