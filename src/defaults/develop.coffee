@@ -102,12 +102,21 @@ class Develop extends Objective
         console.log deleted: filename
 
 
-    handleChangedSpecFile: (filename, realizer) -> 
+    handleChangedSpecFile: (filename, {token, notice}) -> 
 
-        console.log 
-            SPEC_CHANGE: filename
-            REALIZER: realizer
+        notice.info 'subject',
+
+            to:   'realizer'
+            from: 'objective'
+
+
+
+        # console.log 
+        #     SPEC_CHANGE: filename
+        #     REALIZER: realizer
         #console.log @jobTokens
+
+
 
 
 module.exports = Develop

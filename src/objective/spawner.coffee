@@ -80,7 +80,7 @@ module.exports.createClass = (opts, messageBus) ->
 
 
             child.stderr.on 'data', (data) -> 
-            child.stdout.on 'data', (data) -> 
+            child.stdout.on 'data', (data) -> console.log '------->', data.toString()
 
             child.on 'exit', (code, signal) -> 
 

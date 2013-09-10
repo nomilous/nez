@@ -63,6 +63,10 @@ runRealizer = ({uplink, opts, realizerFn}) ->
         pid:  process.pid
 
 
+    uplink.use (msg, next) -> 
+
+        console.log RECEIVED: msg
+        next()
 
 
     #
