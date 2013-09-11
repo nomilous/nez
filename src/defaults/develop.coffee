@@ -58,6 +58,13 @@ class Develop extends Objective
 
                 delete phrase.control.title
 
+                #
+                # does not load the objective's clone of the linked
+                # realizer PhraseTrees
+                #
+
+                opts.loadTree = false
+
                 callback null, phrase
 
             (error) -> callback error
