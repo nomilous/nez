@@ -237,7 +237,7 @@ describe 'objective', ->
 
 
 
-        it 'initializes the phrase tree with the objectiveFn', (done) -> 
+        xit 'initializes the phrase tree with the objectiveFn', (done) -> 
 
             Phrase.createRoot = -> 
 
@@ -260,64 +260,4 @@ describe 'objective', ->
                 (requirement) -> 
 
                     'the Objective phrase tree'
-
-    
-
-    # context 'realizers collection', -> 
-
-    #     it "is created with the hub messenger and the objective phrase tree's token and bus", (done) -> 
-
-    #         Realizers.createCollection = (opts, realizerHub, objectiveToken, objectiveNotice) ->
-
-    #             opts.should.eql 
-    #                 title:       'Title'
-    #                 uuid:        '00000000-0700-0000-0000-fffffffffff0'
-    #                 description: 'description'
-
-    #             realizerHub.should.equal        'MOCK_REALIZER_HUB'
-    #             objectiveToken.should.equal     'MOCK TOKEN'
-    #             objectiveNotice.should.equal    'MOCK NOTIFIER'
-
-    #             done()
-
-
-    #         Notice.listen = (hubname, opts, linkFn) ->
-    #             linkFn null, 'MOCK_REALIZER_HUB'
-
-    #         Phrase.createRoot = (opts, linkFn) -> 
-    #             linkFn 'MOCK TOKEN', 'MOCK NOTIFIER'
-    #             ->
-
-            
-    #         Objective
-
-    #             title:       'Title'
-    #             uuid:        '00000000-0700-0000-0000-fffffffffff0'
-    #             description: 'description'
-
-
-
-
-# should    = require 'should'
-# objective = require '../../lib/objective/objective'
-# notice    = require 'notice'
-# eo        = require 'eo'
-
-# notice.listen = (hubName, opts, cb) -> cb()
-
-# describe 'objective', -> 
-
-    # it 'starts a notice hub listening for realizers', (done) -> 
-
-        # notice.listen = (hubName, opts, cb) -> done()
-        # objective 'title', description: 'd', ->
-
-
-    # it 'attaches tools onto the context', (done) -> 
-
-        # notice.listen = (hubName, opts, cb) -> 
-            # opts.tools.should.equal require '../../lib/tools'
-            # done()
-
-        # objective 'title', description: 'd', -> 
 
