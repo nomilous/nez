@@ -76,6 +76,7 @@ module.exports.createFunction = (Realizers) ->
 
     
     monitor.dirs ||= new DirectoryMonitor
+    monitor.realizers = Realizers
 
     return monitor
 

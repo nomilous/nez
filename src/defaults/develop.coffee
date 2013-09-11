@@ -21,8 +21,19 @@ class Develop extends Objective
             @handleCreatedSourceFile filename 
 
         monitor.dirs.on 'change', (filename, stats, ref, realizer) => 
-            if ref == 'src' then @handleChangedSourceFile filename
-            else @handleChangedSpecFile filename, realizer
+
+            if ref == 'src' 
+
+                #
+                # TODO: locate the corresponing realizer (spec)
+                # 
+
+                realizer = token: {}, notice: {}
+
+                #@handleChangedSourceFile filename, realizer
+                return
+
+            @handleChangedSpecFile filename, realizer
 
         monitor.dirs.on 'delete', (filename, stats, ref) => 
             return unless ref == 'src'
@@ -74,7 +85,11 @@ class Develop extends Objective
 
     configure: (opts, done) ->  
 
-        opts.boundry = ['spec', 'test'] unless opts.boundry?
+        if opts.relativePath? and opts.relativePath != '' 
+            console.log 'ERROR: Develop objective must be run in local directory.'
+            process.exit 1
+
+        opts.boundry = ['spec'] unless opts.boundry?
 
         #
         # it is assumed the develop objective will be run in the repo directory
@@ -99,22 +114,33 @@ class Develop extends Objective
         console.log created: filename
 
 
+    handleDeletedSourceFile: (filename) -> 
+
+        console.log deleted: filename
+
+
     handleChangedSourceFile: (filename) -> 
 
         console.log changed: filename
 
 
-    handleDeletedSourceFile: (filename) -> 
 
-        console.log deleted: filename
+    handleChangedSourceFile: (filename, {token, notice}) -> 
+
+        notice.info 'subject',
+
+            to:      'realizer'
+            from:    'objective'
+            changed: filename
 
 
     handleChangedSpecFile: (filename, {token, notice}) -> 
 
         notice.info 'subject',
 
-            to:   'realizer'
-            from: 'objective'
+            to:      'realizer'
+            from:    'objective'
+            changed: filename
 
 
 

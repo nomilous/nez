@@ -138,7 +138,7 @@ describe 'objective', ->
                     # default objective sets boundry signature match
                     #
 
-                    boundry:     ['spec', 'test']
+                    boundry:     ['spec']
 
                     #
                     # default objective sets src directory monitor opts

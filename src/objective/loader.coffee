@@ -1,11 +1,15 @@
-Notice           = require 'notice'
-Phrase           = require 'phrase'
-Objective        = require './objective'
-RealizersFactory = require './realizers'
-MonitorFactory   = require './monitor'
+Notice              = require 'notice'
+Phrase              = require 'phrase'
+Objective           = require './objective'
+RealizersFactory    = require './realizers'
+MonitorFactory      = require './monitor'
+tools               = require '../tools'
+{dirname, relative} = require 'path'
 
 module.exports = (opts, objectiveFn) ->
     
+    opts.relativePath = relative process.cwd(), dirname( tools.caller.filename() )
+
     missing = for required in ['title', 'uuid', 'description']
         continue if opts[required]?
         required
