@@ -1,5 +1,10 @@
 #!/usr/bin/env coffee
 
+#
+# ./objective  # this file
+# touch spec/the_periscope_spec.coffee 
+# 
+
 require('../../lib/nez').objective
 
     title: 'Develop Example'
@@ -10,6 +15,33 @@ require('../../lib/nez').objective
 
     """
 
+    #
+    # a "realizer" is spawned for each spec file
+    # ------------------------------------------
+    #
+    # * it attaches to this "objective" per the following
+    #   socket.io listen specification
+    # 
+
     listen:
         secret: '∫'
+        # address: 'localhost'
+        # port:     10001
+        # cert:     './cert/develop-cert.pem'
+        # key:      './cert/develop-key.pem'
+
+
+    #
+    # autospec: true # (default)
+    # --------------------------
+    #
+    # * automatically generates a spec stub upon saving
+    #   a src file
+    # 
+    #   eg  `touch src/module/path/file_name.coffee`
+    # 
+    #        will result in spec stub creation:
+    #
+    #       `spec/module/path/file_name_spec.coffee`
+    # 
 
