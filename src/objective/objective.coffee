@@ -7,7 +7,7 @@ module.exports = class Objective
     # * Objective can ammend options ahead of the PhraseTree recursion
     #
 
-    configure: (opts, done) -> done() 
+    configure: (@opts, done) -> done() 
 
 
     #
@@ -31,6 +31,6 @@ module.exports = class Objective
         console.log  'WARNING Objective.onBoundry() undefined override.'
 
 
-    startMonitor: (opts, monitor, jobTokens, jobEmitter) -> 
+    startMonitor: (monitor, jobTokens, jobEmitter) -> 
 
         console.log  'WARNING Objective.startMonitor() undefined override.'

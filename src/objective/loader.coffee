@@ -170,7 +170,7 @@ module.exports = (opts, objectiveFn) ->
 
                     objectiveToken.on 'ready', ( {tokens} ) -> 
 
-                        objective.startMonitor opts, objectiveMonitor, tokens, (token, opts) -> 
+                        objective.startMonitor objectiveMonitor, tokens, (token, opts) -> 
 
                             objectiveToken.run token, opts
 

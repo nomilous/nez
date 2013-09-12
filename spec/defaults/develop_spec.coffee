@@ -12,7 +12,7 @@ describe 'Develop', ->
         @dev.should.be.an.instanceof Objective
         done()
 
-    it 'allows async config of phrase opts', (done) -> 
+    it 'allows async config of default phrase opts', (done) -> 
 
         @dev.configure ( opts = {} ), -> 
 
@@ -22,13 +22,30 @@ describe 'Develop', ->
                     directory: 'src'
                     match:   /\.coffee$/
                 autospawn: true
+                autospec: true
 
             done()
+
+    it 'defaults objective phraseFn to link to spec directory', (done) ->
+
+        @dev.defaultObjective link: (opt) -> 
+
+            opt.should.eql directory: 'spec'
+            done() 
 
 
     it 'handles phrase boundry assembly', (done) -> 
 
         @dev.onBoundryAssemble {}, -> done()
+
+
+    context 'toSpecFilename()', -> 
+
+        it 'converts src filename to spec filename', (done) -> 
+
+            specFile = @dev.toSpecFilename 'src/path/file_name.coffee'
+            specFile.should.equal 'spec/path/file_name_spec.coffee'
+            done()
 
 
     context 'onBoundryAssemble()', -> 
@@ -62,3 +79,5 @@ describe 'Develop', ->
 
                 phrase.fn().should.equal 'ok,good.'
                 done()
+
+

@@ -12,7 +12,9 @@ describe 'Objective', ->
 
         it 'does nothing', (done) -> 
 
-            nez.Objective.prototype.startMonitor = (opts, monitor, jobTokens, jobEmitter) -> 
+            nez.Objective.prototype.startMonitor = (monitor, jobTokens, jobEmitter) -> 
+
+                console.log jobTokens
 
                 jobEmitter( jobTokens['/Untitled/objective'] ).then (result) ->
 
@@ -30,13 +32,13 @@ describe 'Objective', ->
 
 
 
-    context 'startMonitor( opts, tokens, emitter )', -> 
+    context 'startMonitor( monitor, tokens, emitter )', -> 
 
         context 'objectiveTree', -> 
 
             before (done) -> 
 
-                nez.Objective.prototype.startMonitor = (opts, @monitor, @jobTokens, @jobEmitter) => done()
+                nez.Objective.prototype.startMonitor = (@monitor, @jobTokens, @jobEmitter) => done()
 
                 nez.objective
 
@@ -114,27 +116,4 @@ describe 'Objective', ->
 
                     done()
 
-
-            it 'gets notified of failing steps', (done) -> 
-
-                @jobEmitter( @jobTokens['/Failsafe Loop/objective/telemetry/BOOSTER'] ).then( 
-
-                    -> 
-                    -> 
-                    (notify) => 
-
-                        # console.log notify
-
-                        if notify.state == 'run::step:failed' then @ERROR_IS = notify.error
-
-                        else if notify.state == 'run::complete'
-
-                            @ERROR_IS.should.match /Cannot call method 'toUpperCase' of undefined/
-
-                            notify.progress.should.eql steps: 3, done: 0, failed: 1, skipped: 2
-                            done()
-
-                )
-
-           
 
