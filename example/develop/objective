@@ -32,8 +32,8 @@ require('../../lib/nez').objective
 
 
     #
-    # autospec: true # (default)
-    # --------------------------
+    # autospec: true
+    # --------------
     #
     # * automatically generates a spec stub upon saving
     #   a src file
@@ -43,5 +43,18 @@ require('../../lib/nez').objective
     #        will result in spec stub creation:
     #
     #       `spec/module/path/file_name_spec.coffee`
-    # 
 
+    
+    #
+    # src: {...} and autocompile
+    # --------------------------
+    # 
+    # * defaults displayed here
+    # 
+    # 
+    # autocompile: true
+    # src: 
+    #    directory: 'src'
+    #    match: /\.coffee$/
+    #    out: 'lib'
+    # 

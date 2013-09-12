@@ -12,6 +12,7 @@ fs          = require 'fs'
 mkdirp      = require 'mkdirp'
 uuid        = require 'node-uuid'
 inflection  = require 'inflection'
+coffee      = require 'coffee-script'
 {extname, dirname, basename} = require 'path'
 
 class Develop extends Objective
@@ -27,6 +28,7 @@ class Develop extends Objective
         @opts.src           ||= {}
         @opts.src.directory ||= 'src'
         @opts.src.match     ||= /\.coffee$/
+        @opts.src.out       ||= 'lib'
         @opts.autospawn     ||= true
         @opts.autocompile   ||= true
         @opts.autospec      ||= true
@@ -125,6 +127,11 @@ class Develop extends Objective
         specFile = specFile.replace extName, "_#{specDir}" + extName
 
 
+    handleDeletedSourceFile: (filename) -> 
+
+        console.log deleted: filename
+
+
     handleCreatedSourceFile: (filename) -> 
 
         return unless @opts.autospec
@@ -146,7 +153,6 @@ class Develop extends Objective
         className  = inflection.classify class_name
         uniqueName = uuid.v1()
 
-        console.log CREATE: specFile
         fs.writeFileSync specFile, 
 
             """
@@ -156,32 +162,40 @@ class Develop extends Objective
 
             """ 
 
-    handleDeletedSourceFile: (filename) -> 
-
-        console.log deleted: filename
-
-
-    handleChangedSourceFile: (filename) -> 
-
-        console.log changed: filename
-
 
     handleChangedSourceFile: (filename, {token, notice}) -> 
 
-        notice.info 'subject',
+        return unless @opts.autocompile
 
-            to:      'realizer'
-            from:    'objective'
-            changed: filename
+        srcDir  = @opts.src.directory
+        outFile = filename.replace( (new RegExp "^#{srcDir}") , @opts.src.out).replace extname(filename), '.js'
+        outDir  = dirname outFile
 
+        try fs.lstatSync outDir
+        catch error
+            if error.errno == 34
+                mkdirp.sync outDir
+
+        #
+        # TODO: consider tea support (perhaps also fruit juice)
+        #
+
+        try 
+            source   = fs.readFileSync( filename ).toString()
+            compiled = coffee.compile source,
+                
+                bare: true
+                header: true
+                literate: filename.match(/litcoffee$/)?
+
+            fs.writeFileSync outFile, compiled
+
+        catch error
+            
+            console.log CC: error
+        
 
     handleChangedSpecFile: (filename, {token, notice}) -> 
-
-        notice.info 'subject',
-
-            to:      'realizer'
-            from:    'objective'
-            changed: filename
 
 
 
