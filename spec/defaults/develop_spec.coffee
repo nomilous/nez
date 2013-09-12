@@ -120,7 +120,7 @@ describe 'Develop', ->
             HANDLER 'filename', {}, 'src'
 
 
-        it 'calls handleDeletedSourceFile() on created source file', (done) -> 
+        it 'calls handleDeletedSourceFile() on deleted source file', (done) -> 
 
             HANDLER = undefined
             monitor = 
