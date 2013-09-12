@@ -6,8 +6,16 @@ fs        = require 'fs'
 describe 'Develop', -> 
 
     beforeEach (done) -> 
+
+        @lstat = fs.lstatSync
+
         @dev = new Develop
         @dev.configure {}, -> done()
+
+    afterEach (done) -> 
+
+        fs.lstatSync = @lstat
+        done()
 
     it 'is an Objective', (done) -> 
 
@@ -181,8 +189,18 @@ describe 'Develop', ->
 
     context 'handleCreatedSourceFile()', -> 
 
-        it ''
-            
+        context 'with autospec enabled', -> 
+
+            it 'tests for the presence of the spec file', (done) -> 
+
+                fs.lstatSync = (file) -> 
+
+                    file.should.equal 'spec/path/file_name_spec.coffee'
+                    done()
+                    throw 'go no further'
+
+                try @dev.handleCreatedSourceFile 'src/path/file_name.coffee'
+
 
     context 'toSpecFilename()', -> 
 

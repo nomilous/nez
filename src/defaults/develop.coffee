@@ -7,10 +7,11 @@
 
 Objective   = require '../objective/objective'
 Realize     = require '../realization/realize'
+tools       = require '../tools'
 {extname}   = require 'path'
+fs          = require 'fs'
 
 class Develop extends Objective
-
 
     configure: (@opts, done) ->  
 
@@ -123,7 +124,12 @@ class Develop extends Objective
 
     handleCreatedSourceFile: (filename) -> 
 
-        console.log created: filename
+        return unless @opts.autospec
+
+        specFile = @toSpecFilename filename
+        fs.lstatSync specFile
+
+
 
 
     handleDeletedSourceFile: (filename) -> 
