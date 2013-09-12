@@ -21,7 +21,10 @@
     "notice": "0.0.9",
     "commander": "~2.0.0",
     "when": "~2.3.0",
-    "hound": "~1.0.4"
+    "hound": "~1.0.4",
+    "node-uuid": "~1.4.1",
+    "mkdirp": "~0.3.5",
+    "inflection": "~1.2.6"
   },
   "devDependencies": {
     "hound": "~1.0.4",

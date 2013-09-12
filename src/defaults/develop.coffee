@@ -8,8 +8,11 @@
 Objective   = require '../objective/objective'
 Realize     = require '../realization/realize'
 tools       = require '../tools'
-{extname}   = require 'path'
 fs          = require 'fs'
+mkdirp      = require 'mkdirp'
+uuid        = require 'node-uuid'
+inflection  = require 'inflection'
+{extname, dirname, basename} = require 'path'
 
 class Develop extends Objective
 
@@ -127,10 +130,31 @@ class Develop extends Objective
         return unless @opts.autospec
 
         specFile = @toSpecFilename filename
-        fs.lstatSync specFile
+        specDir  = dirname specFile
 
+        try return fs.lstatSync specFile
+        catch error
+            return unless error.errno == 34
 
+        try fs.lstatSync specDir
+        catch error 
+            if error.errno == 34
+                mkdirp.sync specDir
 
+        class_name = basename(filename).replace extname(filename), ''
+        humanName  = inflection.titleize class_name
+        className  = inflection.classify class_name
+        uniqueName = uuid.v1()
+
+        console.log CREATE: specFile
+        fs.writeFileSync specFile, 
+
+            """
+                title: '#{humanName}'
+                uuid:  '#{uniqueName}'
+                realize: (context, #{className}, should) -> 
+
+            """ 
 
     handleDeletedSourceFile: (filename) -> 
 

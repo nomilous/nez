@@ -1,7 +1,7 @@
 title: 'submarine test'
 uuid:  '00000000-0000-0000-0000-000000000002'
 
-realize: (it, ThePeriscope, should ) -> 
+realize: (it, ThePeriscope, should) -> 
 
     require 'should'
 

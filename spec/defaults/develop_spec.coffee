@@ -1,6 +1,8 @@
 should    = require 'should'
 Develop   = require '../../lib/defaults/develop'
-Objective = require '../../lib/objective/objective' 
+Objective = require '../../lib/objective/objective'
+mkdirp    = require 'mkdirp'
+uuid      = require 'node-uuid'
 fs        = require 'fs'
 
 describe 'Develop', -> 
@@ -8,6 +10,9 @@ describe 'Develop', ->
     beforeEach (done) -> 
 
         @lstat = fs.lstatSync
+        mkdirp.sync = (dir) ->      # no, don't
+        fs.writeFileSync = (file) ->  
+        uuid.v1 = -> '00000000-0000-0000-0000-000000000000'
 
         @dev = new Develop
         @dev.configure {}, -> done()
@@ -15,6 +20,7 @@ describe 'Develop', ->
     afterEach (done) -> 
 
         fs.lstatSync = @lstat
+        #fw.writeFileSync = @writeFile
         done()
 
     it 'is an Objective', (done) -> 
@@ -187,19 +193,67 @@ describe 'Develop', ->
             try HANDLER 'filename', {}, 'src', {}
 
 
+
     context 'handleCreatedSourceFile()', -> 
+
+        context 'with autospec disabled', -> 
+
+            it 'does nothing', (done) -> 
+
+                fs.writeFileSync = -> 
+
+                    throw 'should not run'
+
+                @dev.opts.autospec = false
+                @dev.handleCreatedSourceFile 'src/path/file_name.coffee'
+                done()
+
 
         context 'with autospec enabled', -> 
 
             it 'tests for the presence of the spec file', (done) -> 
 
                 fs.lstatSync = (file) -> 
-
                     file.should.equal 'spec/path/file_name_spec.coffee'
                     done()
                     throw 'go no further'
 
                 try @dev.handleCreatedSourceFile 'src/path/file_name.coffee'
+
+            it 'tests for the presence of the spec dir if no file', (done) -> 
+
+                fs.lstatSync = (dir) -> 
+                    throw errno: 34 if dir.match /coffee$/
+                    dir.should.equal 'spec/path'
+                    done()
+                    throw 'go no further'
+
+                try @dev.handleCreatedSourceFile 'src/path/file_name.coffee'
+
+
+            it 'makes the spec dir if not present', (done) -> 
+
+                mkdirp.sync = (dir) -> 
+                    dir.should.equal 'spec/path'
+                    done()
+
+                @dev.handleCreatedSourceFile 'src/path/file_name.coffee'
+
+
+            it 'makes the spec file', (done) -> 
+
+                fs.writeFileSync = (file, data) -> 
+
+                    file.should.equal 'spec/path/landing_gear_spec.coffee'
+                    data.should.equal """
+                        title: 'Landing Gear'
+                        uuid:  '00000000-0000-0000-0000-000000000000'
+                        realize: (context, LandingGear, should) -> 
+
+                    """
+                    done()
+
+                @dev.handleCreatedSourceFile 'src/path/landing_gear.coffee'
 
 
     context 'toSpecFilename()', -> 
