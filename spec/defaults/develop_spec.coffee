@@ -5,7 +5,9 @@ fs        = require 'fs'
 
 describe 'Develop', -> 
 
-    before -> @dev = new Develop
+    beforeEach (done) -> 
+        @dev = new Develop
+        @dev.configure {}, -> done()
 
     it 'is an Objective', (done) -> 
 
@@ -21,10 +23,20 @@ describe 'Develop', ->
                 src: 
                     directory: 'src'
                     match:   /\.coffee$/
-                autospawn: true
-                autospec: true
+                autospawn:   true
+                autocompile: true
+                autospec:    true
 
             done()
+
+    it 'promotes opts to instance variable', (done) -> 
+
+        opts = {} 
+        @dev.configure opts, => 
+
+            @dev.opts.should.equal opts
+            done()
+
 
     it 'defaults objective phraseFn to link to spec directory', (done) ->
 
@@ -37,15 +49,6 @@ describe 'Develop', ->
     it 'handles phrase boundry assembly', (done) -> 
 
         @dev.onBoundryAssemble {}, -> done()
-
-
-    context 'toSpecFilename()', -> 
-
-        it 'converts src filename to spec filename', (done) -> 
-
-            specFile = @dev.toSpecFilename 'src/path/file_name.coffee'
-            specFile.should.equal 'spec/path/file_name_spec.coffee'
-            done()
 
 
     context 'onBoundryAssemble()', -> 
@@ -81,3 +84,30 @@ describe 'Develop', ->
                 done()
 
 
+    context 'startMonitor(monitor, jobTokens, jobEmitter)', -> 
+
+        it 'adds src to monitored directories', (done) -> 
+
+            monitor = 
+                dirs: 
+                    add: (dir, match, ref) -> 
+                        dir.should.equal 'app'
+                        match.should.eql /\.js$/
+                        ref.should.eql 'src'
+                        done()
+                        throw 'go no further' 
+
+            @dev.opts.src.directory = 'app'
+            @dev.opts.src.match     = /\.js$/
+            @dev.opts.autocompile   = false
+            try @dev.startMonitor monitor
+
+
+
+    context 'toSpecFilename()', -> 
+
+        it 'converts src filename to spec filename', (done) -> 
+
+            specFile = @dev.toSpecFilename 'src/path/file_name.coffee'
+            specFile.should.equal 'spec/path/file_name_spec.coffee'
+            done()
