@@ -5,8 +5,9 @@
 # Runs the objective loop as a development environment.
 # 
 
-Objective = require '../objective/objective'
-Realize   = require '../realization/realize'
+Objective   = require '../objective/objective'
+Realize     = require '../realization/realize'
+{extname}   = require 'path'
 
 class Develop extends Objective
 
@@ -20,20 +21,26 @@ class Develop extends Objective
             return unless ref == 'src'
             @handleCreatedSourceFile filename 
 
+
         monitor.dirs.on 'change', (filename, stats, ref, realizer) => 
 
             if ref == 'src' 
 
-                #
-                # TODO: locate the corresponing realizer (spec)
-                # 
+                srcDir   = opts.src.directory
+                specDir  = opts.boundry[0]
+                specFile = filename.replace (new RegExp "^#{srcDir}") , specDir
+                extName  = extname specFile
+                specFile = specFile.replace extName, "_#{specDir}" + extName
 
-                realizer = token: {}, notice: {}
+                return monitor.realizers.get( filename: specFile ).then( 
 
-                #@handleChangedSourceFile filename, realizer
-                return
+                    (realizer) => @handleChangedSourceFile filename, realizer
+                    (error) => console.log ERROR_GETTING_REALIZER: error
 
-            @handleChangedSpecFile filename, realizer
+                )
+
+            else @handleChangedSpecFile filename, realizer 
+
 
         monitor.dirs.on 'delete', (filename, stats, ref) => 
             return unless ref == 'src'
@@ -98,7 +105,6 @@ class Develop extends Objective
         opts.src         ||= {}
         opts.src.directory = 'src' unless opts.src.directory?
         opts.src.match     = /\.coffee$/ unless opts.src.match?
-
         opts.autospawn     = true
 
         done()
@@ -124,7 +130,6 @@ class Develop extends Objective
         console.log changed: filename
 
 
-
     handleChangedSourceFile: (filename, {token, notice}) -> 
 
         notice.info 'subject',
@@ -141,14 +146,6 @@ class Develop extends Objective
             to:      'realizer'
             from:    'objective'
             changed: filename
-
-
-
-        # console.log 
-        #     SPEC_CHANGE: filename
-        #     REALIZER: realizer
-        #console.log @jobTokens
-
 
 
 
