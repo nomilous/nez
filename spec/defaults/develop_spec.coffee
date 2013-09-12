@@ -103,6 +103,86 @@ describe 'Develop', ->
             try @dev.startMonitor monitor
 
 
+        it 'calls handleCreatedSourceFile() on created source file', (done) -> 
+
+            HANDLER = undefined
+            monitor = 
+                dirs: 
+                    add: (dir, match, ref) -> 
+                    on: (event, listener) -> 
+                        if event == 'create'
+                            HANDLER = listener
+
+            @dev.startMonitor monitor
+
+            @dev.handleCreatedSourceFile = -> done()
+
+            HANDLER 'filename', {}, 'src'
+
+
+        it 'calls handleDeletedSourceFile() on created source file', (done) -> 
+
+            HANDLER = undefined
+            monitor = 
+                dirs: 
+                    add: (dir, match, ref) -> 
+                    on: (event, listener) -> 
+                        if event == 'delete'
+                            HANDLER = listener
+
+            @dev.startMonitor monitor
+
+            @dev.handleDeletedSourceFile = -> done()
+
+            HANDLER 'filename', {}, 'src'
+
+
+        it 'calls handleChangedSpecFile() on changed realizer', (done) ->
+
+            HANDLER = undefined
+            monitor = 
+                dirs: 
+                    add: (dir, match, ref) -> 
+                    on: (event, listener) -> 
+                        if event == 'change'
+                            HANDLER = listener
+
+            @dev.startMonitor monitor
+
+            @dev.handleChangedSpecFile = ->                
+                done()
+                throw 'go no futher'
+
+            try HANDLER 'filename', {}, 'realizer', {}
+
+      
+       it 'calls handleChangedSourceFile() and loads the realizer on changes source file', (done) ->
+
+            HANDLER = undefined
+            monitor = 
+                dirs: 
+                    add: (dir, match, ref) -> 
+                    on: (event, listener) -> 
+                        if event == 'change'
+                            HANDLER = listener
+                realizers:
+                    get: -> 
+                        then: (resolve) -> resolve 'MOCK_REALIZER'
+
+            @dev.startMonitor monitor
+
+            @dev.handleChangedSourceFile = (file, realizer) -> 
+                realizer.should.equal 'MOCK_REALIZER'    
+                done()
+                throw 'go no futher'
+
+            try HANDLER 'filename', {}, 'src', {}
+
+
+    context 'handleCreatedSourceFile()', -> 
+
+        it ''
+            
 
     context 'toSpecFilename()', -> 
 

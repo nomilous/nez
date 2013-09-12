@@ -95,7 +95,7 @@ class Develop extends Objective
 
             if ref == 'src' 
 
-                #specFile = @toSpecFilename filename
+                specFile = @toSpecFilename filename
 
                 return monitor.realizers.get( filename: specFile ).then( 
 
