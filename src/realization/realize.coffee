@@ -18,6 +18,7 @@ module.exports.loadRealizer = (params) ->
     connect = params.connect
     https = params.https
     port = params.port
+    secret = process.env.SECRET
     load = defer()
 
     process.nextTick -> 
@@ -63,7 +64,7 @@ module.exports.loadRealizer = (params) ->
         if connect?
             realizer.connect = 
                 transport: if https then 'https' else 'http'
-                secret: '∫'
+                secret: secret
                 port: port
 
         load.resolve opts: realizer, realizerFn: realzerFn

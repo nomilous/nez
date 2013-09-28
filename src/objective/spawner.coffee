@@ -69,6 +69,8 @@ module.exports.createClass = (opts, messageBus) ->
             args.push '-X' unless opts.listening.transport == 'https'
             args.push token.source.filename
 
+            try process.env['SECRET'] = opts.listen.secret
+
             child = ChildProcess.spawn runner, args
 
             console.log SPAWN: token.uuid, PID: child.pid

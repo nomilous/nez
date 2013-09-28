@@ -144,9 +144,9 @@ marshalArgs = (program) ->
         marshal.resolve 
 
             filename: program.args[0]
-            connect: program.connect
-            https: program.https
-            port: program.port
+            connect:  program.connect
+            https:    program.https
+            port:     program.port
 
     marshal.promise
 
