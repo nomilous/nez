@@ -52,6 +52,8 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
 
     uplink.use (msg, next) -> 
 
+        ### realizer middleware 1 ###
+
         switch msg.direction
 
             when 'out' 

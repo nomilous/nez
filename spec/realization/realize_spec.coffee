@@ -50,7 +50,7 @@ describe 'realize', ->
                     Realize.runRealizer
                         uplink:     
                             use: (middleware) ->  
-                                if middleware.toString().match /reconnect/
+                                if middleware.toString().match /realizer middleware 1/
                                     middleware message, ->
                         opts:       
                             title: 'TITLE'
@@ -81,7 +81,7 @@ describe 'realize', ->
 
                     uplink:     
                         use: (middleware) ->  
-                            if middleware.toString().match /reconnect/
+                            if middleware.toString().match /realizer middleware 1/
                                 middleware message, ->
                     opts:       
                         title: 'TITLE'
@@ -111,7 +111,7 @@ describe 'realize', ->
 
                     uplink:     
                         use: (middleware) ->  
-                            if middleware.toString().match /reconnect/
+                            if middleware.toString().match /realizer middleware 1/
                                 middleware message, ->
 
                     opts:       

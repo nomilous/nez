@@ -16,7 +16,6 @@ program.option '-X, --no-https         ', 'Connect insecurely', false
 
 program.parse process.argv
 
-
 pipeline( [
 
     (        ) -> marshalArgs program
