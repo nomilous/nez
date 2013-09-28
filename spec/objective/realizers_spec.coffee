@@ -80,6 +80,21 @@ describe 'Realizers', ->
                         realizer.connected.should.equal true
                         done()
 
+        it 'emits event', (done) -> 
+
+            Realizers.on 'connect', (realizer) -> 
+
+                realizer.connected.should.equal true
+                done()
+
+            @MIDDLEWARES[0]
+
+                event: 'connect'
+                context: 
+                    responder: use: ->
+                uuid: 'UUID'
+                ->
+
 
     context 'on reconnect', -> 
 
@@ -99,6 +114,60 @@ describe 'Realizers', ->
                         realizer.connected.should.equal true
                         done()
 
+        it 'emits event', (done) -> 
+
+            Realizers.on 'reconnect', (realizer) -> 
+
+                realizer.connected.should.equal true
+                done()
+
+            @MIDDLEWARES[0]
+
+                event: 'reconnect'
+                context: 
+                    responder: use: ->
+                uuid: 'UUID'
+                ->
+
+
+
+    context 'on disconnect', -> 
+
+        it 'set the realizer connected state', (done) -> 
+
+            @MIDDLEWARES[0]
+
+                    event: 'connect'
+                    context: 
+                        responder: use: (middleware) -> 
+
+                            middleware event: 'disconnect', ->
+
+                    uuid: 'UUID'
+                    ->
+
+                        Realizers.get( uuid: 'UUID' ).then (realizer) -> 
+
+                            realizer.connected.should.equal false
+                            done()
+
+        it 'emits event', (done) -> 
+
+            Realizers.on 'disconnect', (realizer) -> 
+
+                realizer.connected.should.equal false
+                done()
+
+            @MIDDLEWARES[0]
+
+                    event: 'connect'
+                    context: 
+                        responder: use: (middleware) -> 
+
+                            middleware event: 'disconnect', ->
+
+                    uuid: 'UUID'
+                    ->
 
     context 'get()', -> 
 

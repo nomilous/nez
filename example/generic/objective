@@ -30,25 +30,37 @@ objective
 
         startScheduler: (monitor, @jobTokens, @jobEmitter) ->
 
-            setInterval (=>
+            monitor.realizers.on 'connect', (realizer) -> 
 
-                for path of @jobTokens
+                console.log CONNECTED: realizer
+
+            monitor.realizers.on 'reconnect', (realizer) -> 
+
+                console.log RECONNECTED: realizer
+
+            monitor.realizers.on 'disconnect', (realizer) -> 
+
+                console.log DISCONNECTED: realizer
+
+            # setInterval (=>
+
+            #     for path of @jobTokens
                     
-                    do( token = @jobTokens[path] ) ->
+            #         do( token = @jobTokens[path] ) ->
 
-                        monitor.realizers.get( uuid: token.uuid ).then(
+            #             monitor.realizers.get( uuid: token.uuid ).then(
 
-                            (realizer) -> 
+            #                 (realizer) -> 
 
-                                console.log token.uuid, connected: realizer.connected
+            #                     console.log token.uuid, connected: realizer.connected
 
-                            (error) -> 
+            #                 (error) -> 
 
-                                console.log ERROR: error
+            #                     console.log ERROR: error
 
-                        ) if token.type == 'tree'
+            #             ) if token.type == 'tree'
 
-            ), 2000
+            # ), 2000
 
 
     (process) -> 

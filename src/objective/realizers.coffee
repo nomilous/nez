@@ -6,15 +6,14 @@
 #
 
 {defer}         = require 'when'
-SpawnerFactory = require './spawner'
+{EventEmitter}  = require 'events'
+SpawnerFactory  = require './spawner'
 
 module.exports.createClass = (classOpts, messageBus) -> 
 
     realizers    = {}
     fromfilename = {}
-
-
-    console.log TODO: 'realizer connected/not connected'
+    emitter      = new EventEmitter
 
     messageBus.use (msg, next) -> 
 
@@ -24,20 +23,32 @@ module.exports.createClass = (classOpts, messageBus) ->
 
             when 'connect', 'reconnect'
 
-                #
-                # * Assign realizer messenger
-                # 
-                #   TODO: consider support for more than one instance of
-                #         a realizer, keying on uuid will not suffice in
-                #         that case
-                #
-
                 realizers[uuid] ||= {}
+
+                if realizers[uuid].connected
+
+                    #
+                    # * Assign realizer messenger
+                    # 
+                    #   TODO: consider support for more than one instance of
+                    #         a realizer, keying on uuid will not suffice in
+                    #         that case
+                    #
+
+                    responder = msg.context.responder
+                    return responder.event.bad 'realizer rejected',
+                        reason: "realizer:#{uuid} already running @ #{realizers[uuid].pid}"
+
+
                 realizers[uuid].notice = try msg.context.responder
                 realizers[uuid].connected = true
+                realizers[uuid].pid = msg.pid
+                emitter.emit msg.event, realizers[uuid]
+
                 realizers[uuid].notice.use (msg, next) -> 
                     if msg.event == 'disconnect'    
                         realizers[uuid].connected = false
+                        emitter.emit msg.event, realizers[uuid]
                     next()
 
                 next()
@@ -45,13 +56,13 @@ module.exports.createClass = (classOpts, messageBus) ->
             else next()
 
 
-    return api = 
+    api = emitter
 
-        autospawn: false
+    api.autospawn = false
 
-        spawner: SpawnerFactory.createClass classOpts, messageBus
+    api.spawner = SpawnerFactory.createClass classOpts, messageBus
 
-        get: (opts = {}) -> 
+    api.get = (opts = {}) -> 
 
             getting = defer()
             process.nextTick => 
@@ -90,7 +101,7 @@ module.exports.createClass = (classOpts, messageBus) ->
 
             getting.promise
 
-        update: (tokens) -> 
+    api.update = (tokens) -> 
 
             updating = defer()
             process.nextTick => 
@@ -118,3 +129,5 @@ module.exports.createClass = (classOpts, messageBus) ->
 
             updating.promise
 
+
+    return api
