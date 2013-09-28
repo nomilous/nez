@@ -18,21 +18,26 @@ module.exports.createClass = (classOpts, messageBus) ->
 
     messageBus.use (msg, next) -> 
 
-        return next() unless msg.context.title == 'realizer::connect'
         return next() unless uuid = msg.uuid
 
-        #
-        # * Assign realizer messenger
-        # 
-        #   TODO: consider support for more than one instance of
-        #         a realizer, keying on uuid will not suffice in
-        #         that case
-        #
+        switch msg.event
 
-        realizers[uuid] ||= {}
-        realizers[uuid].notice = try msg.context.responder
-        realizers[uuid].connected = true
-        next()
+            when 'connect', 'reconnect'
+
+                #
+                # * Assign realizer messenger
+                # 
+                #   TODO: consider support for more than one instance of
+                #         a realizer, keying on uuid will not suffice in
+                #         that case
+                #
+
+                realizers[uuid] ||= {}
+                realizers[uuid].notice = try msg.context.responder
+                realizers[uuid].connected = true
+                next()
+
+            else next()
 
 
     return api = 

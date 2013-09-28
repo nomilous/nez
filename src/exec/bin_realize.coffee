@@ -56,21 +56,29 @@ runRealizer = ({uplink, opts, realizerFn}) ->
     opts.notice    = uplink
     phraseRecursor = phrase.createRoot opts, (token) -> 
 
-
-    uplink.event 'realizer::connect', 
-
-        uuid: opts.uuid
-        pid:  process.pid
-
-
     uplink.use (msg, next) -> 
 
         switch msg.context.direction
 
-            when 'out' then console.log SENDING:   msg.context, msg
-            when 'in'  then console.log RECEIVING: msg.context, msg
+            when 'out' 
+                switch msg.event
 
-        next()
+                    when 'connect', 'reconnect'
+                        msg.uuid = opts.uuid
+                        msg.pid  = process.pid
+                        console.log SENDING:   msg.context, msg
+                        next()
+
+                    else
+                        console.log SENDING:   msg.context, msg
+                        next()
+                        
+                
+            when 'in'  
+                console.log RECEIVING: msg.context, msg
+                next()
+
+        
 
 
     #
