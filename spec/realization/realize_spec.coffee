@@ -16,6 +16,54 @@ describe 'realize', ->
         fs.readFileSync = @readfile
         notice.connect = @connect
 
+
+    context 'runRealizer', -> 
+
+        it 'creates a phrase tree from the realizerFn'
+
+        context 'inbound messages', -> 
+
+        context 'outbound messages', ->
+
+
+    context 'startNotifier', -> 
+
+        it 'starts notice messenger', (done) -> 
+
+            notice.connect = (originName, opts, callback) -> 
+
+                originName.should.equal 'UUID'
+                opts.connect.should.eql 
+                    transport: "http"
+                    secret: '∆'
+                    port: 10101
+
+                opts.origin.should.eql 
+                    title: 'TITLE'
+                    uuid:  'UUID'
+                    any:   'thing'
+                    other: 'stuff'
+
+                callback null, 'NOTIFIER'
+
+            Realize.startNotifier( 
+
+                opts:
+                    title: 'TITLE'
+                    uuid:  'UUID'
+                    any:   'thing'
+                    other: 'stuff'
+                    connect: 
+                        transport: 'http'
+                        secret: '∆'
+                        port: 10101
+
+            ).then ({uplink, opts, realizerFn}) ->
+
+                uplink.should.equal 'NOTIFIER'
+                done()
+
+
     context 'loadRealizer', -> 
 
         it 'rejects on missing filename', (done) -> 
@@ -108,46 +156,3 @@ describe 'realize', ->
 
             )
 
-
-
-    context 'startNotifier', -> 
-
-        it 'starts notice messenger', (done) -> 
-
-            notice.connect = (originName, opts, callback) -> 
-
-                originName.should.equal 'UUID'
-                opts.connect.should.eql 
-                    transport: "http"
-                    secret: '∆'
-                    port: 10101
-
-                opts.origin.should.eql 
-                    title: 'TITLE'
-                    uuid:  'UUID'
-                    any:   'thing'
-                    other: 'stuff'
-
-                callback null, 'NOTIFIER'
-
-            Realize.startNotifier( 
-
-                opts:
-                    title: 'TITLE'
-                    uuid:  'UUID'
-                    any:   'thing'
-                    other: 'stuff'
-                    connect: 
-                        transport: 'http'
-                        secret: '∆'
-                        port: 10101
-
-            ).then ({uplink, opts, realizerFn}) ->
-
-                uplink.should.equal 'NOTIFIER'
-                done()
-
-
-    context 'runRealizer', -> 
-
-        it ''
