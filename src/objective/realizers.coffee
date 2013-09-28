@@ -35,6 +35,11 @@ module.exports.createClass = (classOpts, messageBus) ->
                 realizers[uuid] ||= {}
                 realizers[uuid].notice = try msg.context.responder
                 realizers[uuid].connected = true
+                realizers[uuid].notice.use (msg, next) -> 
+                    if msg.event == 'disconnect'    
+                        realizers[uuid].connected = false
+                    next()
+
                 next()
 
             else next()

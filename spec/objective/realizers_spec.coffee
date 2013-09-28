@@ -56,13 +56,13 @@ describe 'Realizers', ->
 
                 event: 'connect'
                 context: 
-                    responder: 'REALIZER_BOUND_MESSAGE_BUS'
+                    responder: use: -> 'REALIZER_BOUND_MESSAGE_BUS'
                 uuid: 'UUID'
                 ->
 
                     Realizers.get( uuid: 'UUID' ).then (realizer) -> 
 
-                        realizer.notice.should.equal 'REALIZER_BOUND_MESSAGE_BUS'
+                        realizer.notice.use().should.eql 'REALIZER_BOUND_MESSAGE_BUS'
                         done()
 
         it 'sets the realizer connected state', (done) -> 
@@ -71,7 +71,7 @@ describe 'Realizers', ->
 
                 event: 'connect'
                 context: 
-                    responder: 'REALIZER_BOUND_MESSAGE_BUS'
+                    responder: use: ->
                 uuid: 'UUID'
                 ->
 
@@ -90,7 +90,7 @@ describe 'Realizers', ->
 
                 event: 'reconnect'
                 context: 
-                    responder: 'REALIZER_BOUND_MESSAGE_BUS'
+                    responder: use: ->
                 uuid: 'UUID'
                 ->
 
