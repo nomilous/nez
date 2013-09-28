@@ -43,6 +43,7 @@ describe 'Develop', ->
                 autospawn:   true
                 autocompile: true
                 autospec:    true
+                autoinit:    true
 
             done()
 

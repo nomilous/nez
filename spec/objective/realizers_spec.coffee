@@ -9,8 +9,11 @@ describe 'Realizers', ->
         @MIDDLEWARES = []
 
         Realizers = require( '../../lib/objective/realizers' ).createClass(
-            {} 
-            use: (middleware) => @MIDDLEWARES.push middleware
+            {
+                autospawn: false
+                autoinit:  false
+            } 
+            @messageBus = use: (middleware) => @MIDDLEWARES.push middleware
         )
 
 
@@ -35,7 +38,7 @@ describe 'Realizers', ->
 
          ).then -> 
 
-            Realizers.autospawn = false
+            #Realizers.autospawn = false
             spawner = Realizers.spawner
             done()
 
@@ -123,6 +126,63 @@ describe 'Realizers', ->
                         pid: 'ANOTHERPID'
                         hostname: 'hostname'
                         ->
+
+
+        it 'sends init event if autoinit is enabled', (done) -> 
+
+            MIDDLEWARES = []
+            Realizers = require( '../../lib/objective/realizers' ).createClass(
+                {
+                    autospawn: false
+                    autoinit:  true
+                } 
+                use: (middleware) -> 
+                    return unless middleware.toString().match /realizers collection middleware 1/
+                    middleware 
+                        event: 'connect'
+                        context: 
+                            responder: 
+                                use: ->
+                                event: (title) -> 
+                                    
+                                    title.should.equal 'init'
+                                    then: -> done()
+
+                        uuid: 'UUID'
+                        pid: 'PID'
+                        hostname: 'host.name'
+                        ->
+            )
+
+        it 'sends no init event if autoinit is disabled', (done) ->
+
+            MIDDLEWARES = []
+            Realizers = require( '../../lib/objective/realizers' ).createClass(
+                {
+                    autospawn: false
+                    autoinit:  false
+                } 
+                use: (middleware) -> 
+                    return unless middleware.toString().match /realizers collection middleware 1/
+                    middleware 
+                        event: 'connect'
+                        context: 
+                            responder: 
+                                use: ->
+                                event: (title) -> 
+                                    
+                                    title.should.not.equal 'init'
+                                    then: -> 
+
+                        uuid: 'UUID'
+                        pid: 'PID'
+                        hostname: 'host.name'
+                        ->
+            )
+
+            setTimeout (->
+                done()
+            ), 100
 
 
     context 'on reconnect', -> 

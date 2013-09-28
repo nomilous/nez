@@ -26,26 +26,16 @@ objective
 
     boundry: ['process']
 
+    autoInit: true
+
     class: class extends Objective
 
         startScheduler: (monitor, @jobTokens, @jobEmitter) ->
 
-            monitor.realizers.on 'connect', (realizer) -> 
-
-                #
-                # init the remote realizer on connect
-                #
-
-                realizer.notice.event 'init'
-
-                # 
-                # hmmm. ->> 
-                # 
-                # realizer.notice.event( 'init' ).reply (msg) -> 
-                #     console.log INIT_REPLY: msg
-                # 
-
-            monitor.realizers.on 'ready', (realizer) -> 
+            monitor.realizers.on 'connect',    (realizer) -> 
+            monitor.realizers.on 'disconnect', (realizer) -> 
+            monitor.realizers.on 'reconnect',  (realizer) ->  
+            monitor.realizers.on 'ready',      (realizer) -> 
 
                 console.log READY: realizer
 
@@ -54,16 +44,6 @@ objective
 
                 console.log ERROR: realizer
 
-
-
-
-            # monitor.realizers.on 'reconnect', (realizer) -> 
-
-            #     console.log RECONNECTED: realizer
-
-            # monitor.realizers.on 'disconnect', (realizer) -> 
-
-            #     console.log DISCONNECTED: realizer
 
             # setInterval (=>
 

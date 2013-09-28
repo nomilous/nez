@@ -28,9 +28,10 @@ class Develop extends Objective
         @opts.src.directory ||= 'src'
         @opts.src.match     ||= /\.coffee$/
         @opts.src.out       ||= 'lib'
-        @opts.autospawn     ||= true
-        @opts.autocompile   ||= true
-        @opts.autospec      ||= true
+        @opts.autospawn      ?= true
+        @opts.autocompile    ?= true
+        @opts.autospec       ?= true
+        @opts.autoinit       ?= true
 
         done()
 

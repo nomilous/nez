@@ -17,6 +17,8 @@ module.exports.createClass = (classOpts, messageBus) ->
 
     messageBus.use (msg, next) -> 
 
+        ### realizers collection middleware 1 ###
+
         unless uuid = msg.uuid
 
             if msg.event.match /^phrase/
@@ -79,6 +81,12 @@ module.exports.createClass = (classOpts, messageBus) ->
                         emitter.emit msg.event, realizers[uuid]
                     next()
 
+                if msg.event == 'connect' and classOpts.autoinit 
+                    msg.context.responder.event( 'init' ).then( 
+                        -> next()
+                        -> next()
+                    )
+
                 next()
 
             when 'ready'
@@ -87,7 +95,7 @@ module.exports.createClass = (classOpts, messageBus) ->
                 next()
 
             when 'error'
-            
+
                 emitter.emit msg.event, realizers[uuid], msg
                 next()
 
