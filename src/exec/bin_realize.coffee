@@ -65,7 +65,7 @@ runRealizer = ({uplink, opts, realizerFn}) ->
 
     uplink.use (msg, next) -> 
 
-        console.log RECEIVED: msg
+        console.log RECEIVED: msg.event
         next()
 
 
@@ -110,8 +110,14 @@ startNotifier = ({opts, realizerFn}) ->
         # * notifier connectes to objective per connect config present
         #   in the realizer or on the commandline
         #
+        # * all opts except for connect are included as client context
+        # 
 
-        console.log REALIZER_OPTS: opts
+        context = {}
+        for key of opts
+            continue if key == 'connect'
+            context[key] = opts[key]
+        opts.context = context
     
         notice.connect "realizer/#{opts.uuid}", opts, (error, uplink) ->
 
