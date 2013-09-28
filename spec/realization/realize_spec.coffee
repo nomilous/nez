@@ -22,7 +22,7 @@ describe 'realize', ->
 
     context 'runRealizer', -> 
 
-        it.only 'creates a phrase tree with uplink as the notifier', (done) -> 
+        it 'creates a phrase tree with uplink as the notifier', (done) -> 
 
             phrase.createRoot = (opts, linkFn) -> 
 
@@ -69,7 +69,7 @@ describe 'realize', ->
 
         context 'inbound messages', -> 
 
-            it.only 'rejects on reject', (done) -> 
+            it 'rejects on reject', (done) -> 
 
                 message = 
                     direction: 'in'
@@ -78,6 +78,7 @@ describe 'realize', ->
                     other: 'STUFF'
 
                 Realize.runRealizer(
+
                     uplink:     
                         use: (middleware) ->  
                             if middleware.toString().match /reconnect/
@@ -86,6 +87,7 @@ describe 'realize', ->
                         title: 'TITLE'
                         uuid:  'UUID'
                     realizerFn: ->
+
                 ).then(
                     ->
                     (error) -> 
@@ -97,7 +99,28 @@ describe 'realize', ->
                 )
 
 
-        
+            it 'recurses the phrase tree on init', (done) -> 
+
+                message = 
+                    direction: 'in'
+                    event: 'init'
+
+                phrase.createRoot = (opts, linkFn) -> -> then: -> done()
+
+                Realize.runRealizer
+
+                    uplink:     
+                        use: (middleware) ->  
+                            if middleware.toString().match /reconnect/
+                                middleware message, ->
+
+                    opts:       
+                        title: 'TITLE'
+                        uuid:  'UUID'
+
+                    realizerFn: -> 
+
+                        
 
 
     context 'startNotifier', -> 
