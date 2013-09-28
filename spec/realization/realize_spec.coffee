@@ -69,7 +69,32 @@ describe 'realize', ->
 
         context 'inbound messages', -> 
 
-            it ''
+            it.only 'rejects on reject', (done) -> 
+
+                message = 
+                    direction: 'in'
+                    event: 'reject'
+                    reason: 'REASON'
+                    other: 'STUFF'
+
+                Realize.runRealizer(
+                    uplink:     
+                        use: (middleware) ->  
+                            if middleware.toString().match /reconnect/
+                                middleware message, ->
+                    opts:       
+                        title: 'TITLE'
+                        uuid:  'UUID'
+                    realizerFn: ->
+                ).then(
+                    ->
+                    (error) -> 
+
+                        error.reason.should.equal 'REASON'
+                        error.should.match /reject/
+                        done()
+
+                )
 
 
         
