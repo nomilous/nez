@@ -9,7 +9,7 @@ module.exports.createClass = (opts, messageBus) ->
 
     messageBus.use (msg, next) -> 
 
-        if msg.context.title == 'realizer::connect'
+        if msg.event == 'connect'  # um? or msg.event == 'reconnect'
 
             #
             # * realizer sends pid on connect, resolve the corresponding 

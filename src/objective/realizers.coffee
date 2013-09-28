@@ -77,22 +77,18 @@ module.exports.createClass = (classOpts, messageBus) ->
                 if opts.filename? 
 
                     realizer = fromfilename[opts.filename]
+                    doSpawn  = api.autospawn and not realizer.token.localPID?
 
-                    console.log FIX_AUTOSPAWN: realizer
+                    return getting.resolve( realizer ) unless doSpawn
 
-                    return getting.resolve( realizer ) if (
+                            #
+                            # TODO: fix 'realizer may have died'
+                            # 
+                            #       - perhaps cleanup on notifier disconnect
+                            #       - perhaps check for pid
+                            #       - likely both
+                            #
 
-                                            #
-                                            # TODO: fix 'realizer may have died'
-                                            # 
-                                            #       - perhaps cleanup on notifier disconnect
-                                            #       - perhaps check for pid
-                                            #       - likely both
-                                            #
-
-                        not api.autospawn or alreadySpawned = realizer.token.localPID?
-
-                    )
 
                     api.spawner.spawn( realizer.token ).then(
 

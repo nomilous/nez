@@ -110,7 +110,7 @@ describe 'Spawner', ->
 
                 @middleware 
 
-                    context: title: 'realizer::connect'
+                    event: 'connect'
                     uuid: 'UUID'
                     pid:  12345
                     ->
@@ -183,7 +183,7 @@ describe 'Spawner', ->
 
             process.nextTick =>
                 @middleware 
-                    context: title: 'realizer::connect'
+                    event: 'connect'
                     uuid: 'UUID'
                     pid:  12345
                     ->
