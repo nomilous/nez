@@ -32,7 +32,20 @@ objective
 
             monitor.realizers.on 'connect', (realizer) -> 
 
-                console.log CONNECTED: realizer
+                #
+                # init the remote realizer on connect
+                #
+
+                realizer.notice.event 'init'
+
+                # 
+                # hmmm. ->> 
+                # 
+                # realizer.notice.event( 'init' ).reply (msg) -> 
+                #     console.log INIT_REPLY: msg
+                # 
+
+
 
             monitor.realizers.on 'reconnect', (realizer) -> 
 

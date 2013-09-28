@@ -59,6 +59,17 @@ runRealizer = ({uplink, opts, realizerFn}) ->
     opts.notice    = uplink
     phraseRecursor = phrase.createRoot opts, (token) -> 
 
+
+    init = -> 
+
+        #
+        # * nested init() loads the realizer phrase tree 
+        #
+
+        phraseRecursor 'realizer', realizerFn
+
+
+
     uplink.use (msg, next) -> 
 
         switch msg.context.direction
@@ -75,9 +86,11 @@ runRealizer = ({uplink, opts, realizerFn}) ->
                     else
                         console.log SENDING:   msg.context, msg
                         next()
-                        
-                
+
+
             when 'in' 
+
+                console.log RECEIVING: msg.context, msg
 
                 switch msg.event
 
@@ -88,9 +101,20 @@ runRealizer = ({uplink, opts, realizerFn}) ->
                         error[key] = msg[key] for key of msg
                         running.reject error
 
-                    else
-                        console.log RECEIVING: msg.context, msg
-                        next()
+                    when 'init'
+
+                        init().then(
+
+                            (result) -> console.log PHRASE_INIT_RESULT: result
+                            (error)  -> console.log PHRASE_INIT_ERROR:  error
+                            #(notify) -> console.log PHRASE_INIT_NOTIFY: notify
+
+                        )
+
+                    else next()
+
+
+
 
     
 

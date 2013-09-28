@@ -17,7 +17,33 @@ module.exports.createClass = (classOpts, messageBus) ->
 
     messageBus.use (msg, next) -> 
 
-        return next() unless uuid = msg.uuid
+        unless uuid = msg.uuid
+
+            if msg.event.match /^phrase/
+
+                #
+                # TODO: (later) - assemble objective-side clone of remote 
+                #                 realizer phrase tree for metric store
+                #                 and persistance
+                # 
+
+                # 
+                console.log 'ignoring remote phrase tree activity:', msg.event
+                # 
+                # ignoring remote phrase tree activity: phrase::recurse:start
+                # ignoring remote phrase tree activity: phrase::edge:create
+                #                                       ...
+                #                                       ...
+                #                                       ...
+                # ignoring remote phrase tree activity: phrase::edge:create
+                # ignoring remote phrase tree activity: phrase::recurse:end
+                # 
+
+            else
+
+                console.log 'ignoring other stuff i may have forgotten about: ', msg.content
+
+            return next()
 
         switch msg.event
 
@@ -43,6 +69,7 @@ module.exports.createClass = (classOpts, messageBus) ->
                 realizers[uuid].notice = try msg.context.responder
                 realizers[uuid].connected = true
                 realizers[uuid].pid = msg.pid
+
                 emitter.emit msg.event, realizers[uuid]
 
                 realizers[uuid].notice.use (msg, next) -> 
