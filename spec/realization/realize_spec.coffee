@@ -3,6 +3,7 @@ Realize = require '../../lib/realization/realize'
 coffee  = require 'coffee-script' 
 fs      = require 'fs'
 notice  = require 'notice'
+phrase  = require 'phrase'
 
 describe 'realize', -> 
 
@@ -10,20 +11,68 @@ describe 'realize', ->
         @compile = coffee.compile
         @readfile = fs.readFileSync
         @connect  = notice.connect
+        @tree     = phrase.createRoot
 
     afterEach -> 
         coffee.compile = @compile
         fs.readFileSync = @readfile
         notice.connect = @connect
+        phrase.createRoot = @tree
 
 
     context 'runRealizer', -> 
 
-        it 'creates a phrase tree from the realizerFn'
+        it.only 'creates a phrase tree with uplink as the notifier', (done) -> 
+
+            phrase.createRoot = (opts, linkFn) -> 
+
+                opts.notice.should.equal 'uplink'
+                done()
+                throw 'go no further'
+
+            try Realize.runRealizer
+
+                uplink:     'uplink'
+                opts:       {}
+                realizerFn: ->
+
+
+        context 'outbound messages', ->
+
+            context 'connect, reconnect, ready, error', -> 
+
+                it 'includes uuid, pid and hostname', (done) -> 
+
+                    message = 
+                        direction: 'out'
+                        event: 'connect'
+
+                    Realize.runRealizer
+                        uplink:     
+                            use: (middleware) ->  
+                                if middleware.toString().match /reconnect/
+                                    middleware message, ->
+                        opts:       
+                            title: 'TITLE'
+                            uuid:  'UUID'
+                        realizerFn: ->
+
+                    process.nextTick -> 
+
+                        should.exist message.hostname
+                        should.exist message.uuid
+                        should.exist message.hostname
+                        done()
+
+
+
 
         context 'inbound messages', -> 
 
-        context 'outbound messages', ->
+            it ''
+
+
+        
 
 
     context 'startNotifier', -> 

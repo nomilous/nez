@@ -52,7 +52,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
 
     uplink.use (msg, next) -> 
 
-        switch msg.context.direction
+        switch msg.direction
 
             when 'out' 
                 switch msg.event
@@ -62,7 +62,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
                         msg.pid      = process.pid
                         msg.hostname = hostname()
 
-                        console.log SENDING:   msg.context, msg
+                        #console.log SENDING:   msg.context, msg
                         next()
 
                     else
