@@ -2,16 +2,19 @@ should  = require 'should'
 Realize = require '../../lib/realization/realize'
 coffee  = require 'coffee-script' 
 fs      = require 'fs'
+notice  = require 'notice'
 
 describe 'realize', -> 
 
     beforeEach -> 
         @compile = coffee.compile
         @readfile = fs.readFileSync
+        @connect  = notice.connect
 
     afterEach -> 
         coffee.compile = @compile
         fs.readFileSync = @readfile
+        notice.connect = @connect
 
     context 'loadRealizer', -> 
 
@@ -109,7 +112,41 @@ describe 'realize', ->
 
     context 'startNotifier', -> 
 
-        it ''
+        it 'starts notice messenger', (done) -> 
+
+            notice.connect = (originName, opts, callback) -> 
+
+                originName.should.equal 'UUID'
+                opts.connect.should.eql 
+                    transport: "http"
+                    secret: '∆'
+                    port: 10101
+
+                opts.origin.should.eql 
+                    title: 'TITLE'
+                    uuid:  'UUID'
+                    any:   'thing'
+                    other: 'stuff'
+
+                callback null, 'NOTIFIER'
+
+            Realize.startNotifier( 
+
+                opts:
+                    title: 'TITLE'
+                    uuid:  'UUID'
+                    any:   'thing'
+                    other: 'stuff'
+                    connect: 
+                        transport: 'http'
+                        secret: '∆'
+                        port: 10101
+
+            ).then ({uplink, opts, realizerFn}) ->
+
+                uplink.should.equal 'NOTIFIER'
+                done()
+
 
     context 'runRealizer', -> 
 
