@@ -63,12 +63,13 @@ module.exports.createClass = (classOpts, messageBus) ->
 
                     responder = msg.context.responder
                     return responder.event.bad 'reject',
-                        reason: "realizer:#{uuid} already running @ #{realizers[uuid].pid}"
+                        reason: "realizer:#{uuid} already running @ #{realizers[uuid].pid}.#{realizers[uuid].hostname}"
 
 
                 realizers[uuid].notice = try msg.context.responder
                 realizers[uuid].connected = true
-                realizers[uuid].pid = msg.pid
+                realizers[uuid].pid       = msg.pid
+                realizers[uuid].hostname  = msg.hostname
 
                 emitter.emit msg.event, realizers[uuid]
 

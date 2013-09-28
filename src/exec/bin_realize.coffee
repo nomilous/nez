@@ -5,10 +5,10 @@ phrase   = require 'phrase'
 pipeline = require 'when/pipeline'
 sequence = require 'when/sequence'
 notice   = require 'notice'
+{hostname} = require 'os'
 Realize  = require '../realization/realize'
 
 
- 
 program.version JSON.parse( fs.readFileSync __dirname + '/../../package.json', 'utf8' ).version
 program.usage '[options] [realizer]'
 program.option '-c, --connect',        'Establish connection to objective', false
@@ -78,8 +78,10 @@ runRealizer = ({uplink, opts, realizerFn}) ->
                 switch msg.event
 
                     when 'connect', 'reconnect'
-                        msg.uuid = opts.uuid
-                        msg.pid  = process.pid
+                        msg.uuid     = opts.uuid
+                        msg.pid      = process.pid
+                        msg.hostname = hostname()
+
                         console.log SENDING:   msg.context, msg
                         next()
 

@@ -95,6 +95,35 @@ describe 'Realizers', ->
                 uuid: 'UUID'
                 ->
 
+        it 'rejects on multiple instances of same realizer', (done) -> 
+
+            @MIDDLEWARES[0]
+
+                event: 'reconnect'
+                context: 
+                    responder: use: ->
+                uuid: 'UUID'
+                pid: 'PID'
+                hostname: 'host.name'
+                =>
+
+                    @MIDDLEWARES[0]
+
+                        event: 'reconnect'
+                        context: 
+                            responder: 
+                                use: ->
+                                event: bad: (title, payload) -> 
+
+                                    title.should.equal 'reject'
+                                    payload.reason.should.equal 'realizer:UUID already running @ PID.host.name'
+                                    done()
+
+                        uuid: 'UUID'
+                        pid: 'ANOTHERPID'
+                        hostname: 'hostname'
+                        ->
+
 
     context 'on reconnect', -> 
 
