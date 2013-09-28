@@ -30,6 +30,7 @@ pipeline( [
     (resolve) -> # console.log RESOLVED: resolve
     (error)  -> 
 
+        console.log ERROR: error
         process.stderr.write error.toString()
         process.exit error.errno || 100
 
@@ -39,6 +40,8 @@ pipeline( [
 
 
 runRealizer = ({uplink, opts, realizerFn}) -> 
+
+    running = defer()
 
     #
     # uplink     - connection to the objective (if -c)
@@ -74,12 +77,24 @@ runRealizer = ({uplink, opts, realizerFn}) ->
                         next()
                         
                 
-            when 'in'  
-                console.log RECEIVING: msg.context, msg
-                next()
+            when 'in' 
 
-        
+                switch msg.event
 
+                    when 'reject'
+
+                        error = new Error msg.event
+                        error.errno = 101 # TODO: formalize (others are scattered about)
+                        error[key] = msg[key] for key of msg
+                        running.reject error
+
+                    else
+                        console.log RECEIVING: msg.context, msg
+                        next()
+
+    
+
+    return running.promise
 
     #
     # TEMPORARY

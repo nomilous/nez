@@ -36,7 +36,7 @@ module.exports.createClass = (classOpts, messageBus) ->
                     #
 
                     responder = msg.context.responder
-                    return responder.event.bad 'realizer rejected',
+                    return responder.event.bad 'reject',
                         reason: "realizer:#{uuid} already running @ #{realizers[uuid].pid}"
 
 
@@ -77,6 +77,8 @@ module.exports.createClass = (classOpts, messageBus) ->
                 if opts.filename? 
 
                     realizer = fromfilename[opts.filename]
+
+                    console.log FIX_AUTOSPAWN: realizer
 
                     return getting.resolve( realizer ) if (
 
