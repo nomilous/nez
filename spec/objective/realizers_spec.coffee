@@ -48,20 +48,37 @@ describe 'Realizers', ->
         done()
 
 
-    it 'assigns realizer responce notifiers into collection', (done) -> 
+    context 'on realizer::connect', -> 
 
-        @MIDDLEWARES[0]
+        it 'assigns realizer response notifiers into collection', (done) -> 
 
-            context: 
-                title: 'realizer::connect'
-                responder: 'REALIZER_BOUND_MESSAGE_BUS'
-            uuid: 'UUID'
-            ->
+            @MIDDLEWARES[0]
 
-                Realizers.get( uuid: 'UUID' ).then (realizer) -> 
+                context: 
+                    title: 'realizer::connect'
+                    responder: 'REALIZER_BOUND_MESSAGE_BUS'
+                uuid: 'UUID'
+                ->
 
-                    realizer.notice.should.equal 'REALIZER_BOUND_MESSAGE_BUS'
-                    done()
+                    Realizers.get( uuid: 'UUID' ).then (realizer) -> 
+
+                        realizer.notice.should.equal 'REALIZER_BOUND_MESSAGE_BUS'
+                        done()
+
+        it 'sets the realizer connected state', (done) -> 
+
+            @MIDDLEWARES[0]
+
+                context: 
+                    title: 'realizer::connect'
+                    responder: 'REALIZER_BOUND_MESSAGE_BUS'
+                uuid: 'UUID'
+                ->
+
+                    Realizers.get( uuid: 'UUID' ).then (realizer) -> 
+
+                        realizer.connected.should.equal true
+                        done()
 
 
     context 'get()', -> 
@@ -138,4 +155,5 @@ describe 'Realizers', ->
                 ).then (realizer) -> 
 
                     realizer.token.uuid.should.equal '1'
+                    realizer.connected.should.equal false
                     done()

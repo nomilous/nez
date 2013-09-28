@@ -117,11 +117,11 @@ startNotifier = ({opts, realizerFn}) ->
         # * all opts except for connect are included as client context
         # 
 
-        context = {}
+        origin = {}
         for key of opts
             continue if key == 'connect'
-            context[key] = opts[key]
-        opts.context = context
+            origin[key] = opts[key]
+        opts.origin = origin
     
         notice.connect "#{opts.uuid}", opts, (error, uplink) ->
 

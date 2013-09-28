@@ -31,6 +31,7 @@ module.exports.createClass = (classOpts, messageBus) ->
 
         realizers[uuid] ||= {}
         realizers[uuid].notice = try msg.context.responder
+        realizers[uuid].connected = true
         next()
 
 
@@ -92,6 +93,7 @@ module.exports.createClass = (classOpts, messageBus) ->
 
                     realizers[uuid] ||= {}
                     realizers[uuid].token = token
+                    realizers[uuid].connected = false
                     continue unless token.source? 
 
                     switch token.source.type

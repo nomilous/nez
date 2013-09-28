@@ -40,11 +40,7 @@ objective
 
                             (realizer) -> 
 
-                                unless realizer.notice? 
-                                    console.log MISSING: token.uuid
-                                    return
-
-                                console.log running: token.uuid
+                                console.log token.uuid, connected: realizer.connected
 
                             (error) -> 
 
