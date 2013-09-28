@@ -64,68 +64,68 @@ module.exports.createClass = (classOpts, messageBus) ->
 
     api.get = (opts = {}) -> 
 
-            getting = defer()
-            process.nextTick => 
+        getting = defer()
+        process.nextTick => 
 
 
-                if opts.uuid?
+            if opts.uuid?
 
-                    return getting.resolve( realizers[opts.uuid] ) if realizers[opts.uuid]?
-                    return getting.reject new Error "Missing realizer uuid:#{opts.uuid}"
-
-
-                if opts.filename? 
-
-                    realizer = fromfilename[opts.filename]
-                    doSpawn  = api.autospawn and not realizer.token.localPID?
-
-                    return getting.resolve( realizer ) unless doSpawn
-
-                            #
-                            # TODO: fix 'realizer may have died'
-                            # 
-                            #       - perhaps cleanup on notifier disconnect
-                            #       - perhaps check for pid
-                            #       - likely both
-                            #
+                return getting.resolve( realizers[opts.uuid] ) if realizers[opts.uuid]?
+                return getting.reject new Error "Missing realizer uuid:#{opts.uuid}"
 
 
-                    api.spawner.spawn( realizer.token ).then(
+            if opts.filename? 
 
-                        (token)  -> getting.resolve realizers[token.uuid]
-                        (error)  -> getting.reject error
+                realizer = fromfilename[opts.filename]
+                doSpawn  = api.autospawn and not realizer.token.localPID?
 
-                    )
+                return getting.resolve( realizer ) unless doSpawn
 
-            getting.promise
+                        #
+                        # TODO: fix 'realizer may have died'
+                        # 
+                        #       - perhaps cleanup on notifier disconnect
+                        #       - perhaps check for pid
+                        #       - likely both
+                        #
+
+
+                api.spawner.spawn( realizer.token ).then(
+
+                    (token)  -> getting.resolve realizers[token.uuid]
+                    (error)  -> getting.reject error
+
+                )
+
+        getting.promise
 
     api.update = (tokens) -> 
 
-            updating = defer()
-            process.nextTick => 
+        updating = defer()
+        process.nextTick => 
 
-                for path of tokens
+            for path of tokens
 
-                    token = tokens[path]
-                    uuid  = token.uuid
-                    continue unless token.type == 'tree'
+                token = tokens[path]
+                uuid  = token.uuid
+                continue unless token.type == 'tree'
 
-                    realizers[uuid] ||= {}
-                    realizers[uuid].token = token
-                    realizers[uuid].connected = false
-                    continue unless token.source? 
+                realizers[uuid] ||= {}
+                realizers[uuid].token = token
+                realizers[uuid].connected = false
+                continue unless token.source? 
 
-                    switch token.source.type
+                switch token.source.type
 
-                        when 'file' 
+                    when 'file' 
 
-                            filename = token.source.filename
-                            fromfilename[filename] = realizers[uuid]
+                        filename = token.source.filename
+                        fromfilename[filename] = realizers[uuid]
 
 
-                updating.resolve()
+            updating.resolve()
 
-            updating.promise
+        updating.promise
 
 
     return api
