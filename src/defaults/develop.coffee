@@ -6,7 +6,6 @@
 # 
 
 Objective   = require '../objective/objective'
-Realize     = require '../realization/realize'
 tools       = require '../tools'
 fs          = require 'fs'
 mkdirp      = require 'mkdirp'
@@ -41,38 +40,6 @@ class Develop extends Objective
         spec.link directory: 'spec'
 
 
-    onBoundryAssemble: (opts, callback) -> 
-
-        Realize.loadRealizer( opts ).then( 
-
-            (realizer) -> 
-
-                #
-                # convert to phrase format
-                #
-
-                phrase =
-                    title: realizer.opts.title
-                    control: realizer.opts
-                    fn: realizer.realizerFn
-
-                delete phrase.control.title
-
-                #
-                # does not load the objective's clone of the linked
-                # realizer PhraseTrees
-                #
-
-                opts.loadTree = false
-
-                callback null, phrase
-
-            (error) -> callback error
-
-        )
-
-
-
     #
     # TODO: 
     # 
@@ -86,7 +53,7 @@ class Develop extends Objective
 
 
 
-    startMonitor: (monitor, @jobTokens, @jobEmitter) -> 
+    startScheduler: (monitor, @jobTokens, @jobEmitter) -> 
 
         # console.log Develop: startMonitor: opts
 

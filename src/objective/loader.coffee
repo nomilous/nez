@@ -31,23 +31,31 @@ module.exports = (opts, objectiveFn) ->
         module: opts.module || '../defaults'
         class:  opts.class  || 'Develop'
 
-    try 
-        
-        Module = require localopts.module
+    if typeof localopts.class == 'function'
 
-        unless Module[ localopts.class ]?
-            throw new Error "Could not initialize objective module(=#{
-                localopts.module}) does not define class(=#{
-                    localopts.class})"
+        #
+        # * got inline objective processor definition
+        #
 
-        Objective = Module[ localopts.class ]
+        Objective = localopts.class
 
-    catch error
+    else 
+        try 
+            Module = require localopts.module
 
-            try delete opts.listen.secret
-            try delete opts.listening
-            console.log OPTS: opts, ERROR: error
-            process.exit 2
+            unless Module[ localopts.class ]?
+                throw new Error "Could not initialize objective module(=#{
+                    localopts.module}) does not define class(=#{
+                        localopts.class})"
+
+            Objective = Module[ localopts.class ]
+
+        catch error
+
+                try delete opts.listen.secret
+                try delete opts.listening
+                console.log OPTS: opts, ERROR: error
+                process.exit 2
 
     #
     # start notice hub
@@ -170,7 +178,7 @@ module.exports = (opts, objectiveFn) ->
 
                     objectiveToken.on 'ready', ( {tokens} ) -> 
 
-                        objective.startMonitor objectiveMonitor, tokens, (token, opts) -> 
+                        objective.startScheduler objectiveMonitor, tokens, (token, opts) -> 
 
                             objectiveToken.run token, opts
 

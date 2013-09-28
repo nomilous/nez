@@ -1,3 +1,5 @@
+Realize = require '../realization/realize'
+
 module.exports = class Objective
 
     #
@@ -28,9 +30,35 @@ module.exports = class Objective
 
     onBoundryAssemble: (opts, callback) -> 
 
-        console.log  'WARNING Objective.onBoundry() undefined override.'
+        Realize.loadRealizer( opts ).then( 
+
+            (realizer) -> 
+
+                #
+                # convert to phrase format
+                #
+
+                phrase =
+                    title: realizer.opts.title
+                    control: realizer.opts
+                    fn: realizer.realizerFn
+
+                delete phrase.control.title
+
+                #
+                # does not load the objective's clone of the linked
+                # realizer PhraseTrees
+                #
+
+                opts.loadTree = false
+                callback null, phrase
+
+            (error) -> callback error
+
+        )
 
 
-    startMonitor: (monitor, jobTokens, jobEmitter) -> 
 
-        console.log  'WARNING Objective.startMonitor() undefined override.'
+    startScheduler: (monitor, jobTokens, jobEmitter) -> 
+
+        console.log  'WARNING Objective.startScheduler() undefined override.'

@@ -101,7 +101,7 @@ describe 'Develop', ->
                 done()
 
 
-    context 'startMonitor(monitor, jobTokens, jobEmitter)', -> 
+    context 'startScheduler(monitor, jobTokens, jobEmitter)', -> 
 
         it 'adds src to monitored directories', (done) -> 
 
@@ -117,7 +117,7 @@ describe 'Develop', ->
             @dev.opts.src.directory = 'app'
             @dev.opts.src.match     = /\.js$/
             @dev.opts.autocompile   = false
-            try @dev.startMonitor monitor
+            try @dev.startScheduler monitor
 
 
         it 'calls handleCreatedSourceFile() on created source file', (done) -> 
@@ -130,7 +130,7 @@ describe 'Develop', ->
                         if event == 'create'
                             HANDLER = listener
 
-            @dev.startMonitor monitor
+            @dev.startScheduler monitor
 
             @dev.handleCreatedSourceFile = -> done()
 
@@ -147,7 +147,7 @@ describe 'Develop', ->
                         if event == 'delete'
                             HANDLER = listener
 
-            @dev.startMonitor monitor
+            @dev.startScheduler monitor
 
             @dev.handleDeletedSourceFile = -> done()
 
@@ -164,7 +164,7 @@ describe 'Develop', ->
                         if event == 'change'
                             HANDLER = listener
 
-            @dev.startMonitor monitor
+            @dev.startScheduler monitor
 
             @dev.handleChangedSpecFile = ->                
                 done()
@@ -186,7 +186,7 @@ describe 'Develop', ->
                     get: -> 
                         then: (resolve) -> resolve 'MOCK_REALIZER'
 
-            @dev.startMonitor monitor
+            @dev.startScheduler monitor
 
             @dev.handleChangedSourceFile = (file, realizer) -> 
                 realizer.should.equal 'MOCK_REALIZER'    
