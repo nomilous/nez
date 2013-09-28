@@ -192,11 +192,26 @@ class Develop extends Objective
 
         catch error
             
-            console.log CC: error
+            console.log 'COMPILE ERROR:', error
+            return
+
+
+        specfile = @toSpecFilename filename
+        @handleChangedSpecFile specfile, 
+            token: token
+            notice: notice
+            reload = false
         
 
-    handleChangedSpecFile: (filename, {token, notice}) -> 
+    handleChangedSpecFile: (filename, {token, notice}, reload = true) -> 
 
+        if reload
+
+            console.log RELOAD_AND_RUN_SPEC: filename
+
+        else
+
+            console.log RUN_SPEC: filename
 
 
 module.exports = Develop
