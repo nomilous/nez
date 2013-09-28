@@ -38,7 +38,6 @@ describe 'Realizers', ->
 
          ).then -> 
 
-            #Realizers.autospawn = false
             spawner = Realizers.spawner
             done()
 
@@ -130,7 +129,6 @@ describe 'Realizers', ->
 
         it 'sends init event if autoinit is enabled', (done) -> 
 
-            MIDDLEWARES = []
             Realizers = require( '../../lib/objective/realizers' ).createClass(
                 {
                     autospawn: false
@@ -156,7 +154,6 @@ describe 'Realizers', ->
 
         it 'sends no init event if autoinit is disabled', (done) ->
 
-            MIDDLEWARES = []
             Realizers = require( '../../lib/objective/realizers' ).createClass(
                 {
                     autospawn: false
