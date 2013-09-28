@@ -32,7 +32,13 @@ module.exports.createClass = (opts, messageBus) ->
 
             else 
 
-                console.log "autospawn ignored realizer at pid:#{msg.pid}"
+                if opts.autospawn
+
+                    #
+                    # TODO: perhaps disconnect it 
+                    #
+
+                    console.log "autospawn ignored realizer at pid:#{msg.pid}"
 
         next()
 

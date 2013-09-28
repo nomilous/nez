@@ -30,8 +30,29 @@ objective
 
         startScheduler: (monitor, @jobTokens, @jobEmitter) ->
 
-            console.log START_SCHEDULER: 1
-            console.log WITH_ARGS: arguments
+            setInterval (=>
+
+                for path of @jobTokens
+                    
+                    do( token = @jobTokens[path] ) ->
+
+                        monitor.realizers.get( uuid: token.uuid ).then(
+
+                            (realizer) -> 
+
+                                unless realizer.notice? 
+                                    console.log MISSING: token.uuid
+                                    return
+
+                                console.log running: token.uuid
+
+                            (error) -> 
+
+                                console.log ERROR: error
+
+                        ) if token.type == 'tree'
+
+            ), 2000
 
 
     (process) -> 

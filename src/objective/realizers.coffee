@@ -13,6 +13,9 @@ module.exports.createClass = (classOpts, messageBus) ->
     realizers    = {}
     fromfilename = {}
 
+
+    console.log TODO: 'realizer connected/not connected'
+
     messageBus.use (msg, next) -> 
 
         return next() unless msg.context.title == 'realizer::connect'
