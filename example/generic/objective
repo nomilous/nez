@@ -24,6 +24,7 @@ objective
         cert:     '../cert/develop-cert.pem'
         key:      '../cert/develop-key.pem'
 
+    boundry: ['process']
 
     class: class extends Objective
 
@@ -35,7 +36,4 @@ objective
 
     (process) -> 
 
-        process 'Do Thing A', (end) ->
-        process 'Do Thing B', (end) ->
-        process 'Do Thing C', (end) ->
-
+        process.link directory: 'processes'
