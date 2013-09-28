@@ -27,8 +27,8 @@ require('../../lib/nez').objective
         secret: '∫'
         # address: 'localhost'
         # port:     10001
-        # cert:     './cert/develop-cert.pem'
-        # key:      './cert/develop-key.pem'
+        # cert:     '../cert/develop-cert.pem'
+        # key:      '../cert/develop-key.pem'
 
 
     #

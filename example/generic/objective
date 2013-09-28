@@ -1,0 +1,41 @@
+#! /usr/bin/env coffee
+
+{objective, Objective} = require '../../lib/nez'
+
+#
+# cd example/generic
+# ./objective
+#
+
+objective
+
+    title: 'Objective ABC'
+    uuid:  '00000000-0000-0000-0001-000000000001'
+    description: """
+
+    Does things A, B and C
+
+    """
+
+    listen: 
+        secret:  'S3CR3T'
+        address: 'localhost'
+        port:     9000
+        cert:     '../cert/develop-cert.pem'
+        key:      '../cert/develop-key.pem'
+
+
+    class: class extends Objective
+
+        startScheduler: (monitor, @jobTokens, @jobEmitter) ->
+
+            console.log START_SCHEDULER: 1
+            console.log WITH_ARGS: arguments
+
+
+    (process) -> 
+
+        process 'Do Thing A', (end) ->
+        process 'Do Thing B', (end) ->
+        process 'Do Thing C', (end) ->
+
