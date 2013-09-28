@@ -64,7 +64,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
                         msg.pid      = process.pid
                         msg.hostname = hostname()
 
-                        #console.log SENDING:   msg.context, msg
+                        console.log SENDING:   msg.context, msg
                         next()
 
                     else
