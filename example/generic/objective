@@ -45,15 +45,25 @@ objective
                 #     console.log INIT_REPLY: msg
                 # 
 
+            monitor.realizers.on 'ready', (realizer) -> 
+
+                console.log READY: realizer
 
 
-            monitor.realizers.on 'reconnect', (realizer) -> 
+            monitor.realizers.on 'error', (realizer, msg) -> 
 
-                console.log RECONNECTED: realizer
+                console.log ERROR: realizer
 
-            monitor.realizers.on 'disconnect', (realizer) -> 
 
-                console.log DISCONNECTED: realizer
+
+
+            # monitor.realizers.on 'reconnect', (realizer) -> 
+
+            #     console.log RECONNECTED: realizer
+
+            # monitor.realizers.on 'disconnect', (realizer) -> 
+
+            #     console.log DISCONNECTED: realizer
 
             # setInterval (=>
 

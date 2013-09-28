@@ -129,7 +129,6 @@ describe 'Realizers', ->
 
         it 'sets the realizer connected state', (done) -> 
 
-
             @MIDDLEWARES[0]
 
                 event: 'reconnect'
@@ -186,6 +185,59 @@ describe 'Realizers', ->
                         uuid: 'UUID'
                         pid: 'ANOTHERPID'
                         hostname: 'hostname'
+                        ->
+
+    context 'on ready', ->
+
+        it 'emits event', (done) ->
+        
+            Realizers.on 'ready', (realizer) -> 
+
+                realizer.pid.should.equal 'PID'
+                done()
+
+
+            @MIDDLEWARES[0]
+                event: 'connect'
+                context: 
+                    responder: use: ->
+                uuid: 'UUID'
+                pid: 'PID'
+                hostname: 'host.name'
+                =>
+                    @MIDDLEWARES[0]
+                        event: 'ready'
+                        context: 
+                            responder: use: ->
+                        uuid: 'UUID'
+                        ->
+
+
+
+
+    context 'on error', -> 
+
+        it 'emits event', (done) ->
+        
+            Realizers.on 'error', (realizer) -> 
+
+                realizer.pid.should.equal 'PID'
+                done()
+
+
+            @MIDDLEWARES[0]
+                event: 'connect'
+                context: 
+                    responder: use: ->
+                uuid: 'UUID'
+                pid: 'PID'
+                hostname: 'host.name'
+                =>
+                    @MIDDLEWARES[0]
+                        event: 'error'
+                        context: 
+                            responder: use: ->
+                        uuid: 'UUID'
                         ->
 
 

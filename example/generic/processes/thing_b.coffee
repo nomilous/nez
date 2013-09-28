@@ -10,5 +10,5 @@ realize: (thing) ->
     thing 'step 2', (end) -> 
     thing 'step 3', (end) -> 
     thing 'step 4', (end) -> 
-    thing 'step 5', (end) -> 
-    
+    console.log TODO: 'error on duplicate phase title'
+    thing 'step 4', (end) -> 

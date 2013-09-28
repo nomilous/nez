@@ -64,9 +64,14 @@ runRealizer = ({uplink, opts, realizerFn}) ->
 
         #
         # * nested init() loads the realizer phrase tree 
-        #
+        # * the uplink to the objective is also the phrase tree 
+        #   message bus, so all phrase assembly messages are received 
+        #   by the local graph assembler and whatever middlewares are 
+        #   listening at the objective
+        # * this phraseRecursor returns a promise
+        # 
 
-        phraseRecursor 'realizer', realizerFn
+        return phraseRecursor 'realizer', realizerFn
 
 
 
@@ -77,7 +82,7 @@ runRealizer = ({uplink, opts, realizerFn}) ->
             when 'out' 
                 switch msg.event
 
-                    when 'connect', 'reconnect'
+                    when 'connect', 'reconnect', 'ready', 'error'
                         msg.uuid     = opts.uuid
                         msg.pid      = process.pid
                         msg.hostname = hostname()
@@ -107,8 +112,13 @@ runRealizer = ({uplink, opts, realizerFn}) ->
 
                         init().then(
 
-                            (result) -> console.log PHRASE_INIT_RESULT: result
-                            (error)  -> console.log PHRASE_INIT_ERROR:  error
+                            (result) -> uplink.event.good 'ready'  # , result
+                            (error)  -> 
+
+                                payload = error: error
+                                try payload.stack = error.stack
+                                uplink.event.bad 'error', payload
+
                             #(notify) -> console.log PHRASE_INIT_NOTIFY: notify
 
                         )

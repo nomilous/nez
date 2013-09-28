@@ -81,6 +81,16 @@ module.exports.createClass = (classOpts, messageBus) ->
 
                 next()
 
+            when 'ready'
+
+                emitter.emit msg.event, realizers[uuid]
+                next()
+
+            when 'error'
+            
+                emitter.emit msg.event, realizers[uuid], msg
+                next()
+
             else next()
 
 
