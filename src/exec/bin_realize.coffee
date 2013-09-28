@@ -65,7 +65,11 @@ runRealizer = ({uplink, opts, realizerFn}) ->
 
     uplink.use (msg, next) -> 
 
-        console.log RECEIVED: msg.event
+        switch msg.context.direction
+
+            when 'out' then console.log SENDING:   msg.context, msg
+            when 'in'  then console.log RECEIVING: msg.context, msg
+
         next()
 
 
@@ -99,7 +103,7 @@ startNotifier = ({opts, realizerFn}) ->
 
             return start.resolve 
 
-                uplink:     notice.create "realizer/#{opts.uuid}"
+                uplink:     notice.create "#{opts.uuid}"
                 opts:       opts
                 realizerFn: realizerFn 
 
@@ -119,7 +123,7 @@ startNotifier = ({opts, realizerFn}) ->
             context[key] = opts[key]
         opts.context = context
     
-        notice.connect "realizer/#{opts.uuid}", opts, (error, uplink) ->
+        notice.connect "#{opts.uuid}", opts, (error, uplink) ->
 
             return start.reject error if error?
             
