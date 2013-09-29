@@ -44,6 +44,7 @@ describe 'Develop', ->
                 autocompile: true
                 autospec:    true
                 autoinit:    true
+                autorun:     true
 
             done()
 
@@ -88,6 +89,7 @@ describe 'Develop', ->
 
             @dev.onBoundryAssemble filename: 'something.coffee', (error, phrase) -> 
 
+                console.log phrase
                 phrase.should.eql
 
                     title: 'Test'

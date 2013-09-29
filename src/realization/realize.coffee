@@ -33,7 +33,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
 
     opts.notice    = uplink
     readyCount     = 0
-    phraseRecursor = phrase.createRoot opts, (token) -> 
+    phraseRecursor = phrase.createRoot opts, (@token) => 
 
 
     init = -> 
@@ -49,7 +49,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
 
         return phraseRecursor 'realizer', realizerFn
 
-    uplink.use (msg, next) -> 
+    uplink.use (msg, next) => 
 
         ### realizer middleware 1 ###
 
@@ -69,7 +69,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
                     else
 
                         if msg.event.match /^ready::/
-                            
+
                             msg.uuid     = opts.uuid
                             msg.pid      = process.pid
                             msg.hostname = hostname()
@@ -106,7 +106,26 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
 
                         )
 
+                    when 'run'
+
+                        return next() unless uuid = msg.uuid
+                        job    = uuid: uuid
+                        params = msg.params || {}
+
+                        console.log RUN: uuid
+                        console.log TODO: 'job.run() with optional input of JobUUID'
+                        
+                        @token.run( job, param ).then( 
+
+                            (result) -> console.log JOB_RESULT: result
+                            (error) -> console.log JOB_ERROR: error
+
+                        )
+                    
+                        next()
+
                     else next()
+
 
     return running.promise
 
@@ -229,10 +248,10 @@ module.exports.loadRealizer = (params = {}) ->
             unless port?
                 return load.reject new Error 'missing port (-p nnnn)'
 
-        realizer.connect = 
-            transport: if https then 'https' else 'http'
-            secret: secret
-            port: port
+            realizer.connect = 
+                transport: if https then 'https' else 'http'
+                secret: secret
+                port: port
 
         load.resolve opts: realizer, realizerFn: realzerFn
 

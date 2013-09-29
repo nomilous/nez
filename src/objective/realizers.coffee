@@ -100,9 +100,15 @@ module.exports.createClass = (classOpts, messageBus) ->
 
                     seq = parseInt match[1]
                     emitter.emit 'ready', realizers[uuid], seq
-                    next()
+                    return msg.context.responder.event( 'run', 
+                        uuid: uuid
+                    ).then(
+                        -> next()
+                        -> next()  
+                    ) if seq == 1 and classOpts.autorun
+                    
 
-                else next()
+                next()
 
 
     api = emitter

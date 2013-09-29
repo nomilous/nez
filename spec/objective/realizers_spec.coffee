@@ -270,7 +270,62 @@ describe 'Realizers', ->
                         uuid: 'UUID'
                         ->
 
+        it 'sends run event on ready::1 if autorun is enabled', (done) ->
 
+            Realizers = require( '../../lib/objective/realizers' ).createClass(
+                {
+                    autospawn: false
+                    autoinit:  true
+                    autorun:   true
+                } 
+                use: (middleware) -> 
+                    return unless middleware.toString().match /realizers collection middleware 1/
+                    middleware 
+                        event: 'ready::1'
+                        context: 
+                            responder: 
+                                use: ->
+                                event: (title, payload) -> 
+
+                                    title.should.equal 'run'
+                                    payload.should.eql uuid: 'UUID'
+                                    then: -> done()
+
+                        uuid: 'UUID'
+                        pid: 'PID'
+                        hostname: 'host.name'
+                        ->
+            )
+
+
+        it 'sends no run event on ready::(N>1) event if autorun is enabled', (done) ->
+
+            Realizers = require( '../../lib/objective/realizers' ).createClass(
+                {
+                    autospawn: false
+                    autoinit:  true
+                    autorun:   true
+                } 
+                use: (middleware) -> 
+                    return unless middleware.toString().match /realizers collection middleware 1/
+                    middleware 
+                        event: 'ready::2'
+                        context: 
+                            responder: 
+                                use: ->
+                                event: (title, payload) -> 
+
+                                    title.should.not.equal 'run'
+
+                        uuid: 'UUID'
+                        pid: 'PID'
+                        hostname: 'host.name'
+                        ->
+            )
+
+            setTimeout (->
+                done()
+            ), 100
 
 
     context 'on error', -> 

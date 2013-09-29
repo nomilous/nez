@@ -32,6 +32,7 @@ class Develop extends Objective
         @opts.autocompile    ?= true
         @opts.autospec       ?= true
         @opts.autoinit       ?= true
+        @opts.autorun        ?= true
 
         done()
 
