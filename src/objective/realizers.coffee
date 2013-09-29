@@ -81,7 +81,7 @@ module.exports.createClass = (classOpts, messageBus) ->
                         emitter.emit msg.event, realizers[uuid]
                     next()
 
-                if msg.event == 'connect' and classOpts.autoinit 
+                if msg.event == 'connect' and classOpts.autoload
                     return msg.context.responder.event( 'load' ).then( 
                         -> next()
                         -> next()

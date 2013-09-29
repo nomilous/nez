@@ -70,7 +70,7 @@ module.exports.createClass = (opts, messageBus) ->
             # * spawn the realizer runner and pend the promise into waiting
             #
 
-            runner    = path.normalize __dirname + '/../../bin/realize'
+            runner    = path.normalize __dirname + '/../../node_modules/.bin/realize'
             args      = [ '-p', opts.listening.port]
             args.push '-X' unless opts.listening.transport == 'https'
             args.push token.source.filename

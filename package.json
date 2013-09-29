@@ -16,9 +16,10 @@
   "repository": "git@github.com:nomilous/nez.git",
   "dependencies": {
     "phrase": "0.0.4",
+    "realize": "0.0.1",
     "does": "0.0.2",
     "nezcore": "0.0.3",
-    "notice": "0.0.9",
+    "notice": "0.0.10",
     "commander": "~2.0.0",
     "when": "~2.3.0",
     "hound": "~1.0.4",

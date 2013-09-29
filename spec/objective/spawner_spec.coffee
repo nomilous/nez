@@ -67,7 +67,7 @@ describe 'Spawner', ->
             ChildProcess.spawn = (bin, args) -> 
                 
                 bin.should.match /bin\/realize/
-                args.should.eql ['-c', '-p', 22122, '-X', 'path/to/realizer.coffee']
+                args.should.eql ['-p', 22122, '-X', 'path/to/realizer.coffee']
                 done()
 
                 pid: 12345

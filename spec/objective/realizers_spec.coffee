@@ -127,12 +127,12 @@ describe 'Realizers', ->
                         ->
 
 
-        it 'sends init event if autoinit is enabled', (done) -> 
+        it 'sends load event if autoload is enabled', (done) -> 
 
             Realizers = require( '../../lib/objective/realizers' ).createClass(
                 {
                     autospawn: false
-                    autoinit:  true
+                    autoload:  true
                 } 
                 use: (middleware) -> 
                     return unless middleware.toString().match /realizers collection middleware 1/
@@ -143,7 +143,7 @@ describe 'Realizers', ->
                                 use: ->
                                 event: (title) -> 
                                     
-                                    title.should.equal 'init'
+                                    title.should.equal 'load'
                                     then: -> done()
 
                         uuid: 'UUID'
@@ -152,12 +152,12 @@ describe 'Realizers', ->
                         ->
             )
 
-        it 'sends no init event if autoinit is disabled', (done) ->
+        it 'sends no load event if autoload is disabled', (done) ->
 
             Realizers = require( '../../lib/objective/realizers' ).createClass(
                 {
                     autospawn: false
-                    autoinit:  false
+                    autoload:  false
                 } 
                 use: (middleware) -> 
                     return unless middleware.toString().match /realizers collection middleware 1/
@@ -168,7 +168,7 @@ describe 'Realizers', ->
                                 use: ->
                                 event: (title) -> 
                                     
-                                    title.should.not.equal 'init'
+                                    title.should.not.equal 'load'
                                     then: -> 
 
                         uuid: 'UUID'
