@@ -43,7 +43,7 @@ module.exports.createClass = (classOpts, messageBus) ->
 
             else
 
-                console.log 'ignoring other stuff i may have forgotten about: ', msg.content
+                console.log 'EVENT:', msg.event, '\n', msg, '\n'
 
             return next()
 

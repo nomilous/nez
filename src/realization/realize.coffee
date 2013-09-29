@@ -115,7 +115,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
                         console.log RUN: uuid
                         console.log TODO: 'job.run() with optional input of JobUUID'
                         
-                        @token.run( job, param ).then( 
+                        @token.run( job, params ).then( 
 
                             (result) -> console.log JOB_RESULT: result
                             (error) -> console.log JOB_ERROR: error
