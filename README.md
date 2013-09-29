@@ -12,7 +12,7 @@
 nez
 ===
 
-Implements a Test Driven Development scaffold using an `Objective` / [Realization](https://github.com/nomilous/realize) paradigm.
+Implements a **Test Driven Development** scaffold using an [Objective](https://github.com/nomilous/objective) / [Realization](https://github.com/nomilous/realize) paradigm.
 
 
 ### Pending Features

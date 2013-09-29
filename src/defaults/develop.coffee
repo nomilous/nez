@@ -57,7 +57,7 @@ class Develop extends Objective
 
     startScheduler: (monitor, @jobTokens, @jobEmitter) -> 
 
-        console.log @jobTokens
+        # console.log @jobTokens
 
         # console.log Develop: startMonitor: opts
 
