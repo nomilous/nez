@@ -26,7 +26,7 @@ objective
 
     boundry: ['process']
 
-    autoinit: true
+    # autoinit: false
 
     class: class extends Objective
 
@@ -38,7 +38,6 @@ objective
             monitor.realizers.on 'ready',      (realizer) -> 
 
                 console.log READY: realizer
-
 
             monitor.realizers.on 'error', (realizer, msg) -> 
 

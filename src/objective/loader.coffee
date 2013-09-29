@@ -9,6 +9,7 @@ tools               = require '../tools'
 module.exports = (opts, objectiveFn) ->
     
     opts.relativePath = relative process.cwd(), dirname( tools.caller.filename() )
+    opts.autoinit ?= true
 
     missing = for required in ['title', 'uuid', 'description']
         continue if opts[required]?

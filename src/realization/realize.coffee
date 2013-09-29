@@ -19,7 +19,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
     running = defer()
 
     #
-    # uplink     - connection to the objective (if -c)
+    # uplink     - connection to the objective (unless -x)
     # opts       - realizer title, uuid and such
     # realizerFn - realizer phrase function
     # 
@@ -47,8 +47,6 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
         # 
 
         return phraseRecursor 'realizer', realizerFn
-
-
 
     uplink.use (msg, next) -> 
 
@@ -102,11 +100,6 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
 
                     else next()
 
-
-
-
-    
-
     return running.promise
 
     #
@@ -129,7 +122,7 @@ module.exports.startNotifier = ({opts, realizerFn}) ->
     start = defer()
     process.nextTick -> 
 
-        unless opts.connect?
+        unless opts.connect
 
             #
             # offline mode
@@ -137,12 +130,14 @@ module.exports.startNotifier = ({opts, realizerFn}) ->
             # 
             # * starts standalone notifier, still "called" uplink
             #
+            # return start.resolve 
+            #     uplink:     notice.create "#{opts.uuid}"
+            #     opts:       opts
+            #     realizerFn: realizerFn 
+            # 
 
-            return start.resolve 
-
-                uplink:     notice.create "#{opts.uuid}"
-                opts:       opts
-                realizerFn: realizerFn 
+            start.reject new Error 'no offline mode'
+            return
 
         #
         # uplinked
@@ -222,11 +217,14 @@ module.exports.loadRealizer = (params = {}) ->
         realzerFn = realizer.realize || (Signature) -> Signature 'Title', (end) -> end()
         delete realizer.realize
 
-        if connect?
-            realizer.connect = 
-                transport: if https then 'https' else 'http'
-                secret: secret
-                port: port
+        unless port?
+            
+            return load.reject new Error 'missing port (-p nnnn)'
+
+        realizer.connect = 
+            transport: if https then 'https' else 'http'
+            secret: secret
+            port: port
 
         load.resolve opts: realizer, realizerFn: realzerFn
 

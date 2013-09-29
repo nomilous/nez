@@ -71,7 +71,7 @@ module.exports.createClass = (opts, messageBus) ->
             #
 
             runner    = path.normalize __dirname + '/../../bin/realize'
-            args      = [ '-c', '-p', opts.listening.port]
+            args      = [ '-p', opts.listening.port]
             args.push '-X' unless opts.listening.transport == 'https'
             args.push token.source.filename
 
