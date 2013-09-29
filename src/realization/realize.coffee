@@ -217,9 +217,9 @@ module.exports.loadRealizer = (params = {}) ->
         realzerFn = realizer.realize || (Signature) -> Signature 'Title', (end) -> end()
         delete realizer.realize
 
-        unless port?
-            
-            return load.reject new Error 'missing port (-p nnnn)'
+        if connect?
+            unless port?
+                return load.reject new Error 'missing port (-p nnnn)'
 
         realizer.connect = 
             transport: if https then 'https' else 'http'
