@@ -28,9 +28,13 @@ objective
 
     # autoinit: false
 
-    class: class extends Objective
+    class: class Generic extends Objective
 
         startScheduler: (monitor, @jobTokens, @jobEmitter) ->
+
+            #
+            # TODO: likely remove jobEmitter (it's silly)
+            #
 
             monitor.realizers.on 'connect',    (realizer) -> 
             monitor.realizers.on 'disconnect', (realizer) -> 
