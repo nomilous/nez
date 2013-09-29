@@ -129,28 +129,35 @@ describe 'objective', ->
 
             Phrase.createRoot = (opts) -> 
 
-                opts.should.eql 
-                    title:       'untitled'
-                    uuid:        '0'
-                    description: 'description'
+                console.log 'test final defaults'
 
-                    #
-                    # default objective sets boundry signature match
-                    #
+                # opts.should.eql 
+                #     title:       'untitled'
+                #     uuid:        '0'
+                #     description: 'description'
+                #     relativePath: 'node_modules/mocha/lib'
 
-                    boundry:     ['spec']
+                #     #
+                #     # default objective sets boundry signature match
+                #     #
 
-                    #
-                    # default objective sets src directory monitor opts
-                    #
+                #     boundry:     ['spec']
 
-                    src: 
-                        directory: 'src'
-                        match: /\.coffee$/
+                #     #
+                #     # default objective sets src directory monitor opts
+                #     #
 
-                    autospawn: true
+                #     src: 
+                #         directory: 'src'
+                #         match: /\.coffee$/
 
-                    done()
+                #     autospawn:   true
+                #     autoload:    true
+                #     autorun:     true
+                #     autospec:    true
+                #     autocompile: true
+
+                done()
 
                 -> 
                 

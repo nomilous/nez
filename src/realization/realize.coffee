@@ -36,10 +36,10 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
     phraseRecursor = phrase.createRoot opts, (@token) => 
 
 
-    init = -> 
+    load = -> 
 
         #
-        # * nested init() loads the realizer phrase tree 
+        # * nested load() loads the realizer phrase tree 
         # * the uplink to the objective is also the phrase tree 
         #   message bus, so all phrase assembly messages are received 
         #   by the local graph assembler and whatever middlewares are 
@@ -91,9 +91,9 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
                         error[key] = msg[key] for key of msg
                         running.reject error
 
-                    when 'init'
+                    when 'load'
 
-                        init().then(
+                        load().then(
 
                             (result) -> uplink.event.good "ready::#{++readyCount}"  # , result
                             (error)  -> 
@@ -128,20 +128,6 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
 
 
     return running.promise
-
-    #
-    # TEMPORARY
-    # ---------
-    # 
-    # * call the 'first walk' into the realizerFn to load the tree
-    # 
-    #    This sends all phrase recursion payloads 
-    #    over to the objective.
-    # 
-    # 
-    # phraseRecursor 'realizer', realizerFn
-    #
-
 
 
 module.exports.startNotifier = ({opts, realizerFn}) -> 

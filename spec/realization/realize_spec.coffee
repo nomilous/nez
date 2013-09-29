@@ -99,11 +99,11 @@ describe 'realize', ->
                 )
 
 
-            it 'recurses the phrase tree on init', (done) -> 
+            it 'recurses the phrase tree on load', (done) -> 
 
                 message = 
                     direction: 'in'
-                    event: 'init'
+                    event: 'load'
 
                 phrase.createRoot = (opts, linkFn) -> -> then: -> done()
 
@@ -121,11 +121,11 @@ describe 'realize', ->
                     realizerFn: -> 
 
 
-            it 'sends the ready::N on init completed', (done) -> 
+            it 'sends the ready::N on load completed', (done) -> 
 
                message = 
                     direction: 'in'
-                    event: 'init'
+                    event: 'load'
 
                 phrase.createRoot = (opts, linkFn) -> -> then: (resolve) -> resolve()
 

@@ -82,7 +82,7 @@ module.exports.createClass = (classOpts, messageBus) ->
                     next()
 
                 if msg.event == 'connect' and classOpts.autoinit 
-                    return msg.context.responder.event( 'init' ).then( 
+                    return msg.context.responder.event( 'load' ).then( 
                         -> next()
                         -> next()
                     )

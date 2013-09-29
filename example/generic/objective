@@ -26,8 +26,8 @@ objective
 
     boundry: ['process']
 
-    # autoinit: false
-    autorun: true
+    # autoload: false
+    # autorun: true
 
     class: class Generic extends Objective
 
