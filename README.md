@@ -1,8 +1,8 @@
-### Version 0.0.7 (PRE RELEASE) 
-
 `npm install nez`
 
-### Due Homage
+#### Version 0.0.7 (PRE RELEASE) 
+
+#### Due Homage
 
 [RSpec](http://rspec.info/)<br />
 [Coffee Script](http://coffeescript.org/)<br />
@@ -12,13 +12,7 @@
 nez
 ===
 
-A Distributed Process Scaffold
-
-* [objective](https://github.com/nomilous/nez/tree/develop/src/objective)
-* [realization](https://github.com/nomilous/nez/tree/develop/src/realization)
-* TODO: move these to master after 
-
-
+Implements a Test Driven Development scaffold using an `Objective` / [Realization](https://github.com/nomilous/realize) paradigm.
 
 
 ### Pending Features

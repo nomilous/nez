@@ -1,4 +1,4 @@
-Realize = require '../realization/realize'
+{configure} = require 'realize'
 
 module.exports = class Objective
 
@@ -30,7 +30,12 @@ module.exports = class Objective
 
     onBoundryAssemble: (opts, callback) -> 
 
-        Realize.loadRealizer( opts ).then( 
+        #
+        # * loads the local reference nodes
+        # * one per remote realizer's phrase tree
+        #
+
+        configure( opts ).then( 
 
             (realizer) -> 
 

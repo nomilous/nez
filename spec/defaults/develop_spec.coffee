@@ -5,7 +5,7 @@ mkdirp    = require 'mkdirp'
 uuid      = require 'node-uuid'
 fs        = require 'fs'
 
-describe 'Develop', -> 
+xdescribe 'Develop', -> 
 
     beforeEach (done) -> 
 

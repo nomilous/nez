@@ -57,6 +57,8 @@ class Develop extends Objective
 
     startScheduler: (monitor, @jobTokens, @jobEmitter) -> 
 
+        console.log @jobTokens
+
         # console.log Develop: startMonitor: opts
 
         monitor.dirs.add @opts.src.directory, @opts.src.match, 'src'

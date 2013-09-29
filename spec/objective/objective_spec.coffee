@@ -10,7 +10,7 @@ describe 'Objective', ->
 
     context 'Objective.defaultObjective()', -> 
 
-        it 'does nothing', (done) -> 
+        xit 'does nothing', (done) -> 
 
             nez.Objective.prototype.startMonitor = (monitor, jobTokens, jobEmitter) -> 
 
@@ -34,7 +34,7 @@ describe 'Objective', ->
 
     context 'startMonitor( monitor, tokens, emitter )', -> 
 
-        context 'objectiveTree', -> 
+        xcontext 'objectiveTree', -> 
 
             before (done) -> 
 

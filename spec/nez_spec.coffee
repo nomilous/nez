@@ -20,13 +20,6 @@ describe 'nez', ->
         done()
 
 
-
-    it 'exports realize()', (done) -> 
-
-        Nez.realize.should.equal require '../lib/realization/realize'
-        done()
-
-
     context 'lacrimi de St Lawrence', ->
     
         context 'ca și zaharoză', -> 

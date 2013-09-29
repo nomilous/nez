@@ -71,9 +71,9 @@ module.exports.createClass = (opts, messageBus) ->
             #
 
             runner    = path.normalize __dirname + '/../../node_modules/.bin/realize'
-            args      = [ '-p', opts.listening.port]
+            args      = [ '-p', opts.listening.port, '-f', token.source.filename]
             args.push '-X' unless opts.listening.transport == 'https'
-            args.push token.source.filename
+
 
             try process.env['SECRET'] = opts.listen.secret
 
