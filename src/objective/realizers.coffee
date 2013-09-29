@@ -89,17 +89,20 @@ module.exports.createClass = (classOpts, messageBus) ->
 
                 next()
 
-            when 'ready'
-
-                emitter.emit msg.event, realizers[uuid]
-                next()
-
             when 'error'
 
                 emitter.emit msg.event, realizers[uuid], msg
                 next()
 
-            else next()
+            else 
+
+                if match = msg.event.match /^ready::(\d)/
+
+                    seq = parseInt match[1]
+                    emitter.emit 'ready', realizers[uuid], seq
+                    next()
+
+                else next()
 
 
     api = emitter

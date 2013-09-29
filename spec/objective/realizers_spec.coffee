@@ -244,13 +244,14 @@ describe 'Realizers', ->
                         hostname: 'hostname'
                         ->
 
-    context 'on ready', ->
+    context 'on ready::SEQ', ->
 
         it 'emits event', (done) ->
         
-            Realizers.on 'ready', (realizer) -> 
+            Realizers.on 'ready', (realizer, seq) -> 
 
                 realizer.pid.should.equal 'PID'
+                seq.should.equal 1
                 done()
 
 
@@ -263,7 +264,7 @@ describe 'Realizers', ->
                 hostname: 'host.name'
                 =>
                     @MIDDLEWARES[0]
-                        event: 'ready'
+                        event: 'ready::1'
                         context: 
                             responder: use: ->
                         uuid: 'UUID'

@@ -120,6 +120,33 @@ describe 'realize', ->
 
                     realizerFn: -> 
 
+
+            it 'sends the ready::N on init completed', (done) -> 
+
+               message = 
+                    direction: 'in'
+                    event: 'init'
+
+                phrase.createRoot = (opts, linkFn) -> -> then: (resolve) -> resolve()
+
+                Realize.runRealizer
+
+                    uplink:     
+                        use: (middleware) ->  
+                            if middleware.toString().match /realizer middleware 1/
+                                middleware message, ->
+
+                        event: good: (title) -> 
+
+                            title.should.equal 'ready::1'
+                            done()
+
+                    opts:       
+                        title: 'TITLE'
+                        uuid:  'UUID'
+
+                    realizerFn: ->  
+
                         
 
 

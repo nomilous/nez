@@ -39,9 +39,12 @@ objective
             monitor.realizers.on 'connect',    (realizer) -> 
             monitor.realizers.on 'disconnect', (realizer) -> 
             monitor.realizers.on 'reconnect',  (realizer) ->  
-            monitor.realizers.on 'ready',      (realizer) -> 
+            monitor.realizers.on 'ready',      (realizer, seq) -> 
 
-                console.log READY: realizer
+                console.log 
+                    SEQ:   seq
+                    READY: realizer
+                    
 
             monitor.realizers.on 'error', (realizer, msg) -> 
 

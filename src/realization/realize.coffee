@@ -32,6 +32,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
     # 
 
     opts.notice    = uplink
+    readyCount     = 0
     phraseRecursor = phrase.createRoot opts, (token) -> 
 
 
@@ -57,7 +58,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
             when 'out' 
                 switch msg.event
 
-                    when 'connect', 'reconnect', 'ready', 'error'
+                    when 'connect', 'reconnect', 'error'
                         msg.uuid     = opts.uuid
                         msg.pid      = process.pid
                         msg.hostname = hostname()
@@ -66,6 +67,13 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
                         next()
 
                     else
+
+                        if msg.event.match /^ready::/
+                            
+                            msg.uuid     = opts.uuid
+                            msg.pid      = process.pid
+                            msg.hostname = hostname()
+
                         console.log SENDING:   msg.context, msg
                         next()
 
@@ -87,7 +95,7 @@ module.exports.runRealizer = ({uplink, opts, realizerFn}) ->
 
                         init().then(
 
-                            (result) -> uplink.event.good 'ready'  # , result
+                            (result) -> uplink.event.good "ready::#{++readyCount}"  # , result
                             (error)  -> 
 
                                 payload = error: error
