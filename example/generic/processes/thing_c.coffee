@@ -1,5 +1,5 @@
 # 
-# SECRET=S3CR3T ../../node_module/.bin/realize -p 9000 processes/thing_c.coffee
+# SECRET=S3CR3T ../../node_modules/.bin/realize -p 9000 processes/thing_c.coffee
 #
 
 title: 'Do Thing C'
